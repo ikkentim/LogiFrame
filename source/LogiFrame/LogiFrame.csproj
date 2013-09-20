@@ -40,8 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Component.cs" />
+    <Compile Include="Dimension.cs" />
     <Compile Include="Frame.cs" />
     <Compile Include="LgLcd.cs" />
+    <Compile Include="Location.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UpdatePriority.cs" />
   </ItemGroup>
