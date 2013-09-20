@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Windows.Forms;
+using LogiFrame;
+using System.Diagnostics;
 using System.Drawing;
 
 namespace Test
@@ -12,17 +13,42 @@ namespace Test
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
+            Bytemap bm = Bytemap.FromBitmap((Bitmap)Image.FromFile("test.bmp"));
+            ((Bitmap)bm).Save("test2.bmp");
+            Frame frame = new Frame("LogiFrame test application", false, false, false);
+            frame.ButtonDown += new Frame.ButtonDownEventHandler(frame_ButtonDown);
+            frame.ButtonUp += new Frame.ButtonUpEventHandler(frame_ButtonUp);
+            frame.Configure += new Frame.ConfigureEventHandler(frame_Configure);
+            frame.FrameClosed += new Frame.FrameClosedEventHandler(frame_FrameClosed);
+            frame.FramePush += new Frame.FramePushEventHandler(frame_FramePush);
+            frame.UpdateScreen(bm);
+            frame.WaitForClose();
 
-            Form test = new Form();
-            test.FormClosed += test_FormClosed;
         }
 
-        static void test_FormClosed(object sender, FormClosedEventArgs e)
+        static void frame_FramePush(object sender, FramePushEventArgs e)
         {
             throw new NotImplementedException();
+        }
+
+        static void frame_FrameClosed(object sender, FrameClosedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        static void frame_Configure(object sender, ConfigureEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        static void frame_ButtonUp(object sender, ButtonUpEventArgs e)
+        {
+            Debug.WriteLine("Button released: " + e.Button);
+        }
+
+        static void frame_ButtonDown(object sender, ButtonDownEventArgs e)
+        {
+            Debug.WriteLine("Button pressed: " + e.Button);
         }
     }
 }

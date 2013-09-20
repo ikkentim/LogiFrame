@@ -2,7 +2,7 @@
 
 namespace LogiFrame.Components
 {
-    public abstract class Component
+    public class Container : Component
     {
     }
 }
