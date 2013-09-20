@@ -79,7 +79,7 @@ namespace LogiFrame
         #endregion
 
         #region Properties
-        private bool disposed = false;
+        private bool disposed;
 
         /// <summary>
         /// Whether the LogiFrame.Frame has been disposed.
@@ -187,13 +187,17 @@ namespace LogiFrame
             //Set default updatepriority
             UpdatePriority = LogiFrame.UpdatePriority.Normal;
 
-            //TODO: Initialize main container
-
+            //Initialize main container
+            mainContainer = new Container()
+            
             //Store connection
             LgLcd.lgLcdInit();
-            LgLcd.lgLcdConnect(ref connection);
+            int connectionResponse = LgLcd.lgLcdConnect(ref connection);
 
-            //TODO: Check if a connection is set(connection.connection) or throw an Exception
+            //Check if a connection is set or throw an Exception
+            if(connectionResponse != Win32Error.ERROR_SUCCESS)
+                throw new ConnectionException(Win32Error.ToString(connectionResponse));
+
 
             openContext.connection = connection.connection;
             openContext.onSoftbuttonsChanged.softbuttonsChangedCallback = lgLcd_onSoftButtonsCB;
@@ -225,11 +229,16 @@ namespace LogiFrame
         {
             if (!disposed)
             {
-                LgLcd.lgLcdClose(openContext.device);
-                LgLcd.lgLcdDisconnect(connection.connection);
-                LgLcd.lgLcdDeInit();
-
+                //Cannot de-initialize LgLcd from LgLcd-thread.
+                //As a precausion disposing resources from another thread
                 disposed = true;
+
+                new Thread(() =>
+                {
+                    LgLcd.lgLcdClose(openContext.device);
+                    LgLcd.lgLcdDisconnect(connection.connection);
+                    LgLcd.lgLcdDeInit();
+                }).Start();
             }
         }
 
@@ -371,4 +380,16 @@ namespace LogiFrame
 
     #endregion
 
+    public class ConnectionException : Exception
+    {
+        /// <summary>
+        /// Initializes a new instance of the LogiFrame.ConnectionException class with a specified
+        /// error message.
+        /// </summary>
+        /// <param name="message">The message that describes the error.</param>
+        public ConnectionException(string message)
+            : base(message)
+        {
+        }
+    }
 }

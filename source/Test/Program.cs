@@ -2,6 +2,7 @@
 using LogiFrame;
 using System.Diagnostics;
 using System.Drawing;
+using System.Threading;
 
 namespace Test
 {
@@ -43,6 +44,8 @@ namespace Test
 
         static void frame_ButtonUp(object sender, ButtonUpEventArgs e)
         {
+            if (e.Button == 0)
+                ((Frame)sender).Dispose();
             Debug.WriteLine("Button released: " + e.Button);
         }
 
