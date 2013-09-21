@@ -1,56 +1,55 @@
 ﻿using System;
 using LogiFrame;
 using System.Diagnostics;
-using System.Drawing;
-using System.Threading;
 
 namespace Test
 {
     static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
         static void Main()
         {
-            Bytemap bm = Bytemap.FromBitmap((Bitmap)Image.FromFile("test.bmp"));
-            ((Bitmap)bm).Save("test2.bmp");
             Frame frame = new Frame("LogiFrame test application", false, false, false);
+            frame.UpdatePriority = UpdatePriority.Alert;
+
             frame.ButtonDown += new Frame.ButtonDownEventHandler(frame_ButtonDown);
             frame.ButtonUp += new Frame.ButtonUpEventHandler(frame_ButtonUp);
-            frame.Configure += new Frame.ConfigureEventHandler(frame_Configure);
-            frame.FrameClosed += new Frame.FrameClosedEventHandler(frame_FrameClosed);
-            frame.FramePush += new Frame.FramePushEventHandler(frame_FramePush);
-            frame.UpdateScreen(bm);
+            frame.Pushing += new Frame.PushingEventHandler(frame_FramePush);
+            frame.Configure += new EventHandler(frame_Configure);
+            frame.FrameClosed += new EventHandler(frame_FrameClosed);
+
+
+            LogiFrame.Components.Test t = new LogiFrame.Components.Test();
+            t.Size = new Size(30, 30);
+            frame.MainContainer.Components.Add(t);
+
             frame.WaitForClose();
 
         }
 
-        static void frame_FramePush(object sender, FramePushEventArgs e)
+        static void frame_FramePush(object sender, PushingEventArgs e)
         {
-            throw new NotImplementedException();
         }
 
-        static void frame_FrameClosed(object sender, FrameClosedEventArgs e)
+        static void frame_FrameClosed(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine("Frame closed.");
         }
 
-        static void frame_Configure(object sender, ConfigureEventArgs e)
+        static void frame_Configure(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine("Frame config opened.");
         }
 
-        static void frame_ButtonUp(object sender, ButtonUpEventArgs e)
+        static void frame_ButtonUp(object sender, ButtonEventArgs e)
         {
-            if (e.Button == 0)
-                ((Frame)sender).Dispose();
+
             Debug.WriteLine("Button released: " + e.Button);
         }
 
-        static void frame_ButtonDown(object sender, ButtonDownEventArgs e)
+        static void frame_ButtonDown(object sender, ButtonEventArgs e)
         {
+            if (e.Button == 0)
+                ((Frame)sender).Dispose();
             Debug.WriteLine("Button pressed: " + e.Button);
         }
     }

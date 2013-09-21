@@ -8,18 +8,10 @@ namespace LogiFrame
     /// </summary>
     public class Location
     {
-        
-        /// <summary>
-        /// Represents the method that handles a LogiFrame.Location.LocationChanged.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A LogiFrame.LocationChangedEventArgs that contains the event data.</param>
-        public delegate void LocationChangedEventHandler(object sender, LocationChangedEventArgs e);
-
         /// <summary>
         /// Occurs when the location has been changed.
         /// </summary>
-        public event LocationChangedEventHandler LocationChanged;
+        public event EventHandler Changed;
 
         #region Properties
         private int x;
@@ -36,8 +28,8 @@ namespace LogiFrame
             set
             {
                 x = value;
-                if (LocationChanged != null)
-                    LocationChanged(this, new LocationChangedEventArgs());
+                if (Changed != null)
+                    Changed(this, EventArgs.Empty);
             }
         }
 
@@ -54,8 +46,8 @@ namespace LogiFrame
             set
             {
                 y = value;
-                if (LocationChanged != null)
-                    LocationChanged(this, new LocationChangedEventArgs());
+                if (Changed != null)
+                    Changed(this, EventArgs.Empty);
             }
         }
         #endregion
@@ -100,8 +92,8 @@ namespace LogiFrame
             this.x += x;
             this.y += y;
 
-            if (changed && LocationChanged != null)
-                LocationChanged(this, new LocationChangedEventArgs());
+            if (changed && Changed != null)
+                Changed(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -114,8 +106,8 @@ namespace LogiFrame
             this.x += other.X;
             this.y += other.Y;
 
-            if (changed && LocationChanged != null)
-                LocationChanged(this, new LocationChangedEventArgs());
+            if (changed && Changed != null)
+                Changed(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -129,8 +121,8 @@ namespace LogiFrame
             this.x = x;
             this.y = y;
 
-            if (changed && LocationChanged != null)
-                LocationChanged(this, new LocationChangedEventArgs());
+            if (changed && Changed != null)
+                Changed(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -143,8 +135,8 @@ namespace LogiFrame
             this.x = other.X;
             this.y = other.Y;
 
-            if (changed && LocationChanged != null)
-                LocationChanged(this, new LocationChangedEventArgs());
+            if (changed && Changed != null)
+                Changed(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -241,20 +233,6 @@ namespace LogiFrame
         public override string ToString()
         {
             return "(" + X + ", " + Y + ")";
-        }
-    }
-
-    /// <summary>
-    /// Provides data for the LogiFrame.Location.LocationChanged event.
-    /// </summary>
-    public class LocationChangedEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Initializes a new instance of the LogiFrame.LocationChangedEventArgs class.
-        /// </summary>
-        public LocationChangedEventArgs()
-        {
-
         }
     }
 }

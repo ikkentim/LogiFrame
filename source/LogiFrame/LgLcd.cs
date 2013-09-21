@@ -6,7 +6,7 @@ namespace LogiFrame
     //Derived from: http://lglcdnet.codeplex.com/
 
     /// <summary>
-    /// Logitech LCD class.  This class simply exposes the constants
+    /// Logitech LCD class. This class simply exposes the constants
     /// and functions provided by the logitech sdk.  No wrapping is done
     /// to ease any of this as the goal of this class is to simply reflect
     /// exactly what is done in the C API provided by logitech.

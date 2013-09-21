@@ -21,36 +21,22 @@ namespace LogiFrame
         /// Represents the method that handles a LogiFrame.Frame.ButtonDown.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A LogiFrame.ButtonDownEvengArgs that contains the event data.</param>
-        public delegate void ButtonDownEventHandler(object sender, ButtonDownEventArgs e);
+        /// <param name="e">A LogiFrame.ButtonEventArgs that contains the event data.</param>
+        public delegate void ButtonDownEventHandler(object sender, ButtonEventArgs e);
 
         /// <summary>
         /// Represents the method that handles a LogiFrame.Frame.ButtonUp.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A LogiFrame.ButtonUpEvengArgs that contains the event data.</param>
-        public delegate void ButtonUpEventHandler(object sender, ButtonUpEventArgs e);
+        /// <param name="e">A LogiFrame.ButtonEventArgs that contains the event data.</param>
+        public delegate void ButtonUpEventHandler(object sender, ButtonEventArgs e);
 
         /// <summary>
         /// Represents the method that handles a LogiFrame.Frame.FramePush.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A LogiFrame.FramePushEventArgs that contains the event data.</param>
-        public delegate void FramePushEventHandler(object sender, FramePushEventArgs e);
-
-        /// <summary>
-        /// Represents the method that handles a LogiFrame.Frame.FrameClosed.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A LogiFrame.FrameClosedEventArgs that contains the event data.</param>
-        public delegate void FrameClosedEventHandler(object sender, FrameClosedEventArgs e);
-
-        /// <summary>
-        /// Represents the method that handles a LogiFrame.Frame.Configure.
-        /// </summary>
-        /// <param name="sender">The soruce of the event.</param>
-        /// <param name="e">A LogiFrame.ConfigureEventArgs that contains the event data.</param>
-        public delegate void ConfigureEventHandler(object sender, ConfigureEventArgs e);
+        /// <param name="e">A LogiFrame.PushingEventArgs that contains the event data.</param>
+        public delegate void PushingEventHandler(object sender, PushingEventArgs e);
 
         /// <summary>
         /// Occurs when a button is being pressed.
@@ -65,17 +51,17 @@ namespace LogiFrame
         /// <summary>
         /// Occurs before a frame is being pushed to the display.
         /// </summary>
-        public event FramePushEventHandler FramePush;
+        public event PushingEventHandler Pushing;
 
         /// <summary>
         /// Occurs after the frame has been closed or disposed
         /// </summary>
-        public event FrameClosedEventHandler FrameClosed;
+        public event EventHandler FrameClosed;
 
         /// <summary>
         /// Occurs when the 'configure' button has been pressed in LCDmon.
         /// </summary>
-        public event ConfigureEventHandler Configure;
+        public event EventHandler Configure;
         #endregion
 
         #region Properties
@@ -174,6 +160,10 @@ namespace LogiFrame
         /// <param name="allowConfiguration">Whether the application is configurable via LCDmon</param>
         public Frame(string applicationName, bool isAutostartable, bool isPersistent, bool allowConfiguration)
         {
+            //Check for LgLcd.dll file
+            if (!System.IO.File.Exists("LgLcd.dll"))
+                throw new DllNotFoundException("Could not find LgLcd.dll.");
+
             //Initialize connection and store properties
             connection.appFriendlyName = this.applicationName = applicationName;
             connection.isAutostartable = this.isAutostartable = isAutostartable;
@@ -188,8 +178,10 @@ namespace LogiFrame
             UpdatePriority = LogiFrame.UpdatePriority.Normal;
 
             //Initialize main container
-            mainContainer = new Container()
-            
+            mainContainer = new Container();
+            mainContainer.Size = new Size((int)LgLcd.LGLCD_BMP_WIDTH, (int)LgLcd.LGLCD_BMP_HEIGHT);
+            mainContainer.Changed += new EventHandler(mainContainer_ComponentChanged);
+
             //Store connection
             LgLcd.lgLcdInit();
             int connectionResponse = LgLcd.lgLcdConnect(ref connection);
@@ -210,7 +202,8 @@ namespace LogiFrame
             bitmap.hdr.Format = LgLcd.LGLCD_BMP_FORMAT_160x43x1;
 
             //Send empty bytemap
-            UpdateScreen(null);
+            if(!Disposed)
+                updateScreen(null);
         }
 
         /// <summary>
@@ -222,6 +215,7 @@ namespace LogiFrame
         }
         #endregion
 
+        #region Methods
         /// <summary>
         /// Releases all resources used by LogiFrame.Frame
         /// </summary>
@@ -229,15 +223,21 @@ namespace LogiFrame
         {
             if (!disposed)
             {
-                //Cannot de-initialize LgLcd from LgLcd-thread.
-                //As a precausion disposing resources from another thread
+                mainContainer.Dispose();
+
                 disposed = true;
 
+                if (FrameClosed != null)
+                    FrameClosed(this, EventArgs.Empty);
+
+                //Cannot de-initialize LgLcd from LgLcd-thread.
+                //As a precausion disposing resources from another thread
                 new Thread(() =>
                 {
                     LgLcd.lgLcdClose(openContext.device);
                     LgLcd.lgLcdDisconnect(connection.connection);
                     LgLcd.lgLcdDeInit();
+
                 }).Start();
             }
         }
@@ -251,18 +251,28 @@ namespace LogiFrame
                 Thread.Sleep(1500);
         }
 
-        //Should be private!
-        public void UpdateScreen(Bytemap bytemap)
+        private void updateScreen(Bytemap bytemap)
         {
-            bitmap.pixels = bytemap == null ? new byte[LgLcd.LGLCD_BMP_WIDTH * LgLcd.LGLCD_BMP_HEIGHT] : bytemap.Data;
-            LgLcd.lgLcdUpdateBitmap(openContext.device, ref bitmap, (uint)UpdatePriority);
+            bool push = true;
+
+            if (Pushing != null)
+            {
+                PushingEventArgs e = new PushingEventArgs();
+                Pushing(this, e);
+
+                if (e.PreventPush)
+                    push = false;
+            }
+
+            if (push)
+            {
+                bitmap.pixels = bytemap == null ? new byte[LgLcd.LGLCD_BMP_WIDTH * LgLcd.LGLCD_BMP_HEIGHT] : bytemap.Data;
+                LgLcd.lgLcdUpdateBitmap(openContext.device, ref bitmap, (uint)UpdatePriority);
+            }
         }
 
         private int ReadSoftButtons()
         {
-            if (disposed)
-                throw new ObjectDisposedException("LogiFrame.Frame has already been disposed.");
-
             int intButtons = 0;
             LgLcd.lgLcdReadSoftButtons(openContext.device, out intButtons);
             return intButtons;
@@ -273,9 +283,9 @@ namespace LogiFrame
         {
             for (int i = 0, b = 1; i < 4; i++, b *= 2)
                 if (ButtonDown != null && (buttonState & b) == 0 && (dwButtons & b) == b)
-                    ButtonDown(this, new ButtonDownEventArgs(i));
+                    ButtonDown(this, new ButtonEventArgs(i));
                 else if (ButtonUp != null && (buttonState & b) == b && (dwButtons & b) == 0)
-                    ButtonUp(this, new ButtonUpEventArgs(i));
+                    ButtonUp(this, new ButtonEventArgs(i));
 
             buttonState = dwButtons;
             return 1;
@@ -284,16 +294,25 @@ namespace LogiFrame
         private int lgLcd_onConfigureCB(int connection, IntPtr pContext)
         {
             if (Configure != null)
-                Configure(this, new ConfigureEventArgs());
+                Configure(this, EventArgs.Empty);
             return 1;
         }
+
+        private void mainContainer_ComponentChanged(object sender, EventArgs e)
+        {
+            if (Disposed)
+                return;
+
+            updateScreen((sender as Component).Bytemap);
+        }
+        #endregion
     }
 
     #region EventArgs
     /// <summary>
-    /// Provides data for the LogiFrame.Frame.ButtonDown event.
+    /// Provides data for the LogiFrame.Frame.ButtonDown and LogiFrame.Frame.ButtonUp events.
     /// </summary>
-    public class ButtonDownEventArgs : EventArgs
+    public class ButtonEventArgs : EventArgs
     {
         /// <summary>
         /// Represents the 0-based number of the button being pressed.
@@ -301,53 +320,19 @@ namespace LogiFrame
         public int Button { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the LogiFrame.ButtonDownEventArgs class.
+        /// Initializes a new instance of the LogiFrame.ButtonEventArgs class.
         /// </summary>
         /// <param name="button">0-based number of the button being pressed.</param>
-        public ButtonDownEventArgs(int button)
+        public ButtonEventArgs(int button)
         {
             Button = button;
         }
     }
 
     /// <summary>
-    /// Provides data for the LogiFrame.Frame.ButtonUp event.
+    /// Provides data for the LogiFrame.Frame.Pushing event.
     /// </summary>
-    public class ButtonUpEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Represents the 0-based number of the button being released.
-        /// </summary>
-        public int Button { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the LogiFrame.ButtonUpEventArgs class.
-        /// </summary>
-        /// <param name="button">0-based number of the button being released.</param>
-        public ButtonUpEventArgs(int button)
-        {
-            Button = button;
-        }
-    }
-
-    /// <summary>
-    /// Provides data for the LogiFrame.Frame.FrameClosed event.
-    /// </summary>
-    public class FrameClosedEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Initializes a new instance of the LogiFrame.FrameClosedEventArgs class.
-        /// </summary>
-        public FrameClosedEventArgs()
-        {
-
-        }
-    }
-
-    /// <summary>
-    /// Provides data for the LogiFrame.Frame.FramePush event.
-    /// </summary>
-    public class FramePushEventArgs : EventArgs
+    public class PushingEventArgs : EventArgs
     {
         /// <summary>
         /// Indicates whether this frame should be prevented from being 
@@ -356,23 +341,9 @@ namespace LogiFrame
         public bool PreventPush { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the LogiFrame.FramePushEventArgs class.
+        /// Initializes a new instance of the LogiFrame.PushingEventArgs class.
         /// </summary>
-        public FramePushEventArgs()
-        {
-
-        }
-    }
-
-    /// <summary>
-    /// Provides data for the LogiFrame.Frame.Configure event.
-    /// </summary>
-    public class ConfigureEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Initializes a new instance of the LogiFrame.ConfigureEventArgs class.
-        /// </summary>
-        public ConfigureEventArgs()
+        public PushingEventArgs()
         {
 
         }

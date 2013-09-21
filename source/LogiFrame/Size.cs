@@ -7,18 +7,10 @@ namespace LogiFrame
     /// </summary>
     public class Size
     {
-
-        /// <summary>
-        /// Represents the method that handles a LogiFrame.Size.SizeChanged.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A LogiFrame.SizeChangedEventArgs that contains the event data.</param>
-        public delegate void SizeChangedEventHandler(object sender, SizeChangedEventArgs e);
-
         /// <summary>
         /// Occurs when the Size has been changed.
         /// </summary>
-        public event SizeChangedEventHandler SizeChanged;
+        public event EventHandler Changed;
 
         #region Properties
         private int width;
@@ -37,8 +29,8 @@ namespace LogiFrame
                     throw new ArgumentOutOfRangeException("The width of a Size must be higher than 0.");
 
                 width = value;
-                if (SizeChanged != null)
-                    SizeChanged(this, new SizeChangedEventArgs());
+                if (Changed != null)
+                    Changed(this, EventArgs.Empty);
             }
         }
 
@@ -58,8 +50,8 @@ namespace LogiFrame
                     throw new ArgumentOutOfRangeException("The height of a Size must be higher than 0.");
 
                 height = value;
-                if (SizeChanged != null)
-                    SizeChanged(this, new SizeChangedEventArgs());
+                if (Changed != null)
+                    Changed(this, EventArgs.Empty);
             }
         }
         #endregion
@@ -69,6 +61,8 @@ namespace LogiFrame
         /// </summary>
         public Size()
         {
+            width = 1;
+            height = 1;
         }
 
         /// <summary>
@@ -102,11 +96,15 @@ namespace LogiFrame
         public void Add(int width, int height)
         {
             bool changed = width != 0 || height != 0;
+
+            if (this.width + width <= 0 || this.height + height <= 0)
+                throw new ArgumentOutOfRangeException("The width and height of a Size must be higher than 0.");
+
             this.width += width;
             this.height += height;
 
-            if (changed && SizeChanged != null)
-                SizeChanged(this, new SizeChangedEventArgs());
+            if (changed && Changed != null)
+                Changed(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -119,8 +117,8 @@ namespace LogiFrame
             this.width += other.Width;
             this.height += other.Height;
 
-            if (changed && SizeChanged != null)
-                SizeChanged(this, new SizeChangedEventArgs());
+            if (changed && Changed != null)
+                Changed(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -130,12 +128,15 @@ namespace LogiFrame
         /// <param name="height">The new height value.</param>
         public void Set(int width, int height)
         {
+            if (width <= 0 || height <= 0)
+                throw new ArgumentOutOfRangeException("The width and height of a Size must be higher than 0.");
+
             bool changed = this.width != width || this.height != height;
             this.width = width;
             this.height = height;
 
-            if (changed && SizeChanged != null)
-                SizeChanged(this, new SizeChangedEventArgs());
+            if (changed && Changed != null)
+                Changed(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -148,8 +149,8 @@ namespace LogiFrame
             this.width = other.Width;
             this.height = other.Height;
 
-            if (changed && SizeChanged != null)
-                SizeChanged(this, new SizeChangedEventArgs());
+            if (changed && Changed != null)
+                Changed(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -247,20 +248,6 @@ namespace LogiFrame
         public override string ToString()
         {
             return "(" + Width + ", " + Height + ")";
-        }
-    }
-
-    /// <summary>
-    /// Provides data for the LogiFrame.Size.SizeChanged event.
-    /// </summary>
-    public class SizeChangedEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Initializes a new instance of the LogiFrame.SizeChangedEventArgs class.
-        /// </summary>
-        public SizeChangedEventArgs()
-        {
-
         }
     }
 }

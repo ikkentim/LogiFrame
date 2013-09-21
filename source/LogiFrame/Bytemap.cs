@@ -7,8 +7,14 @@ namespace LogiFrame
     /// </summary>
     public class Bytemap
     {
+        public static Bytemap Empty;
+
         #region Properties
         private byte[] data;
+
+        /// <summary>
+        /// The byte[] array container all the date of the canvas.
+        /// </summary>
         public byte[] Data
         {
             get
@@ -17,11 +23,25 @@ namespace LogiFrame
             }
         }
 
+        /// <summary>
+        /// Whether the non-filled pixels should draw the lower-located
+        /// pixels when using the LogiFrame.Bytemap.Merge method.
+        /// </summary>
         public bool Transparent { get; set; }
+
+        /// <summary>
+        /// Whether pixels around the filled pixels should always be non-filled
+        /// when using the LogiFrame.Bytemap.Merge method.
+        /// </summary>
         public bool TopEffect { get; set; }
+
         private int width;
         private int height;
         private Size size;
+
+        /// <summary>
+        /// The LogiFrame.Size of this LogiFrame.Bytemap.
+        /// </summary>
         public Size Size
         {
             get
@@ -41,11 +61,11 @@ namespace LogiFrame
                 }
                 else
                 {
-                    size.SizeChanged -= new Size.SizeChangedEventHandler(size_SizeChanged);
+                    size.Changed -= new EventHandler(size_SizeChanged);
                 }
 
                 size = value;
-                size.SizeChanged += new Size.SizeChangedEventHandler(size_SizeChanged);
+                size.Changed += new EventHandler(size_SizeChanged);
 
                 resize();
             }
@@ -73,6 +93,7 @@ namespace LogiFrame
         }
         #endregion
 
+        #region Methods
         /// <summary>
         /// Creates a copy of LogiFrame.Bytemap instance.
         /// </summary>
@@ -140,8 +161,9 @@ namespace LogiFrame
         /// <param name="location">The LogiFrame.Location to merge the LogiFrame.Bytemap at.</param>
         public void Merge(Bytemap bytemap, Location location)
         {
-            if (bytemap == null)
-                throw new ArgumentNullException("bytemap cannot be null.");
+            if (bytemap == Empty)
+                return;
+
             if(location == null)
                 throw new ArgumentNullException("location cannot be null.");
 
@@ -152,6 +174,7 @@ namespace LogiFrame
                 location.Y >= height)
                 return;
 
+            //TODO: Transparency and TopMergeEffect
             for(int x=Math.Max(location.X, 0);x<Math.Min(width,location.X+bytemap.width);x++)
                 for (int y = Math.Max(location.Y, 0); y < Math.Min(height, location.Y + bytemap.height); y++)
                 {
@@ -233,9 +256,10 @@ namespace LogiFrame
         }
 
         //Callbacks
-        private void size_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void size_SizeChanged(object sender, EventArgs e)
         {
             resize();
         }
+        #endregion
     }
 }
