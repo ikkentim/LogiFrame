@@ -1,11 +1,13 @@
 ﻿using System;
 using LogiFrame;
+using LogiFrame.Components;
 using System.Diagnostics;
 
 namespace Test
 {
     static class Program
     {
+        static Circle sq = new Circle();
         static void Main()
         {
             Frame frame = new Frame("LogiFrame test application", false, false, false);
@@ -18,9 +20,10 @@ namespace Test
             frame.FrameClosed += new EventHandler(frame_FrameClosed);
 
 
-            LogiFrame.Components.Test t = new LogiFrame.Components.Test();
-            t.Size = new Size(30, 30);
-            frame.MainContainer.Components.Add(t);
+
+
+            sq.Size = new Size(30, 30);
+            frame.MainContainer.Components.Add(sq);
 
             frame.WaitForClose();
 
@@ -50,6 +53,9 @@ namespace Test
         {
             if (e.Button == 0)
                 ((Frame)sender).Dispose();
+
+            if (e.Button == 1)
+                sq.Fill = !sq.Fill;
             Debug.WriteLine("Button pressed: " + e.Button);
         }
     }

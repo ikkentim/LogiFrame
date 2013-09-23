@@ -96,7 +96,7 @@ namespace LogiFrame.Components
 
                 mergeTopEffect = value;
 
-                ComponentModified();
+                HasChanged = true;
             }
         }
 
@@ -114,7 +114,7 @@ namespace LogiFrame.Components
             {
                 transparent = value;
 
-                ComponentModified();
+                HasChanged = true;
             }
         }
 
@@ -132,7 +132,7 @@ namespace LogiFrame.Components
             {
                 visible = value;
 
-                ComponentModified();
+                HasChanged = true;
             }
         }
 
@@ -145,6 +145,18 @@ namespace LogiFrame.Components
             get
             {
                 return hasChanged;
+            }
+            protected set
+            {
+                if (Disposed || IsRendering)
+                    return;
+
+                bool notify = !hasChanged;
+
+                hasChanged = true;
+
+                if (notify = Changed != null)
+                    Changed(this, EventArgs.Empty);
             }
         }
 
@@ -267,22 +279,6 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Changes the HasChanged property and notifies listeners
-        /// </summary>
-        protected void ComponentModified()
-        {
-            if (Disposed)
-                return;
-
-            bool notify = !hasChanged && !IsRendering;
-
-            hasChanged = true;
-
-            if (notify = Changed != null)
-                Changed(this, EventArgs.Empty);
-        }
-
-        /// <summary>
         /// Renders all grahpics of the current LogiFrame.Components.Component
         /// </summary>
         /// <returns>The rendered LogiFrame.Bytemap</returns>
@@ -292,7 +288,7 @@ namespace LogiFrame.Components
         //Callbacks
         private void size_SizeChanged(object sender, EventArgs e)
         {
-            ComponentModified();
+            HasChanged = true;
         }
 
         private void location_LocationChanged(object sender, EventArgs e)

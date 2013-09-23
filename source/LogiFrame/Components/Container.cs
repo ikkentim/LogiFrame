@@ -83,18 +83,18 @@ namespace LogiFrame.Components
                 }
 
             //Notify
-            ComponentModified();
+            HasChanged = true;
         }
 
         //Callbacks
         private void Container_LocationChanged(object sender, EventArgs e)
         {
-            ComponentModified();
+            HasChanged = true;
         }
 
         private void Container_ComponentChanged(object sender, EventArgs e)
         {
-            ComponentModified();
+            HasChanged = true;
         }
         #endregion
     }
