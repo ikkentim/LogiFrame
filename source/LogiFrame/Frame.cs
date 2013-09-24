@@ -120,7 +120,6 @@ namespace LogiFrame
         }
 
         private bool allowConfiguration;
-
         /// <summary>
         /// Whether the 'configure' option is being shown in LCDmon.
         /// </summary>
@@ -131,13 +130,25 @@ namespace LogiFrame
                 return allowConfiguration;
             }
         }
+
+        private bool simulate;
+        /// <summary>
+        /// Whether LogiFrame.Frame is simulating the display.
+        /// </summary>
+        public bool Simulate
+        {
+            get
+            {
+                return simulate;
+            }
+        }
+
         /// <summary>
         /// The priority of the forthcoming LCD updates.
         /// </summary>
         public UpdatePriority UpdatePriority { get; set; }
 
         private Container mainContainer;
-
         /// <summary>
         /// The main components container
         /// </summary>
@@ -157,8 +168,9 @@ namespace LogiFrame
         /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
         /// <param name="isAutostartable"> Whether true application can be started by LCDMon or not.</param>
         /// <param name="isPersistent">Whether connection is regular.</param>
-        /// <param name="allowConfiguration">Whether the application is configurable via LCDmon</param>
-        public Frame(string applicationName, bool isAutostartable, bool isPersistent, bool allowConfiguration)
+        /// <param name="allowConfiguration">Whether the application is configurable via LCDmon.</param>
+        /// <param name="simulate">Whether LogiFrame should start in simulation mode.</param>
+        public Frame(string applicationName, bool isAutostartable, bool isPersistent, bool allowConfiguration, bool simulate)
         {
             //Check for LgLcd.dll file
             if (!System.IO.File.Exists("LgLcd.dll"))
@@ -168,6 +180,7 @@ namespace LogiFrame
             connection.appFriendlyName = this.applicationName = applicationName;
             connection.isAutostartable = this.isAutostartable = isAutostartable;
             connection.isPersistent = this.isPersistent = isPersistent;
+            this.simulate = simulate;
 
             if(this.allowConfiguration = allowConfiguration)
                 connection.onConfigure.configCallback = lgLcd_onConfigureCB;
@@ -176,6 +189,10 @@ namespace LogiFrame
 
             //Set default updatepriority
             UpdatePriority = LogiFrame.UpdatePriority.Normal;
+
+            //Start simulation thread
+            if (simulate)
+                new Thread(() => { Simulation.Start(this); }).Start();
 
             //Initialize main container
             mainContainer = new Container();
@@ -187,7 +204,7 @@ namespace LogiFrame
             int connectionResponse = LgLcd.lgLcdConnect(ref connection);
 
             //Check if a connection is set or throw an Exception
-            if(connectionResponse != Win32Error.ERROR_SUCCESS)
+            if (connectionResponse != Win32Error.ERROR_SUCCESS && !simulate)
                 throw new ConnectionException(Win32Error.ToString(connectionResponse));
 
 
@@ -202,8 +219,7 @@ namespace LogiFrame
             bitmap.hdr.Format = LgLcd.LGLCD_BMP_FORMAT_160x43x1;
 
             //Send empty bytemap
-            if(!Disposed)
-                updateScreen(null);
+            updateScreen(null);
         }
 
         /// <summary>
@@ -251,13 +267,45 @@ namespace LogiFrame
                 Thread.Sleep(1500);
         }
 
+        /// <summary>
+        /// Emulates a button being pushed.
+        /// </summary>
+        public void PerformButtonDown(int button)
+        {
+            int power = (int)Math.Pow(2, button);
+
+            if ((buttonState & power) == power)
+                return;
+
+            buttonState = power | buttonState;
+
+            if (ButtonDown != null)
+                ButtonDown(this, new ButtonEventArgs(button));
+        }
+
+        /// <summary>
+        /// Emulates a button being released.
+        /// </summary>
+        public void PerformButtonUp(int button)
+        {
+            int power = (int)Math.Pow(2, button);
+
+            if ((buttonState & power) == 0)
+                return;
+
+            buttonState = buttonState ^ power;
+
+            if (ButtonUp != null)
+                ButtonUp(this, new ButtonEventArgs(button));
+        }
+
         private void updateScreen(Bytemap bytemap)
         {
             bool push = true;
 
             if (Pushing != null)
             {
-                PushingEventArgs e = new PushingEventArgs();
+                PushingEventArgs e = new PushingEventArgs(bytemap);
                 Pushing(this, e);
 
                 if (e.PreventPush)
@@ -269,13 +317,6 @@ namespace LogiFrame
                 bitmap.pixels = bytemap == null ? new byte[LgLcd.LGLCD_BMP_WIDTH * LgLcd.LGLCD_BMP_HEIGHT] : bytemap.Data;
                 LgLcd.lgLcdUpdateBitmap(openContext.device, ref bitmap, (uint)UpdatePriority);
             }
-        }
-
-        private int ReadSoftButtons()
-        {
-            int intButtons = 0;
-            LgLcd.lgLcdReadSoftButtons(openContext.device, out intButtons);
-            return intButtons;
         }
 
         //Callbacks
@@ -340,12 +381,24 @@ namespace LogiFrame
         /// </summary>
         public bool PreventPush { get; set; }
 
+        private Bytemap frame;
+        /// <summary>
+        /// The frame that is about to be 
+        /// </summary>
+        public Bytemap Frame
+        {
+            get
+            {
+                return frame;
+            }
+        }
         /// <summary>
         /// Initializes a new instance of the LogiFrame.PushingEventArgs class.
         /// </summary>
-        public PushingEventArgs()
+        /// <param name="frame">The frame that is about to be pushed.</param>
+        public PushingEventArgs(Bytemap frame)
         {
-
+            this.frame = frame;
         }
     }
 

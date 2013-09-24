@@ -225,6 +225,9 @@ namespace LogiFrame
         /// <returns>The System.Drawing.Bitmap that results from the conversion.</returns>
         public static implicit operator System.Drawing.Bitmap(Bytemap bytemap)
         {
+            if (bytemap == null)
+                return null;
+
             System.Drawing.Bitmap result = new System.Drawing.Bitmap(bytemap.width, bytemap.height);
 
             for (int y = 0; y < bytemap.height; y++)

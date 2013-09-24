@@ -2,7 +2,7 @@
 using LogiFrame;
 using LogiFrame.Components;
 using System.Diagnostics;
-
+using System.Windows.Forms;
 namespace Test
 {
     static class Program
@@ -10,7 +10,7 @@ namespace Test
         static Circle sq = new Circle();
         static void Main()
         {
-            Frame frame = new Frame("LogiFrame test application", false, false, false);
+            Frame frame = new Frame("LogiFrame test application", false, false, false, true);
             frame.UpdatePriority = UpdatePriority.Alert;
 
             frame.ButtonDown += new Frame.ButtonDownEventHandler(frame_ButtonDown);
@@ -21,7 +21,7 @@ namespace Test
 
 
 
-
+            Debug.WriteLine("Draw square");
             sq.Size = new Size(30, 30);
             frame.MainContainer.Components.Add(sq);
 

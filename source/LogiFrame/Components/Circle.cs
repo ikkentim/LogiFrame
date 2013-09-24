@@ -34,19 +34,19 @@ namespace LogiFrame.Components
         {
             Bytemap result = new Bytemap(Size);
 
-            double radius = Math.Min(Size.Width, Size.Height)/2-1;
+            double hradius = (double)Size.Width / 2;
+            double vradius = (double)Size.Height / 2;
 
             for (int j = 1; j <= 25; j++)
             {
-                radius = (j + 1) * 5;
                 for (double i = 0.0; i < 360.0; i += 0.1)
                 {
-                    double angle = i * System.Math.PI / 180;
-                    int x = (int)(Size.Width/2 + radius * System.Math.Cos(angle));
-                    int y = (int)(Size.Height/2 + radius * System.Math.Sin(angle));
+                    double angle = i * (Math.PI / 180);
+                    int x = (int)Math.Floor(hradius + hradius * Math.Cos(angle));
+                    int y = (int)Math.Floor(vradius + vradius * Math.Sin(angle));
 
                     result.SetPixel(x, y, true);
-                    //System.Threading.Thread.Sleep(1); // If you want to draw circle very slowly.
+
                 }
             }
 
