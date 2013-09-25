@@ -37,17 +37,14 @@ namespace LogiFrame.Components
             double hradius = (double)Size.Width / 2;
             double vradius = (double)Size.Height / 2;
 
-            for (int j = 1; j <= 25; j++)
+            for (double i = 0.0; i < 360.0; i += 0.1)
             {
-                for (double i = 0.0; i < 360.0; i += 0.1)
-                {
-                    double angle = i * (Math.PI / 180);
-                    int x = (int)Math.Floor(hradius + hradius * Math.Cos(angle));
-                    int y = (int)Math.Floor(vradius + vradius * Math.Sin(angle));
+                double angle = i * (Math.PI / 180);
+                int x = (int)Math.Floor(hradius + (hradius - 1) * Math.Cos(angle));
+                int y = (int)Math.Floor(vradius + (vradius - 1) * Math.Sin(angle));
 
-                    result.SetPixel(x, y, true);
+                result.SetPixel(x, y, true);
 
-                }
             }
 
             return result;

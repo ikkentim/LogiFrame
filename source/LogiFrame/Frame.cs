@@ -8,7 +8,7 @@ namespace LogiFrame
     /// <summary>
     /// Represents the framework.
     /// </summary>
-    public class Frame : IDisposable
+    public class Frame : Container
     {
         private LgLcd.lgLcdConnectContext connection = new LgLcd.lgLcdConnectContext();
         private LgLcd.lgLcdOpenContext openContext = new LgLcd.lgLcdOpenContext();
@@ -65,19 +65,6 @@ namespace LogiFrame
         #endregion
 
         #region Properties
-        private bool disposed;
-
-        /// <summary>
-        /// Whether the LogiFrame.Frame has been disposed.
-        /// </summary>
-        public bool Disposed
-        {
-            get
-            {
-                return disposed;
-            }
-        }
-
         private string applicationName;
 
         /// <summary>
@@ -148,17 +135,6 @@ namespace LogiFrame
         /// </summary>
         public UpdatePriority UpdatePriority { get; set; }
 
-        private Container mainContainer;
-        /// <summary>
-        /// The main components container
-        /// </summary>
-        public Container MainContainer
-        {
-            get
-            {
-                return mainContainer;
-            }
-        }
         #endregion
 
         #region Constructor/Deconstructor
@@ -195,9 +171,8 @@ namespace LogiFrame
                 new Thread(() => { Simulation.Start(this); }).Start();
 
             //Initialize main container
-            mainContainer = new Container();
-            mainContainer.Size = new Size((int)LgLcd.LGLCD_BMP_WIDTH, (int)LgLcd.LGLCD_BMP_HEIGHT);
-            mainContainer.Changed += new EventHandler(mainContainer_ComponentChanged);
+            Size = new Size((int)LgLcd.LGLCD_BMP_WIDTH, (int)LgLcd.LGLCD_BMP_HEIGHT);
+            Changed += new EventHandler(mainContainer_ComponentChanged);
 
             //Store connection
             LgLcd.lgLcdInit();
@@ -235,13 +210,11 @@ namespace LogiFrame
         /// <summary>
         /// Releases all resources used by LogiFrame.Frame
         /// </summary>
-        public void Dispose()
+        public new void Dispose()
         {
-            if (!disposed)
+            if (!Disposed)
             {
-                mainContainer.Dispose();
-
-                disposed = true;
+                base.Dispose();
 
                 if (FrameClosed != null)
                     FrameClosed(this, EventArgs.Empty);
@@ -263,7 +236,7 @@ namespace LogiFrame
         /// </summary>
         public void WaitForClose()
         {
-            while(!disposed)
+            while(!Disposed)
                 Thread.Sleep(1500);
         }
 

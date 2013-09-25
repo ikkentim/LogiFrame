@@ -144,23 +144,6 @@ namespace LogiFrame
         /// </summary>
         /// <param name="loc1">The LogiFrame.Location to translate.</param>
         /// <param name="loc2">
-        ///     A LogiFrame.Location that specifies the pair of numbers to add to
-        ///     the coordinates of loc1.
-        /// </param>
-        /// <returns>
-        ///     A LogiFrame.Location instance that is translated by the other 
-        ///     given LogiFrame.Location instance.
-        /// </returns>
-        public static Location operator -(Location loc1, Location loc2)
-        {
-            return new Location(loc1.X - loc2.X, loc1.Y - loc2.Y);
-        }
-
-        /// <summary>
-        /// Translates a LogiFrame.Location by the  of a given LogiFrame.Location.
-        /// </summary>
-        /// <param name="loc1">The LogiFrame.Location to translate.</param>
-        /// <param name="loc2">
         ///     A LogiFrame.Location that specifies the pair of numbers to subtract from
         ///     the coordinates of loc1.
         /// </param>
@@ -168,9 +151,43 @@ namespace LogiFrame
         ///     A LogiFrame.Location instance that is translated by the negative of the
         ///     other given LogiFrame.Location instance.
         /// </returns>
+        public static Location operator -(Location loc1, Location loc2)
+        {
+            return new Location(loc1.X - loc2.X, loc1.Y - loc2.Y);
+        }
+
+        /// <summary>
+        /// Translates a LogiFrame.Location by a given LogiFrame.Location.
+        /// </summary>
+        /// <param name="loc1">The LogiFrame.Location to translate.</param>
+        /// <param name="loc2">
+        ///     A LogiFrame.Location that specifies the pair of numbers to add to
+        ///     the coordinates of loc1.
+        /// </param>
+        /// <returns>
+        ///     A LogiFrame.Location instance that is translated by the other 
+        ///     given LogiFrame.Location instance.
+        /// </returns>
         public static Location operator +(Location loc1, Location loc2)
         {
             return new Location(loc1.X + loc2.X, loc1.Y + loc2.Y);
+        }
+
+        /// <summary>
+        /// Translates a LogiFrame.Location by the dimentions of a LogiFrame.Size.
+        /// </summary>
+        /// <param name="loc">The LogiFrame.Location to translate.</param>
+        /// <param name="size">
+        ///     The LogiFrame.Size that specifies the pair of numers to add to
+        ///     the coordinates of loc.
+        /// </param>
+        /// <returns>
+        ///     A LogiFrame.Location instance that is translated by the given
+        ///     LogiFrame.Size instance.
+        /// </returns>
+        public static Location operator +(Location loc, Size size)
+        {
+            return new Location(loc.X + size.Width, loc.Y + size.Height);
         }
 
         /// <summary>

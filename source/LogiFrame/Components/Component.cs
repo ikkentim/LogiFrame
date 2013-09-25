@@ -49,7 +49,8 @@ namespace LogiFrame.Components
 
                 location = value;
 
-                LocationChanged(value, EventArgs.Empty);
+                if(LocationChanged != null)
+                    LocationChanged(value, EventArgs.Empty);
             }
         }
 
@@ -271,7 +272,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Stub for clild components. This overridable method can be used to dispose resources.
+        /// Stub for child components. This overridable method can be used to dispose resources.
         /// </summary>
         protected virtual void DisposeComponent()
         {

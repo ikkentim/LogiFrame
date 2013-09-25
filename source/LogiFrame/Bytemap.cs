@@ -229,7 +229,7 @@ namespace LogiFrame
                 return null;
 
             System.Drawing.Bitmap result = new System.Drawing.Bitmap(bytemap.width, bytemap.height);
-
+            System.Drawing.Graphics.FromImage(result).Clear(System.Drawing.Color.White);
             for (int y = 0; y < bytemap.height; y++)
                 for (int x = 0; x < bytemap.width; x++)
                     if (bytemap.Data[x + y * bytemap.width] == 255)

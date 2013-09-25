@@ -7,55 +7,34 @@ namespace Test
 {
     static class Program
     {
-        static Circle sq = new Circle();
         static void Main()
         {
             Frame frame = new Frame("LogiFrame test application", false, false, false, true);
             frame.UpdatePriority = UpdatePriority.Alert;
 
+
             frame.ButtonDown += new Frame.ButtonDownEventHandler(frame_ButtonDown);
-            frame.ButtonUp += new Frame.ButtonUpEventHandler(frame_ButtonUp);
-            frame.Pushing += new Frame.PushingEventHandler(frame_FramePush);
-            frame.Configure += new EventHandler(frame_Configure);
-            frame.FrameClosed += new EventHandler(frame_FrameClosed);
 
+            Line line = new Line();
+            line.Start = new Location(0, 30);
+            line.End = new Location(100, 0);
 
-
-            Debug.WriteLine("Draw square");
-            sq.Size = new Size(30, 30);
-            frame.MainContainer.Components.Add(sq);
+            Square sq = new Square();
+            sq.Location = new Location(100, 5);
+            sq.Size= new Size(30, 30);
+            frame.Components.Add(sq);
+            frame.Components.Add(line);
 
             frame.WaitForClose();
 
-        }
-
-        static void frame_FramePush(object sender, PushingEventArgs e)
-        {
-        }
-
-        static void frame_FrameClosed(object sender, EventArgs e)
-        {
-            Debug.WriteLine("Frame closed.");
-        }
-
-        static void frame_Configure(object sender, EventArgs e)
-        {
-            Debug.WriteLine("Frame config opened.");
-        }
-
-        static void frame_ButtonUp(object sender, ButtonEventArgs e)
-        {
-
-            Debug.WriteLine("Button released: " + e.Button);
         }
 
         static void frame_ButtonDown(object sender, ButtonEventArgs e)
         {
             if (e.Button == 0)
                 ((Frame)sender).Dispose();
-
             if (e.Button == 1)
-                sq.Fill = !sq.Fill;
+                ((Frame)sender).Refresh();
             Debug.WriteLine("Button pressed: " + e.Button);
         }
     }

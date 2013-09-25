@@ -47,6 +47,7 @@
     <Compile Include="Components\Component.cs" />
     <Compile Include="Components\ComponentCollection.cs" />
     <Compile Include="Components\Container.cs" />
+    <Compile Include="Components\Line.cs" />
     <Compile Include="Components\Square.cs" />
     <Compile Include="Components\Test.cs" />
     <Compile Include="Simulation.cs">
