@@ -7,20 +7,106 @@ namespace LogiFrame
     /// </summary>
     public class Bytemap
     {
-        public static Bytemap Empty;
+        /*
+            1. Private fields and constants
+            2. Public constants
+            3. Public read-only static fields
+            4. Factory Methods
+            5. Constructors and the Finalizer
+            6. Events
+            7. Public Properties
+            8. Other methods and private properties in calling order
+         */
+
+        #region Fields
+
+        private byte[] data;
+        private int width;
+        private int height;
+        private Size size;
+
+        #endregion
+
+        #region Statics
+
+        /// <summary>
+        /// Represens an empty Bytemap.
+        /// </summary>
+        public static readonly Bytemap Empty;
+
+        #endregion
+
+        #region Factory
+
+        /// <summary>
+        /// Transform a System.Drawing.Bitmap into a LogiFrame.Bytemap.
+        /// </summary>
+        /// <param name="bitmap">The System.Drawing.Bitmap to transform.</param>
+        /// <returns>The new LogiFrame.Bytemap that this method creates. </returns>
+        public static Bytemap FromBitmap(System.Drawing.Bitmap bitmap)
+        {
+            //Everything totally black is black; everything else is white
+            return FromBitmap(bitmap, 0, 0, 0, 255);
+        }
+
+        /// <summary>
+        /// Transform a System.Drawing.Bitmap into a LogiFrame.Bytemap.
+        /// </summary>
+        /// <param name="bitmap">The System.Drawing.Bitmap to transform.</param>
+        /// <param name="maxR">The maximum red color value for a pixel to be filled.</param>
+        /// <param name="maxG">The maximum green color value for a pixel to be filled.</param>
+        /// <param name="maxB">The maximum blue color value for a pixel to be filled.</param>
+        /// <param name="minA">The minimum alpha value for a pixel to be filled.</param>
+        /// <returns>The new LogiFrame.Bytemap that this method creates. </returns>
+        public static Bytemap FromBitmap(System.Drawing.Bitmap bitmap, byte maxR, byte maxG, byte maxB, byte minA)
+        {
+            if (bitmap == null)
+                return null;
+
+            Bytemap result = new Bytemap((Size)bitmap.Size);
+
+            for (int y = 0; y < bitmap.Height; y++)
+                for (int x = 0; x < bitmap.Width; x++)
+                {
+                    System.Drawing.Color px = bitmap.GetPixel(x, y);
+                    result.data[result.width * y + x] = (byte)(px.R <= maxR && px.G <= maxG && px.B <= maxB && minA <= px.A ? 0xff : 0x00);
+                }
+            return result;
+        }
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the LogiFrame.Bytemap class.
+        /// </summary>
+        /// <param name="width">Initial width of the bytemap.</param>
+        /// <param name="height">Initial height of the bytemap.</param> 
+        public Bytemap(int width, int height)
+        {
+            Size = new Size(width, height);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the LogiFrame.Bytemap class.
+        /// </summary>
+        /// <param name="size">Initial size of the bytemap.</param>
+        public Bytemap(Size size)
+        {
+            Size = size;
+        }
+
+        #endregion
 
         #region Properties
-        private byte[] data;
 
         /// <summary>
         /// The byte[] array container all the date of the canvas.
         /// </summary>
         public byte[] Data
         {
-            get
-            {
-                return data;
-            }
+            get { return data; }
         }
 
         /// <summary>
@@ -35,22 +121,16 @@ namespace LogiFrame
         /// </summary>
         public bool TopEffect { get; set; }
 
-        private int width;
-        private int height;
-        private Size size;
 
         /// <summary>
         /// The LogiFrame.Size of this LogiFrame.Bytemap.
         /// </summary>
         public Size Size
         {
-            get
-            {
-                return size;
-            }
+            get { return size; }
             set
             {
-                if(value == null)
+                if (value == null)
                     throw new ArgumentNullException("LogiFrame.Bytemap.Size cannot be set to null.");
 
                 if (size == null)
@@ -70,30 +150,11 @@ namespace LogiFrame
                 resize();
             }
         }
-        #endregion
 
-        #region Constructor/Deconstructor
-        /// <summary>
-        /// Initializes a new instance of the LogiFrame.Bytemap class.
-        /// </summary>
-        /// <param name="width">Initial width of the bytemap.</param>
-        /// <param name="height">Initial height of the bytemap.</param> 
-        public Bytemap(int width, int height)
-        {
-            Size = new Size(width, height);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the LogiFrame.Bytemap class.
-        /// </summary>
-        /// <param name="size">Initial size of the bytemap.</param>
-        public Bytemap(Size size)
-        {
-            Size = size;
-        }
         #endregion
 
         #region Methods
+
         /// <summary>
         /// Creates a copy of LogiFrame.Bytemap instance.
         /// </summary>
@@ -207,42 +268,6 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Transform a System.Drawing.Bitmap into a LogiFrame.Bytemap.
-        /// </summary>
-        /// <param name="bitmap">The System.Drawing.Bitmap to transform.</param>
-        /// <returns>The new LogiFrame.Bytemap that this method creates. </returns>
-        public static Bytemap FromBitmap(System.Drawing.Bitmap bitmap)
-        {
-            //Everything totally black is black; everything else is white
-            return FromBitmap(bitmap, 0, 0, 0, 255);
-        }
-
-        /// <summary>
-        /// Transform a System.Drawing.Bitmap into a LogiFrame.Bytemap.
-        /// </summary>
-        /// <param name="bitmap">The System.Drawing.Bitmap to transform.</param>
-        /// <param name="maxR">The maximum red color value for a pixel to be filled.</param>
-        /// <param name="maxG">The maximum green color value for a pixel to be filled.</param>
-        /// <param name="maxB">The maximum blue color value for a pixel to be filled.</param>
-        /// <param name="minA">The minimum alpha value for a pixel to be filled.</param>
-        /// <returns>The new LogiFrame.Bytemap that this method creates. </returns>
-        public static Bytemap FromBitmap(System.Drawing.Bitmap bitmap, byte maxR, byte maxG, byte maxB, byte minA)
-        {
-            if(bitmap == null)
-                return null;
-
-            Bytemap result = new Bytemap((Size)bitmap.Size);
-
-            for (int y = 0; y < bitmap.Height; y++)
-                for (int x = 0; x < bitmap.Width; x++)
-                {
-                    System.Drawing.Color px = bitmap.GetPixel(x,y);
-                    result.data[result.width * y + x] = (byte)(px.R <= maxR && px.G <= maxG && px.B <= maxB && minA <= px.A ? 0xff : 0x00);
-                }
-            return result;
-        }
-
-        /// <summary>
         /// Converts the specified LogiFrame.Bytemap instance to a System.Drawing.Bitmap instance.
         /// </summary>
         /// <param name="loc">The LogiFrame.Bytemap to be converted.</param>
@@ -261,6 +286,10 @@ namespace LogiFrame
 
             return result;
         }
+
+        #endregion
+
+        #region Private methods
 
         private void resize()
         {
@@ -282,11 +311,12 @@ namespace LogiFrame
             }
         }
 
-        //Callbacks
         private void size_SizeChanged(object sender, EventArgs e)
         {
             resize();
         }
+
         #endregion
+
     }
 }
