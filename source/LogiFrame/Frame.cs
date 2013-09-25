@@ -142,6 +142,48 @@ namespace LogiFrame
         /// Initializes a new instance of the LogiFrame.Frame class.
         /// </summary>
         /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
+        public Frame(string applicationName)
+            : this(applicationName, false, false, false, false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the LogiFrame.Frame class.
+        /// </summary>
+        /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
+        /// <param name="isAutostartable"> Whether true application can be started by LCDMon or not.</param>
+        public Frame(string applicationName, bool isAutostartable)
+            : this(applicationName, isAutostartable, false, false, false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the LogiFrame.Frame class.
+        /// </summary>
+        /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
+        /// <param name="isAutostartable"> Whether true application can be started by LCDMon or not.</param>
+        /// <param name="isPersistent">Whether connection is regular.</param>
+        public Frame(string applicationName, bool isAutostartable, bool isPersistent)
+            : this(applicationName, isAutostartable, isPersistent, false, false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the LogiFrame.Frame class.
+        /// </summary>
+        /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
+        /// <param name="isAutostartable"> Whether true application can be started by LCDMon or not.</param>
+        /// <param name="isPersistent">Whether connection is regular.</param>
+        /// <param name="allowConfiguration">Whether the application is configurable via LCDmon.</param>
+        public Frame(string applicationName, bool isAutostartable, bool isPersistent, bool allowConfiguration)
+            : this(applicationName, isAutostartable, isPersistent, allowConfiguration, false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the LogiFrame.Frame class.
+        /// </summary>
+        /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
         /// <param name="isAutostartable"> Whether true application can be started by LCDMon or not.</param>
         /// <param name="isPersistent">Whether connection is regular.</param>
         /// <param name="allowConfiguration">Whether the application is configurable via LCDmon.</param>
