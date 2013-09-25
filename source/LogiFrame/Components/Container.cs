@@ -43,10 +43,7 @@ namespace LogiFrame.Components
             Bytemap result = new Bytemap(Size);
 
             foreach (Component c in Components)
-            {
-                System.Diagnostics.Debug.WriteLine("Rendering " + c.ToString() + " @ " + c.Location.ToString());
                 result.Merge(c.Bytemap, c.Location);
-            }
 
             return result;
         }

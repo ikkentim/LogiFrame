@@ -9,7 +9,9 @@ namespace Test
     {
         static void Main()
         {
-            Frame frame = new Frame("LogiFrame test application", false, false, false, true);
+            //Test application
+
+            Frame frame = new Frame("LogiFrame test application", false, false, false, false);
             frame.UpdatePriority = UpdatePriority.Alert;
 
 
@@ -17,11 +19,15 @@ namespace Test
 
             Line line = new Line();
             line.Start = new Location(0, 30);
-            line.End = new Location(100, 0);
+            line.End = new Location(130, 15);
+            line.Transparent = true;
+            line.TopEffect = true;
 
             Square sq = new Square();
             sq.Location = new Location(100, 5);
             sq.Size= new Size(30, 30);
+            sq.Fill = true;
+
             frame.Components.Add(sq);
             frame.Components.Add(line);
 

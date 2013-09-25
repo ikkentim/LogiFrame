@@ -317,6 +317,9 @@ namespace LogiFrame
             if (Disposed)
                 return;
 
+            if (Size.Width != LgLcd.LGLCD_BMP_WIDTH || Size.Height != LgLcd.LGLCD_BMP_HEIGHT)
+                throw new InvalidOperationException("The size of the LogiFrame.Frame container may not be changed.");
+
             updateScreen((sender as Component).Bytemap);
         }
         #endregion

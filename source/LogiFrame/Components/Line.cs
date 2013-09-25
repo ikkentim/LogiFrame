@@ -12,6 +12,9 @@ namespace LogiFrame.Components
         private Location start = new Location();
         private Location end = new Location();
 
+        /// <summary>
+        /// Read-only location of the current LogiFrame.Components.Line.
+        /// </summary>
         public override Location Location
         {
             get
@@ -20,6 +23,9 @@ namespace LogiFrame.Components
             }
         }
 
+        /// <summary>
+        /// Read-only size of the current LogiFrame.Components.Line.
+        /// </summary>
         public override Size Size
         {
             get
@@ -64,6 +70,9 @@ namespace LogiFrame.Components
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the LogiFrame.components.Line class.
+        /// </summary>
         public Line()
             : base()
         {

@@ -49,7 +49,6 @@
     <Compile Include="Components\Container.cs" />
     <Compile Include="Components\Line.cs" />
     <Compile Include="Components\Square.cs" />
-    <Compile Include="Components\Test.cs" />
     <Compile Include="Simulation.cs">
       <SubType>Form</SubType>
     </Compile>

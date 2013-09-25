@@ -1,5 +1,6 @@
 ﻿using System;
 using LogiFrame;
+using System.Diagnostics;
 
 namespace LogiFrame.Components
 {
@@ -82,20 +83,20 @@ namespace LogiFrame.Components
             }
         }
 
-        public bool mergeTopEffect;
+        public bool topEffect;
         /// <summary>
-        /// Whether this LogiFrame.Components.Component should have Bytemap.MergeTopEffect enabled.
+        /// Whether this LogiFrame.Components.Component should have Bytemap.TopEffect enabled.
         /// </summary>
-        public bool MergeTopEffect
+        public bool TopEffect
         {
             get
             {
-                return mergeTopEffect;
+                return topEffect;
             }
             set
             {
 
-                mergeTopEffect = value;
+                topEffect = value;
 
                 HasChanged = true;
             }
@@ -244,8 +245,11 @@ namespace LogiFrame.Components
 
             if (forceRefresh || HasChanged)
             {
+                Debug.WriteLine("[DEBUG] Rendering " + ToString() + " at " + Location + ", IsRendering: " + IsRendering.ToString());
                 isRendering = true;
                 bytemap = Render();
+                bytemap.Transparent = Transparent;
+                bytemap.TopEffect = TopEffect;
                 isRendering = false;
             }
         }

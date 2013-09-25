@@ -174,11 +174,35 @@ namespace LogiFrame
                 location.Y >= height)
                 return;
 
-            //TODO: Transparency and TopMergeEffect
             for(int x=Math.Max(location.X, 0);x<Math.Min(width,location.X+bytemap.width);x++)
                 for (int y = Math.Max(location.Y, 0); y < Math.Min(height, location.Y + bytemap.height); y++)
                 {
-                    data[x + y * width] = bytemap.data[x - location.X + (y - location.Y) * bytemap.width];
+                        int sx = x - location.X;
+                        int sy = y - location.Y;
+                    if (bytemap.Transparent && bytemap.TopEffect)
+                    {
+
+                        if (bytemap.GetPixel(sx,sy))
+                        {
+                            SetPixel(x, y, true);
+
+                            if (x > 0 && (sx == 0 || !bytemap.GetPixel(sx - 1, sy)))
+                                SetPixel(x - 1, y, false);
+
+                            if (x < width-1 && (sx == bytemap.width-1 || !bytemap.GetPixel(sx + 1, sy)))
+                                SetPixel(x + 1, y, false);
+
+                            if (y > 0 && (sy == 0 || !bytemap.GetPixel(sx, sy - 1)))
+                                SetPixel(x, y - 1, false);
+
+                            if (y < width - 1 && (sy == bytemap.height - 1 || !bytemap.GetPixel(sx, sy + 1)))
+                                SetPixel(x, y + 1, false);
+                        }
+                    }
+                    else if (bytemap.Transparent)
+                        SetPixel(x, y, bytemap.GetPixel(sx, sy) || GetPixel(x,y));
+                    else
+                        SetPixel(x, y, bytemap.GetPixel(sx, sy));
                 }
         }
 
