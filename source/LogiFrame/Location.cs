@@ -8,49 +8,15 @@ namespace LogiFrame
     /// </summary>
     public class Location
     {
-        /// <summary>
-        /// Occurs when the location has been changed.
-        /// </summary>
-        public event EventHandler Changed;
 
-        #region Properties
+        #region Fields
+
         private int x;
-
-        /// <summary>
-        /// The x-coordinate of the LogiFrame.Location.
-        /// </summary>
-        public int X 
-        {
-            get
-            {
-                return x;
-            }
-            set
-            {
-                x = value;
-                if (Changed != null)
-                    Changed(this, EventArgs.Empty);
-            }
-        }
-
         private int y;
-        /// <summary>
-        /// The y-coordinate of the LogiFrame.Location.
-        /// </summary>
-        public int Y
-        {
-            get
-            {
-                return y;
-            }
-            set
-            {
-                y = value;
-                if (Changed != null)
-                    Changed(this, EventArgs.Empty);
-            }
-        }
+
         #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the LogiFrame.Location class.
@@ -80,6 +46,41 @@ namespace LogiFrame
         {
 
         }
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Occurs when the location has been changed.
+        /// </summary>
+        public event EventHandler Changed;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// The x-coordinate of the LogiFrame.Location.
+        /// </summary>
+        public int X
+        {
+            get { return x; }
+            set { Set(value, y); }
+        }
+
+        /// <summary>
+        /// The y-coordinate of the LogiFrame.Location.
+        /// </summary>
+        public int Y
+        {
+            get { return y; }
+            set { Set(x, value); }
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Adds a certain value to the current LogiFrame.Location instance.
@@ -236,9 +237,9 @@ namespace LogiFrame
             {
                 int result = 37;
                 result *= 397;
-                    result += X;
+                result += X;
                 result *= 397;
-                    result += Y;
+                result += Y;
                 return result;
             }
         }
@@ -251,5 +252,8 @@ namespace LogiFrame
         {
             return "(" + X + ", " + Y + ")";
         }
+
+        #endregion
+
     }
 }

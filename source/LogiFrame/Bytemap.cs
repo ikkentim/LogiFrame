@@ -7,16 +7,6 @@ namespace LogiFrame
     /// </summary>
     public class Bytemap
     {
-        /*
-            1. Private fields and constants
-            2. Public constants
-            3. Public read-only static fields
-            4. Factory Methods
-            5. Constructors and the Finalizer
-            6. Events
-            7. Public Properties
-            8. Other methods and private properties in calling order
-         */
 
         #region Fields
 

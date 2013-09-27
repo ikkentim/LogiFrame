@@ -15,14 +15,10 @@ namespace LogiFrame.Components
         /// </summary>
         public bool Fill
         {
-            get
-            {
-                return fill;
-            }
+            get { return fill; }
             set
             {
                 bool change = fill != value;
-
                 fill = value;
 
                 if (change)

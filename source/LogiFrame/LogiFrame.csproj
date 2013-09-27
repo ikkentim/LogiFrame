@@ -42,13 +42,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ButtonEventArgs.cs" />
     <Compile Include="Bytemap.cs" />
     <Compile Include="Components\Circle.cs" />
     <Compile Include="Components\Component.cs" />
     <Compile Include="Components\ComponentCollection.cs" />
     <Compile Include="Components\Container.cs" />
+    <Compile Include="Components\Label.cs" />
     <Compile Include="Components\Line.cs" />
     <Compile Include="Components\Square.cs" />
+    <Compile Include="ConnectionException.cs" />
+    <Compile Include="PushingEventArgs.cs" />
     <Compile Include="Simulation.cs">
       <SubType>Form</SubType>
     </Compile>

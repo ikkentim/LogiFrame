@@ -9,18 +9,35 @@ namespace LogiFrame.Components
     public class Line : Component
     {
 
+        #region Fields
+
         private Location start = new Location();
         private Location end = new Location();
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Initializes a new instance of the LogiFrame.components.Line class.
+        /// </summary>
+        public Line()
+            : base()
+        {
+            start.Changed += start_Changed;
+            end.Changed += end_Changed;
+        }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Read-only location of the current LogiFrame.Components.Line.
         /// </summary>
         public override Location Location
         {
-            get
-            {
-                return base.Location;
-            }
+            get { return base.Location; }
         }
 
         /// <summary>
@@ -28,10 +45,7 @@ namespace LogiFrame.Components
         /// </summary>
         public override Size Size
         {
-            get
-            {
-                return base.Size;
-            }
+            get { return base.Size; }
         }
 
         /// <summary>
@@ -39,10 +53,7 @@ namespace LogiFrame.Components
         /// </summary>
         public Location Start
         {
-            get
-            {
-                return start;
-            }
+            get { return start; }
             set
             {
                 start.Set(value);
@@ -58,9 +69,7 @@ namespace LogiFrame.Components
         public Location End
         {
             get
-            {
-                return end;
-            }
+            { return end; }
             set
             {
                 end.Set(value);
@@ -70,15 +79,9 @@ namespace LogiFrame.Components
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the LogiFrame.components.Line class.
-        /// </summary>
-        public Line()
-            : base()
-        {
-            start.Changed += start_Changed;
-            end.Changed += end_Changed;
-        }
+        #endregion
+
+        #region Methods
 
         protected override Bytemap Render()
         {
@@ -90,6 +93,10 @@ namespace LogiFrame.Components
             return Bytemap.FromBitmap(bitmap);
         }
 
+        #endregion
+
+        #region Private methods
+
         private void end_Changed(object sender, EventArgs e)
         {
             End = end;
@@ -99,5 +106,8 @@ namespace LogiFrame.Components
         {
             Start = start;
         }
+
+        #endregion
+
     }
 }

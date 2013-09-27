@@ -10,134 +10,25 @@ namespace LogiFrame
     /// </summary>
     public class Frame : Container
     {
+
+        #region Fields
+
         private LgLcd.lgLcdConnectContext connection = new LgLcd.lgLcdConnectContext();
         private LgLcd.lgLcdOpenContext openContext = new LgLcd.lgLcdOpenContext();
         private LgLcd.lgLcdBitmap160x43x1 bitmap = new LgLcd.lgLcdBitmap160x43x1();
 
-        private int buttonState = 0;
-
-        #region Events
-        /// <summary>
-        /// Represents the method that handles a LogiFrame.Frame.ButtonDown.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A LogiFrame.ButtonEventArgs that contains the event data.</param>
-        public delegate void ButtonDownEventHandler(object sender, ButtonEventArgs e);
-
-        /// <summary>
-        /// Represents the method that handles a LogiFrame.Frame.ButtonUp.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A LogiFrame.ButtonEventArgs that contains the event data.</param>
-        public delegate void ButtonUpEventHandler(object sender, ButtonEventArgs e);
-
-        /// <summary>
-        /// Represents the method that handles a LogiFrame.Frame.FramePush.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A LogiFrame.PushingEventArgs that contains the event data.</param>
-        public delegate void PushingEventHandler(object sender, PushingEventArgs e);
-
-        /// <summary>
-        /// Occurs when a button is being pressed.
-        /// </summary>
-        public event ButtonDownEventHandler ButtonDown;
-
-        /// <summary>
-        /// Occurs when a button is being released.
-        /// </summary>
-        public event ButtonUpEventHandler ButtonUp;
-
-        /// <summary>
-        /// Occurs before a frame is being pushed to the display.
-        /// </summary>
-        public event PushingEventHandler Pushing;
-
-        /// <summary>
-        /// Occurs after the frame has been closed or disposed
-        /// </summary>
-        public event EventHandler FrameClosed;
-
-        /// <summary>
-        /// Occurs when the 'configure' button has been pressed in LCDmon.
-        /// </summary>
-        public event EventHandler Configure;
-        #endregion
-
-        #region Properties
         private string applicationName;
-
-        /// <summary>
-        /// A string that contains the 'friendly name' of the application. 
-        /// This name is presented to the user whenever a list of applications is shown.
-        /// </summary>
-        public string ApplicationName
-        {
-            get
-            {
-                return applicationName;
-            }
-        }
-
         private bool isAutostartable;
-
-        /// <summary>
-        /// Whether application can be started by LCDMon or not.
-        /// </summary>
-        public bool IsAutostartable
-        {
-            get
-            {
-                return isAutostartable;
-            }
-        }
-
         private bool isPersistent;
-
-        /// <summary>
-        /// Whether connection is temporary or whether it is
-        /// a regular connection that should be added to the list.
-        /// </summary>
-        public bool IsPersistent
-        {
-            get
-            {
-                return isPersistent;
-            }
-        }
-
         private bool allowConfiguration;
-        /// <summary>
-        /// Whether the 'configure' option is being shown in LCDmon.
-        /// </summary>
-        public bool AllowConfiguration
-        {
-            get
-            {
-                return allowConfiguration;
-            }
-        }
-
         private bool simulate;
-        /// <summary>
-        /// Whether LogiFrame.Frame is simulating the display.
-        /// </summary>
-        public bool Simulate
-        {
-            get
-            {
-                return simulate;
-            }
-        }
 
-        /// <summary>
-        /// The priority of the forthcoming LCD updates.
-        /// </summary>
-        public UpdatePriority UpdatePriority { get; set; }
+        private int buttonState = 0;
 
         #endregion
 
         #region Constructor/Deconstructor
+
         /// <summary>
         /// Initializes a new instance of the LogiFrame.Frame class.
         /// </summary>
@@ -224,7 +115,7 @@ namespace LogiFrame
             if (connectionResponse != Win32Error.ERROR_SUCCESS && !simulate)
                 throw new ConnectionException(Win32Error.ToString(connectionResponse));
 
-
+            //Open connection
             openContext.connection = connection.connection;
             openContext.onSoftbuttonsChanged.softbuttonsChangedCallback = lgLcd_onSoftButtonsCB;
             openContext.index = 0;
@@ -246,9 +137,112 @@ namespace LogiFrame
         {
             Dispose();
         }
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Represents the method that handles a LogiFrame.Frame.ButtonDown.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A LogiFrame.ButtonEventArgs that contains the event data.</param>
+        public delegate void ButtonDownEventHandler(object sender, ButtonEventArgs e);
+
+        /// <summary>
+        /// Represents the method that handles a LogiFrame.Frame.ButtonUp.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A LogiFrame.ButtonEventArgs that contains the event data.</param>
+        public delegate void ButtonUpEventHandler(object sender, ButtonEventArgs e);
+
+        /// <summary>
+        /// Represents the method that handles a LogiFrame.Frame.FramePush.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A LogiFrame.PushingEventArgs that contains the event data.</param>
+        public delegate void PushingEventHandler(object sender, PushingEventArgs e);
+
+        /// <summary>
+        /// Occurs when a button is being pressed.
+        /// </summary>
+        public event ButtonDownEventHandler ButtonDown;
+
+        /// <summary>
+        /// Occurs when a button is being released.
+        /// </summary>
+        public event ButtonUpEventHandler ButtonUp;
+
+        /// <summary>
+        /// Occurs before a frame is being pushed to the display.
+        /// </summary>
+        public event PushingEventHandler Pushing;
+
+        /// <summary>
+        /// Occurs after the frame has been closed or disposed
+        /// </summary>
+        public event EventHandler FrameClosed;
+
+        /// <summary>
+        /// Occurs when the 'configure' button has been pressed in LCDmon.
+        /// </summary>
+        public event EventHandler Configure;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// A string that contains the 'friendly name' of the application. 
+        /// This name is presented to the user whenever a list of applications is shown.
+        /// </summary>
+        public string ApplicationName 
+        { 
+            get { return applicationName; } 
+        }
+
+        /// <summary>
+        /// Whether application can be started by LCDMon or not.
+        /// </summary>
+        public bool IsAutostartable 
+        { 
+            get { return isAutostartable; } 
+        }
+
+        /// <summary>
+        /// Whether connection is temporary or whether it is
+        /// a regular connection that should be added to the list.
+        /// </summary>
+        public bool IsPersistent 
+        { 
+            get { return isPersistent; }
+        }
+
+        /// <summary>
+        /// Whether the 'configure' option is being shown in LCDmon.
+        /// </summary>
+        public bool AllowConfiguration 
+        { 
+            get { return allowConfiguration; } 
+        }
+
+        /// <summary>
+        /// Whether LogiFrame.Frame is simulating the display.
+        /// </summary>
+        public bool Simulate 
+        { 
+            get { return simulate; } 
+        }
+
+        /// <summary>
+        /// The priority of the forthcoming LCD updates.
+        /// </summary>
+        public UpdatePriority UpdatePriority { get; set; }
+
         #endregion
 
         #region Methods
+
         /// <summary>
         /// Releases all resources used by LogiFrame.Frame
         /// </summary>
@@ -314,6 +308,10 @@ namespace LogiFrame
                 ButtonUp(this, new ButtonEventArgs(button));
         }
 
+        #endregion
+
+        #region Private methods
+
         private void updateScreen(Bytemap bytemap)
         {
             bool push = true;
@@ -364,74 +362,8 @@ namespace LogiFrame
 
             updateScreen((sender as Component).Bytemap);
         }
+
         #endregion
-    }
 
-    #region EventArgs
-    /// <summary>
-    /// Provides data for the LogiFrame.Frame.ButtonDown and LogiFrame.Frame.ButtonUp events.
-    /// </summary>
-    public class ButtonEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Represents the 0-based number of the button being pressed.
-        /// </summary>
-        public int Button { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the LogiFrame.ButtonEventArgs class.
-        /// </summary>
-        /// <param name="button">0-based number of the button being pressed.</param>
-        public ButtonEventArgs(int button)
-        {
-            Button = button;
-        }
-    }
-
-    /// <summary>
-    /// Provides data for the LogiFrame.Frame.Pushing event.
-    /// </summary>
-    public class PushingEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Indicates whether this frame should be prevented from being 
-        /// pushed to the display.
-        /// </summary>
-        public bool PreventPush { get; set; }
-
-        private Bytemap frame;
-        /// <summary>
-        /// The frame that is about to be 
-        /// </summary>
-        public Bytemap Frame
-        {
-            get
-            {
-                return frame;
-            }
-        }
-        /// <summary>
-        /// Initializes a new instance of the LogiFrame.PushingEventArgs class.
-        /// </summary>
-        /// <param name="frame">The frame that is about to be pushed.</param>
-        public PushingEventArgs(Bytemap frame)
-        {
-            this.frame = frame;
-        }
-    }
-
-    #endregion
-
-    public class ConnectionException : Exception
-    {
-        /// <summary>
-        /// Initializes a new instance of the LogiFrame.ConnectionException class with a specified
-        /// error message.
-        /// </summary>
-        /// <param name="message">The message that describes the error.</param>
-        public ConnectionException(string message)
-            : base(message)
-        {
-        }
     }
 }

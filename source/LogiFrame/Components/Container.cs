@@ -8,22 +8,15 @@ namespace LogiFrame.Components
     /// </summary>
     public class Container : Component
     {
-        #region Properties
+
+        #region Fields
+
         private ComponentCollection<Component> components = new ComponentCollection<Component>();
 
-        /// <summary>
-        /// A collection of LogiFrame.Components.Component instances that are rendered within the current LogiFrame.Components.Container.
-        /// </summary>
-        public ComponentCollection<Component> Components
-        {
-            get
-            {
-                return components;
-            }
-        }
         #endregion
 
         #region Constructor
+
         /// <summary>
         /// Initializes a new instance of the LogiFrame.Components.Container class.
         /// </summary>
@@ -32,9 +25,23 @@ namespace LogiFrame.Components
         {
             Components.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Components_CollectionChanged);
         }
+
+        #endregion
+
+        #region Properties
+ 
+        /// <summary>
+        /// A collection of LogiFrame.Components.Component instances that are rendered within the current LogiFrame.Components.Container.
+        /// </summary>
+        public ComponentCollection<Component> Components
+        {
+            get { return components; }
+        }
+
         #endregion
 
         #region Methods
+
         protected override Bytemap Render()
         {
             if (Disposed)
@@ -59,6 +66,10 @@ namespace LogiFrame.Components
             Components.Clear();
         }
 
+        #endregion
+
+        #region Private methods
+
         private void Components_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e == null || (e.NewItems == null && e.OldItems == null))
@@ -71,15 +82,15 @@ namespace LogiFrame.Components
             if (e.NewItems != null)
                 foreach (object obj in e.NewItems)
                 {
-                    (obj as Component).Changed += new EventHandler(Container_ComponentChanged);
-                    (obj as Component).LocationChanged += new EventHandler(Container_LocationChanged);
+                    (obj as Component).Changed += new EventHandler(Container_Changed);
+                    (obj as Component).LocationChanged += new EventHandler(Container_Changed);
                 }
             //Remove events
             if (e.OldItems != null)
                 foreach (object obj in e.OldItems)
                 {
-                    (obj as Component).Changed -= Container_ComponentChanged;
-                    (obj as Component).LocationChanged -= Container_LocationChanged;
+                    (obj as Component).Changed -= Container_Changed;
+                    (obj as Component).LocationChanged -= Container_Changed;
                 }
 
             //Notify
@@ -87,15 +98,11 @@ namespace LogiFrame.Components
         }
 
         //Callbacks
-        private void Container_LocationChanged(object sender, EventArgs e)
+        private void Container_Changed(object sender, EventArgs e)
         {
             HasChanged = true;
         }
 
-        private void Container_ComponentChanged(object sender, EventArgs e)
-        {
-            HasChanged = true;
-        }
         #endregion
     }
 }

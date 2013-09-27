@@ -7,54 +7,15 @@ namespace LogiFrame
     /// </summary>
     public class Size
     {
-        /// <summary>
-        /// Occurs when the Size has been changed.
-        /// </summary>
-        public event EventHandler Changed;
 
-        #region Properties
+        #region Fields
+
         private int width;
-        /// <summary>
-        /// The width of the LogiFrame.Size.
-        /// </summary>
-        public int Width
-        {
-            get
-            {
-                return width;
-            }
-            set
-            {
-                if (value <= 0)
-                    throw new ArgumentOutOfRangeException("The width of a Size must be higher than 0.");
-
-                width = value;
-                if (Changed != null)
-                    Changed(this, EventArgs.Empty);
-            }
-        }
-
         private int height;
-        /// <summary>
-        /// The height of the LogiFrame.Size.
-        /// </summary>
-        public int Height
-        {
-            get
-            {
-                return height;
-            }
-            set
-            {
-                if (value <= 0)
-                    throw new ArgumentOutOfRangeException("The height of a Size must be higher than 0.");
 
-                height = value;
-                if (Changed != null)
-                    Changed(this, EventArgs.Empty);
-            }
-        }
         #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the LogiFrame.Location class.
@@ -87,6 +48,41 @@ namespace LogiFrame
             this.width = width;
             this.height = height;
         }
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Occurs when the Size has been changed.
+        /// </summary>
+        public event EventHandler Changed;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// The width of the LogiFrame.Size.
+        /// </summary>
+        public int Width
+        {
+            get { return width; }
+            set { Set(value, height); }
+        }
+
+        /// <summary>
+        /// The height of the LogiFrame.Size.
+        /// </summary>
+        public int Height
+        {
+            get { return height; }
+            set { Set(width, value); }
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Adds a certain value to the current LogiFrame.Size instance.
@@ -249,5 +245,8 @@ namespace LogiFrame
         {
             return "(" + Width + ", " + Height + ")";
         }
+
+        #endregion
+
     }
 }

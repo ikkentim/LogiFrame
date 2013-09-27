@@ -11,7 +11,7 @@ namespace Test
         {
             //Test application
 
-            Frame frame = new Frame("LogiFrame test application", false, false, false, false);
+            Frame frame = new Frame("LogiFrame test application", false, false, false, true);
             frame.UpdatePriority = UpdatePriority.Alert;
 
 
