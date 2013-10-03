@@ -23,7 +23,8 @@ namespace LogiFrame.Components
         public Container()
             : base()
         {
-            Components.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Components_CollectionChanged);
+            Components.ComponentAdded += Components_ComponentAdded;
+            Components.ComponentRemoved += components_ComponentRemoved;
         }
 
         #endregion
@@ -59,8 +60,8 @@ namespace LogiFrame.Components
         {
             foreach (Component c in Components)
             {
-                c.Changed -= Container_ComponentChanged;
-                c.LocationChanged -= Container_LocationChanged;
+                c.Changed -= Container_Changed;
+                c.LocationChanged -= Container_Changed;
                 c.Dispose();
             }
             Components.Clear();
@@ -70,28 +71,25 @@ namespace LogiFrame.Components
 
         #region Private methods
 
-        private void Components_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void components_ComponentRemoved(object sender, ComponentChangedEventArgs e)
         {
-            if (e == null || (e.NewItems == null && e.OldItems == null))
-                return;
-
             if (Disposed)
                 throw new ObjectDisposedException("Resource was disposed.");
 
-            //Add events
-            if (e.NewItems != null)
-                foreach (object obj in e.NewItems)
-                {
-                    (obj as Component).Changed += new EventHandler(Container_Changed);
-                    (obj as Component).LocationChanged += new EventHandler(Container_Changed);
-                }
-            //Remove events
-            if (e.OldItems != null)
-                foreach (object obj in e.OldItems)
-                {
-                    (obj as Component).Changed -= Container_Changed;
-                    (obj as Component).LocationChanged -= Container_Changed;
-                }
+            e.Component.Changed -= Container_Changed;
+            e.Component.LocationChanged -= Container_Changed;
+
+            //Notify
+            HasChanged = true;
+        }
+
+        private void Components_ComponentAdded(object sender, ComponentChangedEventArgs e)
+        {
+            if (Disposed)
+                throw new ObjectDisposedException("Resource was disposed.");
+
+            e.Component.Changed += new EventHandler(Container_Changed);
+            e.Component.LocationChanged += new EventHandler(Container_Changed);
 
             //Notify
             HasChanged = true;
