@@ -35,6 +35,7 @@ namespace Test
             frame.Components.Add(line);
             frame.Components.Add(l);
 
+            Debug.WriteLine("\n\nApplication initialized\n\n");
             frame.WaitForClose();
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using LogiFrame;
+using System.Diagnostics;
 
 namespace LogiFrame.Components
 {
@@ -42,6 +43,20 @@ namespace LogiFrame.Components
         #endregion
 
         #region Methods
+
+        public void Refresh(bool forceRefresh)
+        {
+            if (Disposed)
+                throw new ObjectDisposedException("Resource was disposed.");
+
+            IsRendering = true;
+            if (forceRefresh)
+                foreach (Component component in Components)
+                    component.HasChanged = true;
+            IsRendering = false;
+
+            base.Refresh(forceRefresh);
+        }
 
         protected override Bytemap Render()
         {

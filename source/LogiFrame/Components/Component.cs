@@ -191,7 +191,7 @@ namespace LogiFrame.Components
         public bool HasChanged
         {
             get { return hasChanged; }
-            protected set
+            set
             {
                 if (Disposed || IsRendering)
                     return;
@@ -210,7 +210,8 @@ namespace LogiFrame.Components
         /// </summary>
         public bool IsRendering
         {
-            get { return isRendering; } 
+            get { return isRendering; }
+            protected set { isRendering = value; }
         }
 
         /// <summary>
