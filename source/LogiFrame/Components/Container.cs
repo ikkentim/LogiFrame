@@ -51,7 +51,7 @@ namespace LogiFrame.Components
             Bytemap result = new Bytemap(Size);
 
             foreach (Component c in Components)
-                result.Merge(c.Bytemap, c.Location);
+                result.Merge(c.Bytemap, c.RenderLocation);
 
             return result;
         }
@@ -71,6 +71,7 @@ namespace LogiFrame.Components
 
         #region Private methods
 
+        //Calbacks
         private void components_ComponentRemoved(object sender, ComponentChangedEventArgs e)
         {
             if (Disposed)
@@ -95,7 +96,6 @@ namespace LogiFrame.Components
             HasChanged = true;
         }
 
-        //Callbacks
         private void Container_Changed(object sender, EventArgs e)
         {
             HasChanged = true;

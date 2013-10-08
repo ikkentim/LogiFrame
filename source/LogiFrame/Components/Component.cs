@@ -13,6 +13,7 @@ namespace LogiFrame.Components
         #region Fields
 
         private Location location = new Location();
+        private Location renderOffset = new Location();
         private Size size = new Size();
         private Bytemap bytemap;
 
@@ -70,7 +71,7 @@ namespace LogiFrame.Components
             set
             {
                 if (value == null)
-                    throw new ArgumentNullException("LogiFrame.Components.Component.Size cannot be set to null.");
+                    throw new ArgumentNullException("LogiFrame.Components.Component.Location cannot be set to null.");
 
                 if (Disposed)
                     throw new ObjectDisposedException("Resource was disposed.");
@@ -88,6 +89,38 @@ namespace LogiFrame.Components
             }
         }
 
+        /// <summary>
+        /// Get the exact LogiFrame.Location this LogiFrame.Components.Component should
+        /// be rendered at in the parrent LogiFrame.Components.Container.
+        /// </summary>
+        public Location RenderLocation
+        {
+            get { return location + renderOffset; }
+        }
+
+        protected Location RenderOffset
+        {
+            get { return renderOffset; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("LogiFrame.Components.Component.RenderOffset cannot be set to null.");
+
+                if (Disposed)
+                    throw new ObjectDisposedException("Resource was disposed.");
+
+                if (renderOffset == value)
+                    return;
+
+                renderOffset.Changed -= location_LocationChanged;
+                value.Changed += location_LocationChanged;
+
+                renderOffset = value;
+
+                if (LocationChanged != null)
+                    LocationChanged(value, EventArgs.Empty);
+            }
+        }
         /// <summary>
         /// The LogiFrame.Size of this LogiFrame.Components.Component.
         /// </summary>
@@ -122,7 +155,6 @@ namespace LogiFrame.Components
             {
 
                 topEffect = value;
-
                 HasChanged = true;
             }
         }
@@ -149,7 +181,6 @@ namespace LogiFrame.Components
             set
             {
                 visible = value;
-
                 HasChanged = true;
             }
         }

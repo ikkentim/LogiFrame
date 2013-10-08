@@ -2,7 +2,7 @@
 using LogiFrame;
 using LogiFrame.Components;
 using System.Diagnostics;
-using System.Windows.Forms;
+
 namespace Test
 {
     static class Program
@@ -28,11 +28,14 @@ namespace Test
             sq.Size= new Size(30, 30);
             sq.Fill = true;
 
+            Label l = new Label();
+            l.Size = new Size(50, 20);
+
             frame.Components.Add(sq);
             frame.Components.Add(line);
+            frame.Components.Add(l);
 
             frame.WaitForClose();
-
         }
 
         static void frame_ButtonDown(object sender, ButtonEventArgs e)
@@ -40,7 +43,8 @@ namespace Test
             if (e.Button == 0)
                 ((Frame)sender).Dispose();
             if (e.Button == 1)
-                ((Frame)sender).Refresh();
+                ((Frame)sender).Refresh(true);
+
             Debug.WriteLine("Button pressed: " + e.Button);
         }
     }
