@@ -44,7 +44,7 @@ namespace LogiFrame.Components
 
         #region Methods
 
-        public void Refresh(bool forceRefresh)
+        public override void Refresh(bool forceRefresh)
         {
             if (Disposed)
                 throw new ObjectDisposedException("Resource was disposed.");
