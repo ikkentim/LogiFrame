@@ -10,10 +10,9 @@ namespace LogiFrame
 
         #region Fields
 
-        private byte[] data;
-        private int width;
-        private int height;
-        private Size size;
+        private int _width;
+        private int _height;
+        private Size _size;
 
         #endregion
 
@@ -59,7 +58,7 @@ namespace LogiFrame
                 for (int x = 0; x < bitmap.Width; x++)
                 {
                     System.Drawing.Color px = bitmap.GetPixel(x, y);
-                    result.data[result.width * y + x] = (byte)(px.R <= maxR && px.G <= maxG && px.B <= maxB && minA <= px.A ? 0xff : 0x00);
+                    result.Data[result._width * y + x] = (byte)(px.R <= maxR && px.G <= maxG && px.B <= maxB && minA <= px.A ? 0xff : 0x00);
                 }
             return result;
         }
@@ -94,10 +93,7 @@ namespace LogiFrame
         /// <summary>
         /// The byte[] array container all the date of the canvas.
         /// </summary>
-        public byte[] Data
-        {
-            get { return data; }
-        }
+        public byte[] Data { get; private set; }
 
         /// <summary>
         /// Whether the non-filled pixels should draw the lower-located
@@ -117,27 +113,27 @@ namespace LogiFrame
         /// </summary>
         public Size Size
         {
-            get { return size; }
+            get { return _size; }
             set
             {
                 if (value == null)
                     throw new ArgumentNullException("LogiFrame.Bytemap.Size cannot be set to null.");
 
-                if (size == null)
+                if (_size == null)
                 {
-                    width = value.Width;
-                    height = value.Height;
-                    data = new byte[width * height];
+                    _width = value.Width;
+                    _height = value.Height;
+                    Data = new byte[_width * _height];
                 }
                 else
                 {
-                    size.Changed -= new EventHandler(size_SizeChanged);
+                    _size.Changed -= size_SizeChanged;
                 }
 
-                size = value;
-                size.Changed += new EventHandler(size_SizeChanged);
+                _size = value;
+                _size.Changed += size_SizeChanged;
 
-                resize();
+                Resize();
             }
         }
 
@@ -152,7 +148,7 @@ namespace LogiFrame
         public Bytemap Clone()
         {
             Bytemap result = new Bytemap(Size);
-            Array.Copy(data, result.data, data.Length);
+            Array.Copy(Data, result.Data, Data.Length);
 
             return result;
         }
@@ -175,10 +171,10 @@ namespace LogiFrame
         /// <param name="fill">Whether the pixel should be filled.</param>
         public void SetPixel(int x, int y, bool fill)
         {
-            if (x < 0 || y < 0 || x >= width || y >= height)
+            if (x < 0 || y < 0 || x >= _width || y >= _height)
                 throw new ArgumentOutOfRangeException("The given position is not within the boundaries of the Bytemap.");
 
-            data[x + y * width] = fill ? (byte)0xff : (byte)0x00;
+            Data[x + y * _width] = fill ? (byte)0xff : (byte)0x00;
         }
 
         /// <summary>
@@ -199,10 +195,10 @@ namespace LogiFrame
         /// <returns>Whether the pixel is filled</returns>
         public bool GetPixel(int x, int y)
         {
-            if (x < 0 || y < 0 || x >= width || y >= height)
+            if (x < 0 || y < 0 || x >= _width || y >= _height)
                 throw new ArgumentOutOfRangeException("The given position is not within the boundaries of the Bytemap.");
 
-            return data[x + y * width] == (byte)0xff;
+            return Data[x + y * _width] == (byte)0xff;
         }
 
         /// <summary>
@@ -219,14 +215,14 @@ namespace LogiFrame
                 throw new ArgumentNullException("location cannot be null.");
 
             //Out of range test
-            if (location.X + bytemap.width < 0 ||
-                location.Y + bytemap.height < 0 ||
-                location.X >= width ||
-                location.Y >= height)
+            if (location.X + bytemap._width < 0 ||
+                location.Y + bytemap._height < 0 ||
+                location.X >= _width ||
+                location.Y >= _height)
                 return;
 
-            for(int x=Math.Max(location.X, 0);x<Math.Min(width,location.X+bytemap.width);x++)
-                for (int y = Math.Max(location.Y, 0); y < Math.Min(height, location.Y + bytemap.height); y++)
+            for(int x=Math.Max(location.X, 0);x<Math.Min(_width,location.X+bytemap._width);x++)
+                for (int y = Math.Max(location.Y, 0); y < Math.Min(_height, location.Y + bytemap._height); y++)
                 {
                         int sx = x - location.X;
                         int sy = y - location.Y;
@@ -240,13 +236,13 @@ namespace LogiFrame
                             if (x > 0 && (sx == 0 || !bytemap.GetPixel(sx - 1, sy)))
                                 SetPixel(x - 1, y, false);
 
-                            if (x < width-1 && (sx == bytemap.width-1 || !bytemap.GetPixel(sx + 1, sy)))
+                            if (x < _width-1 && (sx == bytemap._width-1 || !bytemap.GetPixel(sx + 1, sy)))
                                 SetPixel(x + 1, y, false);
 
                             if (y > 0 && (sy == 0 || !bytemap.GetPixel(sx, sy - 1)))
                                 SetPixel(x, y - 1, false);
 
-                            if (y < width - 1 && (sy == bytemap.height - 1 || !bytemap.GetPixel(sx, sy + 1)))
+                            if (y < _width - 1 && (sy == bytemap._height - 1 || !bytemap.GetPixel(sx, sy + 1)))
                                 SetPixel(x, y + 1, false);
                         }
                     }
@@ -260,18 +256,18 @@ namespace LogiFrame
         /// <summary>
         /// Converts the specified LogiFrame.Bytemap instance to a System.Drawing.Bitmap instance.
         /// </summary>
-        /// <param name="loc">The LogiFrame.Bytemap to be converted.</param>
+        /// <param name="bytemap">The LogiFrame.Bytemap to be converted.</param>
         /// <returns>The System.Drawing.Bitmap that results from the conversion.</returns>
         public static implicit operator System.Drawing.Bitmap(Bytemap bytemap)
         {
             if (bytemap == null)
                 return null;
 
-            System.Drawing.Bitmap result = new System.Drawing.Bitmap(bytemap.width, bytemap.height);
+            System.Drawing.Bitmap result = new System.Drawing.Bitmap(bytemap._width, bytemap._height);
             System.Drawing.Graphics.FromImage(result).Clear(System.Drawing.Color.White);
-            for (int y = 0; y < bytemap.height; y++)
-                for (int x = 0; x < bytemap.width; x++)
-                    if (bytemap.Data[x + y * bytemap.width] == 255)
+            for (int y = 0; y < bytemap._height; y++)
+                for (int x = 0; x < bytemap._width; x++)
+                    if (bytemap.Data[x + y * bytemap._width] == 255)
                         result.SetPixel(x, y, System.Drawing.Color.Black);
 
             return result;
@@ -281,29 +277,29 @@ namespace LogiFrame
 
         #region Private methods
 
-        private void resize()
+        private void Resize()
         {
-            if (width != Size.Width || height != Size.Height)
+            if (_width != Size.Width || _height != Size.Height)
             {
                 byte[] newData = new byte[Size.Width * Size.Height];
 
-                for (int y = 0; y < Math.Min(Size.Height, height); y++)
-                    for (int x = 0; x < Math.Min(Size.Width, width); x++)
+                for (int y = 0; y < Math.Min(Size.Height, _height); y++)
+                    for (int x = 0; x < Math.Min(Size.Width, _width); x++)
                     {
-                        newData[x + y * Size.Width] = Data[x + y * width];
+                        newData[x + y * Size.Width] = Data[x + y * _width];
                     }
 
 
-                data = newData;
+                Data = newData;
 
-                width = Size.Width;
-                height = Size.Height;
+                _width = Size.Width;
+                _height = Size.Height;
             }
         }
 
         private void size_SizeChanged(object sender, EventArgs e)
         {
-            resize();
+            Resize();
         }
 
         #endregion

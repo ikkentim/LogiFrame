@@ -11,8 +11,8 @@ namespace LogiFrame
 
         #region Fields
 
-        private int x;
-        private int y;
+        private int _x;
+        private int _y;
 
         #endregion
 
@@ -24,8 +24,8 @@ namespace LogiFrame
         /// <param name="parent">An instance of LogiFrame.Location to copy the coordinates from.</param>
         public Location(Location parent)
         {
-            x = parent.X;
-            y = parent.Y;
+            _x = parent.X;
+            _y = parent.Y;
         }
 
         /// <summary>
@@ -35,8 +35,8 @@ namespace LogiFrame
         /// <param name="y">The initial x-coordinate.</param>
         public Location(int x, int y)
         {
-            this.x = x;
-            this.y = y;
+            _x = x;
+            _y = y;
         }
 
         /// <summary>
@@ -65,8 +65,8 @@ namespace LogiFrame
         /// </summary>
         public int X
         {
-            get { return x; }
-            set { Set(value, y); }
+            get { return _x; }
+            set { Set(value, _y); }
         }
 
         /// <summary>
@@ -74,8 +74,8 @@ namespace LogiFrame
         /// </summary>
         public int Y
         {
-            get { return y; }
-            set { Set(x, value); }
+            get { return _y; }
+            set { Set(_x, value); }
         }
 
         #endregion
@@ -90,8 +90,8 @@ namespace LogiFrame
         public void Add(int x, int y)
         {
             bool changed = x != 0 || y != 0;
-            this.x += x;
-            this.y += y;
+            _x += x;
+            _y += y;
 
             if (changed && Changed != null)
                 Changed(this, EventArgs.Empty);
@@ -104,8 +104,8 @@ namespace LogiFrame
         public void Add(Location other)
         {
             bool changed = other.X != 0 || other.Y != 0;
-            this.x += other.X;
-            this.y += other.Y;
+            _x += other.X;
+            _y += other.Y;
 
             if (changed && Changed != null)
                 Changed(this, EventArgs.Empty);
@@ -118,9 +118,9 @@ namespace LogiFrame
         /// <param name="y">The new y-coordinate value.</param>
         public void Set(int x, int y)
         {
-            bool changed = this.x != x || this.y != y;
-            this.x = x;
-            this.y = y;
+            bool changed = _x != x || _y != y;
+            _x = x;
+            _y = y;
 
             if (changed && Changed != null)
                 Changed(this, EventArgs.Empty);
@@ -132,9 +132,9 @@ namespace LogiFrame
         /// <param name="other">An instance of LogiFrame.Location to copy the coordinates from.</param>
         public void Set(Location other)
         {
-            bool changed = this.x != other.x || this.y != other.y;
-            this.x = other.X;
-            this.y = other.Y;
+            bool changed = _x != other._x || _y != other._y;
+            _x = other.X;
+            _y = other.Y;
 
             if (changed && Changed != null)
                 Changed(this, EventArgs.Empty);
@@ -204,7 +204,7 @@ namespace LogiFrame
         /// <summary>
         /// Converts the specified System.Drawing.Point struct to a LogiFrame.Location instance.
         /// </summary>
-        /// <param name="loc">The System.Drawing.Point to be converted.</param>
+        /// <param name="point">The System.Drawing.Point to be converted.</param>
         /// <returns>The LogiFrame.Location that results from the conversion.</returns>
         public static implicit operator Location(System.Drawing.Point point)
         {

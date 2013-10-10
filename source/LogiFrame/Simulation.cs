@@ -16,7 +16,7 @@ namespace LogiFrame
 
             frame.Pushing += frame_Pushing;
             frame.FrameClosed += frame_FrameClosed;
-            this.FormClosing += Simulation_FormClosing;
+            FormClosing += Simulation_FormClosing;
         }
 
         public static void Start(Frame frame)
@@ -32,16 +32,16 @@ namespace LogiFrame
 
         void frame_Pushing(object sender, PushingEventArgs e)
         {
-            this.Invoke((MethodInvoker) delegate
+            Invoke((MethodInvoker) delegate
             {
-                this.Text = frame.ApplicationName + " (" + frame.UpdatePriority.ToString() + ")";
+                Text = frame.ApplicationName + " (" + frame.UpdatePriority.ToString() + ")";
                 displayPictureBox.Image = e.Frame;
             });
         }
 
         void frame_FrameClosed(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         #region Buttons

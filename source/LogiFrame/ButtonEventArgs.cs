@@ -1,21 +1,24 @@
 ﻿using System;
 
-/// <summary>
-/// Provides data for the LogiFrame.Frame.ButtonDown and LogiFrame.Frame.ButtonUp events.
-/// </summary>
-public class ButtonEventArgs : EventArgs
+namespace LogiFrame
 {
     /// <summary>
-    /// Represents the 0-based number of the button being pressed.
+    /// Provides data for the LogiFrame.Frame.ButtonDown and LogiFrame.Frame.ButtonUp events.
     /// </summary>
-    public int Button { get; set; }
-
-    /// <summary>
-    /// Initializes a new instance of the LogiFrame.ButtonEventArgs class.
-    /// </summary>
-    /// <param name="button">0-based number of the button being pressed.</param>
-    public ButtonEventArgs(int button)
+    public class ButtonEventArgs : EventArgs
     {
-        Button = button;
+        /// <summary>
+        /// Represents the 0-based number of the button being pressed.
+        /// </summary>
+        public int Button { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the LogiFrame.ButtonEventArgs class.
+        /// </summary>
+        /// <param name="button">0-based number of the button being pressed.</param>
+        public ButtonEventArgs(int button)
+        {
+            Button = button;
+        }
     }
 }

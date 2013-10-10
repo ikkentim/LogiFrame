@@ -30,6 +30,9 @@ namespace Test
 
             Label l = new Label();
             l.Size = new Size(50, 20);
+            l.Font = new System.Drawing.Font("Arial", 7);
+            l.Text = "I am a test";
+            l.AutoSize = true;
 
             frame.Components.Add(sq);
             frame.Components.Add(line);

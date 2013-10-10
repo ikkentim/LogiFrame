@@ -7,12 +7,12 @@ namespace LogiFrame.Components
     ///  Represents a dynamic collection of LogiFrame.Components.Component.
     /// </summary>
     /// <typeparam name="T">An instance of LogiFrame.Components.Component</typeparam>
-    public class ComponentCollection<T> : ObservableCollection<T>
+    public sealed class ComponentCollection<T> : ObservableCollection<T>
     where T : Component
     {
         public ComponentCollection()
         {
-            this.CollectionChanged += ComponentCollection_CollectionChanged;
+            CollectionChanged += ComponentCollection_CollectionChanged;
         }
 
         /// <summary>

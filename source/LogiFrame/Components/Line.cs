@@ -11,8 +11,8 @@ namespace LogiFrame.Components
 
         #region Fields
 
-        private Location start = new Location();
-        private Location end = new Location();
+        private readonly Location _start = new Location();
+        private readonly Location _end = new Location();
 
         #endregion
 
@@ -24,8 +24,8 @@ namespace LogiFrame.Components
         public Line()
             : base()
         {
-            start.Changed += start_Changed;
-            end.Changed += end_Changed;
+            _start.Changed += start_Changed;
+            _end.Changed += end_Changed;
         }
 
         #endregion
@@ -33,30 +33,14 @@ namespace LogiFrame.Components
         #region Properties
 
         /// <summary>
-        /// Read-only location of the current LogiFrame.Components.Line.
-        /// </summary>
-        public override Location Location
-        {
-            get { return base.Location; }
-        }
-
-        /// <summary>
-        /// Read-only size of the current LogiFrame.Components.Line.
-        /// </summary>
-        public override Size Size
-        {
-            get { return base.Size; }
-        }
-
-        /// <summary>
         /// Location in the parent LogiFrame.Components.Container where the line should start at.
         /// </summary>
         public Location Start
         {
-            get { return start; }
+            get { return _start; }
             set
             {
-                start.Set(value);
+                _start.Set(value);
                 base.Location = new Location(Math.Min(Start.X, End.X), Math.Min(Start.Y, End.Y));
                 base.Size = new Size(Math.Abs(value.X - End.X) + 1, Math.Abs(value.Y - End.Y) + 1);
                 HasChanged = true;
@@ -69,10 +53,10 @@ namespace LogiFrame.Components
         public Location End
         {
             get
-            { return end; }
+            { return _end; }
             set
             {
-                end.Set(value);
+                _end.Set(value);
                 base.Location = new Location(Math.Min(Start.X, End.X), Math.Min(Start.Y, End.Y));
                 base.Size = new Size(Math.Abs(value.X - Start.X) + 1, Math.Abs(value.Y - Start.Y) + 1);
                 HasChanged = true;
@@ -99,12 +83,12 @@ namespace LogiFrame.Components
 
         private void end_Changed(object sender, EventArgs e)
         {
-            End = end;
+            End = _end;
         }
 
         private void start_Changed(object sender, EventArgs e)
         {
-            Start = start;
+            Start = _start;
         }
 
         #endregion

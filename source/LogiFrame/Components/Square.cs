@@ -7,7 +7,7 @@ namespace LogiFrame.Components
     /// </summary>
     public class Square : Component
     {
-        private bool fill;
+        private bool _fill;
 
         /// <summary>
         /// Whether the LogiFrame.Components.Square should be filled.
@@ -16,13 +16,13 @@ namespace LogiFrame.Components
         {
             get
             {
-                return fill;
+                return _fill;
             }
             set
             {
-                bool change = fill != value;
+                bool change = _fill != value;
 
-                fill = value;
+                _fill = value;
 
                 if (change)
                     HasChanged = true;

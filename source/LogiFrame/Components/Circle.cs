@@ -8,18 +8,18 @@ namespace LogiFrame.Components
     /// </summary>
     public class Circle : Component
     {
-        private bool fill;
+        private bool _fill;
 
         /// <summary>
         /// Whether the LogiFrame.Components.Square should be filled.
         /// </summary>
         public bool Fill
         {
-            get { return fill; }
+            get { return _fill; }
             set
             {
-                bool change = fill != value;
-                fill = value;
+                bool change = _fill != value;
+                _fill = value;
 
                 if (change)
                     HasChanged = true;

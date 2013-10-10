@@ -110,8 +110,8 @@ namespace LogiFrame
         public void Add(Size other)
         {
             bool changed = other.Width != 0 || other.Height != 0;
-            this.width += other.Width;
-            this.height += other.Height;
+            width += other.Width;
+            height += other.Height;
 
             if (changed && Changed != null)
                 Changed(this, EventArgs.Empty);
@@ -141,9 +141,9 @@ namespace LogiFrame
         /// <param name="other">An instance of LogiFrame.Size to copy the dimensions from.</param>
         public void Set(Size other)
         {
-            bool changed = this.Width != other.Width || this.Height != other.Height;
-            this.width = other.Width;
-            this.height = other.Height;
+            bool changed = Width != other.Width || Height != other.Height;
+            width = other.Width;
+            height = other.Height;
 
             if (changed && Changed != null)
                 Changed(this, EventArgs.Empty);
@@ -169,8 +169,8 @@ namespace LogiFrame
         /// <summary>
         /// Translates a LogiFrame.Size by the  of a given LogiFrame.Size.
         /// </summary>
-        /// <param name="loc1">The LogiFrame.Size to translate.</param>
-        /// <param name="loc2">
+        /// <param name="size1">The LogiFrame.Size to translate.</param>
+        /// <param name="size2">
         ///     A LogiFrame.Size that specifies the pair of numbers to subtract from
         ///     the coordinates of loc1.
         /// </param>

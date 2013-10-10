@@ -13,17 +13,11 @@ namespace LogiFrame
 
         #region Fields
 
-        private LgLcd.lgLcdConnectContext connection = new LgLcd.lgLcdConnectContext();
-        private LgLcd.lgLcdOpenContext openContext = new LgLcd.lgLcdOpenContext();
-        private LgLcd.lgLcdBitmap160x43x1 bitmap = new LgLcd.lgLcdBitmap160x43x1();
+        private LgLcd.lgLcdConnectContext _connection = new LgLcd.lgLcdConnectContext();
+        private LgLcd.lgLcdOpenContext _openContext = new LgLcd.lgLcdOpenContext();
+        private LgLcd.lgLcdBitmap160x43x1 _bitmap = new LgLcd.lgLcdBitmap160x43x1();
 
-        private string applicationName;
-        private bool isAutostartable;
-        private bool isPersistent;
-        private bool allowConfiguration;
-        private bool simulate;
-
-        private int buttonState = 0;
+        private int _buttonState = 0;
 
         #endregion
 
@@ -86,15 +80,15 @@ namespace LogiFrame
                 throw new DllNotFoundException("Could not find LgLcd.dll.");
 
             //Initialize connection and store properties
-            connection.appFriendlyName = this.applicationName = applicationName;
-            connection.isAutostartable = this.isAutostartable = isAutostartable;
-            connection.isPersistent = this.isPersistent = isPersistent;
-            this.simulate = simulate;
+            _connection.appFriendlyName = ApplicationName = applicationName;
+            _connection.isAutostartable = IsAutostartable = isAutostartable;
+            _connection.isPersistent = IsPersistent = isPersistent;
+            Simulate = simulate;
 
-            if(this.allowConfiguration = allowConfiguration)
-                connection.onConfigure.configCallback = lgLcd_onConfigureCB;
+            if(AllowConfiguration = allowConfiguration)
+                _connection.onConfigure.configCallback = lgLcd_onConfigureCB;
 
-            connection.connection = LgLcd.LGLCD_INVALID_CONNECTION;
+            _connection.connection = LgLcd.LGLCD_INVALID_CONNECTION;
 
             //Set default updatepriority
             UpdatePriority = LogiFrame.UpdatePriority.Normal;
@@ -109,22 +103,22 @@ namespace LogiFrame
 
             //Store connection
             LgLcd.lgLcdInit();
-            int connectionResponse = LgLcd.lgLcdConnect(ref connection);
+            int connectionResponse = LgLcd.lgLcdConnect(ref _connection);
 
             //Check if a connection is set or throw an Exception
             if (connectionResponse != Win32Error.ERROR_SUCCESS && !simulate)
                 throw new ConnectionException(Win32Error.ToString(connectionResponse));
 
             //Open connection
-            openContext.connection = connection.connection;
-            openContext.onSoftbuttonsChanged.softbuttonsChangedCallback = lgLcd_onSoftButtonsCB;
-            openContext.index = 0;
+            _openContext.connection = _connection.connection;
+            _openContext.onSoftbuttonsChanged.softbuttonsChangedCallback = lgLcd_onSoftButtonsCB;
+            _openContext.index = 0;
 
-            LgLcd.lgLcdOpen(ref openContext);
+            LgLcd.lgLcdOpen(ref _openContext);
 
             //Store bitmap format
-            bitmap.hdr = new LgLcd.lgLcdBitmapHeader();
-            bitmap.hdr.Format = LgLcd.LGLCD_BMP_FORMAT_160x43x1;
+            _bitmap.hdr = new LgLcd.lgLcdBitmapHeader();
+            _bitmap.hdr.Format = LgLcd.LGLCD_BMP_FORMAT_160x43x1;
 
             //Send empty bytemap
             updateScreen(null);
@@ -196,43 +190,28 @@ namespace LogiFrame
         /// A string that contains the 'friendly name' of the application. 
         /// This name is presented to the user whenever a list of applications is shown.
         /// </summary>
-        public string ApplicationName 
-        { 
-            get { return applicationName; } 
-        }
+        public string ApplicationName { get; private set; }
 
         /// <summary>
         /// Whether application can be started by LCDMon or not.
         /// </summary>
-        public bool IsAutostartable 
-        { 
-            get { return isAutostartable; } 
-        }
+        public bool IsAutostartable { get; private set; }
 
         /// <summary>
         /// Whether connection is temporary or whether it is
         /// a regular connection that should be added to the list.
         /// </summary>
-        public bool IsPersistent 
-        { 
-            get { return isPersistent; }
-        }
+        public bool IsPersistent { get; private set; }
 
         /// <summary>
         /// Whether the 'configure' option is being shown in LCDmon.
         /// </summary>
-        public bool AllowConfiguration 
-        { 
-            get { return allowConfiguration; } 
-        }
+        public bool AllowConfiguration { get; private set; }
 
         /// <summary>
         /// Whether LogiFrame.Frame is simulating the display.
         /// </summary>
-        public bool Simulate 
-        { 
-            get { return simulate; } 
-        }
+        public bool Simulate { get; private set; }
 
         /// <summary>
         /// The priority of the forthcoming LCD updates.
@@ -259,8 +238,8 @@ namespace LogiFrame
                 //As a precausion disposing resources from another thread
                 new Thread(() =>
                 {
-                    LgLcd.lgLcdClose(openContext.device);
-                    LgLcd.lgLcdDisconnect(connection.connection);
+                    LgLcd.lgLcdClose(_openContext.device);
+                    LgLcd.lgLcdDisconnect(_connection.connection);
                     LgLcd.lgLcdDeInit();
 
                 }).Start();
@@ -283,10 +262,10 @@ namespace LogiFrame
         {
             int power = (int)Math.Pow(2, button);
 
-            if ((buttonState & power) == power)
+            if ((_buttonState & power) == power)
                 return;
 
-            buttonState = power | buttonState;
+            _buttonState = power | _buttonState;
 
             if (ButtonDown != null)
                 ButtonDown(this, new ButtonEventArgs(button));
@@ -299,10 +278,10 @@ namespace LogiFrame
         {
             int power = (int)Math.Pow(2, button);
 
-            if ((buttonState & power) == 0)
+            if ((_buttonState & power) == 0)
                 return;
 
-            buttonState = buttonState ^ power;
+            _buttonState = _buttonState ^ power;
 
             if (ButtonUp != null)
                 ButtonUp(this, new ButtonEventArgs(button));
@@ -327,8 +306,8 @@ namespace LogiFrame
 
             if (push)
             {
-                bitmap.pixels = bytemap == null ? new byte[LgLcd.LGLCD_BMP_WIDTH * LgLcd.LGLCD_BMP_HEIGHT] : bytemap.Data;
-                LgLcd.lgLcdUpdateBitmap(openContext.device, ref bitmap, (uint)UpdatePriority);
+                _bitmap.pixels = bytemap == null ? new byte[LgLcd.LGLCD_BMP_WIDTH * LgLcd.LGLCD_BMP_HEIGHT] : bytemap.Data;
+                LgLcd.lgLcdUpdateBitmap(_openContext.device, ref _bitmap, (uint)UpdatePriority);
             }
         }
 
@@ -336,12 +315,12 @@ namespace LogiFrame
         private int lgLcd_onSoftButtonsCB(int device, int dwButtons, IntPtr pContext)
         {
             for (int i = 0, b = 1; i < 4; i++, b *= 2)
-                if (ButtonDown != null && (buttonState & b) == 0 && (dwButtons & b) == b)
+                if (ButtonDown != null && (_buttonState & b) == 0 && (dwButtons & b) == b)
                     ButtonDown(this, new ButtonEventArgs(i));
-                else if (ButtonUp != null && (buttonState & b) == b && (dwButtons & b) == 0)
+                else if (ButtonUp != null && (_buttonState & b) == b && (dwButtons & b) == 0)
                     ButtonUp(this, new ButtonEventArgs(i));
 
-            buttonState = dwButtons;
+            _buttonState = dwButtons;
             return 1;
         }
 

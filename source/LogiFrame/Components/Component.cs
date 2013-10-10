@@ -12,29 +12,28 @@ namespace LogiFrame.Components
 
         #region Fields
 
-        private Location location = new Location();
-        private Location renderOffset = new Location();
-        private Size size = new Size();
-        private Bytemap bytemap;
+        private Location _location = new Location();
+        private Location _renderOffset = new Location();
+        private Size _size = new Size();
+        private Bytemap _bytemap;
 
-        private bool topEffect;
-        private bool transparent;
-        private bool visible = true;
-        private bool hasChanged = true;
-        private bool isRendering;
-        private bool disposed;
+        private bool _topEffect;
+        private bool _transparent;
+        private bool _visible = true;
+        private bool _hasChanged = true;
+        private bool _isRendering;
 
         #endregion
 
         #region Constructor/Deconstructor
 
         /// <summary>
-        /// Initializes a new instance of the LogiFrame.Components.Component class.
+        /// Initializes a new instance of the abstract LogiFrame.Components.Component class.
         /// </summary>
-        public Component()
+        internal Component()
         {
-            location.Changed += new EventHandler(location_LocationChanged);
-            size.Changed += new EventHandler(size_SizeChanged);
+            _location.Changed += new EventHandler(location_LocationChanged);
+            _size.Changed += new EventHandler(size_SizeChanged);
         }
 
         /// <summary>
@@ -48,6 +47,7 @@ namespace LogiFrame.Components
         #endregion
 
         #region Events
+
         /// <summary>
         /// Occurs when a property has changed or the LogiFrame.Components.Component needs to be refreshed.
         /// </summary>
@@ -57,6 +57,7 @@ namespace LogiFrame.Components
         /// Occurs when the location of the LogiFrame.Components.Component has changed.
         /// </summary>
         public event EventHandler LocationChanged;
+
         #endregion
 
         #region Properties
@@ -67,7 +68,7 @@ namespace LogiFrame.Components
         /// </summary>
         public virtual Location Location
         {
-            get { return location; }
+            get { return _location; }
             set
             {
                 if (value == null)
@@ -76,15 +77,15 @@ namespace LogiFrame.Components
                 if (Disposed)
                     throw new ObjectDisposedException("Resource was disposed.");
 
-                if (location == value)
+                if (_location == value)
                     return;
 
-                location.Changed -= location_LocationChanged;
+                _location.Changed -= location_LocationChanged;
                 value.Changed += location_LocationChanged;
 
-                location = value;
+                _location = value;
 
-                if(LocationChanged != null)
+                if (LocationChanged != null)
                     LocationChanged(value, EventArgs.Empty);
             }
         }
@@ -95,12 +96,12 @@ namespace LogiFrame.Components
         /// </summary>
         public Location RenderLocation
         {
-            get { return location + renderOffset; }
+            get { return _location + _renderOffset; }
         }
 
         protected Location RenderOffset
         {
-            get { return renderOffset; }
+            get { return _renderOffset; }
             set
             {
                 if (value == null)
@@ -109,24 +110,25 @@ namespace LogiFrame.Components
                 if (Disposed)
                     throw new ObjectDisposedException("Resource was disposed.");
 
-                if (renderOffset == value)
+                if (_renderOffset == value)
                     return;
 
-                renderOffset.Changed -= location_LocationChanged;
+                _renderOffset.Changed -= location_LocationChanged;
                 value.Changed += location_LocationChanged;
 
-                renderOffset = value;
+                _renderOffset = value;
 
                 if (LocationChanged != null)
                     LocationChanged(value, EventArgs.Empty);
             }
         }
+
         /// <summary>
         /// The LogiFrame.Size of this LogiFrame.Components.Component.
         /// </summary>
         public virtual Size Size
         {
-            get { return size; }
+            get { return _size; }
             set
             {
                 if (value == null)
@@ -135,13 +137,13 @@ namespace LogiFrame.Components
                 if (Disposed)
                     throw new ObjectDisposedException("Resource was disposed.");
 
-                if (size == value)
+                if (_size == value)
                     return;
 
-                size.Changed -= size_SizeChanged;
+                _size.Changed -= size_SizeChanged;
                 value.Changed += size_SizeChanged;
 
-                size = value;
+                _size = value;
             }
         }
 
@@ -150,11 +152,11 @@ namespace LogiFrame.Components
         /// </summary>
         public bool TopEffect
         {
-            get { return topEffect; }
+            get { return _topEffect; }
             set
             {
 
-                topEffect = value;
+                _topEffect = value;
                 HasChanged = true;
             }
         }
@@ -164,10 +166,10 @@ namespace LogiFrame.Components
         /// </summary>
         public bool Transparent
         {
-            get { return transparent; }
+            get { return _transparent; }
             set
             {
-                transparent = value;
+                _transparent = value;
                 HasChanged = true;
             }
         }
@@ -177,10 +179,10 @@ namespace LogiFrame.Components
         /// </summary>
         public bool Visible
         {
-            get { return visible; }
+            get { return _visible; }
             set
             {
-                visible = value;
+                _visible = value;
                 HasChanged = true;
             }
         }
@@ -190,17 +192,17 @@ namespace LogiFrame.Components
         /// </summary>
         public bool HasChanged
         {
-            get { return hasChanged; }
+            get { return _hasChanged; }
             set
             {
                 if (Disposed || IsRendering)
                     return;
 
-                bool notify = !hasChanged;
+                bool notify = value != _hasChanged;
 
-                hasChanged = true;
+                _hasChanged = value;
 
-                if (notify = Changed != null)
+                if (notify && Changed != null)
                     Changed(this, EventArgs.Empty);
             }
         }
@@ -210,8 +212,8 @@ namespace LogiFrame.Components
         /// </summary>
         public bool IsRendering
         {
-            get { return isRendering; }
-            protected set { isRendering = value; }
+            get { return _isRendering; }
+            protected set { _isRendering = value; }
         }
 
         /// <summary>
@@ -222,10 +224,7 @@ namespace LogiFrame.Components
         /// <summary>
         /// Whether this LogiFrame.Components.Component has been disposed.
         /// </summary>
-        public bool Disposed
-        {
-            get { return disposed; }
-        }
+        public bool Disposed { get; private set; }
 
         /// <summary>
         /// Gets the rendered LogiFrame.Bytemap of the current LogiFrame.Components.Component.
@@ -234,12 +233,12 @@ namespace LogiFrame.Components
         {
             get
             {
-                if (hasChanged)
-                {
-                    Refresh(false);
-                    hasChanged = false;
-                }
-                return Visible ? bytemap : Bytemap.Empty;
+                if (!_hasChanged)
+                    return Visible ? _bytemap : Bytemap.Empty;
+
+                Refresh(false);
+                _hasChanged = false;
+                return Visible ? _bytemap : Bytemap.Empty;
             }
         }
 
@@ -256,15 +255,18 @@ namespace LogiFrame.Components
             if (Disposed)
                 throw new ObjectDisposedException("Resource was disposed.");
 
-            if (forceRefresh || HasChanged)
-            {
-                Debug.WriteLine("[DEBUG] Rendering " + ToString() + " at " + Location + ", IsRendering: " + IsRendering.ToString());
-                isRendering = true;
-                bytemap = Render();
-                bytemap.Transparent = Transparent;
-                bytemap.TopEffect = TopEffect;
-                isRendering = false;
-            }
+            if (!forceRefresh && !HasChanged)
+                return;
+
+            Debug.WriteLine("[DEBUG] Rendering " + ToString() + " at " + Location + ", IsRendering: " +
+                            IsRendering.ToString());
+
+            _isRendering = true;
+            _bytemap = Render();
+            _bytemap.Transparent = Transparent;
+            _bytemap.TopEffect = TopEffect;
+            _isRendering = false;
+
         }
 
         /// <summary>
@@ -280,12 +282,11 @@ namespace LogiFrame.Components
         /// </summary>
         public void Dispose()
         {
-            if (!disposed)
-            {
-                DisposeComponent();
+            if (Disposed)
+                return;
 
-                disposed = true;
-            }
+            DisposeComponent();
+            Disposed = true;
         }
 
         /// <summary>
@@ -305,6 +306,7 @@ namespace LogiFrame.Components
         #endregion
 
         #region Private methods
+
         //Callbacks
         private void size_SizeChanged(object sender, EventArgs e)
         {
@@ -316,6 +318,7 @@ namespace LogiFrame.Components
             if (!Disposed && LocationChanged != null)
                 LocationChanged(sender, e);
         }
+
         #endregion
 
     }

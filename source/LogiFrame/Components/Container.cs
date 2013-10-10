@@ -12,7 +12,7 @@ namespace LogiFrame.Components
 
         #region Fields
 
-        private ComponentCollection<Component> components = new ComponentCollection<Component>();
+        private readonly ComponentCollection<Component> _components = new ComponentCollection<Component>();
 
         #endregion
 
@@ -37,7 +37,7 @@ namespace LogiFrame.Components
         /// </summary>
         public ComponentCollection<Component> Components
         {
-            get { return components; }
+            get { return _components; }
         }
 
         #endregion
@@ -66,7 +66,10 @@ namespace LogiFrame.Components
             Bytemap result = new Bytemap(Size);
 
             foreach (Component c in Components)
-                result.Merge(c.Bytemap, c.RenderLocation);
+            {
+                Bytemap bytemap = c.Bytemap;
+                result.Merge(bytemap, c.RenderLocation);
+            }
 
             return result;
         }
