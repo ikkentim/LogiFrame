@@ -20,7 +20,7 @@ namespace LogiFrame.Components
         private bool _topEffect;
         private bool _transparent;
         private bool _visible = true;
-        private bool _hasChanged = true;
+        private bool _hasChanged = false;
         private bool _isRendering;
 
         #endregion
@@ -198,7 +198,7 @@ namespace LogiFrame.Components
                 if (Disposed || IsRendering)
                     return;
 
-                bool notify = value != _hasChanged;
+                bool notify = !_hasChanged;
 
                 _hasChanged = value;
 

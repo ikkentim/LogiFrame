@@ -12,7 +12,7 @@ namespace LogiFrame.Components
 
         #region Fields
 
-        private readonly ComponentCollection<Component> _components = new ComponentCollection<Component>();
+        private ComponentCollection<Component> _components = new ComponentCollection<Component>();
 
         #endregion
 
@@ -22,11 +22,11 @@ namespace LogiFrame.Components
         /// Initializes a new instance of the LogiFrame.Components.Container class.
         /// </summary>
         public Container()
-            : base()
         {
-            Components.ComponentAdded += Components_ComponentAdded;
-            Components.ComponentRemoved += components_ComponentRemoved;
+            _components.ComponentAdded += components_ComponentAdded;
+            _components.ComponentRemoved += components_ComponentRemoved;
         }
+
 
         #endregion
 
@@ -102,7 +102,7 @@ namespace LogiFrame.Components
             HasChanged = true;
         }
 
-        private void Components_ComponentAdded(object sender, ComponentChangedEventArgs e)
+        private void components_ComponentAdded(object sender, ComponentChangedEventArgs e)
         {
             if (Disposed)
                 throw new ObjectDisposedException("Resource was disposed.");

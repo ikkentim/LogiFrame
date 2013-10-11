@@ -8,7 +8,7 @@ namespace LogiFrame
     /// <summary>
     /// Represents the framework.
     /// </summary>
-    public class Frame : Container
+    public sealed class Frame : Container
     {
 
         #region Fields
@@ -121,7 +121,9 @@ namespace LogiFrame
             _bitmap.hdr.Format = LgLcd.LGLCD_BMP_FORMAT_160x43x1;
 
             //Send empty bytemap
-            updateScreen(null);
+            UpdateScreen(null);
+
+
         }
 
         /// <summary>
@@ -291,7 +293,7 @@ namespace LogiFrame
 
         #region Private methods
 
-        private void updateScreen(Bytemap bytemap)
+        private void UpdateScreen(Bytemap bytemap)
         {
             bool push = true;
 
@@ -339,7 +341,7 @@ namespace LogiFrame
             if (Size.Width != LgLcd.LGLCD_BMP_WIDTH || Size.Height != LgLcd.LGLCD_BMP_HEIGHT)
                 throw new InvalidOperationException("The size of the LogiFrame.Frame container may not be changed.");
 
-            updateScreen((sender as Component).Bytemap);
+            UpdateScreen((sender as Component).Bytemap);
         }
 
         #endregion

@@ -6,13 +6,14 @@ namespace LogiFrame
 {
     internal partial class Simulation : Form
     {
-        private Frame frame;
+        private Frame _frame;
+        private int _buttonsDown;
 
         public Simulation(Frame frame)
         {
             InitializeComponent();
 
-            this.frame = frame;
+            this._frame = frame;
 
             frame.Pushing += frame_Pushing;
             frame.FrameClosed += frame_FrameClosed;
@@ -26,15 +27,15 @@ namespace LogiFrame
 
         void Simulation_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!frame.Disposed)
-                frame.Dispose();
+            if (!_frame.Disposed)
+                _frame.Dispose();
         }
 
         void frame_Pushing(object sender, PushingEventArgs e)
         {
             Invoke((MethodInvoker) delegate
             {
-                Text = frame.ApplicationName + " (" + frame.UpdatePriority.ToString() + ")";
+                Text = _frame.ApplicationName + " (" + _frame.UpdatePriority.ToString() + ")";
                 displayPictureBox.Image = e.Frame;
             });
         }
@@ -47,47 +48,46 @@ namespace LogiFrame
         #region Buttons
         private void button1_MouseDown(object sender, MouseEventArgs e)
         {
-            frame.PerformButtonDown(0);
+            _frame.PerformButtonDown(0);
         }
 
         private void button1_MouseUp(object sender, MouseEventArgs e)
         {
-            frame.PerformButtonUp(0);
+            _frame.PerformButtonUp(0);
         }
 
         private void button2_MouseDown(object sender, MouseEventArgs e)
         {
-            frame.PerformButtonDown(1);
+            _frame.PerformButtonDown(1);
         }
 
         private void button2_MouseUp(object sender, MouseEventArgs e)
         {
-            frame.PerformButtonUp(1);
+            _frame.PerformButtonUp(1);
         }
 
         private void button3_MouseDown(object sender, MouseEventArgs e)
         {
-            frame.PerformButtonDown(2);
+            _frame.PerformButtonDown(2);
         }
 
         private void button3_MouseUp(object sender, MouseEventArgs e)
         {
-            frame.PerformButtonUp(2);
+            _frame.PerformButtonUp(2);
         }
 
         private void button4_MouseDown(object sender, MouseEventArgs e)
         {
-            frame.PerformButtonDown(3);
+            _frame.PerformButtonDown(3);
         }
 
         private void button4_MouseUp(object sender, MouseEventArgs e)
         {
-            frame.PerformButtonUp(3);
+            _frame.PerformButtonUp(3);
         }
         #endregion
 
         #region Keys
-        private int buttonsDown;
         private void Simulation_KeyDown(object sender, KeyEventArgs e)
         {
             int button = -1;
@@ -114,11 +114,11 @@ namespace LogiFrame
             int power = (int)Math.Pow(2, button);
 
             //Isdown
-            if ((buttonsDown & power) == power)
+            if ((_buttonsDown & power) == power)
                 return;
 
-            buttonsDown = buttonsDown | power;
-            frame.PerformButtonDown(button);
+            _buttonsDown = _buttonsDown | power;
+            _frame.PerformButtonDown(button);
         }
 
         private void Simulation_KeyUp(object sender, KeyEventArgs e)
@@ -145,12 +145,12 @@ namespace LogiFrame
 
             int power = (int)Math.Pow(2, button);
 
-            if ((buttonsDown & power) == 0)
+            if ((_buttonsDown & power) == 0)
                 return;
 
-            frame.PerformButtonUp(button);
+            _frame.PerformButtonUp(button);
 
-            buttonsDown = buttonsDown ^ power;
+            _buttonsDown = _buttonsDown ^ power;
         }
         #endregion
     }

@@ -17,22 +17,23 @@ namespace Test
 
             frame.ButtonDown += new Frame.ButtonDownEventHandler(frame_ButtonDown);
 
-            Line line = new Line();
-            line.Start = new Location(0, 30);
-            line.End = new Location(130, 15);
-            line.Transparent = true;
-            line.TopEffect = true;
+            Line line = new Line
+            {
+                Start = new Location(0, 30),
+                End = new Location(130, 15),
+                Transparent = true,
+                TopEffect = true
+            };
 
-            Square sq = new Square();
-            sq.Location = new Location(100, 5);
-            sq.Size= new Size(30, 30);
-            sq.Fill = true;
+            Square sq = new Square {Location = new Location(100, 5), Size = new Size(30, 30), Fill = true};
 
-            Label l = new Label();
-            l.Size = new Size(50, 20);
-            l.Font = new System.Drawing.Font("Arial", 7);
-            l.Text = "I am a test";
-            l.AutoSize = true;
+            Label l = new Label
+            {
+                Size = new Size(50, 20),
+                Font = new System.Drawing.Font("Arial", 7),
+                Text = "I am a test",
+                AutoSize = true
+            };
 
             frame.Components.Add(sq);
             frame.Components.Add(line);
