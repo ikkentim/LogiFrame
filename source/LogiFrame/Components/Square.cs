@@ -1,5 +1,4 @@
-﻿using System;
-using LogiFrame;
+﻿
 namespace LogiFrame.Components
 {
     /// <summary>

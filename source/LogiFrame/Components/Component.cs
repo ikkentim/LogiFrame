@@ -1,6 +1,4 @@
 ﻿using System;
-using LogiFrame;
-using System.Diagnostics;
 
 namespace LogiFrame.Components
 {
@@ -258,8 +256,8 @@ namespace LogiFrame.Components
             if (!forceRefresh && !HasChanged)
                 return;
 
-            Debug.WriteLine("[DEBUG] Render " + ToString() + " @ " + Location + " of " + Size + ", IsRendering: " +
-                            IsRendering.ToString());
+            System.Diagnostics.Debug.WriteLine("[DEBUG] Render " + ToString() + " @ " + Location + " of " + Size +
+                                               ", IsRendering: " + IsRendering.ToString());
 
             _isRendering = true;
             _bytemap = Render();

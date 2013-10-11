@@ -1,6 +1,4 @@
 ﻿using System;
-using LogiFrame;
-using System.Diagnostics;
 
 namespace LogiFrame.Components
 {

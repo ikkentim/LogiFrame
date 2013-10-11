@@ -1,5 +1,4 @@
-﻿using System;
-using LogiFrame;
+﻿using LogiFrame;
 using LogiFrame.Components;
 using System.Diagnostics;
 
@@ -11,11 +10,13 @@ namespace Test
         {
             //Test application
 
-            Frame frame = new Frame("LogiFrame test application", false, false, false, true);
-            frame.UpdatePriority = UpdatePriority.Alert;
+            Frame frame = new Frame("LogiFrame test application", false, false, false, true)
+            {
+                UpdatePriority = UpdatePriority.Alert
+            };
 
 
-            frame.ButtonDown += new Frame.ButtonDownEventHandler(frame_ButtonDown);
+            frame.ButtonDown += frame_ButtonDown;
 
             Line line = new Line
             {

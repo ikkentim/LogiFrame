@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using System.Diagnostics;
 using LogiFrame.Components;
 
 namespace LogiFrame
