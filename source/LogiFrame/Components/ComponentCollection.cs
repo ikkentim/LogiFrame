@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
 namespace LogiFrame.Components
@@ -10,6 +11,8 @@ namespace LogiFrame.Components
     public sealed class ComponentCollection<T> : ObservableCollection<T>
     where T : Component
     {
+        private List<Component> _components = new List<Component>();//Dirty solution for Reset not parsing OldItems.
+ 
         public ComponentCollection()
         {
             CollectionChanged += ComponentCollection_CollectionChanged;
@@ -35,16 +38,34 @@ namespace LogiFrame.Components
 
         private void ComponentCollection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e == null || (e.NewItems == null && e.OldItems == null))
+            if (e.Action == NotifyCollectionChangedAction.Move)
                 return;
 
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                if (ComponentRemoved != null)
+                    foreach (Component obj in _components)
+                        ComponentRemoved(this, new ComponentChangedEventArgs(obj as Component));
+
+                //Reset backup list
+                _components = new List<Component>();
+                return;
+            }
+
             if (e.OldItems != null && ComponentRemoved != null)
+            {
                 foreach (object obj in e.OldItems)
                     ComponentRemoved(this, new ComponentChangedEventArgs(obj as Component));
-                
+
+                _components = new List<Component>(this);
+            }
+
             if (e.NewItems != null && ComponentAdded != null)
+            {
                 foreach (object obj in e.NewItems)
                     ComponentAdded(this, new ComponentChangedEventArgs(obj as Component));
+                _components = new List<Component>(this);
+            }
         }
     }
 }

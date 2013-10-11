@@ -59,10 +59,10 @@ namespace Test
                 Image = Properties.Resources.banana
             };
 
-            //frame.Components.Add(sq);
-            //frame.Components.Add(line);
-            //frame.Components.Add(l);
-            //frame.Components.Add(pic);
+            frame.Components.Add(sq);
+            frame.Components.Add(line);
+            frame.Components.Add(l);
+            frame.Components.Add(pic);
             frame.Components.Add(ani);
             Debug.WriteLine("\nApplication initialized\n");
             frame.WaitForClose();

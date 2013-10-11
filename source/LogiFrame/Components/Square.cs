@@ -1,5 +1,4 @@
-﻿
-namespace LogiFrame.Components
+﻿namespace LogiFrame.Components
 {
     /// <summary>
     /// Represents a drawable square.

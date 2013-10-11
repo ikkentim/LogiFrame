@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading;
 
@@ -120,7 +119,6 @@ namespace LogiFrame.Components
 
         public void Next()
         {
-            Debug.WriteLine("Nexting animation...");
             Frame++;
         }
 

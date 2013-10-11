@@ -206,7 +206,6 @@ namespace LogiFrame.Components
                 if (Disposed || IsRendering || _hasChanged == value)
                     return;
 
-                Debug.WriteLine("[DEBUG] HasChanged: " + this + ">" + value);
                 _hasChanged = value;
 
                 if (Changed != null && value)

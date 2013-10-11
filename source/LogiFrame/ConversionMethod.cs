@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LogiFrame
+﻿namespace LogiFrame
 {
     /// <summary>
     /// Represents the technique used for transforming a System.Drawing.Bitmap

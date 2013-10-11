@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace LogiFrame.Components
 {
@@ -94,8 +93,6 @@ namespace LogiFrame.Components
             if (Disposed)
                 throw new ObjectDisposedException("Resource was disposed.");
 
-            Debug.WriteLine(e.Component + " was removed from container.");
-
             e.Component.Changed -= Container_Changed;
             e.Component.LocationChanged -= Container_Changed;
 
@@ -108,8 +105,6 @@ namespace LogiFrame.Components
             if (Disposed)
                 throw new ObjectDisposedException("Resource was disposed.");
 
-            Debug.WriteLine(e.Component + " was added to container.");
-
             e.Component.Changed += new EventHandler(Container_Changed);
             e.Component.LocationChanged += new EventHandler(Container_Changed);
 
@@ -119,7 +114,6 @@ namespace LogiFrame.Components
 
         private void Container_Changed(object sender, EventArgs e)
         {
-            Debug.WriteLine(sender + " reportedly changed in container.");
             HasChanged = true;
         }
 
