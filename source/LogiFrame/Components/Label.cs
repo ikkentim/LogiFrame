@@ -1,5 +1,5 @@
 ﻿using System;
-using LogiFrame;
+using System.Diagnostics;
 
 namespace LogiFrame.Components
 {
@@ -12,45 +12,80 @@ namespace LogiFrame.Components
         private string _text;
         private bool _autoSize;
 
+        /// <summary>
+        /// The text the current LogiFrame.Components.Label should draw.
+        /// </summary>
         public string Text
         {
             get { return _text; }
             set
             {
+                bool changed = _text != value;
+
                 _text = value;
 
+
+                if (!changed)
+                    return;
+
                 if (AutoSize)
-                    measureText();
+                    MeasureText();
+
+                HasChanged = true;
             }
         }
 
+        /// <summary>
+        /// The font the current LogiFrame.Components.Label should draw with.
+        /// </summary>
         public System.Drawing.Font Font
         {
             get { return _font; }
             set
             {
+                bool changed = _font != value;
+
                 _font = value;
 
+                if (!changed)
+                    return;
+
                 if(AutoSize)
-                    measureText();
+                    MeasureText();
+
+                HasChanged = true;
             }
         }
 
+        /// <summary>
+        /// Whether this LogiFrame.Components.Label should automatically
+        /// resize when the text has changed.
+        /// </summary>
         public bool AutoSize
         {
             get { return _autoSize; }
             set
             {
+                bool changed = _autoSize != value;
+
                 _autoSize = value;
+
+                if(value == true)
+                    MeasureText();
+                if (changed)
+                    HasChanged = true;
             }
         }
 
+        /// <summary>
+        /// The LogiFrame.Size of this LogiFrame.Components.Label.
+        /// </summary>
         public override Size Size
         {
             get {  return base.Size; }
             set
             {
-                if(AutoSize)
+                if(!AutoSize)
                     base.Size = value;
             }
         }
@@ -61,14 +96,14 @@ namespace LogiFrame.Components
             System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
 
-            g.DrawString("test123", _font, System.Drawing.Brushes.Black, (System.Drawing.Point)Location);
+            g.DrawString(Text, Font, System.Drawing.Brushes.Black, new System.Drawing.Point(0, 0));
             return Bytemap.FromBitmap(bmp);
         }
 
-        private void measureText()
+        private void MeasureText()
         {
             System.Drawing.SizeF strSize = System.Drawing.Graphics.FromImage(new System.Drawing.Bitmap(1, 1)).MeasureString(Text, Font);
-            base.Size = new Size((int)Math.Ceiling(strSize.Width), (int)Math.Ceiling(strSize.Height));
+            base.Size.Set((int)Math.Ceiling(strSize.Width), (int)Math.Ceiling(strSize.Height));
         }
     }
 }

@@ -335,7 +335,7 @@ namespace LogiFrame
 
         private void mainContainer_ComponentChanged(object sender, EventArgs e)
         {
-            if (Disposed)
+            if (Disposed || sender == null)
                 return;
 
             if (Size.Width != LgLcd.LGLCD_BMP_WIDTH || Size.Height != LgLcd.LGLCD_BMP_HEIGHT)

@@ -29,6 +29,7 @@ namespace Test
 
             Label l = new Label
             {
+                Location = new Location(10,10),
                 Size = new Size(50, 20),
                 Font = new System.Drawing.Font("Arial", 7),
                 Text = "I am a test",
@@ -39,7 +40,7 @@ namespace Test
             frame.Components.Add(line);
             frame.Components.Add(l);
 
-            Debug.WriteLine("\n\nApplication initialized\n\n");
+            Debug.WriteLine("\nApplication initialized\n");
             frame.WaitForClose();
         }
 

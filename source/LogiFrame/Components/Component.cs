@@ -258,7 +258,7 @@ namespace LogiFrame.Components
             if (!forceRefresh && !HasChanged)
                 return;
 
-            Debug.WriteLine("[DEBUG] Rendering " + ToString() + " at " + Location + ", IsRendering: " +
+            Debug.WriteLine("[DEBUG] Render " + ToString() + " @ " + Location + " of " + Size + ", IsRendering: " +
                             IsRendering.ToString());
 
             _isRendering = true;
