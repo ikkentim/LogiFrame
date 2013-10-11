@@ -31,11 +31,11 @@ namespace LogiFrame
         /// Transform a System.Drawing.Bitmap into a LogiFrame.Bytemap.
         /// </summary>
         /// <param name="bitmap">The System.Drawing.Bitmap to transform.</param>
-        /// <returns>The new LogiFrame.Bytemap that this method creates. </returns>
-        public static Bytemap FromBitmap(System.Drawing.Bitmap bitmap)
+        /// <param name="conversionMethod">The LogiFrame.ConversionMethod to use during the transformation.</param>
+        public static Bytemap FromBitmap(System.Drawing.Bitmap bitmap, ConversionMethod conversionMethod)
         {
-            //Everything totally black is black; everything else is white
-            return FromBitmap(bitmap, 0, 0, 0, 255);
+            return FromBitmap(bitmap, conversionMethod.MaxRed, conversionMethod.MaxGreen, conversionMethod.MaxGreen,
+                conversionMethod.MinAlpha);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace LogiFrame
         /// <param name="maxB">The maximum blue color value for a pixel to be filled.</param>
         /// <param name="minA">The minimum alpha value for a pixel to be filled.</param>
         /// <returns>The new LogiFrame.Bytemap that this method creates. </returns>
-        public static Bytemap FromBitmap(System.Drawing.Bitmap bitmap, byte maxR, byte maxG, byte maxB, byte minA)
+        public static Bytemap FromBitmap(System.Drawing.Bitmap bitmap, byte maxR = 0, byte maxG = 0, byte maxB = 0, byte minA = 255)
         {
             if (bitmap == null)
                 return null;
