@@ -207,7 +207,7 @@ namespace LogiFrame.Components
 
                 _hasChanged = value;
 
-                if (Changed != null && value == true)
+                if (Changed != null && value)
                     Changed(this, EventArgs.Empty);
             }
         }
@@ -222,7 +222,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the object that contains data about the component.
+        /// Gets or sets the object that contains data about the Component.
         /// </summary>
         public object Tag { get; set; }
 

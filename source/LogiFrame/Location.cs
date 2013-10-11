@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace LogiFrame
 {
@@ -6,6 +7,7 @@ namespace LogiFrame
     /// <summary>
     /// Represents a location of a component.
     /// </summary>
+    [TypeConverter(typeof(LocationTypeConverter))]
     public class Location
     {
 

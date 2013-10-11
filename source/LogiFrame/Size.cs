@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace LogiFrame
 {
     /// <summary>
     /// Represents the size of a component.
     /// </summary>
+   [TypeConverter(typeof(SizeTypeConverter))]
     public class Size
     {
 

@@ -1,4 +1,5 @@
-﻿using LogiFrame;
+﻿using System;
+using LogiFrame;
 using LogiFrame.Components;
 using System.Diagnostics;
 
@@ -6,15 +7,13 @@ namespace Test
 {
     static class Program
     {
-        static void Main()
+        private static void Main()
         {
             //Test application
-
             Frame frame = new Frame("LogiFrame test application", false, false, false, true)
             {
                 UpdatePriority = UpdatePriority.Alert
             };
-
 
             frame.ButtonDown += frame_ButtonDown;
 
@@ -26,11 +25,16 @@ namespace Test
                 TopEffect = true
             };
 
-            Square sq = new Square {Location = new Location(100, 5), Size = new Size(30, 30), Fill = true};
+            Square sq = new Square
+            {
+                Location = new Location(100, 5),
+                Size = new Size(30, 30),
+                Fill = true
+            };
 
             Label l = new Label
             {
-                Location = new Location(10,10),
+                Location = new Location(10, 10),
                 Size = new Size(50, 20),
                 Font = new System.Drawing.Font("Arial", 7),
                 Text = "I am a test",

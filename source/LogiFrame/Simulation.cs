@@ -7,17 +7,20 @@ namespace LogiFrame
     internal partial class Simulation : Form
     {
         private Frame _frame;
-        private int _buttonsDown;
 
-        public Simulation(Frame frame)
+        private Simulation(Frame frame)
         {
             InitializeComponent();
 
-            this._frame = frame;
+            propertyGrid.SelectedObject = frame;
+
+            _frame = frame;
 
             frame.Pushing += frame_Pushing;
             frame.FrameClosed += frame_FrameClosed;
             FormClosing += Simulation_FormClosing;
+
+            displayPictureBox.Image = _frame.Bytemap;
         }
 
         public static void Start(Frame frame)
@@ -35,7 +38,7 @@ namespace LogiFrame
         {
             Invoke((MethodInvoker) delegate
             {
-                Text = _frame.ApplicationName + " (" + _frame.UpdatePriority.ToString() + ")";
+                Text = _frame.ApplicationName + " (" + _frame.UpdatePriority + ")";
                 displayPictureBox.Image = e.Frame;
             });
         }
@@ -84,73 +87,6 @@ namespace LogiFrame
         private void button4_MouseUp(object sender, MouseEventArgs e)
         {
             _frame.PerformButtonUp(3);
-        }
-        #endregion
-
-        #region Keys
-        private void Simulation_KeyDown(object sender, KeyEventArgs e)
-        {
-            int button = -1;
-
-            switch (e.KeyCode)
-            {
-                case Keys.D1:
-                    button = 0;
-                    break;
-                case Keys.D2:
-                    button = 1;
-                    break;
-                case Keys.D3:
-                    button = 2;
-                    break;
-                case Keys.D4:
-                    button = 3;
-                    break;
-            }
-
-            if (button == -1)
-                return;
-
-            int power = (int)Math.Pow(2, button);
-
-            //Isdown
-            if ((_buttonsDown & power) == power)
-                return;
-
-            _buttonsDown = _buttonsDown | power;
-            _frame.PerformButtonDown(button);
-        }
-
-        private void Simulation_KeyUp(object sender, KeyEventArgs e)
-        {
-            int button = -1;
-            switch (e.KeyCode)
-            {
-                case Keys.D1:
-                    button = 0;
-                    break;
-                case Keys.D2:
-                    button = 1;
-                    break;
-                case Keys.D3:
-                    button = 2;
-                    break;
-                case Keys.D4:
-                    button = 3;
-                    break;
-            }
-
-            if (button == -1)
-                return;
-
-            int power = (int)Math.Pow(2, button);
-
-            if ((_buttonsDown & power) == 0)
-                return;
-
-            _frame.PerformButtonUp(button);
-
-            _buttonsDown = _buttonsDown ^ power;
         }
         #endregion
     }

@@ -35,9 +35,12 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.propertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.propertiesGroupBox = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.displayPictureBox)).BeginInit();
             this.displayGroupBox.SuspendLayout();
             this.buttonsGroupBox.SuspendLayout();
+            this.propertiesGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // displayPictureBox
@@ -111,12 +114,34 @@
             this.button1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button1_MouseDown);
             this.button1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.button1_MouseUp);
             // 
+            // propertyGrid
+            // 
+            this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid.HelpVisible = false;
+            this.propertyGrid.Location = new System.Drawing.Point(3, 16);
+            this.propertyGrid.Name = "propertyGrid";
+            this.propertyGrid.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
+            this.propertyGrid.Size = new System.Drawing.Size(263, 222);
+            this.propertyGrid.TabIndex = 3;
+            this.propertyGrid.ToolbarVisible = false;
+            // 
+            // propertiesGroupBox
+            // 
+            this.propertiesGroupBox.Controls.Add(this.propertyGrid);
+            this.propertiesGroupBox.Location = new System.Drawing.Point(191, 12);
+            this.propertiesGroupBox.Name = "propertiesGroupBox";
+            this.propertiesGroupBox.Size = new System.Drawing.Size(269, 241);
+            this.propertiesGroupBox.TabIndex = 4;
+            this.propertiesGroupBox.TabStop = false;
+            this.propertiesGroupBox.Text = "Properties";
+            // 
             // Simulation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(197, 166);
+            this.ClientSize = new System.Drawing.Size(472, 265);
+            this.Controls.Add(this.propertiesGroupBox);
             this.Controls.Add(this.buttonsGroupBox);
             this.Controls.Add(this.displayGroupBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -126,11 +151,10 @@
             this.ShowInTaskbar = false;
             this.Text = "Simulation";
             this.TopMost = true;
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Simulation_KeyDown);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Simulation_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.displayPictureBox)).EndInit();
             this.displayGroupBox.ResumeLayout(false);
             this.buttonsGroupBox.ResumeLayout(false);
+            this.propertiesGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -144,5 +168,7 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.PropertyGrid propertyGrid;
+        private System.Windows.Forms.GroupBox propertiesGroupBox;
     }
 }
