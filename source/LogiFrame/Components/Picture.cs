@@ -12,7 +12,7 @@
         /// <summary>
         /// The image to be drawn.
         /// </summary>
-        public System.Drawing.Image Image
+        public virtual System.Drawing.Image Image
         {
             get { return _image; }
             set
@@ -30,7 +30,7 @@
         /// <summary>
         /// The conversion method to use during the rendering.
         /// </summary>
-        public ConversionMethod ConversionMethod
+        public virtual ConversionMethod ConversionMethod
         {
             get { return _conversionMethod; }
             set

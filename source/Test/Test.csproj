@@ -75,7 +75,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="banana.gif" />
+    <Content Include="banana.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="test.png" />

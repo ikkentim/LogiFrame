@@ -9,6 +9,7 @@ namespace Test
 {
     static class Program
     {
+        private static Animation ani;
         private static void Main()
         {
             //Test application
@@ -47,13 +48,22 @@ namespace Test
             {
                 Location = new Location(100, 2),
                 AutoSize = true,
-                Image = Test.Properties.Resources.test
+                Image = Properties.Resources.test
             };
 
-            frame.Components.Add(sq);
-            frame.Components.Add(line);
-            frame.Components.Add(l);
-            frame.Components.Add(pic);
+            ani = new Animation
+            {
+                Location = new Location(0, -10),
+                AutoSize = true,
+                ConversionMethod = ConversionMethod.QuarterByte,
+                Image = Properties.Resources.banana
+            };
+
+            //frame.Components.Add(sq);
+            //frame.Components.Add(line);
+            //frame.Components.Add(l);
+            //frame.Components.Add(pic);
+            frame.Components.Add(ani);
             Debug.WriteLine("\nApplication initialized\n");
             frame.WaitForClose();
         }
@@ -64,7 +74,8 @@ namespace Test
                 ((Frame)sender).Dispose();
             if (e.Button == 1)
                 ((Frame)sender).Refresh(true);
-
+            if (e.Button == 2)
+                ani.Next();
             Debug.WriteLine("Button pressed: " + e.Button);
         }
     }

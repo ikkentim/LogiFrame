@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace LogiFrame.Components
 {
@@ -205,6 +206,7 @@ namespace LogiFrame.Components
                 if (Disposed || IsRendering || _hasChanged == value)
                     return;
 
+                Debug.WriteLine("[DEBUG] HasChanged: " + this + ">" + value);
                 _hasChanged = value;
 
                 if (Changed != null && value)
@@ -263,15 +265,13 @@ namespace LogiFrame.Components
             if (!forceRefresh && !HasChanged)
                 return;
 
-            System.Diagnostics.Debug.WriteLine("[DEBUG] Render " + ToString() + " @ " + Location + " of " + Size +
-                                               ", IsRendering: " + IsRendering.ToString());
+            System.Diagnostics.Debug.WriteLine("[DEBUG] Rendering " + ToString() + " @ " + Location + " of " + Size);
 
             _isRendering = true;
-            _bytemap = Render();
+            _bytemap = Render() ?? new Bytemap(1,1);
             _bytemap.Transparent = Transparent;
             _bytemap.TopEffect = TopEffect;
             _isRendering = false;
-
         }
 
         /// <summary>

@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="ButtonEventArgs.cs" />
     <Compile Include="Bytemap.cs" />
+    <Compile Include="Components\Animation.cs" />
     <Compile Include="Components\ComponentChangedEventArgs.cs" />
     <Compile Include="Components\Circle.cs" />
     <Compile Include="Components\Component.cs" />
