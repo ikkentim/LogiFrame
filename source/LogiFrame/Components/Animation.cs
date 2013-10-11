@@ -131,6 +131,12 @@ namespace LogiFrame.Components
             return _bytemaps[_frame];
         }
 
+        protected override void DisposeComponent()
+        {
+            _run = false;
+            Image.Dispose();
+        }
+
         private void RenderAnimation()
         {
             if (Image == null)
