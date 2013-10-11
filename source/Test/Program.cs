@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Drawing;
 using LogiFrame;
 using LogiFrame.Components;
 using System.Diagnostics;
+using Size = LogiFrame.Size;
 
 namespace Test
 {
@@ -19,32 +21,39 @@ namespace Test
 
             Line line = new Line
             {
-                Start = new Location(0, 30),
-                End = new Location(130, 15),
+                Start = new Location(130, 30),
+                End = new Location(150, 10),
                 Transparent = true,
                 TopEffect = true
             };
 
             Square sq = new Square
             {
-                Location = new Location(100, 5),
-                Size = new Size(30, 30),
+                Location = new Location(149, 1),
+                Size = new Size(10, 10),
                 Fill = true
             };
 
             Label l = new Label
             {
-                Location = new Location(10, 10),
+                Location = new Location(110, 30),
                 Size = new Size(50, 20),
                 Font = new System.Drawing.Font("Arial", 7),
                 Text = "I am a test",
                 AutoSize = true
             };
 
+            Picture pic = new Picture
+            {
+                Location = new Location(100, 2),
+                AutoSize = true,
+                Image = Test.Properties.Resources.test
+            };
+
             frame.Components.Add(sq);
             frame.Components.Add(line);
             frame.Components.Add(l);
-
+            frame.Components.Add(pic);
             Debug.WriteLine("\nApplication initialized\n");
             frame.WaitForClose();
         }

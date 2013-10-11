@@ -1,4 +1,6 @@
-﻿namespace LogiFrame
+﻿using System;
+
+namespace LogiFrame
 {
     /// <summary>
     /// Represents the technique used for transforming a System.Drawing.Bitmap
@@ -55,6 +57,58 @@
             MaxGreen = maxGreen;
             MaxBlue = maxBlue;
             MinAlpha = minAlpha;
+        }
+
+        /// <summary>
+        /// Determines whether the specified System.Object is equal to the current LogiFrame.ConversionMethod.
+        /// </summary>
+        /// <param name="obj">The System.Object to compare with the current LogiFrame.ConversionMethod.</param>
+        /// <returns>
+        ///     true if the specified System.Object is equal to the current LogiFrame.ConversionMethod;
+        ///     otherwise, false.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj is ConversionMethod == false)
+                return false;
+
+            ConversionMethod other = (ConversionMethod)obj;
+
+            return other.MaxBlue == MaxBlue &&
+                   other.MaxGreen == MaxGreen &&
+                   other.MaxRed == MaxRed &&
+                   other.MinAlpha == MinAlpha;
+        }
+
+        public static bool operator ==(ConversionMethod left, ConversionMethod right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(ConversionMethod left, ConversionMethod right)
+        {
+            return left.Equals(right) == false;
+        }
+
+        /// <summary>
+        /// Returns a hash code for this LogiFrame.ConversionMethod.
+        /// </summary>
+        /// <returns>An integer value that specifies a hash value for this LogiFrame.ConversionMethod.</returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = 37;
+                result *= 397;
+                result += MaxRed;
+                result *= 397;
+                result += MaxGreen;
+                result *= 397;
+                result += MaxBlue;
+                result *= 397;
+                result += MinAlpha;
+                return result;
+            }
         }
     }
 }
