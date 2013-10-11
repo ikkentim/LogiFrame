@@ -19,12 +19,11 @@ namespace LogiFrame.Components
             }
             set
             {
-                bool change = _fill != value;
+                if (_fill == value)
+                    return;
 
                 _fill = value;
-
-                if (change)
-                    HasChanged = true;
+               HasChanged = true;
             }
         }
 
@@ -42,13 +41,13 @@ namespace LogiFrame.Components
             {
                 for (int x = 0; x < Size.Width; x++)
                 {
-                    result.SetPixel(x, 0, true);
-                    result.SetPixel(x, Size.Height - 1, true);
+                    result.SetPixel(x, 0, true);//Top
+                    result.SetPixel(x, Size.Height - 1, true);//Bottom
                 }
                 for (int y = 0; y < Size.Height; y++)
                 {
-                    result.SetPixel(0, y, true);
-                    result.SetPixel(Size.Width - 1, y, true);
+                    result.SetPixel(0, y, true);//Left
+                    result.SetPixel(Size.Width - 1, y, true);//Right
                 }
             }
             return result;

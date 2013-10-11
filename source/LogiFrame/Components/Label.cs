@@ -19,16 +19,13 @@ namespace LogiFrame.Components
             get { return _text; }
             set
             {
-                bool changed = _text != value;
+                if (_text == value)
+                    return;
 
                 _text = value;
 
-
-                if (!changed)
-                    return;
-
-                if (AutoSize)
-                    MeasureText();
+                if (AutoSize) 
+                    MeasureText(true);
 
                 HasChanged = true;
             }
@@ -42,16 +39,12 @@ namespace LogiFrame.Components
             get { return _font; }
             set
             {
-                bool changed = _font != value;
-
-                _font = value;
-
-                if (!changed)
+                if (_font == value)
                     return;
 
+                _font = value;
                 if(AutoSize)
-                    MeasureText();
-
+                    MeasureText(true);
                 HasChanged = true;
             }
         }
@@ -65,14 +58,13 @@ namespace LogiFrame.Components
             get { return _autoSize; }
             set
             {
-                bool changed = _autoSize != value;
+                if (_autoSize == value)
+                    return;
 
                 _autoSize = value;
-
-                if(value == true)
-                    MeasureText();
-                if (changed)
-                    HasChanged = true;
+                if(value)
+                    MeasureText(true);
+                HasChanged = true;
             }
         }
 
@@ -99,10 +91,16 @@ namespace LogiFrame.Components
             return Bytemap.FromBitmap(bmp);
         }
 
-        private void MeasureText()
+        private void MeasureText(bool silent)
         {
+            if (silent)
+                IsRendering = true;
+
             System.Drawing.SizeF strSize = System.Drawing.Graphics.FromImage(new System.Drawing.Bitmap(1, 1)).MeasureString(Text, Font);
             base.Size.Set((int)Math.Ceiling(strSize.Width), (int)Math.Ceiling(strSize.Height));
+
+            if (silent)
+                IsRendering = false;
         }
     }
 }

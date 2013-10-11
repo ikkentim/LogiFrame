@@ -10,7 +10,7 @@ namespace LogiFrame.Components
 
         #region Fields
 
-        private ComponentCollection<Component> _components = new ComponentCollection<Component>();
+        private readonly ComponentCollection<Component> _components = new ComponentCollection<Component>();
 
         #endregion
 

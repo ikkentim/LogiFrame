@@ -21,7 +21,6 @@ namespace LogiFrame.Components
         /// Initializes a new instance of the LogiFrame.components.Line class.
         /// </summary>
         public Line()
-            : base()
         {
             _start.Changed += start_Changed;
             _end.Changed += end_Changed;

@@ -17,11 +17,11 @@ namespace LogiFrame.Components
             get { return _fill; }
             set
             {
-                bool change = _fill != value;
-                _fill = value;
+                if (_fill == value)
+                    return;
 
-                if (change)
-                    HasChanged = true;
+                _fill = value;
+                HasChanged = true;
             }
         }
 

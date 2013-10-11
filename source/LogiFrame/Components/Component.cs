@@ -142,6 +142,7 @@ namespace LogiFrame.Components
                 value.Changed += size_SizeChanged;
 
                 _size = value;
+                HasChanged = true;
             }
         }
 
@@ -153,6 +154,8 @@ namespace LogiFrame.Components
             get { return _topEffect; }
             set
             {
+                if (_topEffect == value)
+                    return;
 
                 _topEffect = value;
                 HasChanged = true;
@@ -167,6 +170,9 @@ namespace LogiFrame.Components
             get { return _transparent; }
             set
             {
+                if (_transparent == value)
+                    return;
+
                 _transparent = value;
                 HasChanged = true;
             }
@@ -180,6 +186,9 @@ namespace LogiFrame.Components
             get { return _visible; }
             set
             {
+                if (_visible == value)
+                    return;
+
                 _visible = value;
                 HasChanged = true;
             }
@@ -193,14 +202,12 @@ namespace LogiFrame.Components
             get { return _hasChanged; }
             set
             {
-                if (Disposed || IsRendering)
+                if (Disposed || IsRendering || _hasChanged == value)
                     return;
-
-                bool notify = !_hasChanged;
 
                 _hasChanged = value;
 
-                if (notify && Changed != null)
+                if (Changed != null && value == true)
                     Changed(this, EventArgs.Empty);
             }
         }
