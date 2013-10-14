@@ -1,38 +1,56 @@
-﻿using System.Collections.Generic;
+﻿//     ComponentCollection.cs
+// 
+//     LogiFrame rendering library.
+//     Copyright (C) 2013  Tim Potze
+// 
+//     This program is free software: you can redistribute it and/or modify
+//     it under the terms of the GNU General Public License as published by
+//     the Free Software Foundation, either version 3 of the License, or
+//     (at your option) any later version.
+// 
+//     This program is distributed in the hope that it will be useful,
+//     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//     GNU General Public License for more details.
+// 
+//     You should have received a copy of the GNU General Public License
+//     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///  Represents a dynamic collection of LogiFrame.Components.Component.
+    ///     Represents a dynamic collection of LogiFrame.Components.Component.
     /// </summary>
     /// <typeparam name="T">An instance of LogiFrame.Components.Component</typeparam>
     public sealed class ComponentCollection<T> : ObservableCollection<T>
-    where T : Component
+        where T : Component
     {
-        private List<Component> _components = new List<Component>();//Dirty solution for Reset not parsing OldItems.
- 
+        /// <summary>
+        ///     Represents the method that handles a LogiFrame.Components.ComponentCollection.ComponentAdded and
+        ///     LogiFrame.Components.ComponentCollection.ComponentRemoved.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">A LogiFrame.ComponentChangedEventArgs that contains the event data.</param>
+        public delegate void ComponentChangedEventHandler(object sender, ComponentChangedEventArgs e);
+
+        private List<Component> _components = new List<Component>(); //Dirty solution for Reset not parsing OldItems.
+
         public ComponentCollection()
         {
             CollectionChanged += ComponentCollection_CollectionChanged;
         }
 
         /// <summary>
-        /// Represents the method that handles a LogiFrame.Components.ComponentCollection.ComponentAdded and
-        /// LogiFrame.Components.ComponentCollection.ComponentRemoved.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A LogiFrame.ComponentChangedEventArgs that contains the event data.</param>
-        public delegate void ComponentChangedEventHandler(object sender, ComponentChangedEventArgs e);
-        
-        /// <summary>
-        /// Occurs when a LogiFrame.Components.Component has been added to the current collection.
+        ///     Occurs when a LogiFrame.Components.Component has been added to the current collection.
         /// </summary>
         public event ComponentChangedEventHandler ComponentAdded;
 
         /// <summary>
-        /// Occurs when a LogiFrame.Components.Component has been removed from the current collection.
+        ///     Occurs when a LogiFrame.Components.Component has been removed from the current collection.
         /// </summary>
         public event ComponentChangedEventHandler ComponentRemoved;
 

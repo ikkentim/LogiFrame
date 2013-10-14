@@ -1,16 +1,34 @@
-﻿namespace LogiFrame.Components
+﻿//     Picture.cs
+// 
+//     LogiFrame rendering library.
+//     Copyright (C) 2013  Tim Potze
+// 
+//     This program is free software: you can redistribute it and/or modify
+//     it under the terms of the GNU General Public License as published by
+//     the Free Software Foundation, either version 3 of the License, or
+//     (at your option) any later version.
+// 
+//     This program is distributed in the hope that it will be useful,
+//     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//     GNU General Public License for more details.
+// 
+//     You should have received a copy of the GNU General Public License
+//     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+
+namespace LogiFrame.Components
 {
     /// <summary>
-    /// Represents a drawable picture.
+    ///     Represents a drawable picture.
     /// </summary>
     public class Picture : Component
     {
-        private System.Drawing.Image _image = null;
-        private ConversionMethod _conversionMethod = ConversionMethod.Normal;
         private bool _autoSize;
+        private ConversionMethod _conversionMethod = ConversionMethod.Normal;
+        private System.Drawing.Image _image = null;
 
         /// <summary>
-        /// The image to be drawn.
+        ///     The image to be drawn.
         /// </summary>
         public virtual System.Drawing.Image Image
         {
@@ -28,7 +46,7 @@
         }
 
         /// <summary>
-        /// The conversion method to use during the rendering.
+        ///     The conversion method to use during the rendering.
         /// </summary>
         public virtual ConversionMethod ConversionMethod
         {
@@ -46,8 +64,8 @@
         }
 
         /// <summary>
-        /// Whether this LogiFrame.Components.Picture should automatically
-        /// resize when the image has changed.
+        ///     Whether this LogiFrame.Components.Picture should automatically
+        ///     resize when the image has changed.
         /// </summary>
         public bool AutoSize
         {
@@ -65,7 +83,7 @@
         }
 
         /// <summary>
-        /// The LogiFrame.Size of this LogiFrame.Components.Label.
+        ///     The LogiFrame.Size of this LogiFrame.Components.Label.
         /// </summary>
         public override Size Size
         {
@@ -90,7 +108,7 @@
             if (silent)
                 IsRendering = true;
 
-            if(Image != null)
+            if (Image != null)
                 base.Size.Set(Image.Width, Image.Height);
             if (silent)
                 IsRendering = false;

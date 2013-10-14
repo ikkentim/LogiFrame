@@ -1,25 +1,43 @@
-﻿using System;
+﻿//     ComponentChangedEventArgs.cs
+// 
+//     LogiFrame rendering library.
+//     Copyright (C) 2013  Tim Potze
+// 
+//     This program is free software: you can redistribute it and/or modify
+//     it under the terms of the GNU General Public License as published by
+//     the Free Software Foundation, either version 3 of the License, or
+//     (at your option) any later version.
+// 
+//     This program is distributed in the hope that it will be useful,
+//     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//     GNU General Public License for more details.
+// 
+//     You should have received a copy of the GNU General Public License
+//     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+
+using System;
 
 namespace LogiFrame.Components
 {
     /// <summary>
-    /// Provides data for the LogiFrame.Components.ComponentCollection.ComponentAdded and
-    /// LogiFrame.Components.ComponentCollection.ComponentRemoved event.
+    ///     Provides data for the LogiFrame.Components.ComponentCollection.ComponentAdded and
+    ///     LogiFrame.Components.ComponentCollection.ComponentRemoved event.
     /// </summary>
     public class ComponentChangedEventArgs : EventArgs
     {
         /// <summary>
-        /// The component that has been changed.
-        /// </summary>
-        public Component Component { get; set; }
-
-        /// <summary>
-        /// Initilizes a new instance of the LogiFrame.Components.ComponentChangedEventArgs
+        ///     Initilizes a new instance of the LogiFrame.Components.ComponentChangedEventArgs
         /// </summary>
         /// <param name="component">The component that has been changed</param>
         public ComponentChangedEventArgs(Component component)
         {
             Component = component;
         }
+
+        /// <summary>
+        ///     The component that has been changed.
+        /// </summary>
+        public Component Component { get; set; }
     }
 }

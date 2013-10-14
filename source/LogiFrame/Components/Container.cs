@@ -1,13 +1,30 @@
-﻿using System;
+﻿//     Container.cs
+// 
+//     LogiFrame rendering library.
+//     Copyright (C) 2013  Tim Potze
+// 
+//     This program is free software: you can redistribute it and/or modify
+//     it under the terms of the GNU General Public License as published by
+//     the Free Software Foundation, either version 3 of the License, or
+//     (at your option) any later version.
+// 
+//     This program is distributed in the hope that it will be useful,
+//     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//     GNU General Public License for more details.
+// 
+//     You should have received a copy of the GNU General Public License
+//     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+
+using System;
 
 namespace LogiFrame.Components
 {
     /// <summary>
-    /// Represents a Component that is capable of holding multiple other LogiFrame.Components.Component instances.
+    ///     Represents a Component that is capable of holding multiple other LogiFrame.Components.Component instances.
     /// </summary>
     public class Container : Component
     {
-
         #region Fields
 
         private readonly ComponentCollection<Component> _components = new ComponentCollection<Component>();
@@ -17,7 +34,7 @@ namespace LogiFrame.Components
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the LogiFrame.Components.Container class.
+        ///     Initializes a new instance of the LogiFrame.Components.Container class.
         /// </summary>
         public Container()
         {
@@ -25,13 +42,13 @@ namespace LogiFrame.Components
             _components.ComponentRemoved += components_ComponentRemoved;
         }
 
-
         #endregion
 
         #region Properties
- 
+
         /// <summary>
-        /// A collection of LogiFrame.Components.Component instances that are rendered within the current LogiFrame.Components.Container.
+        ///     A collection of LogiFrame.Components.Component instances that are rendered within the current
+        ///     LogiFrame.Components.Container.
         /// </summary>
         public ComponentCollection<Component> Components
         {

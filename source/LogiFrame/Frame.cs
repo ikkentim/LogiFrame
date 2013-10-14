@@ -1,29 +1,46 @@
-﻿using System;
+﻿//     Frame.cs
+// 
+//     LogiFrame rendering library.
+//     Copyright (C) 2013  Tim Potze
+// 
+//     This program is free software: you can redistribute it and/or modify
+//     it under the terms of the GNU General Public License as published by
+//     the Free Software Foundation, either version 3 of the License, or
+//     (at your option) any later version.
+// 
+//     This program is distributed in the hope that it will be useful,
+//     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//     GNU General Public License for more details.
+// 
+//     You should have received a copy of the GNU General Public License
+//     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+
+using System;
 using System.Threading;
 using LogiFrame.Components;
 
 namespace LogiFrame
 {
     /// <summary>
-    /// Represents the framework.
+    ///     Represents the framework.
     /// </summary>
     public sealed class Frame : Container
     {
-
         #region Fields
 
-        private LgLcd.lgLcdConnectContext _connection = new LgLcd.lgLcdConnectContext();
-        private LgLcd.lgLcdOpenContext _openContext = new LgLcd.lgLcdOpenContext();
         private LgLcd.lgLcdBitmap160x43x1 _bitmap = new LgLcd.lgLcdBitmap160x43x1();
 
         private int _buttonState = 0;
+        private LgLcd.lgLcdConnectContext _connection = new LgLcd.lgLcdConnectContext();
+        private LgLcd.lgLcdOpenContext _openContext = new LgLcd.lgLcdOpenContext();
 
         #endregion
 
         #region Constructor/Deconstructor
 
         /// <summary>
-        /// Initializes a new instance of the LogiFrame.Frame class.
+        ///     Initializes a new instance of the LogiFrame.Frame class.
         /// </summary>
         /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
         public Frame(string applicationName)
@@ -32,7 +49,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Initializes a new instance of the LogiFrame.Frame class.
+        ///     Initializes a new instance of the LogiFrame.Frame class.
         /// </summary>
         /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
         /// <param name="isAutostartable"> Whether true application can be started by LCDMon or not.</param>
@@ -42,7 +59,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Initializes a new instance of the LogiFrame.Frame class.
+        ///     Initializes a new instance of the LogiFrame.Frame class.
         /// </summary>
         /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
         /// <param name="isAutostartable"> Whether true application can be started by LCDMon or not.</param>
@@ -53,7 +70,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Initializes a new instance of the LogiFrame.Frame class.
+        ///     Initializes a new instance of the LogiFrame.Frame class.
         /// </summary>
         /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
         /// <param name="isAutostartable"> Whether true application can be started by LCDMon or not.</param>
@@ -65,14 +82,15 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Initializes a new instance of the LogiFrame.Frame class.
+        ///     Initializes a new instance of the LogiFrame.Frame class.
         /// </summary>
         /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
         /// <param name="isAutostartable"> Whether true application can be started by LCDMon or not.</param>
         /// <param name="isPersistent">Whether connection is regular.</param>
         /// <param name="allowConfiguration">Whether the application is configurable via LCDmon.</param>
         /// <param name="simulate">Whether LogiFrame should start in simulation mode.</param>
-        public Frame(string applicationName, bool isAutostartable, bool isPersistent, bool allowConfiguration, bool simulate)
+        public Frame(string applicationName, bool isAutostartable, bool isPersistent, bool allowConfiguration,
+            bool simulate)
         {
             //Check for LgLcd.dll file
             if (!System.IO.File.Exists("LgLcd.dll"))
@@ -84,7 +102,7 @@ namespace LogiFrame
             _connection.isPersistent = IsPersistent = isPersistent;
             Simulate = simulate;
 
-            if(AllowConfiguration = allowConfiguration)
+            if (AllowConfiguration = allowConfiguration)
                 _connection.onConfigure.configCallback = lgLcd_onConfigureCB;
 
             _connection.connection = LgLcd.LGLCD_INVALID_CONNECTION;
@@ -97,7 +115,7 @@ namespace LogiFrame
                 new Thread(() => { Simulation.Start(this); }).Start();
 
             //Initialize main container
-            Size = new Size((int)LgLcd.LGLCD_BMP_WIDTH, (int)LgLcd.LGLCD_BMP_HEIGHT);
+            Size = new Size((int) LgLcd.LGLCD_BMP_WIDTH, (int) LgLcd.LGLCD_BMP_HEIGHT);
             Changed += new EventHandler(mainContainer_ComponentChanged);
 
             //Store connection
@@ -121,12 +139,10 @@ namespace LogiFrame
 
             //Send empty bytemap
             UpdateScreen(null);
-
-
         }
 
         /// <summary>
-        /// Releases all resources used by LogiFrame.Frame
+        ///     Releases all resources used by LogiFrame.Frame
         /// </summary>
         ~Frame()
         {
@@ -138,48 +154,48 @@ namespace LogiFrame
         #region Events
 
         /// <summary>
-        /// Represents the method that handles a LogiFrame.Frame.ButtonDown.
+        ///     Represents the method that handles a LogiFrame.Frame.ButtonDown.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">A LogiFrame.ButtonEventArgs that contains the event data.</param>
         public delegate void ButtonDownEventHandler(object sender, ButtonEventArgs e);
 
         /// <summary>
-        /// Represents the method that handles a LogiFrame.Frame.ButtonUp.
+        ///     Represents the method that handles a LogiFrame.Frame.ButtonUp.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">A LogiFrame.ButtonEventArgs that contains the event data.</param>
         public delegate void ButtonUpEventHandler(object sender, ButtonEventArgs e);
 
         /// <summary>
-        /// Represents the method that handles a LogiFrame.Frame.FramePush.
+        ///     Represents the method that handles a LogiFrame.Frame.FramePush.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">A LogiFrame.PushingEventArgs that contains the event data.</param>
         public delegate void PushingEventHandler(object sender, PushingEventArgs e);
 
         /// <summary>
-        /// Occurs when a button is being pressed.
+        ///     Occurs when a button is being pressed.
         /// </summary>
         public event ButtonDownEventHandler ButtonDown;
 
         /// <summary>
-        /// Occurs when a button is being released.
+        ///     Occurs when a button is being released.
         /// </summary>
         public event ButtonUpEventHandler ButtonUp;
 
         /// <summary>
-        /// Occurs before a frame is being pushed to the display.
+        ///     Occurs before a frame is being pushed to the display.
         /// </summary>
         public event PushingEventHandler Pushing;
 
         /// <summary>
-        /// Occurs after the frame has been closed or disposed
+        ///     Occurs after the frame has been closed or disposed
         /// </summary>
         public event EventHandler FrameClosed;
 
         /// <summary>
-        /// Occurs when the 'configure' button has been pressed in LCDmon.
+        ///     Occurs when the 'configure' button has been pressed in LCDmon.
         /// </summary>
         public event EventHandler Configure;
 
@@ -188,34 +204,34 @@ namespace LogiFrame
         #region Properties
 
         /// <summary>
-        /// A string that contains the 'friendly name' of the application. 
-        /// This name is presented to the user whenever a list of applications is shown.
+        ///     A string that contains the 'friendly name' of the application.
+        ///     This name is presented to the user whenever a list of applications is shown.
         /// </summary>
         public string ApplicationName { get; private set; }
 
         /// <summary>
-        /// Whether application can be started by LCDMon or not.
+        ///     Whether application can be started by LCDMon or not.
         /// </summary>
         public bool IsAutostartable { get; private set; }
 
         /// <summary>
-        /// Whether connection is temporary or whether it is
-        /// a regular connection that should be added to the list.
+        ///     Whether connection is temporary or whether it is
+        ///     a regular connection that should be added to the list.
         /// </summary>
         public bool IsPersistent { get; private set; }
 
         /// <summary>
-        /// Whether the 'configure' option is being shown in LCDmon.
+        ///     Whether the 'configure' option is being shown in LCDmon.
         /// </summary>
         public bool AllowConfiguration { get; private set; }
 
         /// <summary>
-        /// Whether LogiFrame.Frame is simulating the display.
+        ///     Whether LogiFrame.Frame is simulating the display.
         /// </summary>
         public bool Simulate { get; private set; }
 
         /// <summary>
-        /// The priority of the forthcoming LCD updates.
+        ///     The priority of the forthcoming LCD updates.
         /// </summary>
         public UpdatePriority UpdatePriority { get; set; }
 
@@ -224,7 +240,7 @@ namespace LogiFrame
         #region Methods
 
         /// <summary>
-        /// Releases all resources used by LogiFrame.Frame
+        ///     Releases all resources used by LogiFrame.Frame
         /// </summary>
         public new void Dispose()
         {
@@ -242,26 +258,25 @@ namespace LogiFrame
                     LgLcd.lgLcdClose(_openContext.device);
                     LgLcd.lgLcdDisconnect(_connection.connection);
                     LgLcd.lgLcdDeInit();
-
                 }).Start();
             }
         }
 
         /// <summary>
-        /// Waits untill the LogiFrame.Frame was disposed.
+        ///     Waits untill the LogiFrame.Frame was disposed.
         /// </summary>
         public void WaitForClose()
         {
-            while(!Disposed)
+            while (!Disposed)
                 Thread.Sleep(1500);
         }
 
         /// <summary>
-        /// Emulates a button being pushed.
+        ///     Emulates a button being pushed.
         /// </summary>
         public void PerformButtonDown(int button)
         {
-            int power = (int)Math.Pow(2, button);
+            int power = (int) Math.Pow(2, button);
 
             if ((_buttonState & power) == power)
                 return;
@@ -273,11 +288,11 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Emulates a button being released.
+        ///     Emulates a button being released.
         /// </summary>
         public void PerformButtonUp(int button)
         {
-            int power = (int)Math.Pow(2, button);
+            int power = (int) Math.Pow(2, button);
 
             if ((_buttonState & power) == 0)
                 return;
@@ -307,8 +322,8 @@ namespace LogiFrame
 
             if (push)
             {
-                _bitmap.pixels = bytemap == null ? new byte[LgLcd.LGLCD_BMP_WIDTH * LgLcd.LGLCD_BMP_HEIGHT] : bytemap.Data;
-                LgLcd.lgLcdUpdateBitmap(_openContext.device, ref _bitmap, (uint)UpdatePriority);
+                _bitmap.pixels = bytemap == null ? new byte[LgLcd.LGLCD_BMP_WIDTH*LgLcd.LGLCD_BMP_HEIGHT] : bytemap.Data;
+                LgLcd.lgLcdUpdateBitmap(_openContext.device, ref _bitmap, (uint) UpdatePriority);
             }
         }
 
@@ -344,6 +359,5 @@ namespace LogiFrame
         }
 
         #endregion
-
     }
 }

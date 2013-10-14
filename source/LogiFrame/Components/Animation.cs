@@ -1,45 +1,61 @@
-﻿using System.Drawing;
+﻿//     Animation.cs
+// 
+//     LogiFrame rendering library.
+//     Copyright (C) 2013  Tim Potze
+// 
+//     This program is free software: you can redistribute it and/or modify
+//     it under the terms of the GNU General Public License as published by
+//     the Free Software Foundation, either version 3 of the License, or
+//     (at your option) any later version.
+// 
+//     This program is distributed in the hope that it will be useful,
+//     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//     GNU General Public License for more details.
+// 
+//     You should have received a copy of the GNU General Public License
+//     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading;
 
 namespace LogiFrame.Components
 {
     /// <summary>
-    /// Represents a drawable animation.
+    ///     Represents a drawable animation.
     /// </summary>
     public class Animation : Picture
     {
-
         #region Fields
 
-        private Bytemap[] _bytemaps;
-        private Thread _thread;
-        private bool _run;
         private bool _autoInterval = true;
-        private int _interval;
+        private Bytemap[] _bytemaps;
         private int _frame;
-
+        private int _interval;
+        private bool _run;
+        private Thread _thread;
 
         #endregion
 
         #region Properties
-        
+
         /// <summary>
-        /// The time in MS each frame lasts.
+        ///     The time in MS each frame lasts.
         /// </summary>
         public int Interval
         {
             get { return _interval; }
             set
             {
-                if(!AutoInterval)
+                if (!AutoInterval)
                     _interval = value;
             }
         }
 
         /// <summary>
-        /// Whether the current LogiFrame.Components.Animation should
-        /// automatically calculate the Interval.
+        ///     Whether the current LogiFrame.Components.Animation should
+        ///     automatically calculate the Interval.
         /// </summary>
         public bool AutoInterval
         {
@@ -51,13 +67,13 @@ namespace LogiFrame.Components
 
                 _autoInterval = value;
 
-                if(value)
+                if (value)
                     Interval = GetFrameDuration();
             }
         }
 
         /// <summary>
-        /// The animated image to be rendered.
+        ///     The animated image to be rendered.
         /// </summary>
         public override Image Image
         {
@@ -77,7 +93,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// The conversion method to be used to render the animation.
+        ///     The conversion method to be used to render the animation.
         /// </summary>
         public override ConversionMethod ConversionMethod
         {
@@ -97,7 +113,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// The 0-based frame index to be rendered.
+        ///     The 0-based frame index to be rendered.
         /// </summary>
         public int Frame
         {
@@ -119,7 +135,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// The number of frames in the current animation.
+        ///     The number of frames in the current animation.
         /// </summary>
         public int FrameCount
         {
@@ -133,14 +149,11 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Whether the animation should automatically cycle trough its frames.
+        ///     Whether the animation should automatically cycle trough its frames.
         /// </summary>
         public bool Run
         {
-            get
-            {
-                return _run;
-            }
+            get { return _run; }
             set
             {
                 if (_run == value)
@@ -197,7 +210,7 @@ namespace LogiFrame.Components
             for (int i = 0; i < frames; i++)
             {
                 Image.SelectActiveFrame(dimension, i);
-                _bytemaps[i] = Bytemap.FromBitmap((Bitmap)Image, ConversionMethod);
+                _bytemaps[i] = Bytemap.FromBitmap((Bitmap) Image, ConversionMethod);
             }
 
             //calculate interval
@@ -215,7 +228,7 @@ namespace LogiFrame.Components
             {
                 PropertyItem item = Image.GetPropertyItem(0x5100); // FrameDelay in libgdiplus
                 // Time is in 1/100th of a second
-                return (item.Value[0] + item.Value[1] * 256) * 10;
+                return (item.Value[0] + item.Value[1]*256)*10;
             }
             catch //any exception
             {
