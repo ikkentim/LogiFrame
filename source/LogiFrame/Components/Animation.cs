@@ -4,19 +4,43 @@ using System.Threading;
 
 namespace LogiFrame.Components
 {
+    /// <summary>
+    /// Represents a drawable animation.
+    /// </summary>
     public class Animation : Picture
     {
-        private Bytemap[] _bytemaps;
 
-        private bool _run = false;
+        #region Fields
+
+        private Bytemap[] _bytemaps;
+        private Thread _thread;
+        private bool _run;
+        private bool _autoInterval = true;
+        private int _interval;
         private int _frame;
 
-        private bool _autoInterval = true;
 
-        private Thread _thread = null;
+        #endregion
 
-        public int Interval { get; set; }
+        #region Properties
+        
+        /// <summary>
+        /// The time in MS each frame lasts.
+        /// </summary>
+        public int Interval
+        {
+            get { return _interval; }
+            set
+            {
+                if(!AutoInterval)
+                    _interval = value;
+            }
+        }
 
+        /// <summary>
+        /// Whether the current LogiFrame.Components.Animation should
+        /// automatically calculate the Interval.
+        /// </summary>
         public bool AutoInterval
         {
             get { return _autoInterval; }
@@ -32,6 +56,9 @@ namespace LogiFrame.Components
             }
         }
 
+        /// <summary>
+        /// The animated image to be rendered.
+        /// </summary>
         public override Image Image
         {
             get { return base.Image; }
@@ -49,6 +76,9 @@ namespace LogiFrame.Components
             }
         }
 
+        /// <summary>
+        /// The conversion method to be used to render the animation.
+        /// </summary>
         public override ConversionMethod ConversionMethod
         {
             get { return base.ConversionMethod; }
@@ -66,6 +96,9 @@ namespace LogiFrame.Components
             }
         }
 
+        /// <summary>
+        /// The 0-based frame index to be rendered.
+        /// </summary>
         public int Frame
         {
             get { return _frame; }
@@ -85,6 +118,9 @@ namespace LogiFrame.Components
             }
         }
 
+        /// <summary>
+        /// The number of frames in the current animation.
+        /// </summary>
         public int FrameCount
         {
             get
@@ -96,6 +132,9 @@ namespace LogiFrame.Components
             }
         }
 
+        /// <summary>
+        /// Whether the animation should automatically cycle trough its frames.
+        /// </summary>
         public bool Run
         {
             get
@@ -117,10 +156,9 @@ namespace LogiFrame.Components
             }
         }
 
-        public void Next()
-        {
-            Frame++;
-        }
+        #endregion
+
+        #region Methods
 
         protected override Bytemap Render()
         {
@@ -139,11 +177,14 @@ namespace LogiFrame.Components
 
         private void RenderAnimation()
         {
+            //If no image is set, don't render anything.
             if (Image == null)
             {
                 _bytemaps = null;
                 return;
             }
+
+            //Calculate frame dimensions
             FrameDimension dimension = new FrameDimension(Image.FrameDimensionsList[0]);
 
             // Get numer of frames
@@ -186,10 +227,12 @@ namespace LogiFrame.Components
         {
             while (Run && Interval > 0)
             {
-                Next();
+                Frame++;
                 Thread.Sleep(Interval);
             }
             _thread = null;
         }
+
+        #endregion
     }
 }

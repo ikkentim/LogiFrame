@@ -75,7 +75,7 @@ namespace Test
             if (e.Button == 1)
                 ((Frame)sender).Refresh(true);
             if (e.Button == 2)
-                ani.Next();
+                ani.Frame++;
             Debug.WriteLine("Button pressed: " + e.Button);
         }
     }
