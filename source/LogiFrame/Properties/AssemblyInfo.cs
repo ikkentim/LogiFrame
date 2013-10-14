@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("LogiFrame")]
-[assembly: AssemblyCopyright("Copyright © ikkentim 2013")]
+[assembly: AssemblyCopyright("Copyright © Tim Potze 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
