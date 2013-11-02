@@ -50,6 +50,7 @@ namespace LogiFrame.Components
             {
                 if (!AutoInterval)
                     _interval = value;
+                CheckThreadRunning();
             }
         }
 
@@ -68,7 +69,7 @@ namespace LogiFrame.Components
                 _autoInterval = value;
 
                 if (value)
-                    Interval = GetFrameDuration();
+                    _interval = GetFrameDuration();
             }
         }
 
@@ -89,6 +90,7 @@ namespace LogiFrame.Components
 
                 RenderAnimation();
                 HasChanged = true;
+                CheckThreadRunning();
             }
         }
 
@@ -109,6 +111,7 @@ namespace LogiFrame.Components
 
                 RenderAnimation();
                 HasChanged = true;
+                CheckThreadRunning();
             }
         }
 
@@ -188,6 +191,15 @@ namespace LogiFrame.Components
             Image.Dispose();
         }
 
+        private void CheckThreadRunning()
+        {
+            //Check if the thread is running
+            if (Run && _thread == null)
+            {
+                _thread = new Thread(AnimationThread);
+                _thread.Start();
+            }
+        }
         private void RenderAnimation()
         {
             //If no image is set, don't render anything.
@@ -215,7 +227,7 @@ namespace LogiFrame.Components
 
             //calculate interval
             if (AutoInterval)
-                Interval = GetFrameDuration();
+                _interval = GetFrameDuration();
 
             //check current frame
             if (_frame < 0 || _frame >= frames)

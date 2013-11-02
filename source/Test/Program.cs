@@ -13,13 +13,13 @@ namespace Test
         private static void Main()
         {
             //Test application
-            Frame frame = new Frame("LogiFrame test application", false, false, false, true)
+            Frame frame = new Frame("LogiFrame test application", false, false, true)
             {
                 UpdatePriority = UpdatePriority.Alert
             };
 
             frame.ButtonDown += frame_ButtonDown;
-
+            frame.Configure += frame_Configure;
             Line line = new Line
             {
                 Start = new Location(130, 30),
@@ -56,7 +56,8 @@ namespace Test
                 Location = new Location(0, -10),
                 AutoSize = true,
                 ConversionMethod = ConversionMethod.QuarterByte,
-                Image = Properties.Resources.banana
+                Image = Properties.Resources.banana,
+                Run = true
             };
 
             frame.Components.Add(sq);
@@ -66,6 +67,11 @@ namespace Test
             frame.Components.Add(ani);
             Debug.WriteLine("\nApplication initialized\n");
             frame.WaitForClose();
+        }
+
+        static void frame_Configure(object sender, EventArgs e)
+        {
+            Debug.WriteLine("CONFIGURE");
         }
 
         static void frame_ButtonDown(object sender, ButtonEventArgs e)

@@ -29,7 +29,7 @@ namespace LogiFrame.Components
         #region Fields
 
         private Bytemap _bytemap;
-        private bool _hasChanged = false;
+        private bool _hasChanged = true;
         private bool _isRendering;
         private Location _location = new Location();
         private Location _renderOffset = new Location();
@@ -220,7 +220,7 @@ namespace LogiFrame.Components
             get { return _hasChanged; }
             set
             {
-                if (Disposed || IsRendering || _hasChanged == value)
+                if (Disposed || IsRendering)
                     return;
 
                 _hasChanged = value;
