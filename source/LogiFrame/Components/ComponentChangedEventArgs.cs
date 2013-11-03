@@ -36,8 +36,8 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     The component that has been changed.
+        ///     Gets the component which has been changed.
         /// </summary>
-        public Component Component { get; set; }
+        public Component Component { get; private set; }
     }
 }

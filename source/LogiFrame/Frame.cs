@@ -204,34 +204,34 @@ namespace LogiFrame
         #region Properties
 
         /// <summary>
-        ///     A string that contains the 'friendly name' of the application.
+        ///     Gets a string that contains the 'friendly name' of the application.
         ///     This name is presented to the user whenever a list of applications is shown.
         /// </summary>
         public string ApplicationName { get; private set; }
 
         /// <summary>
-        ///     Whether application can be started by LCDMon or not.
+        ///     Gets whether application can be started by LCDMon or not.
         /// </summary>
         public bool IsAutostartable { get; private set; }
 
         /// <summary>
-        ///     Whether connection is temporary or whether it is
+        ///     Gets whether connection is temporary or whether it is
         ///     a regular connection that should be added to the list.
         /// </summary>
         public bool IsPersistent { get; private set; }
 
         /// <summary>
-        ///     Whether the 'configure' option is being shown in LCDmon.
+        ///     Gets whether the 'configure' option is being shown in LCDmon.
         /// </summary>
         public bool AllowConfiguration { get; private set; }
 
         /// <summary>
-        ///     Whether LogiFrame.Frame is simulating the display.
+        ///     Gets whether LogiFrame.Frame is simulating the LCD display on-screen.
         /// </summary>
         public bool Simulate { get; private set; }
 
         /// <summary>
-        ///     The priority of the forthcoming LCD updates.
+        ///     Gets or sets the priority for the forthcoming LCD updates.
         /// </summary>
         public UpdatePriority UpdatePriority { get; set; }
 
@@ -307,6 +307,10 @@ namespace LogiFrame
 
         #region Private methods
 
+        /// <summary>
+        /// Pushes the given <paramref name="bytemap"/> to the display.
+        /// </summary>
+        /// <param name="bytemap">The LogiFrame.Bytemap to push.</param>
         private void UpdateScreen(Bytemap bytemap)
         {
             bool push = true;
@@ -328,6 +332,13 @@ namespace LogiFrame
         }
 
         //Callbacks
+        /// <summary>
+        /// Listener for LgLcd.
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="dwButtons"></param>
+        /// <param name="pContext"></param>
+        /// <returns></returns>
         private int lgLcd_onSoftButtonsCB(int device, int dwButtons, IntPtr pContext)
         {
             for (int i = 0, b = 1; i < 4; i++, b *= 2)
@@ -340,6 +351,12 @@ namespace LogiFrame
             return 1;
         }
 
+        /// <summary>
+        /// Listener for LgLcd.
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="pContext"></param>
+        /// <returns></returns>
         private int lgLcd_onConfigureCB(int connection, IntPtr pContext)
         {
             if (Configure != null)
@@ -347,6 +364,11 @@ namespace LogiFrame
             return 1;
         }
 
+        /// <summary>
+        /// Listener for LgLcd.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void mainContainer_ComponentChanged(object sender, EventArgs e)
         {
             if (Disposed || sender == null)

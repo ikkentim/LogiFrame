@@ -45,15 +45,20 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Occurs when a LogiFrame.Components.Component has been added to the current collection.
+        ///     Occurs when a LogiFrame.Components.Component has been added to this collection.
         /// </summary>
         public event ComponentChangedEventHandler ComponentAdded;
 
         /// <summary>
-        ///     Occurs when a LogiFrame.Components.Component has been removed from the current collection.
+        ///     Occurs when a LogiFrame.Components.Component has been removed from this collection.
         /// </summary>
         public event ComponentChangedEventHandler ComponentRemoved;
 
+        /// <summary>
+        ///     Listener for ObservableCollection.CollectionChanged.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ComponentCollection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Move)

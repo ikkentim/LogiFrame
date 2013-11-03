@@ -78,7 +78,7 @@ namespace LogiFrame
         #region Properties
 
         /// <summary>
-        ///     The x-coordinate of the LogiFrame.Location.
+        ///     Gets or sets the x-coordinate of the LogiFrame.Location.
         /// </summary>
         public int X
         {
@@ -87,7 +87,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     The y-coordinate of the LogiFrame.Location.
+        ///     Gets or sets the y-coordinate of the LogiFrame.Location.
         /// </summary>
         public int Y
         {
@@ -100,7 +100,7 @@ namespace LogiFrame
         #region Methods
 
         /// <summary>
-        ///     Adds a certain value to the current LogiFrame.Location instance.
+        ///     Adds a certain value to this LogiFrame.Location instance.
         /// </summary>
         /// <param name="x">Value to add to the x-coordinate.</param>
         /// <param name="y">Value to add to the y-coordinate.</param>
@@ -115,7 +115,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Adds a certain value to the current LogiFrame.Location instance.
+        ///     Adds a certain value to this LogiFrame.Location instance.
         /// </summary>
         /// <param name="other">Value to add to the x- and y-coordinate.</param>
         public void Add(Location other)
@@ -129,7 +129,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Set a certain value to the current LogiFrame.Location instance.
+        ///     Set a certain value to this LogiFrame.Location instance.
         /// </summary>
         /// <param name="x">The new x-coordinate value.</param>
         /// <param name="y">The new y-coordinate value.</param>
@@ -144,7 +144,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Set a certain value to the current LogiFrame.Location instance.
+        ///     Set a certain value to this LogiFrame.Location instance.
         /// </summary>
         /// <param name="other">An instance of LogiFrame.Location to copy the coordinates from.</param>
         public void Set(Location other)
@@ -229,11 +229,11 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Determines whether the specified System.Object is equal to the current LogiFrame.Location.
+        ///     Determines whether the specified System.Object is equal to this LogiFrame.Location.
         /// </summary>
-        /// <param name="obj">The System.Object to compare with the current LogiFrame.Location.</param>
+        /// <param name="obj">The System.Object to compare with this LogiFrame.Location.</param>
         /// <returns>
-        ///     true if the specified System.Object is equal to the current LogiFrame.Location;
+        ///     true if the specified System.Object is equal to this LogiFrame.Location;
         ///     otherwise, false.
         /// </returns>
         public override bool Equals(object obj)

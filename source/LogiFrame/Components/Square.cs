@@ -26,7 +26,7 @@ namespace LogiFrame.Components
         private bool _fill;
 
         /// <summary>
-        ///     Whether the LogiFrame.Components.Square should be filled.
+        ///     Gets or sets whether the LogiFrame.Components.Square should be filled.
         /// </summary>
         public bool Fill
         {

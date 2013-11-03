@@ -56,31 +56,31 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     The maximum red color value for a pixel to be filled.
+        ///     Gets or sets the maximum red color value for a pixel to be filled.
         /// </summary>
         public byte MaxRed { get; set; }
 
         /// <summary>
-        ///     The maximum green color value for a pixel to be filled.
+        ///     Gets or sets the maximum green color value for a pixel to be filled.
         /// </summary>
         public byte MaxGreen { get; set; }
 
         /// <summary>
-        ///     The maximum blue color value for a pixel to be filled.
+        ///     Gets or sets the maximum blue color value for a pixel to be filled.
         /// </summary>
         public byte MaxBlue { get; set; }
 
         /// <summary>
-        ///     The minimum alpha color value for a pixel to be filled.
+        ///     Gets or sets the minimum alpha color value for a pixel to be filled.
         /// </summary>
         public byte MinAlpha { get; set; }
 
         /// <summary>
-        ///     Determines whether the specified System.Object is equal to the current LogiFrame.ConversionMethod.
+        ///     Determines whether the specified System.Object is equal to this LogiFrame.ConversionMethod.
         /// </summary>
-        /// <param name="obj">The System.Object to compare with the current LogiFrame.ConversionMethod.</param>
+        /// <param name="obj">The System.Object to compare with this LogiFrame.ConversionMethod.</param>
         /// <returns>
-        ///     true if the specified System.Object is equal to the current LogiFrame.ConversionMethod;
+        ///     true if the specified System.Object is equal to this LogiFrame.ConversionMethod;
         ///     otherwise, false.
         /// </returns>
         public override bool Equals(object obj)

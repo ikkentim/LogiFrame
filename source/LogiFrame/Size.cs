@@ -82,7 +82,7 @@ namespace LogiFrame
         #region Properties
 
         /// <summary>
-        ///     The width of the LogiFrame.Size.
+        ///     Gets or sets the width of the LogiFrame.Size.
         /// </summary>
         public int Width
         {
@@ -91,7 +91,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     The height of the LogiFrame.Size.
+        ///     Gets or sets the height of the LogiFrame.Size.
         /// </summary>
         public int Height
         {
@@ -104,7 +104,7 @@ namespace LogiFrame
         #region Methods
 
         /// <summary>
-        ///     Adds a certain value to the current LogiFrame.Size instance.
+        ///     Adds a certain value to this LogiFrame.Size instance.
         /// </summary>
         /// <param name="width">Value to add to the width.</param>
         /// <param name="height">Value to add to the height</param>
@@ -123,7 +123,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Adds a certain value to the current LogiFrame.Size instance.
+        ///     Adds a certain value to this LogiFrame.Size instance.
         /// </summary>
         /// <param name="other">Value to add to the width and height.</param>
         public void Add(Size other)
@@ -137,7 +137,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Set a certain value to the current LogiFrame.Size instance.
+        ///     Set a certain value to this LogiFrame.Size instance.
         /// </summary>
         /// <param name="width">The new width value.</param>
         /// <param name="height">The new height value.</param>
@@ -155,7 +155,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Set a certain value to the current LogiFrame.Size instance.
+        ///     Set a certain value to this LogiFrame.Size instance.
         /// </summary>
         /// <param name="other">An instance of LogiFrame.Size to copy the dimensions from.</param>
         public void Set(Size other)
@@ -223,11 +223,11 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Determines whether the specified System.Object is equal to the current LogiFrame.Size.
+        ///     Determines whether the specified System.Object is equal to this LogiFrame.Size.
         /// </summary>
-        /// <param name="obj">The System.Object to compare with the current LogiFrame.Size.</param>
+        /// <param name="obj">The System.Object to compare with this LogiFrame.Size.</param>
         /// <returns>
-        ///     true if the specified System.Object is equal to the current LogiFrame.Size;
+        ///     true if the specified System.Object is equal to this LogiFrame.Size;
         ///     otherwise, false.
         /// </returns>
         public override bool Equals(object obj)

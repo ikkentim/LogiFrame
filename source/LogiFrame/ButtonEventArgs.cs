@@ -35,8 +35,8 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Represents the 0-based number of the button being pressed.
+        ///     Gets the 0-based number of the button being pressed.
         /// </summary>
-        public int Button { get; set; }
+        public int Button { get; private set; }
     }
 }

@@ -36,7 +36,7 @@ namespace LogiFrame
         #region Statics
 
         /// <summary>
-        ///     Represens an empty Bytemap.
+        ///     Represents an empty Bytemap.
         /// </summary>
         public static readonly Bytemap Empty;
 
@@ -110,25 +110,25 @@ namespace LogiFrame
         #region Properties
 
         /// <summary>
-        ///     The byte[] array container all the date of the canvas.
+        ///     Gets the byte[] array container all the date of the canvas.
         /// </summary>
         public byte[] Data { get; private set; }
 
         /// <summary>
-        ///     Whether the non-filled pixels should draw the lower-located
+        ///     Gets or sets whether the non-filled pixels should draw the lower-located
         ///     pixels when using the LogiFrame.Bytemap.Merge method.
         /// </summary>
         public bool Transparent { get; set; }
 
         /// <summary>
-        ///     Whether pixels around the filled pixels should always be non-filled
+        ///     Gets or sets whether pixels around the filled pixels should always be non-filled
         ///     when using the LogiFrame.Bytemap.Merge method.
         /// </summary>
         public bool TopEffect { get; set; }
 
 
         /// <summary>
-        ///     The LogiFrame.Size of this LogiFrame.Bytemap.
+        ///     Gets or sets the LogiFrame.Size of this LogiFrame.Bytemap.
         /// </summary>
         public Size Size
         {
@@ -146,11 +146,11 @@ namespace LogiFrame
                 }
                 else
                 {
-                    _size.Changed -= size_SizeChanged;
+                    _size.Changed -= size_Changed;
                 }
 
                 _size = value;
-                _size.Changed += size_SizeChanged;
+                _size.Changed += size_Changed;
 
                 Resize();
             }
@@ -197,7 +197,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Get the content of the specified pixel in this LogiFrame.Bytemap.
+        ///     Gets the content of the specified pixel in this LogiFrame.Bytemap.
         /// </summary>
         /// <param name="location">The location of the pixel to get.</param>
         /// <returns>Whether the pixel is filled</returns>
@@ -207,7 +207,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Get the content of the specified pixel in this LogiFrame.Bytemap.
+        ///     Gets the content of the specified pixel in this LogiFrame.Bytemap.
         /// </summary>
         /// <param name="x">The x-coordinate of the pixel to get.</param>
         /// <param name="y">The y-coordinate of the pixel to get.</param>
@@ -221,9 +221,9 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Merge the given LogiFrame.Bytemap into the current LogiFrame.Bytemap at the specified location.
+        ///     Merges the given LogiFrame.Bytemap into this LogiFrame.Bytemap at the specified LogiFrame.Location.
         /// </summary>
-        /// <param name="bytemap">The LogiFrame.Bytemap to merge into the current LogiFrame.Bytemap.</param>
+        /// <param name="bytemap">The LogiFrame.Bytemap to merge into this LogiFrame.Bytemap.</param>
         /// <param name="location">The LogiFrame.Location to merge the LogiFrame.Bytemap at.</param>
         public void Merge(Bytemap bytemap, Location location)
         {
@@ -295,6 +295,9 @@ namespace LogiFrame
 
         #region Private methods
 
+        /// <summary>
+        /// Resizes the byte array according to the Size.
+        /// </summary>
         private void Resize()
         {
             if (_width != Size.Width || _height != Size.Height)
@@ -315,7 +318,12 @@ namespace LogiFrame
             }
         }
 
-        private void size_SizeChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Listener for Size.Changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void size_Changed(object sender, EventArgs e)
         {
             Resize();
         }

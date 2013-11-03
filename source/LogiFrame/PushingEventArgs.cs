@@ -35,13 +35,13 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Indicates whether this frame should be prevented from being
+        ///     Gets or sets whether this frame should be prevented from being
         ///     pushed to the display.
         /// </summary>
         public bool PreventPush { get; set; }
 
         /// <summary>
-        ///     The frame that is about to be
+        ///     Gets the frame that is about to be
         /// </summary>
         public Bytemap Frame { get; private set; }
     }

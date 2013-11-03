@@ -84,5 +84,6 @@ namespace Test
                 ani.Frame++;
             Debug.WriteLine("Button pressed: " + e.Button);
         }
+
     }
 }

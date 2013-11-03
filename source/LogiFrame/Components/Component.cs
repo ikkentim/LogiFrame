@@ -22,7 +22,7 @@ using System.Diagnostics;
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a renderable component for LogiFrame.Frame
+    ///     An abstract base class that provides functionality for the LogiFrame.Frame class.
     /// </summary>
     public abstract class Component : IDisposable
     {
@@ -48,8 +48,8 @@ namespace LogiFrame.Components
         /// </summary>
         internal Component()
         {
-            _location.Changed += new EventHandler(location_LocationChanged);
-            _size.Changed += new EventHandler(size_SizeChanged);
+            _location.Changed += new EventHandler(location_Changed);
+            _size.Changed += new EventHandler(size_Changed);
         }
 
         /// <summary>
@@ -79,8 +79,8 @@ namespace LogiFrame.Components
         #region Properties
 
         /// <summary>
-        ///     The LogiFrame.Location this LogiFrame.Components.Comonent should
-        ///     be rendered at in the parrent LogiFrame.Components.Container.
+        ///     Gets or sets the LogiFrame.Location this LogiFrame.Components.Comonent should
+        ///     be rendered at within the parrent LogiFrame.Components.Container.
         /// </summary>
         public virtual Location Location
         {
@@ -96,8 +96,8 @@ namespace LogiFrame.Components
                 if (_location == value)
                     return;
 
-                _location.Changed -= location_LocationChanged;
-                value.Changed += location_LocationChanged;
+                _location.Changed -= location_Changed;
+                value.Changed += location_Changed;
 
                 _location = value;
 
@@ -107,14 +107,18 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Get the exact LogiFrame.Location this LogiFrame.Components.Component should
-        ///     be rendered at in the parrent LogiFrame.Components.Container.
+        ///     Gets the exact LogiFrame.Location this LogiFrame.Components.Component should
+        ///     be rendered at within the parrent LogiFrame.Components.Container.
         /// </summary>
         public Location RenderLocation
         {
             get { return _location + _renderOffset; }
         }
 
+        /// <summary>
+        ///     Gets or sets the offset from the actual Location this LogiFrame.Components.Component 
+        ///     should be rendered at within the parrent LogiFrame.Components.Container.
+        /// </summary>
         protected Location RenderOffset
         {
             get { return _renderOffset; }
@@ -129,8 +133,8 @@ namespace LogiFrame.Components
                 if (_renderOffset == value)
                     return;
 
-                _renderOffset.Changed -= location_LocationChanged;
-                value.Changed += location_LocationChanged;
+                _renderOffset.Changed -= location_Changed;
+                value.Changed += location_Changed;
 
                 _renderOffset = value;
 
@@ -140,7 +144,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     The LogiFrame.Size of this LogiFrame.Components.Component.
+        ///     Gets or sets the LogiFrame.Size of this LogiFrame.Components.Component.
         /// </summary>
         public virtual Size Size
         {
@@ -156,8 +160,8 @@ namespace LogiFrame.Components
                 if (_size == value)
                     return;
 
-                _size.Changed -= size_SizeChanged;
-                value.Changed += size_SizeChanged;
+                _size.Changed -= size_Changed;
+                value.Changed += size_Changed;
 
                 _size = value;
                 HasChanged = true;
@@ -165,7 +169,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Whether this LogiFrame.Components.Component should have Bytemap.TopEffect enabled.
+        ///     Gets or sets whether this LogiFrame.Components.Component should have Bytemap.TopEffect enabled when rendered.
         /// </summary>
         public bool TopEffect
         {
@@ -181,7 +185,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Whether this LogiFrame.Components.Component should have Bytemap.Transparent enabled.
+        ///     Gets or sets whether this LogiFrame.Components.Component should have Bytemap.Transparent enabled when rendered.
         /// </summary>
         public bool Transparent
         {
@@ -197,7 +201,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Whether this LogiFrame.Components.Component should be visible.
+        ///     Gets or sets whether this LogiFrame.Components.Component should be visible.
         /// </summary>
         public bool Visible
         {
@@ -213,7 +217,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Whether this LogiFrame.Component has been changed since the last render.
+        ///     Gets or sets whether this LogiFrame.Component has been changed since the lastest render.
         /// </summary>
         public bool HasChanged
         {
@@ -231,7 +235,8 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Whether this LogiFrame.Component is in the process of rendering itself.
+        ///     Gets or sets(protected) whether this LogiFrame.Component is in the process of rendering itself.
+        ///     When IsRendering is True, the component won't be calling listeners of Changed when HasChanged is set to True.
         /// </summary>
         public bool IsRendering
         {
@@ -245,12 +250,12 @@ namespace LogiFrame.Components
         public object Tag { get; set; }
 
         /// <summary>
-        ///     Whether this LogiFrame.Components.Component has been disposed.
+        ///     Gets whether this LogiFrame.Components.Component has been disposed.
         /// </summary>
         public bool Disposed { get; private set; }
 
         /// <summary>
-        ///     Gets the rendered LogiFrame.Bytemap of the current LogiFrame.Components.Component.
+        ///     Gets the rendered LogiFrame.Bytemap of this LogiFrame.Components.Component.
         /// </summary>
         public Bytemap Bytemap
         {
@@ -284,7 +289,7 @@ namespace LogiFrame.Components
         /// <summary>
         ///     Refreshes the LogiFrame.Components.Component.Bytemap and renders it if nececcary.
         /// </summary>
-        /// <param name="forceRefresh">Force the LogiFrame.Components.Component.Bytemap being rerendered even if it hasn't changed</param>
+        /// <param name="forceRefresh">Forces the LogiFrame.Components.Component.Bytemap being rerendered even if it hasn't changed when True.</param>
         public virtual void Refresh(bool forceRefresh)
         {
             if (Disposed)
@@ -319,9 +324,9 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Renders all grahpics of the current LogiFrame.Components.Component
+        ///     Renders all grahpics of this LogiFrame.Components.Component.
         /// </summary>
-        /// <returns>The rendered LogiFrame.Bytemap</returns>
+        /// <returns>The rendered LogiFrame.Bytemap.</returns>
         protected abstract Bytemap Render();
 
         #endregion
@@ -329,12 +334,22 @@ namespace LogiFrame.Components
         #region Private methods
 
         //Callbacks
-        private void size_SizeChanged(object sender, EventArgs e)
+        /// <summary>
+        ///     Listens to Size.Changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void size_Changed(object sender, EventArgs e)
         {
             HasChanged = true;
         }
 
-        private void location_LocationChanged(object sender, EventArgs e)
+        /// <summary>
+        ///     Listens to Location.Changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void location_Changed(object sender, EventArgs e)
         {
             if (!Disposed && LocationChanged != null)
                 LocationChanged(sender, e);

@@ -30,7 +30,7 @@ namespace LogiFrame.Components
         private string _text;
 
         /// <summary>
-        ///     The text the current LogiFrame.Components.Label should draw.
+        ///     Gets or sets the text this LogiFrame.Components.Label should draw.
         /// </summary>
         public string Text
         {
@@ -50,7 +50,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     The font the current LogiFrame.Components.Label should draw with.
+        ///     Gets or sets the System.Drawing.Font this LogiFrame.Components.Label should draw with.
         /// </summary>
         public System.Drawing.Font Font
         {
@@ -68,8 +68,8 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Whether this LogiFrame.Components.Label should automatically
-        ///     resize when the text has changed.
+        ///     Gets or sets whether this LogiFrame.Components.Label should automatically
+        ///     resize to fit the Text.
         /// </summary>
         public bool AutoSize
         {
@@ -87,7 +87,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     The LogiFrame.Size of this LogiFrame.Components.Label.
+        ///     Gets or sets the LogiFrame.Size of this LogiFrame.Components.Label.
         /// </summary>
         public override Size Size
         {
@@ -109,6 +109,10 @@ namespace LogiFrame.Components
             return Bytemap.FromBitmap(bmp);
         }
 
+        /// <summary>
+        /// Measures the size of the Text when rendered with the set Font.
+        /// </summary>
+        /// <param name="silent">Whether the change of font should make the LogiFrame.Components.Label rerender.</param>
         private void MeasureText(bool silent)
         {
             if (silent)

@@ -48,7 +48,7 @@ namespace LogiFrame.Components
         #region Properties
 
         /// <summary>
-        ///     Location in the parent LogiFrame.Components.Container where the line should start at.
+        ///     Gets or sets the LogiFrame.Location within the parent LogiFrame.Components.Container where the line should start at.
         /// </summary>
         public Location Start
         {
@@ -63,7 +63,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Location in the parent LogiFrame.Components.Container where the line should end at.
+        ///     Gets or sets the LogiFrame.Location within the parent LogiFrame.Components.Container where the line should end at.
         /// </summary>
         public Location End
         {
@@ -96,11 +96,21 @@ namespace LogiFrame.Components
 
         #region Private methods
 
+        /// <summary>
+        /// Listener for Location.Changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void end_Changed(object sender, EventArgs e)
         {
             End = _end;
         }
 
+        /// <summary>
+        /// Listener for Location.Changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void start_Changed(object sender, EventArgs e)
         {
             Start = _start;
