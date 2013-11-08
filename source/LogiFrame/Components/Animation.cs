@@ -194,7 +194,7 @@ namespace LogiFrame.Components
         private void CheckThreadRunning()
         {
             //Check if the thread is running
-            if (Run && _thread == null)
+            if (!Disposed && Run && _thread == null)
             {
                 _thread = new Thread(AnimationThread);
                 _thread.Start();
@@ -206,6 +206,9 @@ namespace LogiFrame.Components
         /// </summary>
         private void RenderAnimation()
         {
+            if (Disposed)
+                throw new ObjectDisposedException("Resource was disposed.");
+
             //If no image is set, don't render anything.
             if (Image == null)
             {
@@ -257,11 +260,11 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Cycles trough all the frames on the set <paramref name="Interval"/>.
+        /// Cycles trough all the frames on the set Interval.
         /// </summary>
         private void AnimationThread()
         {
-            while (Run && Interval > 0)
+            while (!Disposed && Run && Interval > 0)
             {
                 Frame++;
                 Thread.Sleep(Interval);

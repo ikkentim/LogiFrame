@@ -75,9 +75,6 @@ namespace LogiFrame.Components
 
         protected override Bytemap Render()
         {
-            if (Disposed)
-                throw new ObjectDisposedException("Resource was disposed.");
-
             Bytemap result = new Bytemap(Size);
 
             foreach (Component c in Components)
