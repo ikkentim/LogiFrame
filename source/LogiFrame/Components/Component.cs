@@ -17,7 +17,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
-using System.Diagnostics;
 
 namespace LogiFrame.Components
 {
@@ -298,7 +297,7 @@ namespace LogiFrame.Components
             if (!forceRefresh && !HasChanged)
                 return;
 
-            System.Diagnostics.Debug.WriteLine("[DEBUG] Rendering " + ToString() + " @ " + Location + " of " + Size);
+            //System.Diagnostics.Debug.WriteLine("[DEBUG] Rendering " + ToString() + " @ " + Location + " of " + Size);
 
             _isRendering = true;
             _bytemap = Render() ?? new Bytemap(1, 1);

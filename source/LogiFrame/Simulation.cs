@@ -17,7 +17,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
-using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace LogiFrame
@@ -54,11 +53,12 @@ namespace LogiFrame
 
         private void frame_Pushing(object sender, PushingEventArgs e)
         {
-            Invoke((MethodInvoker) delegate
-            {
-                Text = _frame.ApplicationName + " (" + _frame.UpdatePriority + ")";
-                displayPictureBox.Image = e.Frame;
-            });
+            if (this.IsHandleCreated)
+                Invoke((MethodInvoker)delegate
+                {
+                    Text = _frame.ApplicationName + " (" + _frame.UpdatePriority + ")";
+                    displayPictureBox.Image = e.Frame;
+                });
         }
 
         private void frame_FrameClosed(object sender, EventArgs e)

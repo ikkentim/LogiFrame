@@ -13,7 +13,7 @@ namespace Test
         private static void Main()
         {
             //Test application
-            Frame frame = new Frame("LogiFrame test application", false, false, true)
+            Frame frame = new Frame("LogiFrame test application", false, false, true, true)
             {
                 UpdatePriority = UpdatePriority.Alert
             };
