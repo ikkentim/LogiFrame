@@ -1,20 +1,20 @@
-﻿//     Frame.cs
+﻿// Frame.cs
 // 
-//     LogiFrame rendering library.
-//     Copyright (C) 2013  Tim Potze
+// LogiFrame rendering library.
+// Copyright (C) 2013 Tim Potze
 // 
-//     This program is free software: you can redistribute it and/or modify
-//     it under the terms of the GNU General Public License as published by
-//     the Free Software Foundation, either version 3 of the License, or
-//     (at your option) any later version.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 // 
-//     This program is distributed in the hope that it will be useful,
-//     but WITHOUT ANY WARRANTY; without even the implied warranty of
-//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//     GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 // 
-//     You should have received a copy of the GNU General Public License
-//     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
 using System.Threading;
@@ -29,11 +29,11 @@ namespace LogiFrame
     {
         #region Fields
 
-        private LgLcd.lgLcdBitmap160x43x1 _bitmap = new LgLcd.lgLcdBitmap160x43x1();
+        private LgLcd.lgLcdBitmap160x43x1 _bitmap;
 
-        private int _buttonState = 0;
-        private LgLcd.lgLcdConnectContext _connection = new LgLcd.lgLcdConnectContext();
-        private LgLcd.lgLcdOpenContext _openContext = new LgLcd.lgLcdOpenContext();
+        private int _buttonState;
+        private LgLcd.lgLcdConnectContext _connection;
+        private LgLcd.lgLcdOpenContext _openContext;
 
         #endregion
 
@@ -116,7 +116,7 @@ namespace LogiFrame
 
             //Initialize main container
             Size = new Size((int) LgLcd.LGLCD_BMP_WIDTH, (int) LgLcd.LGLCD_BMP_HEIGHT);
-            Changed += new EventHandler(mainContainer_ComponentChanged);
+            Changed += mainContainer_ComponentChanged;
 
             //Store connection
             LgLcd.lgLcdInit();
