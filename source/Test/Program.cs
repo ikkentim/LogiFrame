@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Drawing;
 using LogiFrame;
 using LogiFrame.Components;
 using System.Diagnostics;
-using Size = LogiFrame.Size;
 
 namespace Test
 {
@@ -65,6 +63,7 @@ namespace Test
             frame.Components.Add(l);
             frame.Components.Add(pic);
             frame.Components.Add(ani);
+
             Debug.WriteLine("\nApplication initialized\n");
             frame.WaitForClose();
         }
