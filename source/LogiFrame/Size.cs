@@ -41,8 +41,6 @@ namespace LogiFrame
         /// </summary>
         public Size()
         {
-            width = 1;
-            height = 1;
         }
 
         /// <summary>
@@ -62,8 +60,8 @@ namespace LogiFrame
         /// <param name="height">The initial height.</param>
         public Size(int width, int height)
         {
-            if (width <= 0 || height <= 0)
-                throw new ArgumentOutOfRangeException("The width and height of a Size must be higher than 0.");
+            if (width < 0 || height < 0)
+                throw new ArgumentOutOfRangeException("The width and height of a Size must be at least 0.");
             this.width = width;
             this.height = height;
         }
@@ -112,8 +110,8 @@ namespace LogiFrame
         {
             bool changed = width != 0 || height != 0;
 
-            if (this.width + width <= 0 || this.height + height <= 0)
-                throw new ArgumentOutOfRangeException("The width and height of a Size must be higher than 0.");
+            if (this.width + width < 0 || this.height + height < 0)
+                throw new ArgumentOutOfRangeException("The width and height of a Size must be at least 0.");
 
             this.width += width;
             this.height += height;
@@ -143,8 +141,8 @@ namespace LogiFrame
         /// <param name="height">The new height value.</param>
         public void Set(int width, int height)
         {
-            if (width <= 0 || height <= 0)
-                throw new ArgumentOutOfRangeException("The width and height of a Size must be higher than 0.");
+            if (width < 0 || height < 0)
+                throw new ArgumentOutOfRangeException("The width and height of a Size must be at least 0.");
 
             bool changed = this.width != width || this.height != height;
             this.width = width;
