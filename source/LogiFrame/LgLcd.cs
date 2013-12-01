@@ -457,6 +457,9 @@ namespace LogiFrame
         [DllImport("LgLcd.dll")]
         public static extern int lgLcdUpdateBitmap(int device, ref lgLcdBitmap160x43x1 bitmap, uint priority);
 
+        /*
+         * DEPRICATED / DOES NOT WORK?
+         * 
         /// <summary>
         ///     The lgLcdSetAsLCDForegroundApp() allows an application to become the one shown on
         ///     the LCD and prevents the LCD library from switching to other applications, when the
@@ -491,8 +494,10 @@ namespace LogiFrame
         ///     Xxx
         ///     Other (system) error with appropriate error code.
         /// </returns>
+        
         [DllImport("LgLcd.dll")]
         public static extern int lgLcdSetAsLCDForegroundApp(int device, int foregroundYesNoFlag);
+        */
 
         /// <summary>
         ///     160x43x1 bitmap.  This includes a header and an array
