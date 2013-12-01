@@ -102,17 +102,17 @@ namespace LogiFrame
             _connection.isPersistent = IsPersistent = isPersistent;
             Simulate = simulate;
 
-            if (AllowConfiguration = allowConfiguration)
+            //Configuration callback
+            AllowConfiguration = allowConfiguration;
+            if (AllowConfiguration)
                 _connection.onConfigure.configCallback = lgLcd_onConfigureCB;
 
-            _connection.connection = LgLcd.LGLCD_INVALID_CONNECTION;
-
             //Set default updatepriority
-            UpdatePriority = LogiFrame.UpdatePriority.Normal;
+            UpdatePriority = UpdatePriority.Normal;
 
             //Start simulation thread
             if (simulate)
-                new Thread(() => { Simulation.Start(this); }).Start();
+                new Thread(() => Simulation.Start(this)).Start();
 
             //Initialize main container
             Size = new Size((int) LgLcd.LGLCD_BMP_WIDTH, (int) LgLcd.LGLCD_BMP_HEIGHT);
@@ -134,8 +134,7 @@ namespace LogiFrame
             LgLcd.lgLcdOpen(ref _openContext);
 
             //Store bitmap format
-            _bitmap.hdr = new LgLcd.lgLcdBitmapHeader();
-            _bitmap.hdr.Format = LgLcd.LGLCD_BMP_FORMAT_160x43x1;
+            _bitmap.hdr = new LgLcd.lgLcdBitmapHeader {Format = LgLcd.LGLCD_BMP_FORMAT_160x43x1};
 
             //Send empty bytemap
             UpdateScreen(null);
@@ -244,22 +243,21 @@ namespace LogiFrame
         /// </summary>
         public new void Dispose()
         {
-            if (!Disposed)
+            if (Disposed) return;
+
+            base.Dispose();
+
+            if (FrameClosed != null)
+                FrameClosed(this, EventArgs.Empty);
+
+            //Cannot de-initialize LgLcd from LgLcd-thread.
+            //As a precausion disposing resources from another thread
+            new Thread(() =>
             {
-                base.Dispose();
-
-                if (FrameClosed != null)
-                    FrameClosed(this, EventArgs.Empty);
-
-                //Cannot de-initialize LgLcd from LgLcd-thread.
-                //As a precausion disposing resources from another thread
-                new Thread(() =>
-                {
-                    LgLcd.lgLcdClose(_openContext.device);
-                    LgLcd.lgLcdDisconnect(_connection.connection);
-                    LgLcd.lgLcdDeInit();
-                }).Start();
-            }
+                LgLcd.lgLcdClose(_openContext.device);
+                LgLcd.lgLcdDisconnect(_connection.connection);
+                LgLcd.lgLcdDeInit();
+            }).Start();
         }
 
         /// <summary>
@@ -377,7 +375,8 @@ namespace LogiFrame
             if (Size.Width != LgLcd.LGLCD_BMP_WIDTH || Size.Height != LgLcd.LGLCD_BMP_HEIGHT)
                 throw new InvalidOperationException("The size of the LogiFrame.Frame container may not be changed.");
 
-            UpdateScreen((sender as Component).Bytemap);
+            var component = sender as Component;
+            if (component != null) UpdateScreen(component.Bytemap);
         }
 
         #endregion

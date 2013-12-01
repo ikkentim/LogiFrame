@@ -38,7 +38,7 @@ namespace LogiFrame
         /// <summary>
         ///     Represents an empty Bytemap.
         /// </summary>
-        public static readonly Bytemap Empty;
+        public static readonly Bytemap Empty = null;
 
         #endregion
 

@@ -29,8 +29,8 @@ namespace LogiFrame
     {
         #region Fields
 
-        private int height;
-        private int width;
+        private int _height;
+        private int _width;
 
         #endregion
 
@@ -49,8 +49,8 @@ namespace LogiFrame
         /// <param name="parent">An instance of LogiFrame.Size to copy the dimentions from.</param>
         public Size(Size parent)
         {
-            width = parent.Width;
-            height = parent.Height;
+            _width = parent.Width;
+            _height = parent.Height;
         }
 
         /// <summary>
@@ -62,8 +62,8 @@ namespace LogiFrame
         {
             if (width < 0 || height < 0)
                 throw new ArgumentOutOfRangeException("The width and height of a Size must be at least 0.");
-            this.width = width;
-            this.height = height;
+            _width = width;
+            _height = height;
         }
 
         #endregion
@@ -84,8 +84,8 @@ namespace LogiFrame
         /// </summary>
         public int Width
         {
-            get { return width; }
-            set { Set(value, height); }
+            get { return _width; }
+            set { Set(value, _height); }
         }
 
         /// <summary>
@@ -93,8 +93,8 @@ namespace LogiFrame
         /// </summary>
         public int Height
         {
-            get { return height; }
-            set { Set(width, value); }
+            get { return _height; }
+            set { Set(_width, value); }
         }
 
         #endregion
@@ -110,11 +110,11 @@ namespace LogiFrame
         {
             bool changed = width != 0 || height != 0;
 
-            if (this.width + width < 0 || this.height + height < 0)
+            if (_width + width < 0 || _height + height < 0)
                 throw new ArgumentOutOfRangeException("The width and height of a Size must be at least 0.");
 
-            this.width += width;
-            this.height += height;
+            _width += width;
+            _height += height;
 
             if (changed && Changed != null)
                 Changed(this, EventArgs.Empty);
@@ -127,8 +127,8 @@ namespace LogiFrame
         public void Add(Size other)
         {
             bool changed = other.Width != 0 || other.Height != 0;
-            width += other.Width;
-            height += other.Height;
+            _width += other.Width;
+            _height += other.Height;
 
             if (changed && Changed != null)
                 Changed(this, EventArgs.Empty);
@@ -144,9 +144,9 @@ namespace LogiFrame
             if (width < 0 || height < 0)
                 throw new ArgumentOutOfRangeException("The width and height of a Size must be at least 0.");
 
-            bool changed = this.width != width || this.height != height;
-            this.width = width;
-            this.height = height;
+            bool changed = _width != width || _height != height;
+            _width = width;
+            _height = height;
 
             if (changed && Changed != null)
                 Changed(this, EventArgs.Empty);
@@ -159,8 +159,8 @@ namespace LogiFrame
         public void Set(Size other)
         {
             bool changed = Width != other.Width || Height != other.Height;
-            width = other.Width;
-            height = other.Height;
+            _width = other.Width;
+            _height = other.Height;
 
             if (changed && Changed != null)
                 Changed(this, EventArgs.Empty);
