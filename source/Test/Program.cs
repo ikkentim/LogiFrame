@@ -2,12 +2,15 @@
 using LogiFrame;
 using LogiFrame.Components;
 using System.Diagnostics;
+using Label = LogiFrame.Components.Label;
 
 namespace Test
 {
     static class Program
     {
         private static Animation ani;
+        private static ProgressBar prog;
+
         private static void Main()
         {
             //Test application
@@ -49,20 +52,29 @@ namespace Test
                 Image = Properties.Resources.test
             };
 
+            prog = new ProgressBar
+            {
+                Location = new Location(40, 0),
+                Size = new System.Drawing.Size(60, 15),
+                Value = 30,
+                ProgressBarStyle = ProgressBarStyle.WhiteSpacedBorder
+            };
             ani = new Animation
             {
-                Location = new Location(0, -10),
+                Location = new Location(0, -3),
                 AutoSize = true,
                 ConversionMethod = ConversionMethod.QuarterByte,
                 Image = Properties.Resources.banana,
                 Run = true
             };
 
+
             frame.Components.Add(sq);
             frame.Components.Add(line);
             frame.Components.Add(l);
             frame.Components.Add(pic);
             frame.Components.Add(ani);
+            frame.Components.Add(prog);
 
             Debug.WriteLine("\nApplication initialized\n");
             frame.WaitForClose();
@@ -81,6 +93,8 @@ namespace Test
                 ((Frame)sender).Refresh(true);
             if (e.Button == 2)
                 ani.Frame++;
+            if (e.Button == 3)
+                prog.Value = 100 - prog.Value;
             Debug.WriteLine("Button pressed: " + e.Button);
         }
 
