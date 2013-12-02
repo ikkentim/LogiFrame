@@ -54,75 +54,75 @@ namespace LogiFrame
         /// <summary>
         /// Invalid connection constant
         /// </summary>
-        public static int LGLCD_INVALID_CONNECTION = -1;
+        public static int LglcdInvalidConnection = -1;
 
         /// <summary>
-        /// Invalid device constant
+        /// Invalid Device constant
         /// </summary>
-        public static int LGLCD_INVALID_DEVICE = -1;
+        public static int LglcdInvalidDevice = -1;
 
         /// <summary>
         /// Button mask for button 0 (first from left)
         /// </summary>
-        public static uint LGLCDBUTTON_BUTTON0 = 0x00000001;
+        public static uint LglcdbuttonButton0 = 0x00000001;
 
         /// <summary>
         /// Button mask for button 1 (second from left)
         /// </summary>
-        public static uint LGLCDBUTTON_BUTTON1 = 0x00000002;
+        public static uint LglcdbuttonButton1 = 0x00000002;
 
         /// <summary>
         /// Button mask for button 2 (third from left)
         /// </summary>
-        public static uint LGLCDBUTTON_BUTTON2 = 0x00000004;
+        public static uint LglcdbuttonButton2 = 0x00000004;
 
         /// <summary>
         /// Button mask for button 3 (fourth from left)
         /// </summary>
-        public static uint LGLCDBUTTON_BUTTON3 = 0x00000008;
+        public static uint LglcdbuttonButton3 = 0x00000008;
 
         /// <summary>
         /// Constant for G15 display resolution (160x43x1)
         /// </summary>
-        public static uint LGLCD_BMP_FORMAT_160x43x1 = 0x00000001;
+        public static uint LglcdBmpFormat160X43X1 = 0x00000001;
 
         /// <summary>
         /// Constant for G15 display width
         /// </summary>
-        public static uint LGLCD_BMP_WIDTH = 160;
+        public static uint LglcdBmpWidth = 160;
 
         /// <summary>
         /// Constant for G15 display height
         /// </summary>
-        public static uint LGLCD_BMP_HEIGHT = 43;
+        public static uint LglcdBmpHeight = 43;
 
         /// <summary>
         /// Lowest priority, disable displaying. Use this priority when you don't have
         /// anything to show.
         /// </summary>
-        public static uint LGLCD_PRIORITY_IDLE_NO_SHOW = 0;
+        public static uint LglcdPriorityIdleNoShow = 0;
 
         /// <summary>
         /// Priority used for low priority items.
         /// </summary>
-        public static uint LGLCD_PRIORITY_BACKGROUND = 64;
+        public static uint LglcdPriorityBackground = 64;
 
         /// <summary>
         /// Normal priority, to be used by most applications most of the time.
         /// </summary>
-        public static uint LGLCD_PRIORITY_NORMAL = 128;
+        public static uint LglcdPriorityNormal = 128;
 
         /// <summary>
         /// Highest priority. To be used only for critical screens, such as 'your CPU
         /// temperature is too high'
         /// </summary>
-        public static uint LGLCD_PRIORITY_ALERT = 255;
+        public static uint LglcdPriorityAlert = 255;
 
         /// <summary>
         /// </summary>
         /// <param name="priority"></param>
         /// <returns></returns>
-        public static uint LGLCD_SYNC_UPDATE(uint priority)
+        public static uint LglcdSyncUpdate(uint priority)
         {
             return 0x80000000 | priority;
         }
@@ -131,7 +131,7 @@ namespace LogiFrame
         /// </summary>
         /// <param name="priority"></param>
         /// <returns></returns>
-        public static uint LGLCD_ASYNC_UPDATE(uint priority)
+        public static uint LgLcdASyncUpdate(uint priority)
         {
             return priority;
         }
@@ -207,7 +207,7 @@ namespace LogiFrame
         /// ERROR_SERVICE_NOT_ACTIVE
         /// lgLcdInit() has not been called yet.
         /// ERROR_INVALID_PARAMETER
-        /// Either ctx or ctx->appFriendlyName are NULL.
+        /// Either ctx or ctx->AppFriendlyName are NULL.
         /// ERROR_FILE_NOT_FOUND
         /// LCDMon is not running on the system.
         /// ERROR_ALREADY_EXISTS
@@ -218,7 +218,7 @@ namespace LogiFrame
         /// Other (system) error with appropriate error code.
         /// </returns>
         [DllImport("LgLcd.dll")]
-        public static extern int lgLcdConnect(ref lgLcdConnectContext ctx);
+        public static extern int lgLcdConnect(ref LgLcdConnectContext ctx);
 
         /// <summary>
         /// Use lgLcdDisconnect() to close an existing connection to the LCD monitor process.
@@ -258,10 +258,10 @@ namespace LogiFrame
         /// parameter by 1 until the function returns ERROR_NO_MORE_ITEMS.
         /// </remarks>
         /// <param name="connection">Specifies the connection that this enumeration refers to.</param>
-        /// <param name="index">Specifies which device information is requested. See Remarks.</param>
+        /// <param name="index">Specifies which Device information is requested. See Remarks.</param>
         /// <param name="description">
         /// Points to an lgLcdDeviceDesc structure which will be filled with information about the
-        /// device.
+        /// Device.
         /// </param>
         /// <returns>
         /// If the function succeeds, the return value is ERROR_SUCCESS.
@@ -277,17 +277,17 @@ namespace LogiFrame
         /// Other (system) error with appropriate error code.
         /// </returns>
         [DllImport("LgLcd.dll")]
-        public static extern int lgLcdEnumerate(int connection, int index, out lgLcdDeviceDesc description);
+        public static extern int lgLcdEnumerate(int connection, int index, out LgLcdDeviceDesc description);
 
         /// <summary>
-        /// The lgLcdOpen() function starts the communication with an attached device. You have
+        /// The lgLcdOpen() function starts the communication with an attached Device. You have
         /// to call this function before retrieving button information or updating LCD bitmaps.
         /// </summary>
         /// <remarks>
         /// A handle retrieved through this function stays valid until either of the following conditions occurs:
         /// <list type="unordered">
         ///     <item>
-        ///         The device has been unplugged. Any operation with the given handle will result in an
+        ///         The Device has been unplugged. Any operation with the given handle will result in an
         ///         error code of ERROR_DEVICE_NOT_CONNECTED.
         ///     </item>
         ///     <item>
@@ -301,9 +301,9 @@ namespace LogiFrame
         /// </remarks>
         /// <param name="ctx">
         /// Specifies a pointer to a structure with all the information that is needed to open
-        /// the device. See lgLcdOpenContext for details. Before calling lgLcdOpen(), all fields
-        /// must be set, except the 'device' member. Upon successful return, the 'device' member
-        /// contains the device handle that can be used in subsequent calls to lgLcdUpdateBitmap(),
+        /// the Device. See lgLcdOpenContext for details. Before calling lgLcdOpen(), all fields
+        /// must be set, except the 'Device' member. Upon successful return, the 'Device' member
+        /// contains the Device handle that can be used in subsequent calls to lgLcdUpdateBitmap(),
         /// lgLcdReadSoftButtons(), and lgLcdClose().
         /// </param>
         /// <returns>
@@ -312,24 +312,24 @@ namespace LogiFrame
         /// ERROR_SERVICE_NOT_ACTIVE
         /// lgLcdInit() has not been called yet.
         /// ERROR_INVALID_PARAMETER
-        /// Either ctx is NULL, or ctx->connection is not valid, or ctx->index does not hold a valid device.
+        /// Either ctx is NULL, or ctx->connection is not valid, or ctx->index does not hold a valid Device.
         /// ERROR_ALREADY_EXISTS
-        /// The specified device has already been opened in the given connection.
+        /// The specified Device has already been opened in the given connection.
         /// Xxx
         /// Other (system) error with appropriate error code.
         /// </returns>
         [DllImport("LgLcd.dll")]
-        public static extern int lgLcdOpen(ref lgLcdOpenContext ctx);
+        public static extern int lgLcdOpen(ref LgLcdOpenContext ctx);
 
         /// <summary>
-        /// The lgLcdClose() function stops the communication with the previously opened device.
+        /// The lgLcdClose() function stops the communication with the previously opened Device.
         /// </summary>
         /// <remarks>
         /// After calling lgLcdClose, the soft button callback specified in the call to lgLcdOpen()
         /// will not be called anymore.
         /// </remarks>
         /// <param name="device">
-        /// Specifies the device handle retrieved in the lgLcdOpenContext by a previous call to lgLcdOpen().
+        /// Specifies the Device handle retrieved in the lgLcdOpenContext by a previous call to lgLcdOpen().
         /// </param>
         /// <returns>
         /// If the function succeeds, the return value is ERROR_SUCCESS.
@@ -337,7 +337,7 @@ namespace LogiFrame
         /// ERROR_SERVICE_NOT_ACTIVE
         /// lgLcdInit() has not been called yet.
         /// ERROR_INVALID_PARAMETER
-        /// The specified device handle is invalid.
+        /// The specified Device handle is invalid.
         /// Xxx
         /// Other (system) error with appropriate error code.
         /// </returns>
@@ -346,7 +346,7 @@ namespace LogiFrame
 
         /// <summary>
         /// The lgLcdReadSoftButtons() function reads the current state of the soft buttons
-        /// for the specified device.
+        /// for the specified Device.
         /// </summary>
         /// <remarks>
         /// The resulting DWORD contains the current state of the soft buttons, 1 bit per
@@ -357,7 +357,7 @@ namespace LogiFrame
         /// This is in order to avoid users inadvertently interacting with an application that
         /// does not presently show on the display.
         /// </remarks>
-        /// <param name="device">Specifies the device handle for which to read the soft button state.</param>
+        /// <param name="device">Specifies the Device handle for which to read the soft button state.</param>
         /// <param name="buttons">
         /// Specifies a pointer to a DWORD that receives the state of the soft buttons at the
         /// time of the call. See comments for details.
@@ -368,9 +368,9 @@ namespace LogiFrame
         /// ERROR_SERVICE_NOT_ACTIVE
         /// lgLcdInit() has not been called yet.
         /// ERROR_INVALID_PARAMETER
-        /// The specified device handle or the result pointer is invalid.
+        /// The specified Device handle or the result pointer is invalid.
         /// ERROR_DEVICE_NOT_CONNECTED
-        /// The specified device has been disconnected.
+        /// The specified Device has been disconnected.
         /// Xxx
         /// Other (system) error with appropriate error code.
         /// </returns>
@@ -378,7 +378,7 @@ namespace LogiFrame
         public static extern int lgLcdReadSoftButtons(int device, out int buttons);
 
         /// <summary>
-        /// The lgLcdUpdateBitmap() function updates the bitmap of the device.
+        /// The lgLcdUpdateBitmap() function updates the bitmap of the Device.
         /// </summary>
         /// <remarks>
         /// The bitmap header parameter should point to an actual bitmap. The current revision of the
@@ -398,8 +398,8 @@ namespace LogiFrame
         /// high priorities except for alerts.
         /// The difference between asynchronous and synchronous updates is as follows: an asynchronous
         /// update will place the bitmap to be displayed into LCDMon and return immediately, before the
-        /// bitmap is actually sent out to the device. For synchronous updates, the call to
-        /// lgLcdUpdateBitmap() will only return after the bitmap has been sent out to the device,
+        /// bitmap is actually sent out to the Device. For synchronous updates, the call to
+        /// lgLcdUpdateBitmap() will only return after the bitmap has been sent out to the Device,
         /// which takes 30 milliseconds or more. In case the application currently does not show on
         /// the LCD because another application is displayed, the synchronous update returns after a
         /// time that is similar to an update when the application is visible. If the macro
@@ -412,10 +412,10 @@ namespace LogiFrame
         /// minimizing CPU usage.
         /// The asynchronous updates are beneficial to applications that don't care about the exact
         /// sequence and timing of screen updates and have many other things to do. They just deposit
-        /// a bitmap to be sent to the device every once in a while and don't worry about it actually
+        /// a bitmap to be sent to the Device every once in a while and don't worry about it actually
         /// going out and being in sync with this event.
         /// </remarks>
-        /// <param name="device">Specifies the device handle for which to update the display.</param>
+        /// <param name="device">Specifies the Device handle for which to update the display.</param>
         /// <param name="bitmap">Specifies a pointer to a bitmap header structure. See comments for details.</param>
         /// <param name="priority">
         /// Specifies a priority hint for this screen update, as well as whether the update should
@@ -443,10 +443,10 @@ namespace LogiFrame
         /// ERROR_SERVICE_NOT_ACTIVE
         /// lgLcdInit() has not been called yet.
         /// ERROR_INVALID_PARAMETER
-        /// The specified device handle, the bitmap header
+        /// The specified Device handle, the bitmap header
         /// pointer or the type of bitmap is invalid.
         /// ERROR_DEVICE_NOT_CONNECTED
-        /// The specified device has been disconnected.
+        /// The specified Device has been disconnected.
         /// ERROR_ACCESS_DENIED
         /// Synchronous operation was not displayed on the LCD within the frame interval
         /// (30 ms). This error code is only returned when the priority field of the
@@ -455,7 +455,7 @@ namespace LogiFrame
         /// Other (system) error with appropriate error code.
         /// </returns>
         [DllImport("LgLcd.dll")]
-        public static extern int lgLcdUpdateBitmap(int device, ref lgLcdBitmap160x43x1 bitmap, uint priority);
+        public static extern int lgLcdUpdateBitmap(int device, ref LgLcdBitmap160X43X1 bitmap, uint priority);
 
         /*
          * DEPRICATED / DOES NOT WORK?
@@ -475,7 +475,7 @@ namespace LogiFrame
         /// applications that call this function at a later date. The frontmost application's bitmaps
         /// supplied using the lgLcdUpdateBitmap() call will all be displayed on the LCD.
         /// </remarks>
-        /// <param name="device">Specifies the device handle for which the command is intented for.</param>
+        /// <param name="Device">Specifies the Device handle for which the command is intented for.</param>
         /// <param name="foregroundYesNoFlag">
         /// Specifies whether the calling application is interested in becoming the frontmost
         /// application shown on the LCD or it is trying to remove itself from being the frontmost.
@@ -496,7 +496,7 @@ namespace LogiFrame
         /// </returns>
         
         [DllImport("LgLcd.dll")]
-        public static extern int lgLcdSetAsLCDForegroundApp(int device, int foregroundYesNoFlag);
+        public static extern int lgLcdSetAsLCDForegroundApp(int Device, int foregroundYesNoFlag);
         */
 
         /// <summary>
@@ -504,13 +504,13 @@ namespace LogiFrame
         /// of bytes (1 for each pixel.)
         /// </summary>
         [StructLayout(LayoutKind.Sequential)]
-        public struct lgLcdBitmap160x43x1
+        public struct LgLcdBitmap160X43X1
         {
             /// <summary>
             /// Header information telling what kind of bitmap this structure
             /// represents (currently only one format exists, see lgLcdBitmapHeader.)
             /// </summary>
-            public lgLcdBitmapHeader hdr;
+            public LgLcdBitmapHeader hdr;
 
             /// <summary>
             /// Contains the display bitmap with 160x43 pixels. Every byte represents
@@ -525,7 +525,7 @@ namespace LogiFrame
         /// of bytes, as illustrated by lgLcdBitmap160x43x1.
         /// </summary>
         [StructLayout(LayoutKind.Sequential)]
-        public struct lgLcdBitmapHeader
+        public struct LgLcdBitmapHeader
         {
             /// <summary>
             /// Specifies the format of the structure following the header.
@@ -541,7 +541,7 @@ namespace LogiFrame
         /// clicks the 'Configure'' button in the LCDMon list of applications.
         /// </summary>
         [StructLayout(LayoutKind.Sequential)]
-        public struct lgLcdConfigureContext
+        public struct LgLcdConfigureContext
         {
             /// <summary>
             /// Specifies a pointer to a function that should be called when the
@@ -565,46 +565,46 @@ namespace LogiFrame
         /// lgLcdEnumerate() and lgLcdOpen().
         /// </summary>
         [StructLayout(LayoutKind.Sequential)]
-        public struct lgLcdConnectContext
+        public struct LgLcdConnectContext
         {
             /// <summary>
             /// Specifies a string that contains the 'friendly name' of your application.
             /// This name is presented to the user whenever a list of applications is shown.
             /// </summary>
-            public string appFriendlyName;
+            public string AppFriendlyName;
 
             /// <summary>
             /// Specifies whether your connection is temporary (.isPersistent = FALSE) or
             /// whether it is a regular connection that should be added to the list
             /// (.isPersistent = TRUE).
             /// </summary>
-            public bool isPersistent;
+            public bool IsPersistent;
 
             /// <summary>
             /// Specifies whether your application can be started by LCDMon or not.
             /// </summary>
-            public bool isAutostartable;
+            public bool IsAutostartable;
 
             /// <summary>
             /// Specifies context that is necessary to call back for configuration of
             /// your application. See lgLcdConfigureContext for more details.
             /// </summary>
-            public lgLcdConfigureContext onConfigure;
+            public LgLcdConfigureContext OnConfigure;
 
             /// <summary>
             /// Upon successful connection, this member holds the 'connection handle'
             /// which is used in subsequent calls to lgLcdEnumerate() and lgLcdOpen().
             /// A value of LGLCD_INVALID_CONNECTION denotes an invalid connection.
             /// </summary>
-            public int connection;
+            public int Connection;
         }
 
         /// <summary>
-        /// The lgLcdDeviceDesc structure describes the properties of an attached device.
+        /// The lgLcdDeviceDesc structure describes the properties of an attached Device.
         /// This information is returned through a call to lgLcdEnumerate().
         /// </summary>
         [StructLayout(LayoutKind.Sequential)]
-        public struct lgLcdDeviceDesc
+        public struct LgLcdDeviceDesc
         {
             /// <summary>
             /// Specifies the width of the display in pixels.
@@ -622,7 +622,7 @@ namespace LogiFrame
             public int Bpp;
 
             /// <summary>
-            /// Specifies the number of soft buttons that the device has.
+            /// Specifies the number of soft buttons that the Device has.
             /// </summary>
             public int NumSoftButtons;
         }
@@ -630,36 +630,36 @@ namespace LogiFrame
         /// <summary>
         /// The lgLcdOpenContext contains all the information that is needed to open
         /// a specified LCD display through lgLcdOpen(). Upon successful completion
-        /// of the open it contains the device handle that has to be used in subsequent
+        /// of the open it contains the Device handle that has to be used in subsequent
         /// calls to lgLcdReadSoftButtons(), lgLcdUpdateBitmap() and lgLcdClose().
         /// </summary>
         [StructLayout(LayoutKind.Sequential)]
-        public struct lgLcdOpenContext
+        public struct LgLcdOpenContext
         {
             /// <summary>
             /// Specifies the connection (previously opened through lgLcdConnect()) which
             /// this lgLcdOpen() call is for.
             /// </summary>
-            public int connection;
+            public int Connection;
 
             /// <summary>
-            /// Specifies the index of the device to open (see lgLcdEnumerate() for details).
+            /// Specifies the index of the Device to open (see lgLcdEnumerate() for details).
             /// </summary>
-            public int index;
+            public int Index;
 
             /// <summary>
             /// Specifies the details for the callback function that should be invoked when
-            /// device has changes in its soft button status, i.e. the user has pressed or
+            /// Device has changes in its soft button status, i.e. the user has pressed or
             /// a soft button. For details, see lgLcdSoftbuttonsChangedContext.
             /// </summary>
-            public lgLcdSoftbuttonsChangedContext onSoftbuttonsChanged;
+            public LgLcdSoftbuttonsChangedContext OnSoftbuttonsChanged;
 
             /// <summary>
-            /// Upon successful opening, this member holds the device handle which is used
+            /// Upon successful opening, this member holds the Device handle which is used
             /// in subsequent calls to lgLcdReadSoftButtons(), lgLcdUpdateBitmap() and
-            /// lgLcdClose(). A value of LGLCD_INVALID_DEVICE denotes an invalid device.
+            /// lgLcdClose(). A value of LGLCD_INVALID_DEVICE denotes an invalid Device.
             /// </summary>
-            public int device;
+            public int Device;
         }
 
         /// <summary>
@@ -669,14 +669,14 @@ namespace LogiFrame
         /// through a callback.
         /// </summary>
         [StructLayout(LayoutKind.Sequential)]
-        public struct lgLcdSoftbuttonsChangedContext
+        public struct LgLcdSoftbuttonsChangedContext
         {
             /// <summary>
             /// Specifies a pointer to a function that should be called when the
             /// state of the soft buttons changes. If no notification is needed,
             /// leave this parameter NULL.
             /// </summary>
-            public lgLcdOnSoftButtonsCB softbuttonsChangedCallback;
+            public lgLcdOnSoftButtonsCB SoftbuttonsChangedCallback;
 
             /// <summary>
             /// Specifies an arbitrary context value of the application that is
@@ -684,7 +684,7 @@ namespace LogiFrame
             /// pressed or released. The new value of the soft buttons is reported
             /// in the dwButtons parameter of the callback function.
             /// </summary>
-            public IntPtr softbuttonsChangedContext;
+            public IntPtr SoftbuttonsChangedContext;
         }
     }
 }

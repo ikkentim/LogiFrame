@@ -29,11 +29,11 @@ namespace LogiFrame
     {
         #region Fields
 
-        private LgLcd.lgLcdBitmap160x43x1 _bitmap;
+        private LgLcd.LgLcdBitmap160X43X1 _bitmap;
 
         private int _buttonState;
-        private LgLcd.lgLcdConnectContext _connection;
-        private LgLcd.lgLcdOpenContext _openContext;
+        private LgLcd.LgLcdConnectContext _connection;
+        private LgLcd.LgLcdOpenContext _openContext;
 
         #endregion
 
@@ -97,15 +97,15 @@ namespace LogiFrame
                 throw new DllNotFoundException("Could not find LgLcd.dll.");
 
             //Initialize connection and store properties
-            _connection.appFriendlyName = ApplicationName = applicationName;
-            _connection.isAutostartable = IsAutostartable = isAutostartable;
-            _connection.isPersistent = IsPersistent = isPersistent;
+            _connection.AppFriendlyName = ApplicationName = applicationName;
+            _connection.IsAutostartable = IsAutostartable = isAutostartable;
+            _connection.IsPersistent = IsPersistent = isPersistent;
             Simulate = simulate;
 
             //Configuration callback
             AllowConfiguration = allowConfiguration;
             if (AllowConfiguration)
-                _connection.onConfigure.configCallback = lgLcd_onConfigureCB;
+                _connection.OnConfigure.configCallback = lgLcd_onConfigureCB;
 
             //Set default updatepriority
             UpdatePriority = UpdatePriority.Normal;
@@ -115,7 +115,7 @@ namespace LogiFrame
                 new Thread(() => Simulation.Start(this)).Start();
 
             //Initialize main container
-            Size = new Size((int) LgLcd.LGLCD_BMP_WIDTH, (int) LgLcd.LGLCD_BMP_HEIGHT);
+            Size = new Size((int) LgLcd.LglcdBmpWidth, (int) LgLcd.LglcdBmpHeight);
             Changed += mainContainer_ComponentChanged;
 
             //Store connection
@@ -127,14 +127,14 @@ namespace LogiFrame
                 throw new ConnectionException(Win32Error.ToString(connectionResponse));
 
             //Open connection
-            _openContext.connection = _connection.connection;
-            _openContext.onSoftbuttonsChanged.softbuttonsChangedCallback = lgLcd_onSoftButtonsCB;
-            _openContext.index = 0;
+            _openContext.Connection = _connection.Connection;
+            _openContext.OnSoftbuttonsChanged.SoftbuttonsChangedCallback = lgLcd_onSoftButtonsCB;
+            _openContext.Index = 0;
 
             LgLcd.lgLcdOpen(ref _openContext);
 
             //Store bitmap format
-            _bitmap.hdr = new LgLcd.lgLcdBitmapHeader {Format = LgLcd.LGLCD_BMP_FORMAT_160x43x1};
+            _bitmap.hdr = new LgLcd.LgLcdBitmapHeader {Format = LgLcd.LglcdBmpFormat160X43X1};
 
             //Send empty bytemap
             UpdateScreen(null);
@@ -254,8 +254,8 @@ namespace LogiFrame
             //As a precausion disposing resources from another thread
             new Thread(() =>
             {
-                LgLcd.lgLcdClose(_openContext.device);
-                LgLcd.lgLcdDisconnect(_connection.connection);
+                LgLcd.lgLcdClose(_openContext.Device);
+                LgLcd.lgLcdDisconnect(_connection.Connection);
                 LgLcd.lgLcdDeInit();
             }).Start();
         }
@@ -324,8 +324,8 @@ namespace LogiFrame
 
             if (push)
             {
-                _bitmap.pixels = bytemap == null ? new byte[LgLcd.LGLCD_BMP_WIDTH*LgLcd.LGLCD_BMP_HEIGHT] : bytemap.Data;
-                LgLcd.lgLcdUpdateBitmap(_openContext.device, ref _bitmap, (uint) UpdatePriority);
+                _bitmap.pixels = bytemap == null ? new byte[LgLcd.LglcdBmpWidth*LgLcd.LglcdBmpHeight] : bytemap.Data;
+                LgLcd.lgLcdUpdateBitmap(_openContext.Device, ref _bitmap, (uint) UpdatePriority);
             }
         }
 
@@ -372,7 +372,7 @@ namespace LogiFrame
             if (Disposed || sender == null)
                 return;
 
-            if (Size.Width != LgLcd.LGLCD_BMP_WIDTH || Size.Height != LgLcd.LGLCD_BMP_HEIGHT)
+            if (Size.Width != LgLcd.LglcdBmpWidth || Size.Height != LgLcd.LglcdBmpHeight)
                 throw new InvalidOperationException("The size of the LogiFrame.Frame container may not be changed.");
 
             var component = sender as Component;

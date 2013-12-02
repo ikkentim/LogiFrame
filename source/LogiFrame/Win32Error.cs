@@ -274,7 +274,7 @@ namespace LogiFrame
                 case 11:
                     return "An attempt was made to load a program with an incorrect format.";
                 case 110:
-                    return "The system cannot open the device or file specified.";
+                    return "The system cannot open the Device or file specified.";
                 case 111:
                     return "The file name is too long.";
                 case 112:
@@ -319,7 +319,7 @@ namespace LogiFrame
                 case 131:
                     return "An attempt was made to move the file pointer before the beginning of the file.";
                 case 132:
-                    return "The file pointer cannot be set on the specified device or file.";
+                    return "The file pointer cannot be set on the specified Device or file.";
                 case 133:
                     return "A JOIN or SUBST command cannot be used for a drive that contains previously joined drives.";
                 case 134:
@@ -442,7 +442,7 @@ namespace LogiFrame
                 case 2:
                     return "The system cannot find the file specified.";
                 case 20:
-                    return "The system cannot find the device specified.";
+                    return "The system cannot find the Device specified.";
                 case 200:
                     return "The code segment cannot be greater than or equal to 64K.";
                 case 201:
@@ -463,7 +463,7 @@ namespace LogiFrame
                 case 209:
                     return "The signal being posted is not correct.";
                 case 21:
-                    return "The device is not ready.";
+                    return "The Device is not ready.";
                 case 210:
                     return "The signal handler cannot be set.";
                 case 212:
@@ -480,7 +480,7 @@ namespace LogiFrame
                 case 218:
                     return "The image file %1 is strong signed, unable to modify.";
                 case 22:
-                    return "The device does not recognize the command.";
+                    return "The Device does not recognize the command.";
                 case 220:
                     return "This file is checked out or locked for editing by another user.";
                 case 221:
@@ -548,7 +548,7 @@ namespace LogiFrame
                 case 288:
                     return "Attempt to release mutex not owned by caller.";
                 case 29:
-                    return "The system cannot write to the specified device.";
+                    return "The system cannot write to the specified Device.";
                 case 298:
                     return "Too many posts were made to a semaphore.";
                 case 299:
@@ -556,7 +556,7 @@ namespace LogiFrame
                 case 3:
                     return "The system cannot find the path specified.";
                 case 30:
-                    return "The system cannot read from the specified device.";
+                    return "The system cannot read from the specified Device.";
                 case 300:
                     return "The oplock request is denied.";
                 case 301:
@@ -579,7 +579,7 @@ namespace LogiFrame
                 case 309:
                     return "The specified file already has a notification GUID associated with it.";
                 case 31:
-                    return "A device attached to the system is not functioning.";
+                    return "A Device attached to the system is not functioning.";
                 case 317:
                     return "The system cannot find message text for message number 0x%1 in the message file for %2.";
                 case 318:
@@ -632,7 +632,7 @@ namespace LogiFrame
                 case 54:
                     return "The network is busy.";
                 case 55:
-                    return "The specified network resource or device is no longer available.";
+                    return "The specified network resource or Device is no longer available.";
                 case 56:
                     return "The network BIOS command limit has been reached.";
                 case 57:
@@ -671,7 +671,7 @@ namespace LogiFrame
                     return
                         "No more connections can be made to this remote computer at this time because there are already as many connections as the computer can accept.";
                 case 72:
-                    return "The specified printer or disk device has been paused.";
+                    return "The specified printer or disk Device has been paused.";
                 case 8:
                     return "Not enough storage is available to process this command.";
                 case 80:
@@ -683,7 +683,7 @@ namespace LogiFrame
                 case 84:
                     return "Storage to process this request is not available.";
                 case 85:
-                    return "The local device name is already in use.";
+                    return "The local Device name is already in use.";
                 case 86:
                     return "The specified network password is not correct.";
                 case 87:
