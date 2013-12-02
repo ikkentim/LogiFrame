@@ -28,12 +28,12 @@ namespace LogiFrame.Components
         #region Fields
 
         private Bytemap _bytemap;
-        private bool _hasChanged = true;
-        private bool _isRendering;
         private Location _location = new Location();
         private Location _renderOffset = new Location();
         private Size _size = new Size();
 
+        private bool _hasChanged = true;
+        private bool _isRendering;
         private bool _topEffect;
         private bool _transparent;
         private bool _visible = true;
@@ -300,7 +300,7 @@ namespace LogiFrame.Components
             //System.Diagnostics.Debug.WriteLine("[DEBUG] Rendering " + ToString() + " @ " + Location + " of " + Size);
 
             _isRendering = true;
-            _bytemap = Render() ?? new Bytemap(1, 1);
+            _bytemap = Size.Width == 0 || Size.Height == 0 ? new Bytemap(1, 1) : (Render() ?? new Bytemap(1, 1));
             _bytemap.Transparent = Transparent;
             _bytemap.TopEffect = TopEffect;
             _isRendering = false;

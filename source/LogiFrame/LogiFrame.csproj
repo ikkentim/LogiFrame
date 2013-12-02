@@ -59,6 +59,7 @@
     <Compile Include="Components\ProgressBar.cs" />
     <Compile Include="Components\ProgressBarStyle.cs" />
     <Compile Include="Components\Square.cs" />
+    <Compile Include="Components\Timer.cs" />
     <Compile Include="ConnectionException.cs" />
     <Compile Include="ConversionMethod.cs" />
     <Compile Include="LocationTypeConverter.cs" />
