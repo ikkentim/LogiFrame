@@ -22,7 +22,7 @@ using System.ComponentModel;
 namespace LogiFrame
 {
     /// <summary>
-    ///     Represents the size of a component.
+    /// Represents the size of a component.
     /// </summary>
     [TypeConverter(typeof (SizeTypeConverter))]
     public class Size
@@ -37,14 +37,14 @@ namespace LogiFrame
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Location class.
+        /// Initializes a new instance of the LogiFrame.Location class.
         /// </summary>
         public Size()
         {
         }
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Location class.
+        /// Initializes a new instance of the LogiFrame.Location class.
         /// </summary>
         /// <param name="parent">An instance of LogiFrame.Size to copy the dimentions from.</param>
         public Size(Size parent)
@@ -54,7 +54,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Location class.
+        /// Initializes a new instance of the LogiFrame.Location class.
         /// </summary>
         /// <param name="width">The initial width.</param>
         /// <param name="height">The initial height.</param>
@@ -71,7 +71,7 @@ namespace LogiFrame
         #region Events
 
         /// <summary>
-        ///     Occurs when the Size has been changed.
+        /// Occurs when the Size has been changed.
         /// </summary>
         public event EventHandler Changed;
 
@@ -80,7 +80,7 @@ namespace LogiFrame
         #region Properties
 
         /// <summary>
-        ///     Gets or sets the width of the LogiFrame.Size.
+        /// Gets or sets the width of the LogiFrame.Size.
         /// </summary>
         public int Width
         {
@@ -89,7 +89,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Gets or sets the height of the LogiFrame.Size.
+        /// Gets or sets the height of the LogiFrame.Size.
         /// </summary>
         public int Height
         {
@@ -102,7 +102,7 @@ namespace LogiFrame
         #region Methods
 
         /// <summary>
-        ///     Adds a certain value to this LogiFrame.Size instance.
+        /// Adds a certain value to this LogiFrame.Size instance.
         /// </summary>
         /// <param name="width">Value to add to the width.</param>
         /// <param name="height">Value to add to the height</param>
@@ -121,7 +121,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Adds a certain value to this LogiFrame.Size instance.
+        /// Adds a certain value to this LogiFrame.Size instance.
         /// </summary>
         /// <param name="other">Value to add to the width and height.</param>
         public void Add(Size other)
@@ -135,7 +135,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Set a certain value to this LogiFrame.Size instance.
+        /// Set a certain value to this LogiFrame.Size instance.
         /// </summary>
         /// <param name="width">The new width value.</param>
         /// <param name="height">The new height value.</param>
@@ -153,7 +153,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Set a certain value to this LogiFrame.Size instance.
+        /// Set a certain value to this LogiFrame.Size instance.
         /// </summary>
         /// <param name="other">An instance of LogiFrame.Size to copy the dimensions from.</param>
         public void Set(Size other)
@@ -167,16 +167,16 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Translates a LogiFrame.Size by a given LogiFrame.Size.
+        /// Translates a LogiFrame.Size by a given LogiFrame.Size.
         /// </summary>
         /// <param name="size1">The LogiFrame.Size to translate.</param>
         /// <param name="size2">
-        ///     A LogiFrame.Size that specifies the pair of numbers to add to
-        ///     the coordinates of size1.
+        /// A LogiFrame.Size that specifies the pair of numbers to add to
+        /// the coordinates of size1.
         /// </param>
         /// <returns>
-        ///     A LogiFrame.Size instance that is translated by the other
-        ///     given LogiFrame.Size instance.
+        /// A LogiFrame.Size instance that is translated by the other
+        /// given LogiFrame.Size instance.
         /// </returns>
         public static Size operator -(Size size1, Size size2)
         {
@@ -184,16 +184,16 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Translates a LogiFrame.Size by the  of a given LogiFrame.Size.
+        /// Translates a LogiFrame.Size by the  of a given LogiFrame.Size.
         /// </summary>
         /// <param name="size1">The LogiFrame.Size to translate.</param>
         /// <param name="size2">
-        ///     A LogiFrame.Size that specifies the pair of numbers to subtract from
-        ///     the coordinates of loc1.
+        /// A LogiFrame.Size that specifies the pair of numbers to subtract from
+        /// the coordinates of loc1.
         /// </param>
         /// <returns>
-        ///     A LogiFrame.Size instance that is translated by the negative of the
-        ///     other given LogiFrame.Size instance.
+        /// A LogiFrame.Size instance that is translated by the negative of the
+        /// other given LogiFrame.Size instance.
         /// </returns>
         public static Size operator +(Size size1, Size size2)
         {
@@ -201,7 +201,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Converts the specified LogiFrame.Size instance to a System.Drawing.Size struct.
+        /// Converts the specified LogiFrame.Size instance to a System.Drawing.Size struct.
         /// </summary>
         /// <param name="size">The LogiFrame.Size to be converted.</param>
         /// <returns>The System.Drawing.Size that results from the conversion.</returns>
@@ -211,7 +211,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Converts the specified System.Drawing.Size struct to a LogiFrame.Size instance.
+        /// Converts the specified System.Drawing.Size struct to a LogiFrame.Size instance.
         /// </summary>
         /// <param name="size">The System.Drawing.Size to be converted.</param>
         /// <returns>The LogiFrame.Size that results from the conversion.</returns>
@@ -221,12 +221,12 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Determines whether the specified System.Object is equal to this LogiFrame.Size.
+        /// Determines whether the specified System.Object is equal to this LogiFrame.Size.
         /// </summary>
         /// <param name="obj">The System.Object to compare with this LogiFrame.Size.</param>
         /// <returns>
-        ///     true if the specified System.Object is equal to this LogiFrame.Size;
-        ///     otherwise, false.
+        /// true if the specified System.Object is equal to this LogiFrame.Size;
+        /// otherwise, false.
         /// </returns>
         public override bool Equals(object obj)
         {
@@ -238,7 +238,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Returns a hash code for this LogiFrame.Size.
+        /// Returns a hash code for this LogiFrame.Size.
         /// </summary>
         /// <returns>An integer value that specifies a hash value for this LogiFrame.Size.</returns>
         public override int GetHashCode()
@@ -255,7 +255,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Converts this LogiFrame.Size to a human-readable string.
+        /// Converts this LogiFrame.Size to a human-readable string.
         /// </summary>
         /// <returns>A string that represents this LogiFrame.Size.</returns>
         public override string ToString()

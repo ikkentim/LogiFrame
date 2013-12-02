@@ -21,7 +21,7 @@ using System;
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a drawable line.
+    /// Represents a drawable line.
     /// </summary>
     public class Line : Component
     {
@@ -35,7 +35,7 @@ namespace LogiFrame.Components
         #region Constructor
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.components.Line class.
+        /// Initializes a new instance of the LogiFrame.components.Line class.
         /// </summary>
         public Line()
         {
@@ -48,7 +48,7 @@ namespace LogiFrame.Components
         #region Properties
 
         /// <summary>
-        ///     Gets or sets the LogiFrame.Location within the parent LogiFrame.Components.Container where the line should start at.
+        /// Gets or sets the LogiFrame.Location within the parent LogiFrame.Components.Container where the line should start at.
         /// </summary>
         public Location Start
         {
@@ -63,7 +63,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets the LogiFrame.Location within the parent LogiFrame.Components.Container where the line should end at.
+        /// Gets or sets the LogiFrame.Location within the parent LogiFrame.Components.Container where the line should end at.
         /// </summary>
         public Location End
         {

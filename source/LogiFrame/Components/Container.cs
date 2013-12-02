@@ -21,7 +21,7 @@ using System;
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a Component that is capable of holding multiple other LogiFrame.Components.Component instances.
+    /// Represents a Component that is capable of holding multiple other LogiFrame.Components.Component instances.
     /// </summary>
     public class Container : Component
     {
@@ -34,7 +34,7 @@ namespace LogiFrame.Components
         #region Constructor
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Components.Container class.
+        /// Initializes a new instance of the LogiFrame.Components.Container class.
         /// </summary>
         public Container()
         {
@@ -47,8 +47,8 @@ namespace LogiFrame.Components
         #region Properties
 
         /// <summary>
-        ///     Gets a collection of LogiFrame.Components.Component instances that will be rendered
-        ///     within this LogiFrame.Components.Container.
+        /// Gets a collection of LogiFrame.Components.Component instances that will be rendered
+        /// within this LogiFrame.Components.Container.
         /// </summary>
         public ComponentCollection<Component> Components
         {
@@ -103,7 +103,7 @@ namespace LogiFrame.Components
 
         //Calbacks
         /// <summary>
-        ///     Listener for ComponentCollection.ComponentRemoved.
+        /// Listener for ComponentCollection.ComponentRemoved.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -120,7 +120,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Listener for ComponentCollection.ComponentAdded.
+        /// Listener for ComponentCollection.ComponentAdded.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -137,7 +137,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Listener for Component.Changed.
+        /// Listener for Component.Changed.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

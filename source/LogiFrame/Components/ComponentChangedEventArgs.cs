@@ -21,13 +21,13 @@ using System;
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Provides data for the LogiFrame.Components.ComponentCollection.ComponentAdded and
-    ///     LogiFrame.Components.ComponentCollection.ComponentRemoved event.
+    /// Provides data for the LogiFrame.Components.ComponentCollection.ComponentAdded and
+    /// LogiFrame.Components.ComponentCollection.ComponentRemoved event.
     /// </summary>
     public class ComponentChangedEventArgs : EventArgs
     {
         /// <summary>
-        ///     Initilizes a new instance of the LogiFrame.Components.ComponentChangedEventArgs
+        /// Initilizes a new instance of the LogiFrame.Components.ComponentChangedEventArgs
         /// </summary>
         /// <param name="component">The component that has been changed</param>
         public ComponentChangedEventArgs(Component component)
@@ -36,7 +36,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets the component which has been changed.
+        /// Gets the component which has been changed.
         /// </summary>
         public Component Component { get; private set; }
     }

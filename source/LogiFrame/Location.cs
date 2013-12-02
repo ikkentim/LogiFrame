@@ -22,7 +22,7 @@ using System.ComponentModel;
 namespace LogiFrame
 {
     /// <summary>
-    ///     Represents a location of a component.
+    /// Represents a location of a component.
     /// </summary>
     [TypeConverter(typeof (LocationTypeConverter))]
     public class Location
@@ -37,7 +37,7 @@ namespace LogiFrame
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Location class.
+        /// Initializes a new instance of the LogiFrame.Location class.
         /// </summary>
         /// <param name="parent">An instance of LogiFrame.Location to copy the coordinates from.</param>
         public Location(Location parent)
@@ -47,7 +47,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Location class.
+        /// Initializes a new instance of the LogiFrame.Location class.
         /// </summary>
         /// <param name="x">The initial x-coordinate.</param>
         /// <param name="y">The initial x-coordinate.</param>
@@ -58,7 +58,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Location class.
+        /// Initializes a new instance of the LogiFrame.Location class.
         /// </summary>
         public Location()
         {
@@ -69,7 +69,7 @@ namespace LogiFrame
         #region Events
 
         /// <summary>
-        ///     Occurs when the location has been changed.
+        /// Occurs when the location has been changed.
         /// </summary>
         public event EventHandler Changed;
 
@@ -78,7 +78,7 @@ namespace LogiFrame
         #region Properties
 
         /// <summary>
-        ///     Gets or sets the x-coordinate of the LogiFrame.Location.
+        /// Gets or sets the x-coordinate of the LogiFrame.Location.
         /// </summary>
         public int X
         {
@@ -87,7 +87,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Gets or sets the y-coordinate of the LogiFrame.Location.
+        /// Gets or sets the y-coordinate of the LogiFrame.Location.
         /// </summary>
         public int Y
         {
@@ -100,7 +100,7 @@ namespace LogiFrame
         #region Methods
 
         /// <summary>
-        ///     Adds a certain value to this LogiFrame.Location instance.
+        /// Adds a certain value to this LogiFrame.Location instance.
         /// </summary>
         /// <param name="x">Value to add to the x-coordinate.</param>
         /// <param name="y">Value to add to the y-coordinate.</param>
@@ -115,7 +115,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Adds a certain value to this LogiFrame.Location instance.
+        /// Adds a certain value to this LogiFrame.Location instance.
         /// </summary>
         /// <param name="other">Value to add to the x- and y-coordinate.</param>
         public void Add(Location other)
@@ -129,7 +129,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Set a certain value to this LogiFrame.Location instance.
+        /// Set a certain value to this LogiFrame.Location instance.
         /// </summary>
         /// <param name="x">The new x-coordinate value.</param>
         /// <param name="y">The new y-coordinate value.</param>
@@ -144,7 +144,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Set a certain value to this LogiFrame.Location instance.
+        /// Set a certain value to this LogiFrame.Location instance.
         /// </summary>
         /// <param name="other">An instance of LogiFrame.Location to copy the coordinates from.</param>
         public void Set(Location other)
@@ -158,16 +158,16 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Translates a LogiFrame.Location by a given LogiFrame.Location.
+        /// Translates a LogiFrame.Location by a given LogiFrame.Location.
         /// </summary>
         /// <param name="loc1">The LogiFrame.Location to translate.</param>
         /// <param name="loc2">
-        ///     A LogiFrame.Location that specifies the pair of numbers to subtract from
-        ///     the coordinates of loc1.
+        /// A LogiFrame.Location that specifies the pair of numbers to subtract from
+        /// the coordinates of loc1.
         /// </param>
         /// <returns>
-        ///     A LogiFrame.Location instance that is translated by the negative of the
-        ///     other given LogiFrame.Location instance.
+        /// A LogiFrame.Location instance that is translated by the negative of the
+        /// other given LogiFrame.Location instance.
         /// </returns>
         public static Location operator -(Location loc1, Location loc2)
         {
@@ -175,16 +175,16 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Translates a LogiFrame.Location by a given LogiFrame.Location.
+        /// Translates a LogiFrame.Location by a given LogiFrame.Location.
         /// </summary>
         /// <param name="loc1">The LogiFrame.Location to translate.</param>
         /// <param name="loc2">
-        ///     A LogiFrame.Location that specifies the pair of numbers to add to
-        ///     the coordinates of loc1.
+        /// A LogiFrame.Location that specifies the pair of numbers to add to
+        /// the coordinates of loc1.
         /// </param>
         /// <returns>
-        ///     A LogiFrame.Location instance that is translated by the other
-        ///     given LogiFrame.Location instance.
+        /// A LogiFrame.Location instance that is translated by the other
+        /// given LogiFrame.Location instance.
         /// </returns>
         public static Location operator +(Location loc1, Location loc2)
         {
@@ -192,16 +192,16 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Translates a LogiFrame.Location by the dimentions of a LogiFrame.Size.
+        /// Translates a LogiFrame.Location by the dimentions of a LogiFrame.Size.
         /// </summary>
         /// <param name="loc">The LogiFrame.Location to translate.</param>
         /// <param name="size">
-        ///     The LogiFrame.Size that specifies the pair of numers to add to
-        ///     the coordinates of loc.
+        /// The LogiFrame.Size that specifies the pair of numers to add to
+        /// the coordinates of loc.
         /// </param>
         /// <returns>
-        ///     A LogiFrame.Location instance that is translated by the given
-        ///     LogiFrame.Size instance.
+        /// A LogiFrame.Location instance that is translated by the given
+        /// LogiFrame.Size instance.
         /// </returns>
         public static Location operator +(Location loc, Size size)
         {
@@ -209,7 +209,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Converts the specified LogiFrame.Location instance to a System.Drawing.Point struct.
+        /// Converts the specified LogiFrame.Location instance to a System.Drawing.Point struct.
         /// </summary>
         /// <param name="loc">The LogiFrame.Location to be converted.</param>
         /// <returns>The System.Drawing.Point that results from the conversion.</returns>
@@ -219,7 +219,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Converts the specified System.Drawing.Point struct to a LogiFrame.Location instance.
+        /// Converts the specified System.Drawing.Point struct to a LogiFrame.Location instance.
         /// </summary>
         /// <param name="point">The System.Drawing.Point to be converted.</param>
         /// <returns>The LogiFrame.Location that results from the conversion.</returns>
@@ -229,12 +229,12 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Determines whether the specified System.Object is equal to this LogiFrame.Location.
+        /// Determines whether the specified System.Object is equal to this LogiFrame.Location.
         /// </summary>
         /// <param name="obj">The System.Object to compare with this LogiFrame.Location.</param>
         /// <returns>
-        ///     true if the specified System.Object is equal to this LogiFrame.Location;
-        ///     otherwise, false.
+        /// true if the specified System.Object is equal to this LogiFrame.Location;
+        /// otherwise, false.
         /// </returns>
         public override bool Equals(object obj)
         {
@@ -246,7 +246,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Returns a hash code for this LogiFrame.Location.
+        /// Returns a hash code for this LogiFrame.Location.
         /// </summary>
         /// <returns>An integer value that specifies a hash value for this LogiFrame.Location.</returns>
         public override int GetHashCode()
@@ -263,7 +263,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Converts this LogiFrame.Location to a human-readable string.
+        /// Converts this LogiFrame.Location to a human-readable string.
         /// </summary>
         /// <returns>A string that represents this LogiFrame.Location.</returns>
         public override string ToString()

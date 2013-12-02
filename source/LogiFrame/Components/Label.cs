@@ -21,7 +21,7 @@ using System;
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a drawable text label.
+    /// Represents a drawable text label.
     /// </summary>
     public class Label : Component
     {
@@ -30,7 +30,7 @@ namespace LogiFrame.Components
         private string _text;
 
         /// <summary>
-        ///     Gets or sets the text this LogiFrame.Components.Label should draw.
+        /// Gets or sets the text this LogiFrame.Components.Label should draw.
         /// </summary>
         public string Text
         {
@@ -50,7 +50,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets the System.Drawing.Font this LogiFrame.Components.Label should draw with.
+        /// Gets or sets the System.Drawing.Font this LogiFrame.Components.Label should draw with.
         /// </summary>
         public System.Drawing.Font Font
         {
@@ -68,8 +68,8 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets whether this LogiFrame.Components.Label should automatically
-        ///     resize to fit the Text.
+        /// Gets or sets whether this LogiFrame.Components.Label should automatically
+        /// resize to fit the Text.
         /// </summary>
         public bool AutoSize
         {
@@ -87,7 +87,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets the LogiFrame.Size of this LogiFrame.Components.Label.
+        /// Gets or sets the LogiFrame.Size of this LogiFrame.Components.Label.
         /// </summary>
         public override Size Size
         {

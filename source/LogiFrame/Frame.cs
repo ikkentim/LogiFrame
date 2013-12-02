@@ -23,7 +23,7 @@ using LogiFrame.Components;
 namespace LogiFrame
 {
     /// <summary>
-    ///     Represents the framework.
+    /// Represents the framework.
     /// </summary>
     public sealed class Frame : Container
     {
@@ -40,7 +40,7 @@ namespace LogiFrame
         #region Constructor/Deconstructor
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Frame class.
+        /// Initializes a new instance of the LogiFrame.Frame class.
         /// </summary>
         /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
         public Frame(string applicationName)
@@ -49,7 +49,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Frame class.
+        /// Initializes a new instance of the LogiFrame.Frame class.
         /// </summary>
         /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
         /// <param name="isAutostartable"> Whether true application can be started by LCDMon or not.</param>
@@ -59,7 +59,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Frame class.
+        /// Initializes a new instance of the LogiFrame.Frame class.
         /// </summary>
         /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
         /// <param name="isAutostartable"> Whether true application can be started by LCDMon or not.</param>
@@ -70,7 +70,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Frame class.
+        /// Initializes a new instance of the LogiFrame.Frame class.
         /// </summary>
         /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
         /// <param name="isAutostartable"> Whether true application can be started by LCDMon or not.</param>
@@ -82,7 +82,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Frame class.
+        /// Initializes a new instance of the LogiFrame.Frame class.
         /// </summary>
         /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
         /// <param name="isAutostartable"> Whether true application can be started by LCDMon or not.</param>
@@ -141,7 +141,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Releases all resources used by LogiFrame.Frame
+        /// Releases all resources used by LogiFrame.Frame
         /// </summary>
         ~Frame()
         {
@@ -153,48 +153,48 @@ namespace LogiFrame
         #region Events
 
         /// <summary>
-        ///     Represents the method that handles a LogiFrame.Frame.ButtonDown.
+        /// Represents the method that handles a LogiFrame.Frame.ButtonDown.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">A LogiFrame.ButtonEventArgs that contains the event data.</param>
         public delegate void ButtonDownEventHandler(object sender, ButtonEventArgs e);
 
         /// <summary>
-        ///     Represents the method that handles a LogiFrame.Frame.ButtonUp.
+        /// Represents the method that handles a LogiFrame.Frame.ButtonUp.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">A LogiFrame.ButtonEventArgs that contains the event data.</param>
         public delegate void ButtonUpEventHandler(object sender, ButtonEventArgs e);
 
         /// <summary>
-        ///     Represents the method that handles a LogiFrame.Frame.FramePush.
+        /// Represents the method that handles a LogiFrame.Frame.FramePush.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">A LogiFrame.PushingEventArgs that contains the event data.</param>
         public delegate void PushingEventHandler(object sender, PushingEventArgs e);
 
         /// <summary>
-        ///     Occurs when a button is being pressed.
+        /// Occurs when a button is being pressed.
         /// </summary>
         public event ButtonDownEventHandler ButtonDown;
 
         /// <summary>
-        ///     Occurs when a button is being released.
+        /// Occurs when a button is being released.
         /// </summary>
         public event ButtonUpEventHandler ButtonUp;
 
         /// <summary>
-        ///     Occurs before a frame is being pushed to the display.
+        /// Occurs before a frame is being pushed to the display.
         /// </summary>
         public event PushingEventHandler Pushing;
 
         /// <summary>
-        ///     Occurs after the frame has been closed or disposed
+        /// Occurs after the frame has been closed or disposed
         /// </summary>
         public event EventHandler FrameClosed;
 
         /// <summary>
-        ///     Occurs when the 'configure' button has been pressed in LCDmon.
+        /// Occurs when the 'configure' button has been pressed in LCDmon.
         /// </summary>
         public event EventHandler Configure;
 
@@ -203,34 +203,34 @@ namespace LogiFrame
         #region Properties
 
         /// <summary>
-        ///     Gets a string that contains the 'friendly name' of the application.
-        ///     This name is presented to the user whenever a list of applications is shown.
+        /// Gets a string that contains the 'friendly name' of the application.
+        /// This name is presented to the user whenever a list of applications is shown.
         /// </summary>
         public string ApplicationName { get; private set; }
 
         /// <summary>
-        ///     Gets whether application can be started by LCDMon or not.
+        /// Gets whether application can be started by LCDMon or not.
         /// </summary>
         public bool IsAutostartable { get; private set; }
 
         /// <summary>
-        ///     Gets whether connection is temporary or whether it is
-        ///     a regular connection that should be added to the list.
+        /// Gets whether connection is temporary or whether it is
+        /// a regular connection that should be added to the list.
         /// </summary>
         public bool IsPersistent { get; private set; }
 
         /// <summary>
-        ///     Gets whether the 'configure' option is being shown in LCDmon.
+        /// Gets whether the 'configure' option is being shown in LCDmon.
         /// </summary>
         public bool AllowConfiguration { get; private set; }
 
         /// <summary>
-        ///     Gets whether LogiFrame.Frame is simulating the LCD display on-screen.
+        /// Gets whether LogiFrame.Frame is simulating the LCD display on-screen.
         /// </summary>
         public bool Simulate { get; private set; }
 
         /// <summary>
-        ///     Gets or sets the priority for the forthcoming LCD updates.
+        /// Gets or sets the priority for the forthcoming LCD updates.
         /// </summary>
         public UpdatePriority UpdatePriority { get; set; }
 
@@ -239,7 +239,7 @@ namespace LogiFrame
         #region Methods
 
         /// <summary>
-        ///     Releases all resources used by LogiFrame.Frame
+        /// Releases all resources used by LogiFrame.Frame
         /// </summary>
         public new void Dispose()
         {
@@ -261,7 +261,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Waits untill the LogiFrame.Frame was disposed.
+        /// Waits untill the LogiFrame.Frame was disposed.
         /// </summary>
         public void WaitForClose()
         {
@@ -270,7 +270,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Emulates a button being pushed.
+        /// Emulates a button being pushed.
         /// </summary>
         public void PerformButtonDown(int button)
         {
@@ -286,7 +286,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Emulates a button being released.
+        /// Emulates a button being released.
         /// </summary>
         public void PerformButtonUp(int button)
         {

@@ -19,14 +19,14 @@
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a drawable square.
+    /// Represents a drawable square.
     /// </summary>
     public class Square : Component
     {
         private bool _fill;
 
         /// <summary>
-        ///     Gets or sets whether the LogiFrame.Components.Square should be filled.
+        /// Gets or sets whether the LogiFrame.Components.Square should be filled.
         /// </summary>
         public bool Fill
         {

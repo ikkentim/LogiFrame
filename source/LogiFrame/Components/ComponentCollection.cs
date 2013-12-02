@@ -23,15 +23,15 @@ using System.Collections.Specialized;
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a dynamic collection of LogiFrame.Components.Component.
+    /// Represents a dynamic collection of LogiFrame.Components.Component.
     /// </summary>
     /// <typeparam name="T">An instance of LogiFrame.Components.Component</typeparam>
     public sealed class ComponentCollection<T> : ObservableCollection<T>
         where T : Component
     {
         /// <summary>
-        ///     Represents the method that handles a LogiFrame.Components.ComponentCollection.ComponentAdded and
-        ///     LogiFrame.Components.ComponentCollection.ComponentRemoved.
+        /// Represents the method that handles a LogiFrame.Components.ComponentCollection.ComponentAdded and
+        /// LogiFrame.Components.ComponentCollection.ComponentRemoved.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">A LogiFrame.ComponentChangedEventArgs that contains the event data.</param>
@@ -45,17 +45,17 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Occurs when a LogiFrame.Components.Component has been added to this collection.
+        /// Occurs when a LogiFrame.Components.Component has been added to this collection.
         /// </summary>
         public event ComponentChangedEventHandler ComponentAdded;
 
         /// <summary>
-        ///     Occurs when a LogiFrame.Components.Component has been removed from this collection.
+        /// Occurs when a LogiFrame.Components.Component has been removed from this collection.
         /// </summary>
         public event ComponentChangedEventHandler ComponentRemoved;
 
         /// <summary>
-        ///     Listener for ObservableCollection.CollectionChanged.
+        /// Listener for ObservableCollection.CollectionChanged.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

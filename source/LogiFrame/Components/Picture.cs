@@ -19,7 +19,7 @@
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a drawable picture.
+    /// Represents a drawable picture.
     /// </summary>
     public class Picture : Component
     {
@@ -28,7 +28,7 @@ namespace LogiFrame.Components
         private System.Drawing.Image _image;
 
         /// <summary>
-        ///     Gets or sets the image to be drawn.
+        /// Gets or sets the image to be drawn.
         /// </summary>
         public virtual System.Drawing.Image Image
         {
@@ -46,7 +46,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets the conversion method to use during the rendering.
+        /// Gets or sets the conversion method to use during the rendering.
         /// </summary>
         public virtual ConversionMethod ConversionMethod
         {
@@ -64,8 +64,8 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets whether this LogiFrame.Components.Picture should automatically
-        ///     resize when the image has changed.
+        /// Gets or sets whether this LogiFrame.Components.Picture should automatically
+        /// resize when the image has changed.
         /// </summary>
         public bool AutoSize
         {
@@ -83,7 +83,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets the LogiFrame.Size of this LogiFrame.Components.Label.
+        /// Gets or sets the LogiFrame.Size of this LogiFrame.Components.Label.
         /// </summary>
         public override Size Size
         {

@@ -23,20 +23,20 @@ using System.Globalization;
 namespace LogiFrame
 {
     /// <summary>
-    ///     Provides a type converter to convert LogiFrame.Size objects to and from various other representations.
+    /// Provides a type converter to convert LogiFrame.Size objects to and from various other representations.
     /// </summary>
     public class SizeTypeConverter : ExpandableObjectConverter
     {
         /// <summary>
-        ///     Converts the given value object to the specified type, using the specified context and culture information.
+        /// Converts the given value object to the specified type, using the specified context and culture information.
         /// </summary>
         /// <returns>
-        ///     An <see cref="T:System.Object" /> that represents the converted value.
+        /// An <see cref="T:System.Object" /> that represents the converted value.
         /// </returns>
         /// <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext" /> that provides a format context. </param>
         /// <param name="culture">
-        ///     A <see cref="T:System.Globalization.CultureInfo" />. If null is passed, the current culture is
-        ///     assumed.
+        /// A <see cref="T:System.Globalization.CultureInfo" />. If null is passed, the current culture is
+        /// assumed.
         /// </param>
         /// <param name="value">The <see cref="T:System.Object" /> to convert. </param>
         /// <param name="destinationType">The <see cref="T:System.Type" /> to convert the <paramref name="value" /> parameter to. </param>

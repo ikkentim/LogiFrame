@@ -25,7 +25,7 @@ using System.Windows.Forms;
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a ticking timer.
+    /// Represents a ticking timer.
     /// </summary>
     public class Timer : Component
     {
@@ -40,7 +40,7 @@ namespace LogiFrame.Components
         #region Events
 
         /// <summary>
-        ///     Occurs when the Invetval of the current LogiFrame.Components.Timer elapsed whilst running.
+        /// Occurs when the Invetval of the current LogiFrame.Components.Timer elapsed whilst running.
         /// </summary>
         public event EventHandler Tick;
 
@@ -49,7 +49,7 @@ namespace LogiFrame.Components
         #region Properties
 
         /// <summary>
-        ///     Gets or sets the time in miliseconds each frame lasts.
+        /// Gets or sets the time in miliseconds each frame lasts.
         /// </summary>
         public int Interval
         {
@@ -62,7 +62,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets whether the timer should cycle.
+        /// Gets or sets whether the timer should cycle.
         /// </summary>
         public bool Run
         {

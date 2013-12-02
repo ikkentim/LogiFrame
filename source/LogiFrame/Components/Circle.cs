@@ -21,14 +21,14 @@ using System;
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a drawable circle.
+    /// Represents a drawable circle.
     /// </summary>
     public class Circle : Component
     {
         private bool _fill;
 
         /// <summary>
-        ///     Gets or sets whether the LogiFrame.Components.Square should be filled.
+        /// Gets or sets whether the LogiFrame.Components.Square should be filled.
         /// </summary>
         public bool Fill
         {

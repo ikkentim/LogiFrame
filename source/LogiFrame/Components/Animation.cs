@@ -24,7 +24,7 @@ using System.Threading;
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a drawable animation.
+    /// Represents a drawable animation.
     /// </summary>
     public class Animation : Picture
     {
@@ -42,7 +42,7 @@ namespace LogiFrame.Components
         #region Properties
 
         /// <summary>
-        ///     Gets or sets the time in miliseconds each frame lasts.
+        /// Gets or sets the time in miliseconds each frame lasts.
         /// </summary>
         public int Interval
         {
@@ -56,8 +56,8 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets whether this LogiFrame.Components.Animation should
-        ///     automatically calculate its Interval.
+        /// Gets or sets whether this LogiFrame.Components.Animation should
+        /// automatically calculate its Interval.
         /// </summary>
         public bool AutoInterval
         {
@@ -75,7 +75,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets the animated System.Drawing.Image to be rendered.
+        /// Gets or sets the animated System.Drawing.Image to be rendered.
         /// </summary>
         public override Image Image
         {
@@ -96,7 +96,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets the LogiFrame.ConversionMethod to be used to render the animation.
+        /// Gets or sets the LogiFrame.ConversionMethod to be used to render the animation.
         /// </summary>
         public override ConversionMethod ConversionMethod
         {
@@ -139,7 +139,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets the number of frames available in this animation.
+        /// Gets the number of frames available in this animation.
         /// </summary>
         public int FrameCount
         {
@@ -153,7 +153,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets whether the animation should automatically cycle trough its frames.
+        /// Gets or sets whether the animation should automatically cycle trough its frames.
         /// </summary>
         public bool Run
         {
