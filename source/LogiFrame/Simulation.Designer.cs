@@ -37,6 +37,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
             this.propertiesGroupBox = new System.Windows.Forms.GroupBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.displayPictureBox)).BeginInit();
             this.displayGroupBox.SuspendLayout();
             this.buttonsGroupBox.SuspendLayout();
@@ -135,12 +136,24 @@
             this.propertiesGroupBox.TabStop = false;
             this.propertiesGroupBox.Text = "Properties";
             // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(15, 237);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(126, 13);
+            this.linkLabel1.TabIndex = 5;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "LogiFrame, by @ikkentim";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
             // Simulation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(472, 265);
+            this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.propertiesGroupBox);
             this.Controls.Add(this.buttonsGroupBox);
             this.Controls.Add(this.displayGroupBox);
@@ -156,6 +169,7 @@
             this.buttonsGroupBox.ResumeLayout(false);
             this.propertiesGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -170,5 +184,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.PropertyGrid propertyGrid;
         private System.Windows.Forms.GroupBox propertiesGroupBox;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }

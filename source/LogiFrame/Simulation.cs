@@ -17,6 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace LogiFrame
@@ -109,5 +110,10 @@ namespace LogiFrame
         }
 
         #endregion
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(@"http://www.ikkentim.com");
+        }
     }
 }
