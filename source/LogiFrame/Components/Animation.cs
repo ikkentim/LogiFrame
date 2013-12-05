@@ -1,21 +1,22 @@
-﻿//     Animation.cs
+﻿// Animation.cs
 // 
-//     LogiFrame rendering library.
-//     Copyright (C) 2013  Tim Potze
+// LogiFrame rendering library.
+// Copyright (C) 2013 Tim Potze
 // 
-//     This program is free software: you can redistribute it and/or modify
-//     it under the terms of the GNU General Public License as published by
-//     the Free Software Foundation, either version 3 of the License, or
-//     (at your option) any later version.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 // 
-//     This program is distributed in the hope that it will be useful,
-//     but WITHOUT ANY WARRANTY; without even the implied warranty of
-//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//     GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 // 
-//     You should have received a copy of the GNU General Public License
-//     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading;
@@ -23,7 +24,7 @@ using System.Threading;
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a drawable animation.
+    /// Represents a drawable animation.
     /// </summary>
     public class Animation : Picture
     {
@@ -41,7 +42,7 @@ namespace LogiFrame.Components
         #region Properties
 
         /// <summary>
-        ///     The time in MS each frame lasts.
+        /// Gets or sets the time in miliseconds each frame lasts.
         /// </summary>
         public int Interval
         {
@@ -50,12 +51,13 @@ namespace LogiFrame.Components
             {
                 if (!AutoInterval)
                     _interval = value;
+                CheckThreadRunning();
             }
         }
 
         /// <summary>
-        ///     Whether the current LogiFrame.Components.Animation should
-        ///     automatically calculate the Interval.
+        /// Gets or sets whether this LogiFrame.Components.Animation should
+        /// automatically calculate its Interval.
         /// </summary>
         public bool AutoInterval
         {
@@ -68,12 +70,12 @@ namespace LogiFrame.Components
                 _autoInterval = value;
 
                 if (value)
-                    Interval = GetFrameDuration();
+                    _interval = GetFrameDuration();
             }
         }
 
         /// <summary>
-        ///     The animated image to be rendered.
+        /// Gets or sets the animated System.Drawing.Image to be rendered.
         /// </summary>
         public override Image Image
         {
@@ -89,11 +91,12 @@ namespace LogiFrame.Components
 
                 RenderAnimation();
                 HasChanged = true;
+                CheckThreadRunning();
             }
         }
 
         /// <summary>
-        ///     The conversion method to be used to render the animation.
+        /// Gets or sets the LogiFrame.ConversionMethod to be used to render the animation.
         /// </summary>
         public override ConversionMethod ConversionMethod
         {
@@ -109,11 +112,12 @@ namespace LogiFrame.Components
 
                 RenderAnimation();
                 HasChanged = true;
+                CheckThreadRunning();
             }
         }
 
         /// <summary>
-        ///     The 0-based frame index to be rendered.
+        ///    Gets or sets the 0-based frame index to be rendered.
         /// </summary>
         public int Frame
         {
@@ -135,7 +139,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     The number of frames in the current animation.
+        /// Gets the number of frames available in this animation.
         /// </summary>
         public int FrameCount
         {
@@ -149,7 +153,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Whether the animation should automatically cycle trough its frames.
+        /// Gets or sets whether the animation should automatically cycle trough its frames.
         /// </summary>
         public bool Run
         {
@@ -161,11 +165,7 @@ namespace LogiFrame.Components
 
                 _run = value;
 
-                if (_run && _thread == null)
-                {
-                    _thread = new Thread(AnimationThread);
-                    _thread.Start();
-                }
+                CheckThreadRunning();
             }
         }
 
@@ -188,8 +188,27 @@ namespace LogiFrame.Components
             Image.Dispose();
         }
 
+        /// <summary>
+        /// Checks whether the thread is still running and restarts it if necessary.
+        /// </summary>
+        private void CheckThreadRunning()
+        {
+            //Check if the thread is running
+            if (!Disposed && Run && _thread == null)
+            {
+                _thread = new Thread(AnimationThread);
+                _thread.Start();
+            }
+        }
+
+        /// <summary>
+        /// Renders and stores every individual frame of this LogiFrame.Components.Animation.
+        /// </summary>
         private void RenderAnimation()
         {
+            if (Disposed)
+                throw new ObjectDisposedException("Resource was disposed.");
+
             //If no image is set, don't render anything.
             if (Image == null)
             {
@@ -215,30 +234,37 @@ namespace LogiFrame.Components
 
             //calculate interval
             if (AutoInterval)
-                Interval = GetFrameDuration();
+                _interval = GetFrameDuration();
 
             //check current frame
             if (_frame < 0 || _frame >= frames)
                 _frame = 0;
         }
 
+        /// <summary>
+        /// Gets the frame duration of the Image from libgdiplus.
+        /// </summary>
+        /// <returns>The frame duration from libgdiplus</returns>
         private int GetFrameDuration()
         {
             try
             {
-                PropertyItem item = Image.GetPropertyItem(0x5100); // FrameDelay in libgdiplus
+                PropertyItem item = Image.GetPropertyItem(0x5100); // 0x5100 is the FrameDelay in libgdiplus
                 // Time is in 1/100th of a second
                 return (item.Value[0] + item.Value[1]*256)*10;
             }
-            catch //any exception
+            catch (Exception)
             {
                 return 200;
             }
         }
 
+        /// <summary>
+        /// Cycles trough all the frames on the set Interval.
+        /// </summary>
         private void AnimationThread()
         {
-            while (Run && Interval > 0)
+            while (!Disposed && Run && Interval > 0)
             {
                 Frame++;
                 Thread.Sleep(Interval);

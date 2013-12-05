@@ -1,27 +1,27 @@
-﻿//     Line.cs
+﻿// Line.cs
 // 
-//     LogiFrame rendering library.
-//     Copyright (C) 2013  Tim Potze
+// LogiFrame rendering library.
+// Copyright (C) 2013 Tim Potze
 // 
-//     This program is free software: you can redistribute it and/or modify
-//     it under the terms of the GNU General Public License as published by
-//     the Free Software Foundation, either version 3 of the License, or
-//     (at your option) any later version.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 // 
-//     This program is distributed in the hope that it will be useful,
-//     but WITHOUT ANY WARRANTY; without even the implied warranty of
-//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//     GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 // 
-//     You should have received a copy of the GNU General Public License
-//     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
 
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a drawable line.
+    /// Represents a drawable line.
     /// </summary>
     public class Line : Component
     {
@@ -35,7 +35,7 @@ namespace LogiFrame.Components
         #region Constructor
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.components.Line class.
+        /// Initializes a new instance of the LogiFrame.components.Line class.
         /// </summary>
         public Line()
         {
@@ -48,7 +48,7 @@ namespace LogiFrame.Components
         #region Properties
 
         /// <summary>
-        ///     Location in the parent LogiFrame.Components.Container where the line should start at.
+        /// Gets or sets the LogiFrame.Location within the parent LogiFrame.Components.Container where the line should start at.
         /// </summary>
         public Location Start
         {
@@ -63,7 +63,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Location in the parent LogiFrame.Components.Container where the line should end at.
+        /// Gets or sets the LogiFrame.Location within the parent LogiFrame.Components.Container where the line should end at.
         /// </summary>
         public Location End
         {
@@ -96,11 +96,21 @@ namespace LogiFrame.Components
 
         #region Private methods
 
+        /// <summary>
+        /// Listener for Location.Changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void end_Changed(object sender, EventArgs e)
         {
             End = _end;
         }
 
+        /// <summary>
+        /// Listener for Location.Changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void start_Changed(object sender, EventArgs e)
         {
             Start = _start;

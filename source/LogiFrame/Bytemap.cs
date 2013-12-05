@@ -1,27 +1,27 @@
-﻿//     Bytemap.cs
+﻿// Bytemap.cs
 // 
-//     LogiFrame rendering library.
-//     Copyright (C) 2013  Tim Potze
+// LogiFrame rendering library.
+// Copyright (C) 2013 Tim Potze
 // 
-//     This program is free software: you can redistribute it and/or modify
-//     it under the terms of the GNU General Public License as published by
-//     the Free Software Foundation, either version 3 of the License, or
-//     (at your option) any later version.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 // 
-//     This program is distributed in the hope that it will be useful,
-//     but WITHOUT ANY WARRANTY; without even the implied warranty of
-//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//     GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 // 
-//     You should have received a copy of the GNU General Public License
-//     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
 
 namespace LogiFrame
 {
     /// <summary>
-    ///     Represents a single-color image in a bytearray
+    /// Represents a single-color image in a bytearray
     /// </summary>
     public class Bytemap
     {
@@ -36,16 +36,16 @@ namespace LogiFrame
         #region Statics
 
         /// <summary>
-        ///     Represens an empty Bytemap.
+        /// Represents an empty Bytemap.
         /// </summary>
-        public static readonly Bytemap Empty;
+        public static readonly Bytemap Empty = null;
 
         #endregion
 
         #region Factory
 
         /// <summary>
-        ///     Transform a System.Drawing.Bitmap into a LogiFrame.Bytemap.
+        /// Transform a System.Drawing.Bitmap into a LogiFrame.Bytemap.
         /// </summary>
         /// <param name="bitmap">The System.Drawing.Bitmap to transform.</param>
         /// <param name="conversionMethod">The LogiFrame.ConversionMethod to use during the transformation.</param>
@@ -56,7 +56,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Transform a System.Drawing.Bitmap into a LogiFrame.Bytemap.
+        /// Transform a System.Drawing.Bitmap into a LogiFrame.Bytemap.
         /// </summary>
         /// <param name="bitmap">The System.Drawing.Bitmap to transform.</param>
         /// <param name="maxR">The maximum red color value for a pixel to be filled.</param>
@@ -70,7 +70,7 @@ namespace LogiFrame
             if (bitmap == null)
                 return null;
 
-            Bytemap result = new Bytemap((Size) bitmap.Size);
+            Bytemap result = new Bytemap(bitmap.Size);
 
             for (int y = 0; y < bitmap.Height; y++)
                 for (int x = 0; x < bitmap.Width; x++)
@@ -87,7 +87,7 @@ namespace LogiFrame
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Bytemap class.
+        /// Initializes a new instance of the LogiFrame.Bytemap class.
         /// </summary>
         /// <param name="width">Initial width of the bytemap.</param>
         /// <param name="height">Initial height of the bytemap.</param>
@@ -97,7 +97,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Bytemap class.
+        /// Initializes a new instance of the LogiFrame.Bytemap class.
         /// </summary>
         /// <param name="size">Initial size of the bytemap.</param>
         public Bytemap(Size size)
@@ -110,25 +110,25 @@ namespace LogiFrame
         #region Properties
 
         /// <summary>
-        ///     The byte[] array container all the date of the canvas.
+        /// Gets the byte[] array container all the date of the canvas.
         /// </summary>
         public byte[] Data { get; private set; }
 
         /// <summary>
-        ///     Whether the non-filled pixels should draw the lower-located
-        ///     pixels when using the LogiFrame.Bytemap.Merge method.
+        /// Gets or sets whether the non-filled pixels should draw the lower-located
+        /// pixels when using the LogiFrame.Bytemap.Merge method.
         /// </summary>
         public bool Transparent { get; set; }
 
         /// <summary>
-        ///     Whether pixels around the filled pixels should always be non-filled
-        ///     when using the LogiFrame.Bytemap.Merge method.
+        /// Gets or sets whether pixels around the filled pixels should always be non-filled
+        /// when using the LogiFrame.Bytemap.Merge method.
         /// </summary>
         public bool TopEffect { get; set; }
 
 
         /// <summary>
-        ///     The LogiFrame.Size of this LogiFrame.Bytemap.
+        /// Gets or sets the LogiFrame.Size of this LogiFrame.Bytemap.
         /// </summary>
         public Size Size
         {
@@ -146,11 +146,11 @@ namespace LogiFrame
                 }
                 else
                 {
-                    _size.Changed -= size_SizeChanged;
+                    _size.Changed -= size_Changed;
                 }
 
                 _size = value;
-                _size.Changed += size_SizeChanged;
+                _size.Changed += size_Changed;
 
                 Resize();
             }
@@ -161,7 +161,7 @@ namespace LogiFrame
         #region Methods
 
         /// <summary>
-        ///     Creates a copy of LogiFrame.Bytemap instance.
+        /// Creates a copy of LogiFrame.Bytemap instance.
         /// </summary>
         /// <returns>The new LogiFrame.Bytemap that this method creates.</returns>
         public Bytemap Clone()
@@ -173,7 +173,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Sets the content of the specified pixel in this LogiFrame.Bytemap.
+        /// Sets the content of the specified pixel in this LogiFrame.Bytemap.
         /// </summary>
         /// <param name="location">The location of the pixel to set.</param>
         /// <param name="fill">Whether the pixel should be filled.</param>
@@ -183,7 +183,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Sets the content of the specified pixel in this LogiFrame.Bytemap.
+        /// Sets the content of the specified pixel in this LogiFrame.Bytemap.
         /// </summary>
         /// <param name="x">The x-coordinate of the pixel to set.</param>
         /// <param name="y">The y-coordinate of the pixel to set.</param>
@@ -197,7 +197,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Get the content of the specified pixel in this LogiFrame.Bytemap.
+        /// Gets the content of the specified pixel in this LogiFrame.Bytemap.
         /// </summary>
         /// <param name="location">The location of the pixel to get.</param>
         /// <returns>Whether the pixel is filled</returns>
@@ -207,7 +207,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Get the content of the specified pixel in this LogiFrame.Bytemap.
+        /// Gets the content of the specified pixel in this LogiFrame.Bytemap.
         /// </summary>
         /// <param name="x">The x-coordinate of the pixel to get.</param>
         /// <param name="y">The y-coordinate of the pixel to get.</param>
@@ -217,13 +217,13 @@ namespace LogiFrame
             if (x < 0 || y < 0 || x >= _width || y >= _height)
                 throw new ArgumentOutOfRangeException("The given position is not within the boundaries of the Bytemap.");
 
-            return Data[x + y*_width] == (byte) 0xff;
+            return Data[x + y*_width] == 0xff;
         }
 
         /// <summary>
-        ///     Merge the given LogiFrame.Bytemap into the current LogiFrame.Bytemap at the specified location.
+        /// Merges the given LogiFrame.Bytemap into this LogiFrame.Bytemap at the specified LogiFrame.Location.
         /// </summary>
-        /// <param name="bytemap">The LogiFrame.Bytemap to merge into the current LogiFrame.Bytemap.</param>
+        /// <param name="bytemap">The LogiFrame.Bytemap to merge into this LogiFrame.Bytemap.</param>
         /// <param name="location">The LogiFrame.Location to merge the LogiFrame.Bytemap at.</param>
         public void Merge(Bytemap bytemap, Location location)
         {
@@ -272,7 +272,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Converts the specified LogiFrame.Bytemap instance to a System.Drawing.Bitmap instance.
+        /// Converts the specified LogiFrame.Bytemap instance to a System.Drawing.Bitmap instance.
         /// </summary>
         /// <param name="bytemap">The LogiFrame.Bytemap to be converted.</param>
         /// <returns>The System.Drawing.Bitmap that results from the conversion.</returns>
@@ -295,6 +295,9 @@ namespace LogiFrame
 
         #region Private methods
 
+        /// <summary>
+        /// Resizes the byte array according to the Size.
+        /// </summary>
         private void Resize()
         {
             if (_width != Size.Width || _height != Size.Height)
@@ -315,7 +318,12 @@ namespace LogiFrame
             }
         }
 
-        private void size_SizeChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Listener for Size.Changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void size_Changed(object sender, EventArgs e)
         {
             Resize();
         }

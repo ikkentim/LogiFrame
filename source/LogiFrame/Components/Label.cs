@@ -1,27 +1,27 @@
-﻿//     Label.cs
+﻿// Label.cs
 // 
-//     LogiFrame rendering library.
-//     Copyright (C) 2013  Tim Potze
+// LogiFrame rendering library.
+// Copyright (C) 2013 Tim Potze
 // 
-//     This program is free software: you can redistribute it and/or modify
-//     it under the terms of the GNU General Public License as published by
-//     the Free Software Foundation, either version 3 of the License, or
-//     (at your option) any later version.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 // 
-//     This program is distributed in the hope that it will be useful,
-//     but WITHOUT ANY WARRANTY; without even the implied warranty of
-//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//     GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 // 
-//     You should have received a copy of the GNU General Public License
-//     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
 
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a drawable text label.
+    /// Represents a drawable text label.
     /// </summary>
     public class Label : Component
     {
@@ -30,7 +30,7 @@ namespace LogiFrame.Components
         private string _text;
 
         /// <summary>
-        ///     The text the current LogiFrame.Components.Label should draw.
+        /// Gets or sets the text this LogiFrame.Components.Label should draw.
         /// </summary>
         public string Text
         {
@@ -50,7 +50,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     The font the current LogiFrame.Components.Label should draw with.
+        /// Gets or sets the System.Drawing.Font this LogiFrame.Components.Label should draw with.
         /// </summary>
         public System.Drawing.Font Font
         {
@@ -68,8 +68,8 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Whether this LogiFrame.Components.Label should automatically
-        ///     resize when the text has changed.
+        /// Gets or sets whether this LogiFrame.Components.Label should automatically
+        /// resize to fit the Text.
         /// </summary>
         public bool AutoSize
         {
@@ -87,7 +87,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     The LogiFrame.Size of this LogiFrame.Components.Label.
+        /// Gets or sets the LogiFrame.Size of this LogiFrame.Components.Label.
         /// </summary>
         public override Size Size
         {
@@ -109,6 +109,10 @@ namespace LogiFrame.Components
             return Bytemap.FromBitmap(bmp);
         }
 
+        /// <summary>
+        /// Measures the size of the Text when rendered with the set Font.
+        /// </summary>
+        /// <param name="silent">Whether the change of font should make the LogiFrame.Components.Label rerender.</param>
         private void MeasureText(bool silent)
         {
             if (silent)

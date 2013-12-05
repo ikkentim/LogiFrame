@@ -1,4 +1,4 @@
-﻿// PushingEventArgs.cs
+﻿// Label.cs
 // 
 // LogiFrame rendering library.
 // Copyright (C) 2013 Tim Potze
@@ -16,33 +16,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
-using System;
-
-namespace LogiFrame
+namespace LogiFrame.Components
 {
     /// <summary>
-    /// Provides data for the LogiFrame.Frame.Pushing event.
+    /// Represents a Style of drawing a LogiFrame.Components.ProgressBar.
     /// </summary>
-    public class PushingEventArgs : EventArgs
+    public enum ProgressBarStyle
     {
         /// <summary>
-        /// Initializes a new instance of the LogiFrame.PushingEventArgs class.
+        /// A drawing type where there is no border around the ProgressBar.
         /// </summary>
-        /// <param name="frame">The frame that is about to be pushed.</param>
-        public PushingEventArgs(Bytemap frame)
-        {
-            Frame = frame;
-        }
-
+        NoBorder,
         /// <summary>
-        /// Gets or sets whether this frame should be prevented from being
-        /// pushed to the display.
+        /// A drawing type where there is a border around the ProgressBar.
         /// </summary>
-        public bool PreventPush { get; set; }
-
+        Border,
         /// <summary>
-        /// Gets the frame that is about to be
+        /// A drawing type where there is a border around the ProgressBar,
+        /// and a single pixel of whitespace between the border in the inner bar.
         /// </summary>
-        public Bytemap Frame { get; private set; }
+        WhiteSpacedBorder
     }
 }

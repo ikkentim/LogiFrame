@@ -1,27 +1,27 @@
-﻿//     Container.cs
+﻿// Container.cs
 // 
-//     LogiFrame rendering library.
-//     Copyright (C) 2013  Tim Potze
+// LogiFrame rendering library.
+// Copyright (C) 2013 Tim Potze
 // 
-//     This program is free software: you can redistribute it and/or modify
-//     it under the terms of the GNU General Public License as published by
-//     the Free Software Foundation, either version 3 of the License, or
-//     (at your option) any later version.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 // 
-//     This program is distributed in the hope that it will be useful,
-//     but WITHOUT ANY WARRANTY; without even the implied warranty of
-//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//     GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 // 
-//     You should have received a copy of the GNU General Public License
-//     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
 
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a Component that is capable of holding multiple other LogiFrame.Components.Component instances.
+    /// Represents a Component that is capable of holding multiple other LogiFrame.Components.Component instances.
     /// </summary>
     public class Container : Component
     {
@@ -34,7 +34,7 @@ namespace LogiFrame.Components
         #region Constructor
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Components.Container class.
+        /// Initializes a new instance of the LogiFrame.Components.Container class.
         /// </summary>
         public Container()
         {
@@ -47,8 +47,8 @@ namespace LogiFrame.Components
         #region Properties
 
         /// <summary>
-        ///     A collection of LogiFrame.Components.Component instances that are rendered within the current
-        ///     LogiFrame.Components.Container.
+        /// Gets a collection of LogiFrame.Components.Component instances that will be rendered
+        /// within this LogiFrame.Components.Container.
         /// </summary>
         public ComponentCollection<Component> Components
         {
@@ -75,9 +75,6 @@ namespace LogiFrame.Components
 
         protected override Bytemap Render()
         {
-            if (Disposed)
-                throw new ObjectDisposedException("Resource was disposed.");
-
             Bytemap result = new Bytemap(Size);
 
             foreach (Component c in Components)
@@ -105,6 +102,11 @@ namespace LogiFrame.Components
         #region Private methods
 
         //Calbacks
+        /// <summary>
+        /// Listener for ComponentCollection.ComponentRemoved.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void components_ComponentRemoved(object sender, ComponentChangedEventArgs e)
         {
             if (Disposed)
@@ -117,18 +119,28 @@ namespace LogiFrame.Components
             HasChanged = true;
         }
 
+        /// <summary>
+        /// Listener for ComponentCollection.ComponentAdded.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void components_ComponentAdded(object sender, ComponentChangedEventArgs e)
         {
             if (Disposed)
                 throw new ObjectDisposedException("Resource was disposed.");
 
-            e.Component.Changed += new EventHandler(Container_Changed);
-            e.Component.LocationChanged += new EventHandler(Container_Changed);
+            e.Component.Changed += Container_Changed;
+            e.Component.LocationChanged += Container_Changed;
 
             //Notify
             HasChanged = true;
         }
 
+        /// <summary>
+        /// Listener for Component.Changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Container_Changed(object sender, EventArgs e)
         {
             HasChanged = true;

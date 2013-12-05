@@ -1,34 +1,34 @@
-﻿//     Picture.cs
+﻿// Picture.cs
 // 
-//     LogiFrame rendering library.
-//     Copyright (C) 2013  Tim Potze
+// LogiFrame rendering library.
+// Copyright (C) 2013 Tim Potze
 // 
-//     This program is free software: you can redistribute it and/or modify
-//     it under the terms of the GNU General Public License as published by
-//     the Free Software Foundation, either version 3 of the License, or
-//     (at your option) any later version.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 // 
-//     This program is distributed in the hope that it will be useful,
-//     but WITHOUT ANY WARRANTY; without even the implied warranty of
-//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//     GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 // 
-//     You should have received a copy of the GNU General Public License
-//     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a drawable picture.
+    /// Represents a drawable picture.
     /// </summary>
     public class Picture : Component
     {
         private bool _autoSize;
         private ConversionMethod _conversionMethod = ConversionMethod.Normal;
-        private System.Drawing.Image _image = null;
+        private System.Drawing.Image _image;
 
         /// <summary>
-        ///     The image to be drawn.
+        /// Gets or sets the image to be drawn.
         /// </summary>
         public virtual System.Drawing.Image Image
         {
@@ -46,7 +46,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     The conversion method to use during the rendering.
+        /// Gets or sets the conversion method to use during the rendering.
         /// </summary>
         public virtual ConversionMethod ConversionMethod
         {
@@ -64,8 +64,8 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Whether this LogiFrame.Components.Picture should automatically
-        ///     resize when the image has changed.
+        /// Gets or sets whether this LogiFrame.Components.Picture should automatically
+        /// resize when the image has changed.
         /// </summary>
         public bool AutoSize
         {
@@ -83,7 +83,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     The LogiFrame.Size of this LogiFrame.Components.Label.
+        /// Gets or sets the LogiFrame.Size of this LogiFrame.Components.Label.
         /// </summary>
         public override Size Size
         {
@@ -103,6 +103,10 @@ namespace LogiFrame.Components
             return render;
         }
 
+        /// <summary>
+        /// Measures the size of the Image when rendered.
+        /// </summary>
+        /// <param name="silent">Whether the change of font should make the LogiFrame.Components.Label rerender.</param>
         private void MeasureImage(bool silent)
         {
             if (silent)
