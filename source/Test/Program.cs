@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using LogiFrame;
 using LogiFrame.Components;
 using System.Diagnostics;
@@ -6,28 +7,23 @@ using LogiFrame.Components.Book;
 
 namespace Test
 {
-    static class Program
+    internal static class Program
     {
+        #region Basic Test
 
+        /*
         private static Animation _animation;
         private static ProgressBar _progressBar;
         private static Line _line;
         private static Square _square;
         private static Label _label;
         private static Picture _picture;
-
-        private static void Main()
+        
+        private static void SetupBasicTest(Frame frame)
         {
-            //Test application
-            Frame frame = new Frame("LogiFrame test application", false, false, true, true)
-            {
-                UpdatePriority = UpdatePriority.Alert
-            };
+            frame.ButtonDown += frame_ButtonDown;
+            frame.Configure += frame_Configure;
 
-            //frame.ButtonDown += frame_ButtonDown;
-            //frame.Configure += frame_Configure;
-
-            /*
             _line = new Line
             {
                 Start = new Location(130, 30),
@@ -73,27 +69,16 @@ namespace Test
                 ConversionMethod = ConversionMethod.QuarterByte,
                 Image = Properties.Resources.banana,
                 Run = true
-            };
-            */
-
-            Book book = new Book(frame);
-
-            book.Pages.Add(new CustomPage());
-            book.SwitchTo(typeof(CustomPage));
-
-            /*
+            }; 
+           
             frame.Components.Add(_square);
             frame.Components.Add(_line);
             frame.Components.Add(_label);
             frame.Components.Add(_picture);
             frame.Components.Add(_animation);
             frame.Components.Add(_progressBar);
-            */
-
-            Debug.WriteLine("\nApplication initialized\n");
-            frame.WaitForClose();
         }
-
+        
         static void frame_Configure(object sender, EventArgs e)
         {
             Debug.WriteLine("CONFIGURE");
@@ -111,29 +96,113 @@ namespace Test
                 _progressBar.Value = 100 - _progressBar.Value;
             Debug.WriteLine("Button pressed: " + e.Button);
         }
+        */
 
+        #endregion
+
+        #region Books Test
+
+        private static void SetupBookTest(Frame frame)
+        {
+            Book book = new Book(frame);
+
+            book.Pages.Add(new CustomPage(book));
+            book.Pages.Add(new CustomPage2(book));
+            book.Pages.Add(new CustomPage3(book));
+            book.Pages.Add(new CustomPage4(book));
+
+            book.SwitchTo(typeof (CustomPage));
+
+        }
+
+        #endregion
+
+        private static void Main()
+        {
+            //Test application
+            Frame frame = new Frame("LogiFrame test application", false, false, true, true)
+            {
+                UpdatePriority = UpdatePriority.Normal
+            };
+
+            SetupBookTest(frame);
+
+            Debug.WriteLine("\nApplication initialized\n");
+            frame.WaitForClose();
+        }
+
+        [PageInfo("Test page")]
         private class CustomPage : Page
         {
-            public CustomPage()
+            private Book _book;
+
+            public CustomPage(Book book)
             {
-                Debug.WriteLine("Page init");
+                _book = book;
+
                 var l = new Label
                 {
                     AutoSize = true,
-                    Text = "Custom page!"
+                    Text = this.ToString()
                 };
-                
+
                 Components.Add(l);
             }
 
             public override void ButtonPressed(int button)
             {
                 Debug.Write("P" + button);
+
+                if (button == 3)
+                    _book.ShowMenu();
+
+
             }
 
             public override void ButtonReleased(int button)
             {
                 Debug.Write("R" + button);
+            }
+
+            protected override PageIcon GetPageIcon()
+            {
+                var icon = new PageIcon();
+
+                icon.Components.Add(new Label
+                {
+                    AutoSize = true,
+                    Text = "T",
+                    Font = new Font("Arial", 10f, FontStyle.Bold)
+                });
+
+                return icon;
+            }
+        }
+
+        [PageInfo("Test page 2")]
+        private class CustomPage2 : CustomPage
+        {
+            public CustomPage2(Book book) : base(book)
+            {
+
+            }
+        }
+
+        [PageInfo("Test page 3")]
+        private class CustomPage3 : CustomPage
+        {
+            public CustomPage3(Book book) : base(book)
+            {
+
+            }
+        }
+
+        [PageInfo("Test page 4")]
+        private class CustomPage4 : CustomPage
+        {
+            public CustomPage4(Book book) : base(book)
+            {
+
             }
         }
     }
