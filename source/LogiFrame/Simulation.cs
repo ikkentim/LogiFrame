@@ -1,6 +1,4 @@
-﻿// Simulation.cs
-// 
-// LogiFrame rendering library.
+﻿// LogiFrame rendering library.
 // Copyright (C) 2013 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -67,6 +65,11 @@ namespace LogiFrame
             Close();
         }
 
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(@"http://www.ikkentim.com");
+        }
+
         #region Buttons
 
         private void button1_MouseDown(object sender, MouseEventArgs e)
@@ -110,10 +113,5 @@ namespace LogiFrame
         }
 
         #endregion
-
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start(@"http://www.ikkentim.com");
-        }
     }
 }

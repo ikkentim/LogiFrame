@@ -1,6 +1,4 @@
-﻿// ComponentCollection.cs
-// 
-// LogiFrame rendering library.
+﻿// LogiFrame rendering library.
 // Copyright (C) 2013 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -22,43 +20,45 @@ namespace LogiFrame.Components.Book
 {
     public abstract class Page : Container
     {
+        private PageIcon _pageIcon;
+
         protected Page()
         {
-            base.Size = new Size((int)LgLcd.LglcdBmpWidth, (int)LgLcd.LglcdBmpHeight);
+            base.Size = new Size((int) LgLcd.LglcdBmpWidth, (int) LgLcd.LglcdBmpHeight);
         }
 
         public override Location Location
         {
-            get
-            {
-                return base.Location;
-            }
-            set
-            {
-                throw new ArgumentException("The Location of a LogiFrame.Components.Book.Page cannot be changed.");
-            }
+            get { return base.Location; }
+            set { throw new ArgumentException("The Location of a LogiFrame.Components.Book.Page cannot be changed."); }
         }
 
         public override Size Size
         {
-            get
-            {
-                return base.Size;
-            }
-            set
-            {
-                throw new ArgumentException("The Size of a LogiFrame.Components.Book.Page cannot be changed.");
-            }
+            get { return base.Size; }
+            set { throw new ArgumentException("The Size of a LogiFrame.Components.Book.Page cannot be changed."); }
         }
 
+        public PageIcon PageIcon
+        {
+            get
+            {
+                _pageIcon = _pageIcon ?? GetPageIcon();
+
+                return _pageIcon;
+            }
+        }
         public virtual void ButtonPressed(int button)
         {
-            
         }
 
         public virtual void ButtonReleased(int button)
         {
-            
+        }
+
+        protected virtual PageIcon GetPageIcon()
+        {
+            return null;
         }
     }
 }

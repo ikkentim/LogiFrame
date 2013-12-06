@@ -1,6 +1,4 @@
-﻿// Square.cs
-// 
-// LogiFrame rendering library.
+﻿// LogiFrame rendering library.
 // Copyright (C) 2013 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -23,15 +21,14 @@ namespace LogiFrame.Components
     /// </summary>
     public class ProgressBar : Container
     {
+        private readonly Square _borderSquare = new Square();
+        private readonly Square _innerSquare = new Square();
         private bool _horizontal = true;
         private bool _inverted;
         private float _maximumValue = 100;
         private float _minimumValue;
-        private float _value;
         private ProgressBarStyle _progressBarStyle = ProgressBarStyle.NoBorder;
-
-        private readonly Square _borderSquare = new Square();
-        private readonly Square _innerSquare = new Square();
+        private float _value;
 
         /// <summary>
         /// Initializes a new instance of the LogiFrame.Components.ProgressBar class.
@@ -58,6 +55,7 @@ namespace LogiFrame.Components
                 HasChanged = true;
             }
         }
+
         /// <summary>
         /// Gets or sets whether the progress bar is progressing invertedly.
         /// </summary>
@@ -143,7 +141,7 @@ namespace LogiFrame.Components
             float progress = 0;
 
             if (_maximumValue > _minimumValue)
-                progress = (_value - _minimumValue) / (_maximumValue - _minimumValue);
+                progress = (_value - _minimumValue)/(_maximumValue - _minimumValue);
 
             if (_value < _minimumValue)
                 progress = 0;
@@ -170,13 +168,15 @@ namespace LogiFrame.Components
 
             if (_horizontal)
             {
-                _innerSquare.Size.Set((int)((Size.Width - borderOffset * 2) * progress), Size.Height - borderOffset * 2);
-                _innerSquare.Location.Set(_inverted ? Size.Width - _innerSquare.Size.Width - borderOffset : borderOffset, borderOffset);
+                _innerSquare.Size.Set((int) ((Size.Width - borderOffset*2)*progress), Size.Height - borderOffset*2);
+                _innerSquare.Location.Set(
+                    _inverted ? Size.Width - _innerSquare.Size.Width - borderOffset : borderOffset, borderOffset);
             }
             else
             {
-                _innerSquare.Size.Set(Size.Width - borderOffset * 2, (int)((Size.Height - borderOffset * 2) * progress));
-                _innerSquare.Location.Set(borderOffset, _inverted ? Size.Height - _innerSquare.Size.Height - borderOffset : borderOffset);
+                _innerSquare.Size.Set(Size.Width - borderOffset*2, (int) ((Size.Height - borderOffset*2)*progress));
+                _innerSquare.Location.Set(borderOffset,
+                    _inverted ? Size.Height - _innerSquare.Size.Height - borderOffset : borderOffset);
             }
 
             return base.Render();

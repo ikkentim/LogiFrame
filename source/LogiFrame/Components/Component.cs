@@ -1,6 +1,4 @@
-﻿// Component.cs
-// 
-// LogiFrame rendering library.
+﻿// LogiFrame rendering library.
 // Copyright (C) 2013 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -28,12 +26,12 @@ namespace LogiFrame.Components
         #region Fields
 
         private Bytemap _bytemap;
+        private bool _hasChanged = true;
+        private bool _isRendering;
         private Location _location = new Location();
         private Location _renderOffset = new Location();
         private Size _size = new Size();
 
-        private bool _hasChanged = true;
-        private bool _isRendering;
         private bool _topEffect;
         private bool _transparent;
         private bool _visible = true;

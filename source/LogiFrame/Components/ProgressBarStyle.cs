@@ -1,6 +1,4 @@
-﻿// Label.cs
-// 
-// LogiFrame rendering library.
+﻿// LogiFrame rendering library.
 // Copyright (C) 2013 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -27,10 +25,12 @@ namespace LogiFrame.Components
         /// A drawing type where there is no border around the ProgressBar.
         /// </summary>
         NoBorder,
+
         /// <summary>
         /// A drawing type where there is a border around the ProgressBar.
         /// </summary>
         Border,
+
         /// <summary>
         /// A drawing type where there is a border around the ProgressBar,
         /// and a single pixel of whitespace between the border in the inner bar.

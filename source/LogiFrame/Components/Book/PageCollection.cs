@@ -1,6 +1,4 @@
-﻿// ComponentCollection.cs
-// 
-// LogiFrame rendering library.
+﻿// LogiFrame rendering library.
 // Copyright (C) 2013 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -16,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -26,7 +25,7 @@ namespace LogiFrame.Components.Book
     /// Represents a dynamic collection of LogiFrame.Components.Book.Page.
     /// </summary>
     /// <typeparam name="T">An instance of LogiFrame.Components.Book.Page.</typeparam>
-    public sealed class PageCollection<T> : ObservableCollection<T>
+    public sealed class PageCollection<T> : ObservableCollection<T>, IDisposable
         where T : Page
     {
         /// <summary>
@@ -42,6 +41,15 @@ namespace LogiFrame.Components.Book
         public PageCollection()
         {
             CollectionChanged += ComponentCollection_CollectionChanged;
+        }
+
+        public void Dispose()
+        {
+            foreach (var page in this)
+            {
+                page.Dispose();
+            }
+            Clear();
         }
 
         /// <summary>

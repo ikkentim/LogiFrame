@@ -1,6 +1,4 @@
-﻿// ComponentCollection.cs
-// 
-// LogiFrame rendering library.
+﻿// LogiFrame rendering library.
 // Copyright (C) 2013 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -17,9 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
-using System.Configuration;
-using System.Data;
-using System.Diagnostics;
 using System.Linq;
 
 namespace LogiFrame.Components.Book
@@ -30,8 +25,7 @@ namespace LogiFrame.Components.Book
 
         private Book()
         {
-            Debug.WriteLine("Book initialized");
-            base.Size = new Size((int)LgLcd.LglcdBmpWidth, (int)LgLcd.LglcdBmpHeight);
+            base.Size = new Size((int) LgLcd.LglcdBmpWidth, (int) LgLcd.LglcdBmpHeight);
             Pages = new PageCollection<Page>();
         }
 
@@ -45,25 +39,38 @@ namespace LogiFrame.Components.Book
 
         public Page ActivePage
         {
-            get
-            {
-                return _activePage;
-            }
+            get { return _activePage; }
             set
             {
+                if (value == _activePage)
+                    return;
+
                 if (_activePage != null)
                 {
                     _activePage.Changed -= page_Changed;
                 }
 
-                value.Changed += page_Changed;
-
-                if (value == _activePage)
-                    return;
+        
+                if (value != null)
+                    value.Changed += page_Changed;
 
                 _activePage = value;
                 HasChanged = true;
             }
+        }
+
+        public PageCollection<Page> Pages { get; private set; }
+
+        public override Location Location
+        {
+            get { return base.Location; }
+            set { throw new ArgumentException("The Location of a LogiFrame.Components.Book.Book cannot be changed."); }
+        }
+
+        public override Size Size
+        {
+            get { return base.Size; }
+            set { throw new ArgumentException("The Size of a LogiFrame.Components.Book.Book cannot be changed."); }
         }
 
         private void page_Changed(object sender, EventArgs e)
@@ -74,44 +81,18 @@ namespace LogiFrame.Components.Book
         private void frame_ButtonUp(object sender, ButtonEventArgs e)
         {
             if (_activePage != null)
-            {
-            }
+                _activePage.ButtonReleased(e.Button);
         }
 
         private void frame_ButtonDown(object sender, ButtonEventArgs e)
         {
-
-        }
-
-        public PageCollection<Page> Pages { get; private set; }
-
-        public override Location Location
-        {
-            get
-            {
-                return base.Location;
-            }
-            set
-            {
-               throw new ArgumentException("The Location of a LogiFrame.Components.Book.Book cannot be changed."); 
-            }
-        }
-
-        public override Size Size
-        {
-            get
-            {
-                return base.Size;
-            }
-            set
-            {
-                throw new ArgumentException("The Size of a LogiFrame.Components.Book.Book cannot be changed.");
-            }
+            if (_activePage != null)
+                _activePage.ButtonPressed(e.Button);
         }
 
         public void SwitchTo(Page page)
         {
-            _activePage = page;
+            ActivePage = page;
         }
 
         public void SwitchTo(Type pageType)
@@ -124,13 +105,16 @@ namespace LogiFrame.Components.Book
             }
         }
 
+        public void ShowMenu()
+        {
+            BookMenu menu = new BookMenu(this) {Pages = Pages, SelectedPage = ActivePage, InitialPage = ActivePage};
+
+            ActivePage = menu;
+        }
+
         protected override void DisposeComponent()
         {
-            foreach (var page in Pages)
-            {
-                page.Dispose();
-            }
-            Pages.Clear();
+            Pages.Dispose();
         }
 
         protected override Bytemap Render()
