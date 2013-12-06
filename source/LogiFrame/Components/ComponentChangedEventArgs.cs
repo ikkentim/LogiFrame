@@ -29,7 +29,7 @@ namespace LogiFrame.Components
         /// <summary>
         /// Initilizes a new instance of the LogiFrame.Components.ComponentChangedEventArgs
         /// </summary>
-        /// <param name="component">The component that has been changed</param>
+        /// <param name="component">The component that has been changed.</param>
         public ComponentChangedEventArgs(Component component)
         {
             Component = component;

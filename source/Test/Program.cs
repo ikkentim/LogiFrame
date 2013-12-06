@@ -2,12 +2,13 @@
 using LogiFrame;
 using LogiFrame.Components;
 using System.Diagnostics;
-using Label = LogiFrame.Components.Label;
+using LogiFrame.Components.Book;
 
 namespace Test
 {
     static class Program
     {
+
         private static Animation _animation;
         private static ProgressBar _progressBar;
         private static Line _line;
@@ -23,8 +24,10 @@ namespace Test
                 UpdatePriority = UpdatePriority.Alert
             };
 
-            frame.ButtonDown += frame_ButtonDown;
-            frame.Configure += frame_Configure;
+            //frame.ButtonDown += frame_ButtonDown;
+            //frame.Configure += frame_Configure;
+
+            /*
             _line = new Line
             {
                 Start = new Location(130, 30),
@@ -71,14 +74,21 @@ namespace Test
                 Image = Properties.Resources.banana,
                 Run = true
             };
+            */
 
+            Book book = new Book(frame);
 
+            book.Pages.Add(new CustomPage());
+            book.SwitchTo(typeof(CustomPage));
+
+            /*
             frame.Components.Add(_square);
             frame.Components.Add(_line);
             frame.Components.Add(_label);
             frame.Components.Add(_picture);
             frame.Components.Add(_animation);
             frame.Components.Add(_progressBar);
+            */
 
             Debug.WriteLine("\nApplication initialized\n");
             frame.WaitForClose();
@@ -102,5 +112,29 @@ namespace Test
             Debug.WriteLine("Button pressed: " + e.Button);
         }
 
+        private class CustomPage : Page
+        {
+            public CustomPage()
+            {
+                Debug.WriteLine("Page init");
+                var l = new Label
+                {
+                    AutoSize = true,
+                    Text = "Custom page!"
+                };
+                
+                Components.Add(l);
+            }
+
+            public override void ButtonPressed(int button)
+            {
+                Debug.Write("P" + button);
+            }
+
+            public override void ButtonReleased(int button)
+            {
+                Debug.Write("R" + button);
+            }
+        }
     }
 }
