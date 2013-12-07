@@ -22,7 +22,7 @@ namespace LogiFrame
     /// <summary>
     /// Represents a location of a component.
     /// </summary>
-    [TypeConverter(typeof (LocationTypeConverter))]
+    [TypeConverter(typeof(SimpleExpandableObjectConverter))]
     public class Location
     {
         #region Fields

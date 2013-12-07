@@ -22,7 +22,7 @@ namespace LogiFrame
     /// <summary>
     /// Represents the size of a component.
     /// </summary>
-    [TypeConverter(typeof (SizeTypeConverter))]
+    [TypeConverter(typeof(SimpleExpandableObjectConverter))]
     public class Size
     {
         #region Fields

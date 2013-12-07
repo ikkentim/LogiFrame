@@ -15,12 +15,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
+using System.ComponentModel;
 
 namespace LogiFrame
 {
     /// <summary>
     /// Represents a single-color image in a bytearray
     /// </summary>
+    [TypeConverter(typeof(SimpleExpandableObjectConverter))]
     public class Bytemap
     {
         #region Fields

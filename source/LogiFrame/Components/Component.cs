@@ -15,12 +15,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
+using System.ComponentModel;
 
 namespace LogiFrame.Components
 {
     /// <summary>
     /// An abstract base class that provides functionality for the LogiFrame.Frame class.
     /// </summary>
+    [TypeConverter(typeof(SimpleExpandableObjectConverter))]
     public abstract class Component : IDisposable
     {
         #region Fields

@@ -68,8 +68,8 @@
     <Compile Include="Components\Timer.cs" />
     <Compile Include="ConnectionException.cs" />
     <Compile Include="ConversionMethod.cs" />
-    <Compile Include="LocationTypeConverter.cs" />
     <Compile Include="PushingEventArgs.cs" />
+    <Compile Include="SimpleExpandableObjectConverter.cs" />
     <Compile Include="Simulation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,7 +81,6 @@
     <Compile Include="LgLcd.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SizeTypeConverter.cs" />
     <Compile Include="UpdatePriority.cs" />
     <Compile Include="Win32Error.cs" />
   </ItemGroup>

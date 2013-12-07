@@ -201,7 +201,7 @@ namespace LogiFrame.Components.Book
 
         protected override Bytemap Render()
         {
-            if (Pages.Count == 0)
+            if (Pages == null || Pages.Count == 0)
                 return null;
 
             var selectedIndex = Pages.IndexOf(SelectedPage);
