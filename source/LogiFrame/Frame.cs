@@ -264,7 +264,7 @@ namespace LogiFrame
         public void WaitForClose()
         {
             while (!Disposed)
-                Thread.Sleep(1500);
+                Thread.Sleep(2000);
         }
 
         /// <summary>

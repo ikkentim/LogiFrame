@@ -19,24 +19,46 @@ using System.Linq;
 
 namespace LogiFrame.Components.Book
 {
+    /// <summary>
+    /// Represents a browsable Component which can contain multiple
+    /// instances of the LogiFrame.Components.Book.Page class.
+    /// </summary>
     public sealed class Book : Component
     {
+
+        #region Fields
+
         private Page _activePage;
 
-        private Book()
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Initializes a new instance of the LogiFrame.Components.Book.Book class.
+        /// </summary>
+        /// <param name="frame">The LogiFrame.Frame this LogiFrame.Components.Book.Book should render in.</param>
+        public Book(Frame frame)
         {
             base.Size = new Size((int) LgLcd.LglcdBmpWidth, (int) LgLcd.LglcdBmpHeight);
             Pages = new PageCollection<Page>();
-        }
 
-        public Book(Frame frame) : this()
-        {
             frame.Components.Add(this);
 
             frame.ButtonDown += frame_ButtonDown;
             frame.ButtonUp += frame_ButtonUp;
+
+            MenuButton = -1;
+            BookMenu = new BookMenu(this);
         }
 
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the currently active page of this LogiFrame.Components.Book.Book.
+        /// </summary>
         public Page ActivePage
         {
             get { return _activePage; }
@@ -59,42 +81,59 @@ namespace LogiFrame.Components.Book
             }
         }
 
+        /// <summary>
+        /// Gets a Collection to add browsable LogiFrame.Components.Book.Page instances to.
+        /// </summary>
         public PageCollection<Page> Pages { get; private set; }
 
+        /// <summary>
+        /// Gets the LogiFrame.Location this LogiFrame.Components.Book.Book should
+        /// be rendered at within the parrent LogiFrame.Components.Container.
+        /// </summary>
         public override Location Location
         {
             get { return base.Location; }
             set { throw new ArgumentException("The Location of a LogiFrame.Components.Book.Book cannot be changed."); }
         }
 
+
+        /// <summary>
+        /// Gets the LogiFrame.Size of this LogiFrame.Components.Book.Book.
+        /// </summary>
         public override Size Size
         {
             get { return base.Size; }
             set { throw new ArgumentException("The Size of a LogiFrame.Components.Book.Book cannot be changed."); }
         }
 
-        private void page_Changed(object sender, EventArgs e)
-        {
-            HasChanged = HasChanged || _activePage.HasChanged;
-        }
+        /// <summary>
+        /// Gets or sets the LogiFrame.Components.Book.BookMenu this LogiFrame.Components.Book.Book should use.
+        /// </summary>
+        public BookMenu BookMenu { get; set; }
 
-        private void frame_ButtonUp(object sender, ButtonEventArgs e)
-        {
-            if (_activePage != null)
-                _activePage.ButtonReleased(e.Button);
-        }
+        /// <summary>
+        /// Gets or sets the menu button which opens the BookMenu of this LogiFrame.Components.Book.Book.
+        /// Set to -1 to disable this functionality.
+        /// </summary>
+        public int MenuButton { get; set; }
 
-        private void frame_ButtonDown(object sender, ButtonEventArgs e)
-        {
-            if (_activePage != null)
-                _activePage.ButtonPressed(e.Button);
-        }
+        #endregion 
 
+        #region Methods
+
+        /// <summary>
+        /// Switches to the given LogiFrame.Components.Book.Page.
+        /// </summary>
+        /// <param name="page">The LogiFrame.Components.Book.Page to switch to.</param>
         public void SwitchTo(Page page)
         {
             ActivePage = page;
         }
 
+        /// <summary>
+        /// Switches to the first instance of the given type in the Pages.
+        /// </summary>
+        /// <param name="pageType">The type of the LogiFrame.Components.Book.Page to switch to.</param>
         public void SwitchTo(Type pageType)
         {
             foreach (var page in Pages.Where(page => page.GetType() == pageType))
@@ -105,11 +144,16 @@ namespace LogiFrame.Components.Book
             }
         }
 
+        /// <summary>
+        /// Shows the BookMenu.
+        /// </summary>
         public void ShowMenu()
         {
-            BookMenu menu = new BookMenu(this) {Pages = Pages, SelectedPage = ActivePage, InitialPage = ActivePage};
+            BookMenu.Pages = Pages;
+            BookMenu.SelectedPage =
+                BookMenu.InitialPage = ActivePage;
 
-            ActivePage = menu;
+            ActivePage = BookMenu;
         }
 
         protected override void DisposeComponent()
@@ -121,5 +165,33 @@ namespace LogiFrame.Components.Book
         {
             return _activePage == null ? null : _activePage.Bytemap;
         }
+
+        private void page_Changed(object sender, EventArgs e)
+        {
+            HasChanged = HasChanged || _activePage.HasChanged;
+        }
+
+        private void frame_ButtonUp(object sender, ButtonEventArgs e)
+        {
+            if (e.Button == MenuButton)
+                return;
+
+            if (_activePage != null)
+                _activePage.ButtonReleased(e.Button);
+        }
+
+        private void frame_ButtonDown(object sender, ButtonEventArgs e)
+        {
+            if (e.Button == MenuButton)
+            {
+                ShowMenu();
+                return;
+            }
+
+            if (_activePage != null)
+                _activePage.ButtonPressed(e.Button);
+        }
+
+        #endregion
     }
 }

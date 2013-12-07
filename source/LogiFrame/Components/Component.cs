@@ -76,7 +76,7 @@ namespace LogiFrame.Components
         #region Properties
 
         /// <summary>
-        /// Gets or sets the LogiFrame.Location this LogiFrame.Components.Comonent should
+        /// Gets or sets the LogiFrame.Location this LogiFrame.Components.Component should
         /// be rendered at within the parrent LogiFrame.Components.Container.
         /// </summary>
         public virtual Location Location

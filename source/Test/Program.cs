@@ -127,7 +127,6 @@ namespace Test
 
             SetupBookTest(frame);
 
-            Debug.WriteLine("\nApplication initialized\n");
             frame.WaitForClose();
         }
 
@@ -143,7 +142,7 @@ namespace Test
                 var l = new Label
                 {
                     AutoSize = true,
-                    Text = this.ToString()
+                    Text = ToString()
                 };
 
                 Components.Add(l);
@@ -151,17 +150,13 @@ namespace Test
 
             public override void ButtonPressed(int button)
             {
-                Debug.Write("P" + button);
-
                 if (button == 3)
                     _book.ShowMenu();
-
 
             }
 
             public override void ButtonReleased(int button)
             {
-                Debug.Write("R" + button);
             }
 
             protected override PageIcon GetPageIcon()

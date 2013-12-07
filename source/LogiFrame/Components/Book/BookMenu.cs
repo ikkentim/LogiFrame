@@ -15,20 +15,75 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
 namespace LogiFrame.Components.Book
 {
+    /// <summary>
+    /// Represents a drawable Menu for a LogiFrame.Components.Book.Book.
+    /// </summary>
     public class BookMenu : Page
     {
-        private Book _book;
-        private Label _pageTitle;
-        private Square _selectionSquare;
+
+        #region Fields
+
+        protected Book Book;
+        protected Label PageTitle;
+        protected Square SelectionSquare;
+        protected Line Line;
+
         private Page _selectedPage;
         private PageCollection<Page> _pages;
- 
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Initializes a new instance of the LogiFrame.Components.Book.BookMenu class.
+        /// </summary>
+        /// <param name="book">The LogiFrame.Components.Book.Book this menu is working for.</param>
+        public BookMenu(Book book)
+        {
+            Book = book;
+
+            PageTitle = new Label
+            {
+                AutoSize = true,
+                Font = new Font("Arial", 10f, FontStyle.Bold),
+                Location = new Location(1, 1)
+            };
+
+            SelectionSquare = new Square
+            {
+                Location = new Location(70, 22),
+                Size = new Size(20, 20)
+            };
+
+            Line = new Line
+            {
+                Start = new Location(0, 20),
+                End = new Location(160, 20)
+            };
+
+            Components.Add(PageTitle);
+            Components.Add(SelectionSquare);
+            Components.Add(Line);
+
+            ButtonPrevious = 0;
+            ButtonNext = 1;
+            ButtonSelect = 2;
+            ButtonReturn = 3;
+        }
+
+        #endregion
+
+        #region Properites
+
+        /// <summary>
+        /// Gets or sets a Colection of LogiFrame.Components.Book.Page instances the user can browse trough.
+        /// </summary>
         public PageCollection<Page> Pages
         {
             get
@@ -54,6 +109,9 @@ namespace LogiFrame.Components.Book
             }
         }
 
+        /// <summary>
+        /// Gets or sets the currently selected LogiFrame.Components.Book.Page.
+        /// </summary>
         public Page SelectedPage
         {
             get
@@ -70,27 +128,71 @@ namespace LogiFrame.Components.Book
             }
         }
 
+        /// <summary>
+        /// Gets or sets the LogiFrame.Components.Book.Page to return to when the return button has been pressed.
+        /// </summary>
         public Page InitialPage { get; set; }
 
-        public BookMenu(Book book)
+        /// <summary>
+        /// Gets or sets the button which will select the previous LogiFrame.Components.Book.Page.
+        /// </summary>
+        public int ButtonPrevious { get; set; }
+
+        /// <summary>
+        /// Gets or sets the button which will select the next LogiFrame.Components.Book.Page.
+        /// </summary>
+        public int ButtonNext { get; set; }
+
+        /// <summary>
+        /// Gets or sets the button which will switch to the currently selected LogiFrame.Components.Book.Page.
+        /// </summary>
+        public int ButtonSelect { get; set; }
+
+        /// <summary>
+        /// Gets or sets the button which will return to the initial LogiFrame.Components.Book.Page.
+        /// </summary>
+        public int ButtonReturn { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Is called when a button has been pressed.
+        /// </summary>
+        /// <param name="button">The button which has been pressed.</param>
+        public override void ButtonPressed(int button)
         {
-            _book = book;
+            if (Pages.Count == 0)
+                return;
 
-            _pageTitle = new Label
+            if (button == ButtonPrevious)
             {
-                AutoSize = true,
-                Font = new Font("Arial", 10f, FontStyle.Bold),
-                Location = new Location(1, 1)
-            };
+                var prevIndex = Pages.IndexOf(SelectedPage) - 1;
 
-            _selectionSquare = new Square
+                if (prevIndex < 0)
+                    prevIndex = Pages.Count - 1;
+
+                SelectedPage = Pages[prevIndex];
+            }
+            else if (button == ButtonNext)
             {
-                Location = new Location(70, 22),
-                Size = new Size(20, 20)
-            };
+                var nextIndex = Pages.IndexOf(SelectedPage) + 1;
 
-            Components.Add(_pageTitle);
-            Components.Add(_selectionSquare);
+                if (nextIndex >= Pages.Count)
+                    nextIndex = 0;
+
+                SelectedPage = Pages[nextIndex];
+            }
+            else if (button == ButtonSelect)
+            {
+                Book.SwitchTo(SelectedPage);
+
+            }
+            else if (button == ButtonReturn)
+            {
+                Book.SwitchTo(InitialPage);
+            }
         }
 
         protected override Bytemap Render()
@@ -108,7 +210,7 @@ namespace LogiFrame.Components.Book
 
             var pageInfo = (PageInfo)Attribute.GetCustomAttribute(SelectedPage.GetType(), typeof(PageInfo)) ?? new PageInfo();
             
-            _pageTitle.Text = pageInfo.Name;
+            PageTitle.Text = pageInfo.Name;
 
             for (var i = 0; i < Pages.Count(); i++)
             {
@@ -132,39 +234,7 @@ namespace LogiFrame.Components.Book
             HasChanged = true;
         }
 
-        public override void ButtonPressed(int button)
-        {
-            switch (button)
-            {
-                case 0:
-                    if (Pages.Count == 0)
-                        break;
+        #endregion
 
-                    var prevIndex = Pages.IndexOf(SelectedPage) - 1;
-
-                    if (prevIndex < 0)
-                        prevIndex = Pages.Count - 1;
-
-                    SelectedPage = Pages[prevIndex];
-                    break;
-                case 1:
-                    if (Pages.Count == 0)
-                        break;
-
-                    var nextIndex = Pages.IndexOf(SelectedPage) + 1;
-
-                    if (nextIndex >= Pages.Count)
-                        nextIndex = 0;
-
-                    SelectedPage = Pages[nextIndex];
-                    break;
-                case 2:
-                    _book.SwitchTo(SelectedPage);
-                    break;
-                case 3:
-                    _book.SwitchTo(InitialPage);
-                    break;
-            }
-        }
     }
 }
