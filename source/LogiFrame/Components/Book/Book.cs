@@ -182,7 +182,7 @@ namespace LogiFrame.Components.Book
 
         private void frame_ButtonDown(object sender, ButtonEventArgs e)
         {
-            if (e.Button == MenuButton)
+            if (e.Button == MenuButton && !(ActivePage is BookMenu))
             {
                 ShowMenu();
                 return;

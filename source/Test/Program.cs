@@ -104,12 +104,12 @@ namespace Test
 
         private static void SetupBookTest(Frame frame)
         {
-            Book book = new Book(frame);
+            Book book = new Book(frame) {MenuButton = 3};
 
-            book.Pages.Add(new CustomPage(book));
-            book.Pages.Add(new CustomPage2(book));
-            book.Pages.Add(new CustomPage3(book));
-            book.Pages.Add(new CustomPage4(book));
+            book.Pages.Add(new CustomPage());
+            book.Pages.Add(new CustomPage2());
+            book.Pages.Add(new CustomPage3());
+            book.Pages.Add(new CustomPage4());
 
             book.SwitchTo(typeof (CustomPage));
 
@@ -133,12 +133,8 @@ namespace Test
         [PageInfo("Test page")]
         private class CustomPage : Page
         {
-            private Book _book;
-
-            public CustomPage(Book book)
+            public CustomPage()
             {
-                _book = book;
-
                 var l = new Label
                 {
                     AutoSize = true,
@@ -146,17 +142,6 @@ namespace Test
                 };
 
                 Components.Add(l);
-            }
-
-            public override void ButtonPressed(int button)
-            {
-                if (button == 3)
-                    _book.ShowMenu();
-
-            }
-
-            public override void ButtonReleased(int button)
-            {
             }
 
             protected override PageIcon GetPageIcon()
@@ -177,28 +162,16 @@ namespace Test
         [PageInfo("Test page 2")]
         private class CustomPage2 : CustomPage
         {
-            public CustomPage2(Book book) : base(book)
-            {
-
-            }
         }
 
         [PageInfo("Test page 3")]
         private class CustomPage3 : CustomPage
         {
-            public CustomPage3(Book book) : base(book)
-            {
-
-            }
         }
 
         [PageInfo("Test page 4")]
         private class CustomPage4 : CustomPage
         {
-            public CustomPage4(Book book) : base(book)
-            {
-
-            }
         }
     }
 }

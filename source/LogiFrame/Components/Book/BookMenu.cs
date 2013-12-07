@@ -135,21 +135,25 @@ namespace LogiFrame.Components.Book
 
         /// <summary>
         /// Gets or sets the button which will select the previous LogiFrame.Components.Book.Page.
+        /// Set to -1 to disable this functionality.
         /// </summary>
         public int ButtonPrevious { get; set; }
 
         /// <summary>
         /// Gets or sets the button which will select the next LogiFrame.Components.Book.Page.
+        /// Set to -1 to disable this functionality.
         /// </summary>
         public int ButtonNext { get; set; }
 
         /// <summary>
         /// Gets or sets the button which will switch to the currently selected LogiFrame.Components.Book.Page.
+        /// Set to -1 to disable this functionality.
         /// </summary>
         public int ButtonSelect { get; set; }
 
         /// <summary>
         /// Gets or sets the button which will return to the initial LogiFrame.Components.Book.Page.
+        /// Set to -1 to disable this functionality.
         /// </summary>
         public int ButtonReturn { get; set; }
 
