@@ -1,5 +1,5 @@
 ﻿// LogiFrame rendering library.
-// Copyright (C) 2013 Tim Potze
+// Copyright (C) 2014 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -88,7 +88,7 @@ namespace LogiFrame.Components
                 IsRendering = false;
 
                 RenderAnimation();
-                HasChanged = true;
+                OnChanged(EventArgs.Empty);
                 CheckThreadRunning();
             }
         }
@@ -109,7 +109,7 @@ namespace LogiFrame.Components
                 IsRendering = false;
 
                 RenderAnimation();
-                HasChanged = true;
+                OnChanged(EventArgs.Empty);
                 CheckThreadRunning();
             }
         }
@@ -132,7 +132,7 @@ namespace LogiFrame.Components
                     value = FrameCount - 1;
 
                 _frame = value;
-                HasChanged = true;
+                OnChanged(EventArgs.Empty);
             }
         }
 
@@ -141,13 +141,7 @@ namespace LogiFrame.Components
         /// </summary>
         public int FrameCount
         {
-            get
-            {
-                if (_bytemaps == null)
-                    return 0;
-
-                return _bytemaps.Length;
-            }
+            get { return _bytemaps == null ? 0 : _bytemaps.Length; }
         }
 
         /// <summary>

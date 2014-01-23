@@ -1,5 +1,5 @@
 ﻿// LogiFrame rendering library.
-// Copyright (C) 2013 Tim Potze
+// Copyright (C) 2014 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ using System;
 namespace LogiFrame
 {
     /// <summary>
-    /// Represents errors that occur during the connection to LCDmon.
+    /// Represents errors that occur during a connection with LCDmon.
     /// </summary>
     public class ConnectionException : Exception
     {

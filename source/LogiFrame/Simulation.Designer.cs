@@ -62,7 +62,7 @@
             this.displayGroupBox.Size = new System.Drawing.Size(173, 72);
             this.displayGroupBox.TabIndex = 1;
             this.displayGroupBox.TabStop = false;
-            this.displayGroupBox.Text = "Display";
+            this.displayGroupBox.Text = "Display (Normal)";
             // 
             // buttonsGroupBox
             // 
@@ -132,7 +132,7 @@
             // 
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(6, 163);
+            this.linkLabel1.Location = new System.Drawing.Point(6, 175);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(126, 13);
             this.linkLabel1.TabIndex = 5;
@@ -173,7 +173,7 @@
             this.Controls.Add(this.panel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.KeyPreview = true;
-            this.MinimumSize = new System.Drawing.Size(210, 237);
+            this.MinimumSize = new System.Drawing.Size(210, 230);
             this.Name = "Simulation";
             this.Padding = new System.Windows.Forms.Padding(8);
             this.ShowIcon = false;

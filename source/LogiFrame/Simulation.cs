@@ -1,5 +1,5 @@
 ﻿// LogiFrame rendering library.
-// Copyright (C) 2013 Tim Potze
+// Copyright (C) 2014 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ namespace LogiFrame
             if (IsHandleCreated)
                 Invoke((MethodInvoker) delegate
                 {
-                    Text = _frame.ApplicationName + " (" + _frame.UpdatePriority + ")";
+                    displayGroupBox.Text = "Display (" + _frame.UpdatePriority + ")";
                     displayPictureBox.Image = e.Frame;
                 });
         }

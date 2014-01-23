@@ -110,9 +110,7 @@ namespace Test
             book.Pages.Add(new CustomPage2());
             book.Pages.Add(new CustomPage3());
             book.Pages.Add(new CustomPage4());
-
-            book.SwitchTo(typeof (CustomPage));
-
+            book.SwitchTo<CustomPage>();
         }
 
         #endregion

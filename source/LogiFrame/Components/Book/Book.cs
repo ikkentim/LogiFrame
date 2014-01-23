@@ -1,5 +1,5 @@
 ﻿// LogiFrame rendering library.
-// Copyright (C) 2013 Tim Potze
+// Copyright (C) 2014 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@ namespace LogiFrame.Components.Book
     /// </summary>
     public sealed class Book : Component
     {
-
         #region Fields
 
         private Page _activePage;
@@ -72,12 +71,12 @@ namespace LogiFrame.Components.Book
                     _activePage.Changed -= page_Changed;
                 }
 
-        
+
                 if (value != null)
                     value.Changed += page_Changed;
 
                 _activePage = value;
-                HasChanged = true;
+                OnChanged(EventArgs.Empty);
             }
         }
 
@@ -117,7 +116,7 @@ namespace LogiFrame.Components.Book
         /// </summary>
         public int MenuButton { get; set; }
 
-        #endregion 
+        #endregion
 
         #region Methods
 
@@ -131,7 +130,7 @@ namespace LogiFrame.Components.Book
         }
 
         /// <summary>
-        /// Switches to the first instance of the given type in the Pages.
+        /// Switches to the first instance of the given type in Pages.
         /// </summary>
         /// <param name="pageType">The type of the LogiFrame.Components.Book.Page to switch to.</param>
         public void SwitchTo(Type pageType)
@@ -139,9 +138,18 @@ namespace LogiFrame.Components.Book
             foreach (var page in Pages.Where(page => page.GetType() == pageType))
             {
                 SwitchTo(page);
-                HasChanged = true;
+                OnChanged(EventArgs.Empty);
                 break;
             }
+        }
+
+        /// <summary>
+        /// Switches to the first instance of the given type in Pages.
+        /// </summary>
+        /// <typeparam name="T">The type of the LogiFrame.Components.Book.Page to switch to.</typeparam>
+        public void SwitchTo<T>() where T : Page
+        {
+            SwitchTo(typeof (T));
         }
 
         /// <summary>
@@ -168,7 +176,7 @@ namespace LogiFrame.Components.Book
 
         private void page_Changed(object sender, EventArgs e)
         {
-            HasChanged = HasChanged || _activePage.HasChanged;
+            OnChanged(EventArgs.Empty);
         }
 
         private void frame_ButtonUp(object sender, ButtonEventArgs e)

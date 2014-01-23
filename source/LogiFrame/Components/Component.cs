@@ -1,5 +1,5 @@
 ﻿// LogiFrame rendering library.
-// Copyright (C) 2013 Tim Potze
+// Copyright (C) 2014 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,14 +22,12 @@ namespace LogiFrame.Components
     /// <summary>
     /// An abstract base class that provides functionality for the LogiFrame.Frame class.
     /// </summary>
-    [TypeConverter(typeof(SimpleExpandableObjectConverter))]
+    [TypeConverter(typeof (SimpleExpandableObjectConverter))]
     public abstract class Component : IDisposable
     {
         #region Fields
 
         private Bytemap _bytemap;
-        private bool _hasChanged = true;
-        private bool _isRendering;
         private Location _location = new Location();
         private Location _renderOffset = new Location();
         private Size _size = new Size();
@@ -86,22 +84,15 @@ namespace LogiFrame.Components
             get { return _location; }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException("LogiFrame.Components.Component.Location cannot be set to null.");
-
                 if (Disposed)
                     throw new ObjectDisposedException("Resource was disposed.");
 
-                if (_location == value)
-                    return;
-
                 _location.Changed -= location_Changed;
-                value.Changed += location_Changed;
 
-                _location = value;
+                if (SwapProperty(ref _location, value, false))
+                    OnLocationChanged(EventArgs.Empty);
 
-                if (LocationChanged != null)
-                    LocationChanged(value, EventArgs.Empty);
+                _location.Changed += location_Changed;
             }
         }
 
@@ -123,22 +114,15 @@ namespace LogiFrame.Components
             get { return _renderOffset; }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException("LogiFrame.Components.Component.RenderOffset cannot be set to null.");
-
                 if (Disposed)
                     throw new ObjectDisposedException("Resource was disposed.");
 
-                if (_renderOffset == value)
-                    return;
-
                 _renderOffset.Changed -= location_Changed;
-                value.Changed += location_Changed;
 
-                _renderOffset = value;
+                if (SwapProperty(ref _renderOffset, value, false))
+                    OnLocationChanged(EventArgs.Empty);
 
-                if (LocationChanged != null)
-                    LocationChanged(value, EventArgs.Empty);
+                _renderOffset.Changed += location_Changed;
             }
         }
 
@@ -150,20 +134,15 @@ namespace LogiFrame.Components
             get { return _size; }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException("LogiFrame.Components.Component.Size cannot be set to null.");
-
                 if (Disposed)
                     throw new ObjectDisposedException("Resource was disposed.");
 
-                if (_size == value)
-                    return;
-
                 _size.Changed -= size_Changed;
-                value.Changed += size_Changed;
 
-                _size = value;
-                HasChanged = true;
+                if (SwapProperty(ref _size, value, false))
+                    OnChanged(EventArgs.Empty);
+
+                _size.Changed += size_Changed;
             }
         }
 
@@ -175,11 +154,8 @@ namespace LogiFrame.Components
             get { return _topEffect; }
             set
             {
-                if (_topEffect == value)
-                    return;
-
-                _topEffect = value;
-                HasChanged = true;
+                if (SwapProperty(ref _topEffect, value, false))
+                    OnChanged(EventArgs.Empty);
             }
         }
 
@@ -191,11 +167,8 @@ namespace LogiFrame.Components
             get { return _transparent; }
             set
             {
-                if (_transparent == value)
-                    return;
-
-                _transparent = value;
-                HasChanged = true;
+                if (SwapProperty(ref _transparent, value, false))
+                    OnChanged(EventArgs.Empty);
             }
         }
 
@@ -207,41 +180,21 @@ namespace LogiFrame.Components
             get { return _visible; }
             set
             {
-                if (_visible == value)
-                    return;
-
-                _visible = value;
-                HasChanged = true;
+                if (SwapProperty(ref _visible, value, false))
+                    OnChanged(EventArgs.Empty);
             }
         }
 
         /// <summary>
-        /// Gets or sets whether this LogiFrame.Component has been changed since the lastest render.
+        /// Gets whether this LogiFrame.Component has been changed since the lastest render.
         /// </summary>
-        public bool HasChanged
-        {
-            get { return _hasChanged; }
-            set
-            {
-                if (Disposed || IsRendering)
-                    return;
-
-                _hasChanged = value;
-
-                if (Changed != null && value)
-                    Changed(this, EventArgs.Empty);
-            }
-        }
+        public bool HasChanged { get; private set; }
 
         /// <summary>
         /// Gets or sets(protected) whether this LogiFrame.Component is in the process of rendering itself.
         /// When IsRendering is True, the component won't be calling listeners of Changed when HasChanged is set to True.
         /// </summary>
-        public bool IsRendering
-        {
-            get { return _isRendering; }
-            protected set { _isRendering = value; }
-        }
+        public bool IsRendering { get; protected set; }
 
         /// <summary>
         /// Gets or sets the object that contains data about the Component.
@@ -260,11 +213,11 @@ namespace LogiFrame.Components
         {
             get
             {
-                if (!_hasChanged)
+                if (!HasChanged)
                     return Visible ? _bytemap : Bytemap.Empty;
 
                 Refresh(false);
-                _hasChanged = false;
+                HasChanged = false;
                 return Visible ? _bytemap : Bytemap.Empty;
             }
         }
@@ -297,13 +250,13 @@ namespace LogiFrame.Components
             if (!forceRefresh && !HasChanged)
                 return;
 
-            //System.Diagnostics.Debug.WriteLine("[DEBUG] Rendering " + ToString() + " @ " + Location + " of " + Size);
+            IsRendering = true;
 
-            _isRendering = true;
             _bytemap = Size.Width == 0 || Size.Height == 0 ? new Bytemap(1, 1) : (Render() ?? new Bytemap(1, 1));
             _bytemap.Transparent = Transparent;
             _bytemap.TopEffect = TopEffect;
-            _isRendering = false;
+
+            IsRendering = false;
         }
 
         /// <summary>
@@ -312,6 +265,55 @@ namespace LogiFrame.Components
         public void Refresh()
         {
             Refresh(false);
+        }
+
+        /// <summary>
+        /// Swaps property with given value.
+        /// </summary>
+        /// <param name="field">The value of the field.</param>
+        /// <param name="value">The value to swap it with.</param>
+        /// <param name="allowNull">Whether null values are allowed.</param>
+        /// <returns>Whether the field's value has changed.</returns>
+        protected bool SwapProperty<T>(ref T field, T value, bool allowNull)
+        {
+            var fa = field as object;
+            var va = value as object;
+
+            if (va == null && !allowNull)
+                throw new NullReferenceException("Property cannot be set to null.");
+
+            if (fa == va)
+                return false;
+
+            field = value;
+            OnChanged(EventArgs.Empty);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Called when the location has changed.
+        /// </summary>
+        /// <param name="e">Contains information about the event.</param>
+        public virtual void OnLocationChanged(EventArgs e)
+        {
+            if (LocationChanged != null)
+                LocationChanged(this, e);
+        }
+
+        /// <summary>
+        /// Called when the component has changed.
+        /// </summary>
+        /// <param name="e">Contains information about the event.</param>
+        public virtual void OnChanged(EventArgs e)
+        {
+            if (IsRendering)
+                return;
+
+            HasChanged = true;
+
+            if (Changed != null)
+                Changed(this, e);
         }
 
         /// <summary>
@@ -328,11 +330,6 @@ namespace LogiFrame.Components
         /// <returns>The rendered LogiFrame.Bytemap.</returns>
         protected abstract Bytemap Render();
 
-        #endregion
-
-        #region Private methods
-
-        //Callbacks
         /// <summary>
         /// Listens to Size.Changed.
         /// </summary>
@@ -340,7 +337,7 @@ namespace LogiFrame.Components
         /// <param name="e"></param>
         private void size_Changed(object sender, EventArgs e)
         {
-            HasChanged = true;
+            OnChanged(EventArgs.Empty);
         }
 
         /// <summary>

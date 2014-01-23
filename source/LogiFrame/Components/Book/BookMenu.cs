@@ -1,5 +1,5 @@
 ﻿// LogiFrame rendering library.
-// Copyright (C) 2013 Tim Potze
+// Copyright (C) 2014 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,16 +25,14 @@ namespace LogiFrame.Components.Book
     /// </summary>
     public class BookMenu : Page
     {
-
         #region Fields
 
         protected Book Book;
+        protected Line Line;
         protected Label PageTitle;
         protected Square SelectionSquare;
-        protected Line Line;
-
-        private Page _selectedPage;
         private PageCollection<Page> _pages;
+        private Page _selectedPage;
 
         #endregion
 
@@ -86,10 +84,7 @@ namespace LogiFrame.Components.Book
         /// </summary>
         public PageCollection<Page> Pages
         {
-            get
-            {
-                return _pages;
-            }
+            get { return _pages; }
             set
             {
                 if (_pages != null)
@@ -105,7 +100,7 @@ namespace LogiFrame.Components.Book
                 _pages.PageAdded += pages_PageAdded;
                 _pages.PageRemoved += pages_PageRemoved;
 
-                HasChanged = true;
+                OnChanged(EventArgs.Empty);
             }
         }
 
@@ -114,17 +109,14 @@ namespace LogiFrame.Components.Book
         /// </summary>
         public Page SelectedPage
         {
-            get
-            {
-                return _selectedPage;
-            }
+            get { return _selectedPage; }
             set
             {
                 if (_selectedPage == value)
                     return;
 
                 _selectedPage = value;
-                HasChanged = true;
+                OnChanged(EventArgs.Empty);
             }
         }
 
@@ -191,7 +183,6 @@ namespace LogiFrame.Components.Book
             else if (button == ButtonSelect)
             {
                 Book.SwitchTo(SelectedPage);
-
             }
             else if (button == ButtonReturn)
             {
@@ -212,8 +203,9 @@ namespace LogiFrame.Components.Book
                 selectedIndex = 0;
             }
 
-            var pageInfo = (PageInfo)Attribute.GetCustomAttribute(SelectedPage.GetType(), typeof(PageInfo)) ?? new PageInfo();
-            
+            var pageInfo = (PageInfo) Attribute.GetCustomAttribute(SelectedPage.GetType(), typeof (PageInfo)) ??
+                           new PageInfo();
+
             PageTitle.Text = pageInfo.Name;
 
             for (var i = 0; i < Pages.Count(); i++)
@@ -221,7 +213,7 @@ namespace LogiFrame.Components.Book
                 var icon = Pages[i].PageIcon;
                 icon.Location.Set(72 + 20*(i - selectedIndex), 24);
 
-                if(!Components.Contains(icon))
+                if (!Components.Contains(icon))
                     Components.Add(icon);
             }
 
@@ -230,15 +222,14 @@ namespace LogiFrame.Components.Book
 
         private void pages_PageRemoved(object sender, ComponentChangedEventArgs e)
         {
-            HasChanged = true;
+            OnChanged(EventArgs.Empty);
         }
 
         private void pages_PageAdded(object sender, ComponentChangedEventArgs e)
         {
-            HasChanged = true;
+            OnChanged(EventArgs.Empty);
         }
 
         #endregion
-
     }
 }

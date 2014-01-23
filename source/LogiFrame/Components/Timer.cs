@@ -1,5 +1,5 @@
 ﻿// LogiFrame rendering library.
-// Copyright (C) 2013 Tim Potze
+// Copyright (C) 2014 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -77,9 +77,19 @@ namespace LogiFrame.Components
 
         #region Methods
 
+        /// <summary>
+        /// Called when the timer ticks.
+        /// </summary>
+        /// <param name="e">Contains information about the event.</param>
+        public virtual void OnTick(EventArgs e)
+        {
+            if (Tick != null)
+                Tick(this, e);
+        }
+
         protected override Bytemap Render()
         {
-            //No visible 
+            //No visible elements
             return null;
         }
 
@@ -88,31 +98,28 @@ namespace LogiFrame.Components
             _run = false;
         }
 
+        public override void OnChanged(EventArgs e)
+        {
+            //Prevent rendering
+        }
+
         /// <summary>
         /// Checks whether the thread is still running and restarts it if necessary.
         /// </summary>
         private void CheckThreadRunning()
         {
-            //Check if the thread is running
-            if (!Disposed && Run && _thread == null)
-            {
-                _thread = new Thread(AnimationThread);
-                _thread.Start();
-            }
-        }
+            if (Disposed || !Run || _thread != null) return;
 
-        /// <summary>
-        /// Triggers the tick every so often
-        /// </summary>
-        private void AnimationThread()
-        {
-            while (!Disposed && Run && Interval > 0)
+            _thread = new Thread(() =>
             {
-                if (Tick != null)
-                    Tick(this, EventArgs.Empty);
-                Thread.Sleep(Interval);
-            }
-            _thread = null;
+                while (!Disposed && Run && Interval > 0)
+                {
+                    OnTick(EventArgs.Empty);
+                    Thread.Sleep(Interval);
+                }
+                _thread = null;
+            });
+            _thread.Start();
         }
 
         #endregion

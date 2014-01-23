@@ -1,5 +1,5 @@
 ﻿// LogiFrame rendering library.
-// Copyright (C) 2013 Tim Potze
+// Copyright (C) 2014 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,6 +13,8 @@
 // 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+
+using System;
 
 namespace LogiFrame.Components
 {
@@ -31,11 +33,8 @@ namespace LogiFrame.Components
             get { return _fill; }
             set
             {
-                if (_fill == value)
-                    return;
-
-                _fill = value;
-                HasChanged = true;
+                if (SwapProperty(ref _fill, value, false))
+                    OnChanged(EventArgs.Empty);
             }
         }
 

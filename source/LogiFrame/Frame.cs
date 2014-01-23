@@ -1,5 +1,5 @@
 ﻿// LogiFrame rendering library.
-// Copyright (C) 2013 Tim Potze
+// Copyright (C) 2014 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,7 +28,6 @@ namespace LogiFrame
         #region Fields
 
         private LgLcd.LgLcdBitmap160X43X1 _bitmap;
-
         private int _buttonState;
         private LgLcd.LgLcdConnectContext _connection;
         private LgLcd.LgLcdOpenContext _openContext;
@@ -245,8 +244,7 @@ namespace LogiFrame
 
             base.Dispose();
 
-            if (FrameClosed != null)
-                FrameClosed(this, EventArgs.Empty);
+            OnFrameClosed(EventArgs.Empty);
 
             //Cannot de-initialize LgLcd from LgLcd-thread.
             //As a precausion disposing resources from another thread
@@ -268,6 +266,56 @@ namespace LogiFrame
         }
 
         /// <summary>
+        /// Called when a button has been released.
+        /// </summary>
+        /// <param name="e">Contains information about the event.</param>
+        public void OnButtonDown(ButtonEventArgs e)
+        {
+            if (ButtonDown != null)
+                ButtonDown(this, e);
+        }
+
+        /// <summary>
+        /// Called when a button has been pressed.
+        /// </summary>
+        /// <param name="e">Contains information about the event.</param>
+        public void OnButtonUp(ButtonEventArgs e)
+        {
+            if (ButtonUp != null)
+                ButtonUp(this, e);
+        }
+
+        /// <summary>
+        /// Called when a frame is being pushed.
+        /// </summary>
+        /// <param name="e">Contains information about the event.</param>
+        public void OnPushing(PushingEventArgs e)
+        {
+            if (Pushing != null)
+                Pushing(this, e);
+        }
+
+        /// <summary>
+        /// Called when the frame is being closed.
+        /// </summary>
+        /// <param name="e">Contains information about the event.</param>
+        public void OnFrameClosed(EventArgs e)
+        {
+            if (FrameClosed != null)
+                FrameClosed(this, e);
+        }
+
+        /// <summary>
+        /// Called when the configuration button had been pressed.
+        /// </summary>
+        /// <param name="e">Contains information about the event.</param>
+        public void OnConfigure(EventArgs e)
+        {
+            if (Configure != null)
+                Configure(this, e);
+        }
+
+        /// <summary>
         /// Emulates a button being pushed.
         /// </summary>
         public void PerformButtonDown(int button)
@@ -279,8 +327,7 @@ namespace LogiFrame
 
             _buttonState = power | _buttonState;
 
-            if (ButtonDown != null)
-                ButtonDown(this, new ButtonEventArgs(button));
+            OnButtonDown(new ButtonEventArgs(button));
         }
 
         /// <summary>
@@ -295,13 +342,8 @@ namespace LogiFrame
 
             _buttonState = _buttonState ^ power;
 
-            if (ButtonUp != null)
-                ButtonUp(this, new ButtonEventArgs(button));
+            OnButtonUp(new ButtonEventArgs(button));
         }
-
-        #endregion
-
-        #region Private methods
 
         /// <summary>
         /// Pushes the given <paramref name="bytemap"/> to the display.
@@ -309,25 +351,15 @@ namespace LogiFrame
         /// <param name="bytemap">The LogiFrame.Bytemap to push.</param>
         private void UpdateScreen(Bytemap bytemap)
         {
-            bool push = true;
+            PushingEventArgs e = new PushingEventArgs(bytemap);
+            OnPushing(e);
 
-            if (Pushing != null)
-            {
-                PushingEventArgs e = new PushingEventArgs(bytemap);
-                Pushing(this, e);
+            if (e.PreventPush) return;
 
-                if (e.PreventPush)
-                    push = false;
-            }
-
-            if (push)
-            {
-                _bitmap.pixels = bytemap == null ? new byte[LgLcd.LglcdBmpWidth*LgLcd.LglcdBmpHeight] : bytemap.Data;
-                LgLcd.lgLcdUpdateBitmap(_openContext.Device, ref _bitmap, (uint) UpdatePriority);
-            }
+            _bitmap.pixels = bytemap == null ? new byte[LgLcd.LglcdBmpWidth*LgLcd.LglcdBmpHeight] : bytemap.Data;
+            LgLcd.lgLcdUpdateBitmap(_openContext.Device, ref _bitmap, (uint) UpdatePriority);
         }
 
-        //Callbacks
         /// <summary>
         /// Listener for LgLcd.
         /// </summary>
@@ -338,10 +370,10 @@ namespace LogiFrame
         private int lgLcd_onSoftButtonsCB(int device, int dwButtons, IntPtr pContext)
         {
             for (int i = 0, b = 1; i < 4; i++, b *= 2)
-                if (ButtonDown != null && (_buttonState & b) == 0 && (dwButtons & b) == b)
-                    ButtonDown(this, new ButtonEventArgs(i));
-                else if (ButtonUp != null && (_buttonState & b) == b && (dwButtons & b) == 0)
-                    ButtonUp(this, new ButtonEventArgs(i));
+                if ((_buttonState & b) == 0 && (dwButtons & b) == b)
+                    OnButtonDown(new ButtonEventArgs(i));
+                else if ((_buttonState & b) == b && (dwButtons & b) == 0)
+                    OnButtonUp(new ButtonEventArgs(i));
 
             _buttonState = dwButtons;
             return 1;
@@ -355,8 +387,7 @@ namespace LogiFrame
         /// <returns></returns>
         private int lgLcd_onConfigureCB(int connection, IntPtr pContext)
         {
-            if (Configure != null)
-                Configure(this, EventArgs.Empty);
+            OnConfigure(EventArgs.Empty);
             return 1;
         }
 

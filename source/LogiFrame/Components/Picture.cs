@@ -1,5 +1,5 @@
 ﻿// LogiFrame rendering library.
-// Copyright (C) 2013 Tim Potze
+// Copyright (C) 2014 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,6 +13,8 @@
 // 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+
+using System;
 
 namespace LogiFrame.Components
 {
@@ -33,13 +35,10 @@ namespace LogiFrame.Components
             get { return _image; }
             set
             {
-                if (_image == value)
-                    return;
+                if (!SwapProperty(ref _image, value, false)) return;
 
-                _image = value;
-                if (AutoSize)
-                    MeasureImage(true);
-                HasChanged = true;
+                if (AutoSize) MeasureImage(true);
+                OnChanged(EventArgs.Empty);
             }
         }
 
@@ -51,13 +50,10 @@ namespace LogiFrame.Components
             get { return _conversionMethod; }
             set
             {
-                if (_conversionMethod == value)
-                    return;
+                if (!SwapProperty(ref _conversionMethod, value, false)) return;
 
-                _conversionMethod = value;
-                if (AutoSize)
-                    MeasureImage(true);
-                HasChanged = true;
+                if (AutoSize) MeasureImage(true);
+                OnChanged(EventArgs.Empty);
             }
         }
 
@@ -70,13 +66,10 @@ namespace LogiFrame.Components
             get { return _autoSize; }
             set
             {
-                if (_autoSize == value)
-                    return;
+                if (!SwapProperty(ref _autoSize, value, false)) return;
 
-                _autoSize = value;
-                if (value)
-                    MeasureImage(true);
-                HasChanged = true;
+                if (AutoSize) MeasureImage(true);
+                OnChanged(EventArgs.Empty);
             }
         }
 

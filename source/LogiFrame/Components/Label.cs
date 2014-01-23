@@ -1,5 +1,5 @@
 ﻿// LogiFrame rendering library.
-// Copyright (C) 2013 Tim Potze
+// Copyright (C) 2014 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -35,15 +35,10 @@ namespace LogiFrame.Components
             get { return _text; }
             set
             {
-                if (_text == value)
-                    return;
+                if (!SwapProperty(ref _text, value, false)) return;
 
-                _text = value;
-
-                if (AutoSize)
-                    MeasureText(true);
-
-                HasChanged = true;
+                if (AutoSize) MeasureText(true);
+                OnChanged(EventArgs.Empty);
             }
         }
 
@@ -55,13 +50,10 @@ namespace LogiFrame.Components
             get { return _font; }
             set
             {
-                if (_font == value)
-                    return;
+                if (!SwapProperty(ref _font, value, false)) return;
 
-                _font = value;
-                if (AutoSize)
-                    MeasureText(true);
-                HasChanged = true;
+                if (AutoSize) MeasureText(true);
+                OnChanged(EventArgs.Empty);
             }
         }
 
@@ -74,13 +66,10 @@ namespace LogiFrame.Components
             get { return _autoSize; }
             set
             {
-                if (_autoSize == value)
-                    return;
+                if (!SwapProperty(ref _autoSize, value, false)) return;
 
-                _autoSize = value;
-                if (value)
-                    MeasureText(true);
-                HasChanged = true;
+                if (AutoSize) MeasureText(true);
+                OnChanged(EventArgs.Empty);
             }
         }
 

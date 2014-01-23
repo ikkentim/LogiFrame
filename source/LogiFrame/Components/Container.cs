@@ -1,5 +1,5 @@
 ﻿// LogiFrame rendering library.
-// Copyright (C) 2013 Tim Potze
+// Copyright (C) 2014 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -65,7 +65,9 @@ namespace LogiFrame.Components
             IsRendering = true;
             if (forceRefresh)
                 foreach (Component component in Components)
-                    component.HasChanged = true;
+                {
+                    component.OnChanged(EventArgs.Empty);
+                }
             IsRendering = false;
 
             base.Refresh(forceRefresh);
@@ -95,11 +97,6 @@ namespace LogiFrame.Components
             Components.Clear();
         }
 
-        #endregion
-
-        #region Private methods
-
-        //Calbacks
         /// <summary>
         /// Listener for ComponentCollection.ComponentRemoved.
         /// </summary>
@@ -114,7 +111,7 @@ namespace LogiFrame.Components
             e.Component.LocationChanged -= Container_Changed;
 
             //Notify
-            HasChanged = true;
+            OnChanged(EventArgs.Empty);
         }
 
         /// <summary>
@@ -131,7 +128,7 @@ namespace LogiFrame.Components
             e.Component.LocationChanged += Container_Changed;
 
             //Notify
-            HasChanged = true;
+            OnChanged(EventArgs.Empty);
         }
 
         /// <summary>
@@ -141,7 +138,7 @@ namespace LogiFrame.Components
         /// <param name="e"></param>
         private void Container_Changed(object sender, EventArgs e)
         {
-            HasChanged = true;
+            OnChanged(EventArgs.Empty);
         }
 
         #endregion

@@ -1,5 +1,5 @@
 ﻿// LogiFrame rendering library.
-// Copyright (C) 2013 Tim Potze
+// Copyright (C) 2014 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,6 +13,8 @@
 // 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+
+using System;
 
 namespace LogiFrame.Components
 {
@@ -48,11 +50,8 @@ namespace LogiFrame.Components
             get { return _horizontal; }
             set
             {
-                if (_horizontal == value)
-                    return;
-
-                _horizontal = value;
-                HasChanged = true;
+                if (SwapProperty(ref _horizontal, value, false))
+                    OnChanged(EventArgs.Empty);
             }
         }
 
@@ -64,11 +63,8 @@ namespace LogiFrame.Components
             get { return _inverted; }
             set
             {
-                if (_inverted == value)
-                    return;
-
-                _inverted = value;
-                HasChanged = true;
+                if (SwapProperty(ref _inverted, value, false))
+                    OnChanged(EventArgs.Empty);
             }
         }
 
@@ -80,11 +76,8 @@ namespace LogiFrame.Components
             get { return _maximumValue; }
             set
             {
-                if (_maximumValue.Equals(value))
-                    return;
-
-                _maximumValue = value;
-                HasChanged = true;
+                if (SwapProperty(ref _maximumValue, value, false))
+                    OnChanged(EventArgs.Empty);
             }
         }
 
@@ -96,11 +89,8 @@ namespace LogiFrame.Components
             get { return _minimumValue; }
             set
             {
-                if (_minimumValue.Equals(value))
-                    return;
-
-                _minimumValue = value;
-                HasChanged = true;
+                if (SwapProperty(ref _minimumValue, value, false))
+                    OnChanged(EventArgs.Empty);
             }
         }
 
@@ -112,11 +102,8 @@ namespace LogiFrame.Components
             get { return _value; }
             set
             {
-                if (_value.Equals(value))
-                    return;
-
-                _value = value;
-                HasChanged = true;
+                if (SwapProperty(ref _value, value, false))
+                    OnChanged(EventArgs.Empty);
             }
         }
 
@@ -128,11 +115,8 @@ namespace LogiFrame.Components
             get { return _progressBarStyle; }
             set
             {
-                if (_progressBarStyle == value)
-                    return;
-
-                _progressBarStyle = value;
-                HasChanged = true;
+                if (SwapProperty(ref _progressBarStyle, value, false))
+                    OnChanged(EventArgs.Empty);
             }
         }
 

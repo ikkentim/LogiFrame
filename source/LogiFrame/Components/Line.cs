@@ -1,5 +1,5 @@
 ﻿// LogiFrame rendering library.
-// Copyright (C) 2013 Tim Potze
+// Copyright (C) 2014 Tim Potze
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ namespace LogiFrame.Components
                 _start.Set(value);
                 base.Location = new Location(Math.Min(Start.X, End.X), Math.Min(Start.Y, End.Y));
                 base.Size = new Size(Math.Abs(value.X - End.X) + 1, Math.Abs(value.Y - End.Y) + 1);
-                HasChanged = true;
+                OnChanged(EventArgs.Empty);
             }
         }
 
@@ -71,7 +71,7 @@ namespace LogiFrame.Components
                 _end.Set(value);
                 base.Location = new Location(Math.Min(Start.X, End.X), Math.Min(Start.Y, End.Y));
                 base.Size = new Size(Math.Abs(value.X - Start.X) + 1, Math.Abs(value.Y - Start.Y) + 1);
-                HasChanged = true;
+                OnChanged(EventArgs.Empty);
             }
         }
 
@@ -89,10 +89,6 @@ namespace LogiFrame.Components
                 .DrawLine(new System.Drawing.Pen(System.Drawing.Brushes.Black), start, end);
             return Bytemap.FromBitmap(bitmap);
         }
-
-        #endregion
-
-        #region Private methods
 
         /// <summary>
         /// Listener for Location.Changed.
