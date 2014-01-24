@@ -50,7 +50,8 @@ namespace LogiFrame.Components.Book
             {
                 AutoSize = true,
                 Font = new Font("Arial", 10f, FontStyle.Bold),
-                Location = new Location(1, 1)
+                Location = new Location(1, 1),
+                UseCache = true
             };
 
             SelectionSquare = new Square
@@ -152,17 +153,12 @@ namespace LogiFrame.Components.Book
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Is called when a button has been pressed.
-        /// </summary>
-        /// <param name="button">The button which has been pressed.</param>
-        public override void ButtonPressed(int button)
+        public override void OnButtonPressed(ButtonEventArgs e)
         {
             if (Pages.Count == 0)
                 return;
 
-            if (button == ButtonPrevious)
+            if (e.Button == ButtonPrevious)
             {
                 var prevIndex = Pages.IndexOf(SelectedPage) - 1;
 
@@ -171,7 +167,7 @@ namespace LogiFrame.Components.Book
 
                 SelectedPage = Pages[prevIndex];
             }
-            else if (button == ButtonNext)
+            else if (e.Button == ButtonNext)
             {
                 var nextIndex = Pages.IndexOf(SelectedPage) + 1;
 
@@ -180,11 +176,11 @@ namespace LogiFrame.Components.Book
 
                 SelectedPage = Pages[nextIndex];
             }
-            else if (button == ButtonSelect)
+            else if (e.Button == ButtonSelect)
             {
                 Book.SwitchTo(SelectedPage);
             }
-            else if (button == ButtonReturn)
+            else if (e.Button == ButtonReturn)
             {
                 Book.SwitchTo(InitialPage);
             }

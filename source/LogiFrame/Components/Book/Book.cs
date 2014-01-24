@@ -185,7 +185,7 @@ namespace LogiFrame.Components.Book
                 return;
 
             if (_activePage != null)
-                _activePage.ButtonReleased(e.Button);
+                _activePage.OnButtonReleased(e);
         }
 
         private void frame_ButtonDown(object sender, ButtonEventArgs e)
@@ -197,7 +197,7 @@ namespace LogiFrame.Components.Book
             }
 
             if (_activePage != null)
-                _activePage.ButtonPressed(e.Button);
+                _activePage.OnButtonPressed(e);
         }
 
         #endregion

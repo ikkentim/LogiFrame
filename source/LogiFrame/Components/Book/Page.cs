@@ -58,27 +58,22 @@ namespace LogiFrame.Components.Book
         /// </summary>
         public PageIcon PageIcon
         {
-            get
-            {
-                _pageIcon = _pageIcon ?? GetPageIcon();
-
-                return _pageIcon;
-            }
+            get { return _pageIcon = _pageIcon ?? GetPageIcon(); }
         }
 
         /// <summary>
         /// Is called when a button has been pressed.
         /// </summary>
-        /// <param name="button">The button which has been pressed.</param>
-        public virtual void ButtonPressed(int button)
+        /// <param name="e">Contains information about the button pressed</param>
+        public virtual void OnButtonPressed(ButtonEventArgs e)
         {
         }
 
         /// <summary>
         /// Is called when a button has been released.
         /// </summary>
-        /// <param name="button">The button which has been released.</param>
-        public virtual void ButtonReleased(int button)
+        /// <param name="e">Contains information bout the button pressed.</param>
+        public virtual void OnButtonReleased(ButtonEventArgs e)
         {
         }
 

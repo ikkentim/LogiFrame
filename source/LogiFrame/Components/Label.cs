@@ -15,6 +15,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 
 namespace LogiFrame.Components
 {
@@ -24,8 +28,9 @@ namespace LogiFrame.Components
     public class Label : Component
     {
         private bool _autoSize;
-        private System.Drawing.Font _font = new System.Drawing.Font("Arial", 7);
         private string _text;
+        private Font _font = new Font("Arial", 7);
+        private readonly List<CacheItem> _cache = new List<CacheItem>(); 
 
         /// <summary>
         /// Gets or sets the text this LogiFrame.Components.Label should draw.
@@ -45,7 +50,7 @@ namespace LogiFrame.Components
         /// <summary>
         /// Gets or sets the System.Drawing.Font this LogiFrame.Components.Label should draw with.
         /// </summary>
-        public System.Drawing.Font Font
+        public Font Font
         {
             get { return _font; }
             set
@@ -86,31 +91,62 @@ namespace LogiFrame.Components
             }
         }
 
-        protected override Bytemap Render()
-        {
-            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(Size.Width, Size.Height);
-            System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp);
-            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-
-            g.DrawString(Text, Font, System.Drawing.Brushes.Black, new System.Drawing.Point(0, 0));
-            return Bytemap.FromBitmap(bmp);
-        }
+        /// <summary>
+        /// Gets or sets whether the label should cache all rendered texts.
+        /// </summary>
+        public bool UseCache { get; set; }
 
         /// <summary>
-        /// Measures the size of the Text when rendered with the set Font.
+        /// Clears all cache items from the Label's cache
         /// </summary>
-        /// <param name="silent">Whether the change of font should make the LogiFrame.Components.Label rerender.</param>
+        public void ClearCache()
+        {
+            _cache.Clear();
+        }
+
+        protected override Bytemap Render()
+        {
+            if (UseCache)
+            {
+                var cacheItem = _cache.FirstOrDefault(c => c.Text == Text && c.Font.Equals(Font));
+                if (cacheItem != null)
+                {
+                    if (AutoSize)
+                        Size = cacheItem.Bytemap.Size;
+                    return cacheItem.Bytemap;
+                }
+            }
+
+            Bitmap bmp = new Bitmap(Size.Width, Size.Height);
+            Graphics g = Graphics.FromImage(bmp);
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
+
+            g.DrawString(Text, Font, Brushes.Black, new Point(0, 0));
+
+            var bymp = Bytemap.FromBitmap(bmp);
+            if (UseCache)
+                _cache.Add(new CacheItem { Bytemap = bymp, Font = Font.Clone() as Font, Text = Text });
+
+            return bymp;
+        }
+
         private void MeasureText(bool silent)
         {
             if (silent)
                 IsRendering = true;
 
-            System.Drawing.SizeF strSize =
-                System.Drawing.Graphics.FromImage(new System.Drawing.Bitmap(1, 1)).MeasureString(Text, Font);
+            SizeF strSize = Graphics.FromImage(new Bitmap(1, 1)).MeasureString(Text, Font);
             base.Size.Set((int) Math.Ceiling(strSize.Width), (int) Math.Ceiling(strSize.Height));
 
             if (silent)
                 IsRendering = false;
+        }
+
+        private class CacheItem
+        {
+            public string Text { get; set; }
+            public Font Font { get; set; }
+            public Bytemap Bytemap { get; set; }
         }
     }
 }

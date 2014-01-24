@@ -150,7 +150,8 @@ namespace Test
                 {
                     AutoSize = true,
                     Text = "T",
-                    Font = new Font("Arial", 10f, FontStyle.Bold)
+                    Font = new Font("Arial", 10f, FontStyle.Bold),
+                    UseCache = true
                 });
 
                 return icon;
