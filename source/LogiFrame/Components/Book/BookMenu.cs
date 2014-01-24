@@ -153,6 +153,7 @@ namespace LogiFrame.Components.Book
         #endregion
 
         #region Methods
+
         public override void OnButtonPressed(ButtonEventArgs e)
         {
             if (Pages.Count == 0)

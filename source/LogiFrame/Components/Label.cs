@@ -15,7 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -27,10 +26,10 @@ namespace LogiFrame.Components
     /// </summary>
     public class Label : Component
     {
+        private readonly List<CacheItem> _cache = new List<CacheItem>();
         private bool _autoSize;
-        private string _text;
         private Font _font = new Font("Arial", 7);
-        private readonly List<CacheItem> _cache = new List<CacheItem>(); 
+        private string _text;
 
         /// <summary>
         /// Gets or sets the text this LogiFrame.Components.Label should draw.
@@ -125,7 +124,7 @@ namespace LogiFrame.Components
 
             var bymp = Bytemap.FromBitmap(bmp);
             if (UseCache)
-                _cache.Add(new CacheItem { Bytemap = bymp, Font = Font.Clone() as Font, Text = Text });
+                _cache.Add(new CacheItem {Bytemap = bymp, Font = Font.Clone() as Font, Text = Text});
 
             return bymp;
         }
