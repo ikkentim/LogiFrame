@@ -14,10 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
+using System;
 using System.Drawing;
 using LogiFrame;
 using LogiFrame.Components;
 using LogiFrame.Components.Book;
+using Size = LogiFrame.Size;
 
 namespace Test
 {
@@ -25,13 +27,14 @@ namespace Test
     {
         #region Basic Test
 
-        /*
+        
         private static Animation _animation;
         private static ProgressBar _progressBar;
         private static Line _line;
         private static Square _square;
         private static Label _label;
         private static Picture _picture;
+        private static Marquee _marquee;
         
         private static void SetupBasicTest(Frame frame)
         {
@@ -83,19 +86,30 @@ namespace Test
                 ConversionMethod = ConversionMethod.QuarterByte,
                 Image = Properties.Resources.banana,
                 Run = true
-            }; 
-           
+            };
+
+            _marquee = new Marquee
+            {
+                Location = new Location(10, 30),
+                Size = new Size(50, 10),
+                Text = "Test 1 2 3 4 5 6 7 8 9 10... Test Completed!",
+                Interval = 200,
+                StepSize = 2,
+                Run = true,
+                UseCache = true
+            };
+
             frame.Components.Add(_square);
             frame.Components.Add(_line);
             frame.Components.Add(_label);
             frame.Components.Add(_picture);
             frame.Components.Add(_animation);
             frame.Components.Add(_progressBar);
+            frame.Components.Add(_marquee);
         }
         
         static void frame_Configure(object sender, EventArgs e)
         {
-            Debug.WriteLine("CONFIGURE");
         }
 
         static void frame_ButtonDown(object sender, ButtonEventArgs e)
@@ -108,9 +122,8 @@ namespace Test
                 _animation.Frame++;
             if (e.Button == 3)
                 _progressBar.Value = 100 - _progressBar.Value;
-            Debug.WriteLine("Button pressed: " + e.Button);
         }
-        */
+        
 
         #endregion
 
@@ -137,7 +150,7 @@ namespace Test
                 UpdatePriority = UpdatePriority.Normal
             };
 
-            SetupBookTest(frame);
+            SetupBasicTest(frame);
 
             frame.WaitForClose();
         }
@@ -150,7 +163,7 @@ namespace Test
                 var l = new Label
                 {
                     AutoSize = true,
-                    Text = ToString()
+                    Text = base.ToString()
                 };
 
                 Components.Add(l);

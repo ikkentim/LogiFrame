@@ -26,10 +26,16 @@ namespace LogiFrame.Components
     /// </summary>
     public class Label : Component
     {
+        #region Fields
+
         private readonly List<CacheItem> _cache = new List<CacheItem>();
         private bool _autoSize;
         private Font _font = new Font("Arial", 7);
         private string _text;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the text this LogiFrame.Components.Label should draw.
@@ -95,8 +101,12 @@ namespace LogiFrame.Components
         /// </summary>
         public bool UseCache { get; set; }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// Clears all cache items from the Label's cache
+        /// Clears all cache items from the Label's cache.
         /// </summary>
         public void ClearCache()
         {
@@ -141,11 +151,17 @@ namespace LogiFrame.Components
                 IsRendering = false;
         }
 
+        #endregion
+
+        #region Subclasses
+
         private class CacheItem
         {
             public string Text { get; set; }
             public Font Font { get; set; }
             public Bytemap Bytemap { get; set; }
         }
+
+        #endregion
     }
 }

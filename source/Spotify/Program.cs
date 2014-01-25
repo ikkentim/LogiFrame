@@ -66,7 +66,7 @@ namespace Spotify
             //Listen to the Tick-event of the Timer and set the interval
             Timer.Tick += Timer_Tick;
             Timer.Interval = 250;
-            Timer.Run = true;
+            Timer.Enabled = true;
 
             //By default, set the priority of the application to NoShow, untill it detects spotify
             Frame.UpdatePriority = UpdatePriority.IdleNoShow;

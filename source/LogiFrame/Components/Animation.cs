@@ -17,7 +17,6 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Threading;
 
 namespace LogiFrame.Components
 {
@@ -28,12 +27,20 @@ namespace LogiFrame.Components
     {
         #region Fields
 
+        private readonly Timer _timer;
         private bool _autoInterval = true;
         private Bytemap[] _bytemaps;
         private int _frame;
-        private int _interval;
-        private bool _run;
-        private Thread _thread;
+
+        #endregion
+
+        #region Constructor
+
+        public Animation()
+        {
+            _timer = new Timer();
+            _timer.Tick += _timer_Tick;
+        }
 
         #endregion
 
@@ -44,12 +51,11 @@ namespace LogiFrame.Components
         /// </summary>
         public int Interval
         {
-            get { return _interval; }
+            get { return _timer.Interval; }
             set
             {
                 if (!AutoInterval)
-                    _interval = value;
-                CheckThreadRunning();
+                    _timer.Interval = value;
             }
         }
 
@@ -68,7 +74,7 @@ namespace LogiFrame.Components
                 _autoInterval = value;
 
                 if (value)
-                    _interval = GetFrameDuration();
+                    _timer.Interval = GetFrameDuration();
             }
         }
 
@@ -89,7 +95,6 @@ namespace LogiFrame.Components
 
                 RenderAnimation();
                 OnChanged(EventArgs.Empty);
-                CheckThreadRunning();
             }
         }
 
@@ -110,7 +115,6 @@ namespace LogiFrame.Components
 
                 RenderAnimation();
                 OnChanged(EventArgs.Empty);
-                CheckThreadRunning();
             }
         }
 
@@ -149,16 +153,8 @@ namespace LogiFrame.Components
         /// </summary>
         public bool Run
         {
-            get { return _run; }
-            set
-            {
-                if (_run == value)
-                    return;
-
-                _run = value;
-
-                CheckThreadRunning();
-            }
+            get { return _timer.Enabled; }
+            set { _timer.Enabled = value; }
         }
 
         #endregion
@@ -176,21 +172,8 @@ namespace LogiFrame.Components
 
         protected override void DisposeComponent()
         {
-            _run = false;
+            _timer.Dispose();
             Image.Dispose();
-        }
-
-        /// <summary>
-        /// Checks whether the thread is still running and restarts it if necessary.
-        /// </summary>
-        private void CheckThreadRunning()
-        {
-            //Check if the thread is running
-            if (!Disposed && Run && _thread == null)
-            {
-                _thread = new Thread(AnimationThread);
-                _thread.Start();
-            }
         }
 
         /// <summary>
@@ -226,7 +209,7 @@ namespace LogiFrame.Components
 
             //calculate interval
             if (AutoInterval)
-                _interval = GetFrameDuration();
+                _timer.Interval = GetFrameDuration();
 
             //check current frame
             if (_frame < 0 || _frame >= frames)
@@ -251,17 +234,9 @@ namespace LogiFrame.Components
             }
         }
 
-        /// <summary>
-        /// Cycles trough all the frames on the set Interval.
-        /// </summary>
-        private void AnimationThread()
+        private void _timer_Tick(object sender, EventArgs e)
         {
-            while (!Disposed && Run && Interval > 0)
-            {
-                Frame++;
-                Thread.Sleep(Interval);
-            }
-            _thread = null;
+            Frame++;
         }
 
         #endregion

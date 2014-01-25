@@ -61,6 +61,7 @@
     <Compile Include="Components\Container.cs" />
     <Compile Include="Components\Label.cs" />
     <Compile Include="Components\Line.cs" />
+    <Compile Include="Components\Marquee.cs" />
     <Compile Include="Components\Picture.cs" />
     <Compile Include="Components\ProgressBar.cs" />
     <Compile Include="Components\ProgressBarStyle.cs" />

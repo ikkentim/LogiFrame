@@ -26,8 +26,8 @@ namespace LogiFrame.Components
     {
         #region Fields
 
-        private int _interval;
-        private bool _run;
+        private bool _enabled;
+        private int _interval = 100;
         private Thread _thread;
 
         #endregion
@@ -51,23 +51,26 @@ namespace LogiFrame.Components
             get { return _interval; }
             set
             {
+                if (value <= 0)
+                    throw new IndexOutOfRangeException("Timer.Interval must at least contain a value of 1 or higher.");
+
                 _interval = value;
                 CheckThreadRunning();
             }
         }
 
         /// <summary>
-        /// Gets or sets whether the timer should cycle.
+        /// Gets or sets whether the timer is enabled.
         /// </summary>
-        public bool Run
+        public bool Enabled
         {
-            get { return _run; }
+            get { return _enabled; }
             set
             {
-                if (_run == value)
+                if (_enabled == value)
                     return;
 
-                _run = value;
+                _enabled = value;
 
                 CheckThreadRunning();
             }
@@ -95,7 +98,7 @@ namespace LogiFrame.Components
 
         protected override void DisposeComponent()
         {
-            _run = false;
+            _enabled = false;
         }
 
         public override void OnChanged(EventArgs e)
@@ -108,11 +111,11 @@ namespace LogiFrame.Components
         /// </summary>
         private void CheckThreadRunning()
         {
-            if (Disposed || !Run || _thread != null) return;
+            if (Disposed || !Enabled || _thread != null) return;
 
             _thread = new Thread(() =>
             {
-                while (!Disposed && Run && Interval > 0)
+                while (!Disposed && Enabled && Interval > 0)
                 {
                     OnTick(EventArgs.Empty);
                     Thread.Sleep(Interval);
