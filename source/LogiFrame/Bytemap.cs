@@ -70,7 +70,7 @@ namespace LogiFrame
             if (bitmap == null)
                 return null;
 
-            Bytemap result = new Bytemap(bitmap.Size);
+            var result = new Bytemap(bitmap.Size);
 
             for (int y = 0; y < bitmap.Height; y++)
                 for (int x = 0; x < bitmap.Width; x++)
@@ -166,7 +166,7 @@ namespace LogiFrame
         /// <returns>The new LogiFrame.Bytemap that this method creates.</returns>
         public Bytemap Clone()
         {
-            Bytemap result = new Bytemap(Size);
+            var result = new Bytemap(Size);
             Array.Copy(Data, result.Data, Data.Length);
 
             return result;
@@ -190,10 +190,11 @@ namespace LogiFrame
         /// <param name="fill">Whether the pixel should be filled.</param>
         public void SetPixel(int x, int y, bool fill)
         {
-            if (x < 0 || y < 0 || x >= _width || y >= _height)
+            var i = x + y*_width;
+            if (i >= 0 && i < Data.Length)
                 throw new ArgumentOutOfRangeException("The given position is not within the boundaries of the Bytemap.");
 
-            Data[x + y*_width] = fill ? (byte) 0xff : (byte) 0x00;
+            Data[i] = fill ? (byte) 0xff : (byte) 0x00;
         }
 
         /// <summary>
@@ -214,10 +215,11 @@ namespace LogiFrame
         /// <returns>Whether the pixel is filled</returns>
         public bool GetPixel(int x, int y)
         {
-            if (x < 0 || y < 0 || x >= _width || y >= _height)
+            var i = x + y * _width;
+            if (i >= 0 && i < Data.Length)
                 throw new ArgumentOutOfRangeException("The given position is not within the boundaries of the Bytemap.");
 
-            return Data[x + y*_width] == 0xff;
+            return Data[i] == 0xff;
         }
 
         /// <summary>
@@ -247,22 +249,20 @@ namespace LogiFrame
                     int sy = y - location.Y;
                     if (bytemap.Transparent && bytemap.TopEffect)
                     {
-                        if (bytemap.GetPixel(sx, sy))
-                        {
-                            SetPixel(x, y, true);
+                        if (!bytemap.GetPixel(sx, sy)) continue;
+                        SetPixel(x, y, true);
 
-                            if (x > 0 && (sx == 0 || !bytemap.GetPixel(sx - 1, sy)))
-                                SetPixel(x - 1, y, false);
+                        if (x > 0 && (sx == 0 || !bytemap.GetPixel(sx - 1, sy)))
+                            SetPixel(x - 1, y, false);
 
-                            if (x < _width - 1 && (sx == bytemap._width - 1 || !bytemap.GetPixel(sx + 1, sy)))
-                                SetPixel(x + 1, y, false);
+                        if (x < _width - 1 && (sx == bytemap._width - 1 || !bytemap.GetPixel(sx + 1, sy)))
+                            SetPixel(x + 1, y, false);
 
-                            if (y > 0 && (sy == 0 || !bytemap.GetPixel(sx, sy - 1)))
-                                SetPixel(x, y - 1, false);
+                        if (y > 0 && (sy == 0 || !bytemap.GetPixel(sx, sy - 1)))
+                            SetPixel(x, y - 1, false);
 
-                            if (y < _width - 1 && (sy == bytemap._height - 1 || !bytemap.GetPixel(sx, sy + 1)))
-                                SetPixel(x, y + 1, false);
-                        }
+                        if (y < _width - 1 && (sy == bytemap._height - 1 || !bytemap.GetPixel(sx, sy + 1)))
+                            SetPixel(x, y + 1, false);
                     }
                     else if (bytemap.Transparent)
                         SetPixel(x, y, bytemap.GetPixel(sx, sy) || GetPixel(x, y));
@@ -281,41 +281,32 @@ namespace LogiFrame
             if (bytemap == null)
                 return null;
 
-            System.Drawing.Bitmap result = new System.Drawing.Bitmap(bytemap._width, bytemap._height);
+            var result = new System.Drawing.Bitmap(bytemap._width, bytemap._height);
             System.Drawing.Graphics.FromImage(result).Clear(System.Drawing.Color.White);
-            for (int y = 0; y < bytemap._height; y++)
-                for (int x = 0; x < bytemap._width; x++)
+            for (var y = 0; y < bytemap._height; y++)
+                for (var x = 0; x < bytemap._width; x++)
                     if (bytemap.Data[x + y*bytemap._width] == 255)
                         result.SetPixel(x, y, System.Drawing.Color.Black);
 
             return result;
         }
 
-        #endregion
-
-        #region Private methods
-
         /// <summary>
         /// Resizes the byte array according to the Size.
         /// </summary>
         private void Resize()
         {
-            if (_width != Size.Width || _height != Size.Height)
-            {
-                byte[] newData = new byte[Size.Width*Size.Height];
+            if (_width == Size.Width && _height == Size.Height) return;
+            var newData = new byte[Size.Width*Size.Height];
 
-                for (int y = 0; y < Math.Min(Size.Height, _height); y++)
-                    for (int x = 0; x < Math.Min(Size.Width, _width); x++)
-                    {
-                        newData[x + y*Size.Width] = Data[x + y*_width];
-                    }
+            for (var y = 0; y < Math.Min(Size.Height, _height); y++)
+                for (var x = 0; x < Math.Min(Size.Width, _width); x++)
+                    newData[x + y*Size.Width] = Data[x + y*_width];
+                
+            Data = newData;
 
-
-                Data = newData;
-
-                _width = Size.Width;
-                _height = Size.Height;
-            }
+            _width = Size.Width;
+            _height = Size.Height;
         }
 
         /// <summary>

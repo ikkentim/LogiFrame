@@ -55,7 +55,6 @@ namespace LogiFrame.Components
                     throw new IndexOutOfRangeException("Timer.Interval must at least contain a value of 1 or higher.");
 
                 _interval = value;
-                CheckThreadRunning();
             }
         }
 
@@ -72,7 +71,16 @@ namespace LogiFrame.Components
 
                 _enabled = value;
 
-                CheckThreadRunning();
+                if (value && !Disposed && _thread == null)
+                    (_thread = new Thread(() =>
+                    {
+                        while (!Disposed && Enabled && Interval > 0)
+                        {
+                            OnTick(EventArgs.Empty);
+                            Thread.Sleep(Interval);
+                        }
+                        _thread = null;
+                    }) {Name = "LogiFrame timer thread"}).Start();
             }
         }
 
@@ -90,6 +98,11 @@ namespace LogiFrame.Components
                 Tick(this, e);
         }
 
+        public override void OnChanged(EventArgs e)
+        {
+            //Prevent rendering
+        }
+
         protected override Bytemap Render()
         {
             //No visible elements
@@ -99,30 +112,6 @@ namespace LogiFrame.Components
         protected override void DisposeComponent()
         {
             _enabled = false;
-        }
-
-        public override void OnChanged(EventArgs e)
-        {
-            //Prevent rendering
-        }
-
-        /// <summary>
-        /// Checks whether the thread is still running and restarts it if necessary.
-        /// </summary>
-        private void CheckThreadRunning()
-        {
-            if (Disposed || !Enabled || _thread != null) return;
-
-            _thread = new Thread(() =>
-            {
-                while (!Disposed && Enabled && Interval > 0)
-                {
-                    OnTick(EventArgs.Empty);
-                    Thread.Sleep(Interval);
-                }
-                _thread = null;
-            });
-            _thread.Start();
         }
 
         #endregion

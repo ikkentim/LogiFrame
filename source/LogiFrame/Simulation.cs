@@ -62,7 +62,10 @@ namespace LogiFrame
 
         private void frame_FrameClosed(object sender, EventArgs e)
         {
-            Close();
+            if (InvokeRequired) 
+                Invoke((MethodInvoker) Close);
+            else
+                Close();
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
