@@ -11,11 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{71
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spotify", "Spotify\Spotify.csproj", "{0EB69209-E9D5-4B25-9CB8-DAEA264E05A2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9F01D6E4-6C34-4CDE-B1A7-246AEACBC14C}"
-	ProjectSection(SolutionItems) = preProject
-		Performance3.psess = Performance3.psess
-		Performance4.psess = Performance4.psess
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bitcoin", "Bitcoin\Bitcoin.csproj", "{C0C2EDFD-1431-49FC-A121-0DC24923507B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,14 +53,22 @@ Global
 		{0EB69209-E9D5-4B25-9CB8-DAEA264E05A2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{0EB69209-E9D5-4B25-9CB8-DAEA264E05A2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{0EB69209-E9D5-4B25-9CB8-DAEA264E05A2}.Release|x86.ActiveCfg = Release|Any CPU
+		{C0C2EDFD-1431-49FC-A121-0DC24923507B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0C2EDFD-1431-49FC-A121-0DC24923507B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0C2EDFD-1431-49FC-A121-0DC24923507B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C0C2EDFD-1431-49FC-A121-0DC24923507B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C0C2EDFD-1431-49FC-A121-0DC24923507B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C0C2EDFD-1431-49FC-A121-0DC24923507B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0C2EDFD-1431-49FC-A121-0DC24923507B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0C2EDFD-1431-49FC-A121-0DC24923507B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C0C2EDFD-1431-49FC-A121-0DC24923507B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C0C2EDFD-1431-49FC-A121-0DC24923507B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0EB69209-E9D5-4B25-9CB8-DAEA264E05A2} = {71865FF6-E667-4A0B-8BED-2DEFFA920197}
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
+		{C0C2EDFD-1431-49FC-A121-0DC24923507B} = {71865FF6-E667-4A0B-8BED-2DEFFA920197}
 	EndGlobalSection
 EndGlobal

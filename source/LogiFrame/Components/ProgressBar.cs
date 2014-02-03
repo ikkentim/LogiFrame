@@ -19,7 +19,7 @@ using System;
 namespace LogiFrame.Components
 {
     /// <summary>
-    /// Represents a drawable progress bar
+    /// Represents a drawable progress bar.
     /// </summary>
     public class ProgressBar : Container
     {
@@ -122,13 +122,7 @@ namespace LogiFrame.Components
 
         protected override Bytemap Render()
         {
-            float progress = 0;
-
-            if (_maximumValue > _minimumValue)
-                progress = (_value - _minimumValue)/(_maximumValue - _minimumValue);
-
-            if (_value < _minimumValue)
-                progress = 0;
+            float progress = _maximumValue > _minimumValue ? (_value - _minimumValue)/(_maximumValue - _minimumValue) : 0;
 
             _borderSquare.Size = Size;
 

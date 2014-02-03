@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
+using System;
 using System.Diagnostics;
 using System.Linq;
 
@@ -46,6 +47,22 @@ namespace Spotify
         public string Track { get; private set; }
 
         /// <summary>
+        /// Gets whether Spotify is running.
+        /// </summary>
+        public bool Running
+        {
+            get { return _process != null; }
+        }
+
+        /// <summary>
+        /// Gets whether Spotify is playing Tracks.
+        /// </summary>
+        public bool Playing
+        {
+            get { return !string.IsNullOrEmpty(Artist) && !string.IsNullOrEmpty(Track); }
+        }
+
+        /// <summary>
         /// Updates the information, Artist and Track.
         /// </summary>
         public void Update()
@@ -71,13 +88,16 @@ namespace Spotify
 
             //Find the track artist from the title of the Spotify window, in the format "Spotify - <Artist> - <Track>"
             string title = _process.MainWindowTitle;
-            title = title.Replace("Spotify - ", ""); //Remove the beginning bit, Leaving us with "<Artist> - <Track>"
+            title = title.Replace("Spotify - ", String.Empty); //Remove the beginning bit, leaving us with "<Artist> - <Track>"
 
             int position = title.IndexOf('–'); //Get the index of the '–' in between the Artist and Track.
 
             //If the '–' hasn't been found, stop updating.
             if (position < 0)
+            {
+                Artist = Track = null;
                 return;
+            }
 
             //Get a substring from the window title and trim the remaining spaces off.
             Artist = title.Substring(0, position).Trim();

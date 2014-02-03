@@ -27,7 +27,6 @@ namespace Test
     {
         #region Basic Test
 
-        
         private static Animation _animation;
         private static ProgressBar _progressBar;
         private static Line _line;

@@ -60,6 +60,7 @@
     <Compile Include="Components\Picture.cs" />
     <Compile Include="Components\ProgressBar.cs" />
     <Compile Include="Components\ProgressBarStyle.cs" />
+    <Compile Include="Components\ScrollBar.cs" />
     <Compile Include="Components\Square.cs" />
     <Compile Include="Components\Timer.cs" />
     <Compile Include="ConnectionException.cs" />

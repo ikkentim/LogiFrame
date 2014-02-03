@@ -191,7 +191,7 @@ namespace LogiFrame
         public void SetPixel(int x, int y, bool fill)
         {
             var i = x + y*_width;
-            if (i >= 0 && i < Data.Length)
+            if (i < 0 || i >= Data.Length)
                 throw new ArgumentOutOfRangeException("The given position is not within the boundaries of the Bytemap.");
 
             Data[i] = fill ? (byte) 0xff : (byte) 0x00;
@@ -216,7 +216,7 @@ namespace LogiFrame
         public bool GetPixel(int x, int y)
         {
             var i = x + y * _width;
-            if (i >= 0 && i < Data.Length)
+            if (i < 0 || i >= Data.Length)
                 throw new ArgumentOutOfRangeException("The given position is not within the boundaries of the Bytemap.");
 
             return Data[i] == 0xff;

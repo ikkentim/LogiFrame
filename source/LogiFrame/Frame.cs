@@ -150,18 +150,12 @@ namespace LogiFrame
         #region Events
 
         /// <summary>
-        /// Represents the method that handles a LogiFrame.Frame.ButtonDown.
+        /// Represents the method that handles LogiFrame.Frame.ButtonDown 
+        /// and LogiFrame.Frame.Buttonup.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">A LogiFrame.ButtonEventArgs that contains the event data.</param>
-        public delegate void ButtonDownEventHandler(object sender, ButtonEventArgs e);
-
-        /// <summary>
-        /// Represents the method that handles a LogiFrame.Frame.ButtonUp.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A LogiFrame.ButtonEventArgs that contains the event data.</param>
-        public delegate void ButtonUpEventHandler(object sender, ButtonEventArgs e);
+        public delegate void ButtonEventHandler(object sender, ButtonEventArgs e);
 
         /// <summary>
         /// Represents the method that handles a LogiFrame.Frame.FramePush.
@@ -173,12 +167,12 @@ namespace LogiFrame
         /// <summary>
         /// Occurs when a button is being pressed.
         /// </summary>
-        public event ButtonDownEventHandler ButtonDown;
+        public event ButtonEventHandler ButtonDown;
 
         /// <summary>
         /// Occurs when a button is being released.
         /// </summary>
-        public event ButtonUpEventHandler ButtonUp;
+        public event ButtonEventHandler ButtonUp;
 
         /// <summary>
         /// Occurs before a frame is being pushed to the display.

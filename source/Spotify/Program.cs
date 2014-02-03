@@ -23,31 +23,10 @@ namespace Spotify
 {
     internal static class Program
     {
-        //Initialize all components
-
-        /// <summary>
-        /// Contains the name of the artist.
-        /// </summary>
         private static readonly Label ArtistLabel = new Label();
-
-        /// <summary>
-        /// Contains the name of the track.
-        /// </summary>
         private static readonly Label TrackLabel = new Label();
-
-        /// <summary>
-        /// Ticks whenever we want to update the title. (Works just like System.Windows.Forms.Timer)
-        /// </summary>
         private static readonly Timer Timer = new Timer();
-
-        /// <summary>
-        /// The main LogiFrame.Frame who's pushing the frames to the display.
-        /// </summary>
         private static readonly Frame Frame = new Frame("Spotify", true, true);
-
-        /// <summary>
-        /// The reader who's task it is to read the current track and artist.
-        /// </summary>
         private static readonly SpotifyReader Reader = new SpotifyReader();
 
         private static void Main()
@@ -64,42 +43,38 @@ namespace Spotify
             TrackLabel.Text = "";
 
             //Listen to the Tick-event of the Timer and set the interval
-            Timer.Tick += Timer_Tick;
-            Timer.Interval = 250;
+            Timer.Interval = 1000;
             Timer.Enabled = true;
+            Timer.Tick += delegate
+            {
+                //Update our spotify reader
+                Reader.Update();
+
+                //Check if spotify is running
+                if (!Reader.Running)
+                {
+                    //If the tracks is empty, spotify isn't running.
+                    Frame.UpdatePriority = UpdatePriority.IdleNoShow; //Hide the application
+                    ArtistLabel.Text = "Spotify is not running.";
+                    TrackLabel.Text = "";
+                }
+                else
+                {
+                    //Set the artist and track labels.
+                    Frame.UpdatePriority = UpdatePriority.Normal; //Show the application
+                    ArtistLabel.Text = !Reader.Playing ? "Spotify is not playing." : Reader.Artist;
+                    TrackLabel.Text = !Reader.Playing ? "" : Reader.Track;
+                }
+            };
 
             //By default, set the priority of the application to NoShow, untill it detects spotify
             Frame.UpdatePriority = UpdatePriority.IdleNoShow;
             Frame.Components.Add(ArtistLabel);
             Frame.Components.Add(TrackLabel);
+            Frame.Components.Add(Timer);
 
             //Let the current thread wait untill the Frame is Closed by disposure. (Frame.Dispose, or process ended)
             Frame.WaitForClose();
-        }
-
-        /// <summary>
-        /// The event listener contianing the update logics
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private static void Timer_Tick(object sender, EventArgs e)
-        {
-            //Update our spotify reader
-            Reader.Update();
-
-            if (string.IsNullOrEmpty(Reader.Track))
-            {
-                //If the tracks is empty, spotify isn't running.
-                ArtistLabel.Text = "Spotify is not running.";
-                Frame.UpdatePriority = UpdatePriority.IdleNoShow; //Hide the application
-            }
-            else
-            {
-                //Set the artist and track labels.
-                ArtistLabel.Text = Reader.Artist;
-                TrackLabel.Text = Reader.Track;
-                Frame.UpdatePriority = UpdatePriority.Normal; //Show the application
-            }
         }
     }
 }
