@@ -1,16 +1,32 @@
-﻿using System;
+﻿// LogiFrame rendering library.
+// Copyright (C) 2014 Tim Potze
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+
+using System;
 using LogiFrame;
 using LogiFrame.Components;
 
 namespace SanAndreas.Components
 {
-    class NitroInfo : Container
+    internal class NitroInfo : Container
     {
-        private readonly ProgressBar _progressBar;
         private readonly Square[] _charges;
+        private readonly ProgressBar _progressBar;
 
-        private float _status;
         private int _count;
+        private float _status;
 
         public NitroInfo()
         {
@@ -26,7 +42,7 @@ namespace SanAndreas.Components
             _charges = new Square[9];
             for (int i = 0; i < 9; i++)
             {
-               Components.Add( _charges[i] = new Square
+                Components.Add(_charges[i] = new Square
                 {
                     Fill = true,
                     Size = new Size(4, 4),
@@ -40,10 +56,7 @@ namespace SanAndreas.Components
 
         public float Status
         {
-            get
-            {
-                return _status;
-            }
+            get { return _status; }
             set
             {
                 if (SwapProperty(ref _status, value, true))
@@ -53,10 +66,7 @@ namespace SanAndreas.Components
 
         public int Count
         {
-            get
-            {
-                return _count;
-            }
+            get { return _count; }
             set
             {
                 if (SwapProperty(ref _count, value, true))

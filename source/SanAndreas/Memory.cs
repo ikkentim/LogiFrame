@@ -73,6 +73,7 @@ namespace SanAndreas
         {
             get { return AsInteger() != 0; }
         }
+
         #endregion
 
         #region Methods

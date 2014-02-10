@@ -43,7 +43,7 @@ namespace SanAndreas.Pages
                 Location = new Location(0, 0),
                 AutoSize = true,
                 Image = Properties.Resources.Weapon0
-            }); 
+            });
             Components.Add(_healthBar = new ProgressBar
             {
                 Location = new Location(35, 15),

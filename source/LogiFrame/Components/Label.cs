@@ -31,9 +31,10 @@ namespace LogiFrame.Components
         private readonly List<CacheItem> _cache = new List<CacheItem>();
         private bool _autoSize;
         private Font _font = new Font("Arial", 7);
+        private Alignment _horizontalAlignment = Alignment.Left;
         private string _text;
         private Alignment _verticalAlignment = Alignment.Top;
-        private Alignment _horizontalAlignment = Alignment.Left;
+
         #endregion
 
         #region Properties
@@ -193,7 +194,7 @@ namespace LogiFrame.Components
                     x = 0;
                     break;
                 case Alignment.Middle:
-                    x = -Size.Width / 2;
+                    x = -Size.Width/2;
                     break;
                 case Alignment.Right:
                     x = -Size.Width;
@@ -215,6 +216,7 @@ namespace LogiFrame.Components
 
             RenderOffset.Set(x, y);
         }
+
         #endregion
 
         #region Subclasses

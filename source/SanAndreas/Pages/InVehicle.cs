@@ -25,14 +25,15 @@ namespace SanAndreas.Pages
 {
     internal class InVehicle : Page
     {
-        private readonly Label _notInVehicleLabel;
-        private readonly Label _nameLabel;
-        private readonly Label _locationLabel;
-        private readonly Label _speedLabel;
-        private readonly Label _radioLabel;
         private readonly ProgressBar _healthBar;
+        private readonly Label _locationLabel;
+        private readonly Label _nameLabel;
         private readonly NitroInfo _nitroInfo;
+        private readonly Label _notInVehicleLabel;
+        private readonly Label _radioLabel;
+        private readonly Label _speedLabel;
         private readonly Timer _timer;
+
         public InVehicle()
         {
             Components.Add(_notInVehicleLabel = new Label
@@ -67,7 +68,7 @@ namespace SanAndreas.Pages
             });
             Components.Add(_radioLabel = new Label
             {
-                Location = new Location(LCDSize.Width / 2, 1),
+                Location = new Location(LCDSize.Width/2, 1),
                 AutoSize = true,
                 Font = new Font("Arial", 12f, FontStyle.Bold),
                 Text = "No Radio",
@@ -135,25 +136,25 @@ namespace SanAndreas.Pages
                 ToggleVehicle(false);
                 return;
             }
-           
+
             ToggleVehicle(true);
 
             //General memory
-            var radioid = GTA.Memory ^ 0x8CB7A5;//AsShort();
+            var radioid = GTA.Memory ^ 0x8CB7A5; //AsShort();
 
             //Vehicle memory
-            var type = ~vehicle + 0x590;//ReadByte();
-            var model = ~vehicle + 0x22;//.ReadShort();
+            var type = ~vehicle + 0x590; //ReadByte();
+            var model = ~vehicle + 0x22; //.ReadShort();
 
-            var health = ~vehicle + 0x4C0;//.ReadFloat();
+            var health = ~vehicle + 0x4C0; //.ReadFloat();
 
-            var nos = ~vehicle + 0x48A;//).ReadByte();
-            var nosStatus = ~vehicle + 0x8A4;//.ReadFloat();
+            var nos = ~vehicle + 0x48A; //).ReadByte();
+            var nosStatus = ~vehicle + 0x8A4; //.ReadFloat();
 
-            var speedx = (~vehicle + 68).AsFloat();//.ReadFloat();
-            var speedy = (~vehicle + 72).AsFloat();//.ReadFloat();
-            var speedz = (~vehicle + 76).AsFloat();//.ReadFloat();
-            var speed = (int)Math.Round(Math.Sqrt(((speedx * speedx) + (speedy * speedy)) + (speedz * speedz)) * 136.6666667);
+            var speedx = (~vehicle + 68).AsFloat(); //.ReadFloat();
+            var speedy = (~vehicle + 72).AsFloat(); //.ReadFloat();
+            var speedz = (~vehicle + 76).AsFloat(); //.ReadFloat();
+            var speed = (int) Math.Round(Math.Sqrt(((speedx*speedx) + (speedy*speedy)) + (speedz*speedz))*136.6666667);
 
             //Position memory
             var position = ~vehicle + 0x14;
@@ -168,7 +169,7 @@ namespace SanAndreas.Pages
             var seats = new bool[SAInfo.Vehicles.GetVehicleSeats(model.AsShort())];
             for (int i = 0; i < SAInfo.Vehicles.GetVehicleSeats(model.AsShort()); i++)
             {
-                var passengerPointer = ~vehicle + (0x460 + i * 0x4);
+                var passengerPointer = ~vehicle + (0x460 + i*0x4);
                 seats[i] = passengerPointer.IsPointing;
             }
 
@@ -215,7 +216,7 @@ namespace SanAndreas.Pages
             {
                 new Picture
                 {
-                    Location = new Location(1,0),
+                    Location = new Location(1, 0),
                     AutoSize = true,
                     ConversionMethod = ConversionMethod.QuarterByte,
                     Image = Properties.Resources.CarIcon
