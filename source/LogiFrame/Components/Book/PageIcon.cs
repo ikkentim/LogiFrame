@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
+using System.Collections.Generic;
 
 namespace LogiFrame.Components.Book
 {
@@ -29,6 +30,16 @@ namespace LogiFrame.Components.Book
         public PageIcon()
         {
             base.Size = new Size(16, 16);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the LogiFrame.Components.Book.PageIcon class.
+        /// </summary>
+        /// <param name="components">Compoents to be added to this container.</param>
+        public PageIcon(IEnumerable<Component> components) : this()
+        {
+            foreach (var c in components)
+                Components.Add(c);
         }
 
         /// <summary>

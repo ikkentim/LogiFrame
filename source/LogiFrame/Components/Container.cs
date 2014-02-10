@@ -109,6 +109,7 @@ namespace LogiFrame.Components
 
             e.Component.Changed -= Container_Changed;
             e.Component.LocationChanged -= Container_Changed;
+            e.Component.ParentComponent = null;
 
             //Notify
             OnChanged(EventArgs.Empty);
@@ -124,8 +125,12 @@ namespace LogiFrame.Components
             if (Disposed)
                 throw new ObjectDisposedException("Resource was disposed.");
 
+            if (e.Component.ParentComponent != null)
+                throw new ArgumentException("The Component has already been bound to a Container.");
+
             e.Component.Changed += Container_Changed;
             e.Component.LocationChanged += Container_Changed;
+            e.Component.ParentComponent = this;
 
             //Notify
             OnChanged(EventArgs.Empty);

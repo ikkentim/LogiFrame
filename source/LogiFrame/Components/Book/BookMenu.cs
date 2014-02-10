@@ -45,6 +45,7 @@ namespace LogiFrame.Components.Book
         public BookMenu(Book book)
         {
             Book = book;
+            ParentComponent = book;
 
             PageTitle = new Label
             {
@@ -200,10 +201,7 @@ namespace LogiFrame.Components.Book
                 selectedIndex = 0;
             }
 
-            var pageInfo = (PageInfo) Attribute.GetCustomAttribute(SelectedPage.GetType(), typeof (PageInfo)) ??
-                           new PageInfo();
-
-            PageTitle.Text = pageInfo.Name;
+            PageTitle.Text = SelectedPage.GetName();
 
             for (var i = 0; i < Pages.Count(); i++)
             {

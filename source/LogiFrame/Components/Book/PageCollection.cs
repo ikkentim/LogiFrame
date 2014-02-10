@@ -99,5 +99,13 @@ namespace LogiFrame.Components.Book
                 _pages = new List<Page>(this);
             }
         }
+
+        public static implicit operator PageCollection<T>(List<T> list)
+        {
+            var col = new PageCollection<T>();
+            foreach (var o in list)
+                col.Add(o);
+            return col;
+        }
     }
 }

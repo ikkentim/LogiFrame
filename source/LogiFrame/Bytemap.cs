@@ -215,7 +215,7 @@ namespace LogiFrame
         /// <returns>Whether the pixel is filled</returns>
         public bool GetPixel(int x, int y)
         {
-            var i = x + y * _width;
+            var i = x + y*_width;
             if (i < 0 || i >= Data.Length)
                 throw new ArgumentOutOfRangeException("The given position is not within the boundaries of the Bytemap.");
 
@@ -302,7 +302,7 @@ namespace LogiFrame
             for (var y = 0; y < Math.Min(Size.Height, _height); y++)
                 for (var x = 0; x < Math.Min(Size.Width, _width); x++)
                     newData[x + y*Size.Width] = Data[x + y*_width];
-                
+
             Data = newData;
 
             _width = Size.Width;

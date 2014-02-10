@@ -227,23 +227,6 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Determines whether the specified System.Object is equal to this LogiFrame.Location.
-        /// </summary>
-        /// <param name="obj">The System.Object to compare with this LogiFrame.Location.</param>
-        /// <returns>
-        /// true if the specified System.Object is equal to this LogiFrame.Location;
-        /// otherwise, false.
-        /// </returns>
-        public override bool Equals(object obj)
-        {
-            if (obj is Location == false)
-                return false;
-
-            Location other = obj as Location;
-            return X == other.X && Y == other.Y;
-        }
-
-        /// <summary>
         /// Returns a hash code for this LogiFrame.Location.
         /// </summary>
         /// <returns>An integer value that specifies a hash value for this LogiFrame.Location.</returns>

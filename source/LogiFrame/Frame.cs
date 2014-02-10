@@ -109,7 +109,7 @@ namespace LogiFrame
 
             //Start simulation thread
             if (simulate)
-                new Thread(() => Simulation.Start(this)){Name="LogiFrame simulation thread"}.Start();
+                new Thread(() => Simulation.Start(this)) {Name = "LogiFrame simulation thread"}.Start();
 
             //Initialize main container
             Size = new Size((int) LgLcd.LglcdBmpWidth, (int) LgLcd.LglcdBmpHeight);
@@ -247,7 +247,7 @@ namespace LogiFrame
                 LgLcd.lgLcdClose(_openContext.Device);
                 LgLcd.lgLcdDisconnect(_connection.Connection);
                 LgLcd.lgLcdDeInit();
-            }){Name="LogiFrame disposal thread"}.Start();
+            }) {Name = "LogiFrame disposal thread"}.Start();
         }
 
         /// <summary>

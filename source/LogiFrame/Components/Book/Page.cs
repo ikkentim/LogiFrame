@@ -78,12 +78,46 @@ namespace LogiFrame.Components.Book
         }
 
         /// <summary>
+        /// Is called when the page is being showed.
+        /// </summary>
+        /// <param name="e">Contains information bout the event.</param>
+        public virtual void OnShow(EventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Is called when the page is being hidden.
+        /// </summary>
+        /// <param name="e">Contains information bout the event.</param>
+        public virtual void OnHide(EventArgs e)
+        {
+        }
+
+        /// <summary>
         /// Returns the LogiFrame.Components.Book.PageIcon of this LogiFrame.Components.Book.Page.
         /// </summary>
         /// <returns>LogiFrame.Components.Book.PageIcon of this LogiFrame.Components.Book.Page.</returns>
         protected virtual PageIcon GetPageIcon()
         {
-            return null;
+            return new PageIcon();
+        }
+
+        /// <summary>
+        /// Return the name of this LogiFrame.Components.Book.Page.
+        /// </summary>
+        /// <returns>The name of this LogiFrame.Components.Book.Page.</returns>
+        public virtual string GetName()
+        {
+            return String.Empty;
+        }
+
+        /// <summary>
+        /// Return whether this LogiFrame.Components.Book.Page should be visible in a BookMenu.
+        /// </summary>
+        /// <returns>The name of this LogiFrame.Components.Book.Page.</returns>
+        public virtual bool IsBrowsable()
+        {
+            return true;
         }
     }
 }

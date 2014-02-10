@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
-using System;
 using System.Drawing;
 using LogiFrame;
 using LogiFrame.Components;
@@ -34,11 +33,21 @@ namespace Test
         private static Label _label;
         private static Picture _picture;
         private static Marquee _marquee;
-        
+
         private static void SetupBasicTest(Frame frame)
         {
-            frame.ButtonDown += frame_ButtonDown;
-            frame.Configure += frame_Configure;
+            frame.ButtonDown += delegate(object sender, ButtonEventArgs e)
+            {
+                if (e.Button == 0)
+                    ((Frame) sender).Dispose();
+                if (e.Button == 1)
+                    ((Frame) sender).Refresh(true);
+                if (e.Button == 2)
+                    _animation.Frame++;
+                if (e.Button == 3)
+                    _progressBar.Value = 100 - _progressBar.Value;
+            };
+            frame.Configure += delegate { };
 
             _line = new Line
             {
@@ -106,23 +115,6 @@ namespace Test
             frame.Components.Add(_progressBar);
             frame.Components.Add(_marquee);
         }
-        
-        static void frame_Configure(object sender, EventArgs e)
-        {
-        }
-
-        static void frame_ButtonDown(object sender, ButtonEventArgs e)
-        {
-            if (e.Button == 0)
-                ((Frame)sender).Dispose();
-            if (e.Button == 1)
-                ((Frame)sender).Refresh(true);
-            if (e.Button == 2)
-                _animation.Frame++;
-            if (e.Button == 3)
-                _progressBar.Value = 100 - _progressBar.Value;
-        }
-        
 
         #endregion
 
@@ -143,18 +135,13 @@ namespace Test
 
         private static void Main()
         {
-            //Test application
-            Frame frame = new Frame("LogiFrame test application", false, false, true, false)
-            {
-                UpdatePriority = UpdatePriority.Normal
-            };
+            Frame frame = new Frame("LogiFrame test application", false, false, true, false);
 
             SetupBasicTest(frame);
 
             frame.WaitForClose();
         }
 
-        [PageInfo("Test page")]
         private class CustomPage : Page
         {
             public CustomPage()
@@ -166,6 +153,11 @@ namespace Test
                 };
 
                 Components.Add(l);
+            }
+
+            public override string GetName()
+            {
+                return base.ToString();
             }
 
             protected override PageIcon GetPageIcon()
@@ -184,17 +176,14 @@ namespace Test
             }
         }
 
-        [PageInfo("Test page 2")]
         private class CustomPage2 : CustomPage
         {
         }
 
-        [PageInfo("Test page 3")]
         private class CustomPage3 : CustomPage
         {
         }
 
-        [PageInfo("Test page 4")]
         private class CustomPage4 : CustomPage
         {
         }

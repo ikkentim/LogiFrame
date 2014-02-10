@@ -122,7 +122,9 @@ namespace LogiFrame.Components
 
         protected override Bytemap Render()
         {
-            float progress = _maximumValue > _minimumValue ? (_value - _minimumValue)/(_maximumValue - _minimumValue) : 0;
+            float progress = _maximumValue > _minimumValue
+                ? (_value - _minimumValue)/(_maximumValue - _minimumValue)
+                : 0;
 
             _borderSquare.Size = Size;
 

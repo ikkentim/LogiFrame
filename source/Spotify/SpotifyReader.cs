@@ -88,7 +88,8 @@ namespace Spotify
 
             //Find the track artist from the title of the Spotify window, in the format "Spotify - <Artist> - <Track>"
             string title = _process.MainWindowTitle;
-            title = title.Replace("Spotify - ", String.Empty); //Remove the beginning bit, leaving us with "<Artist> - <Track>"
+            title = title.Replace("Spotify - ", String.Empty);
+            //Remove the beginning bit, leaving us with "<Artist> - <Track>"
 
             int position = title.IndexOf('–'); //Get the index of the '–' in between the Artist and Track.
 

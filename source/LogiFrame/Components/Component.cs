@@ -16,6 +16,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace LogiFrame.Components
 {
@@ -74,6 +75,14 @@ namespace LogiFrame.Components
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets the LogiFrame.Size of an LCD screen.
+        /// </summary>
+        public static Size LCDSize
+        {
+            get { return new Size((int) LgLcd.LglcdBmpWidth, (int) LgLcd.LglcdBmpHeight); }
+        }
 
         /// <summary>
         /// Gets or sets the LogiFrame.Location this LogiFrame.Components.Component should
@@ -222,6 +231,11 @@ namespace LogiFrame.Components
             }
         }
 
+        /// <summary>
+        /// Gets or sets the parent LogiFrame.Components.Component.
+        /// </summary>
+        public Component ParentComponent { get; set; }
+
         #endregion
 
         #region Methods
@@ -252,6 +266,8 @@ namespace LogiFrame.Components
 
             IsRendering = true;
 
+            Debug.WriteLine("[LogiFrame] Rendering " + this + " : parent=" + ParentComponent);
+
             _bytemap = Size.Width == 0 || Size.Height == 0 ? new Bytemap(1, 1) : (Render() ?? new Bytemap(1, 1));
             _bytemap.Transparent = Transparent;
             _bytemap.TopEffect = TopEffect;
@@ -276,19 +292,28 @@ namespace LogiFrame.Components
         /// <returns>Whether the field's value has changed.</returns>
         protected bool SwapProperty<T>(ref T field, T value, bool allowNull)
         {
-            var fa = field as object;
-            var va = value as object;
+            var fa = field;
+            var va = value;
 
             if (va == null && !allowNull)
                 throw new NullReferenceException("Property cannot be set to null.");
 
-            if (fa == va)
+            if (fa != null && fa.Equals(va))
                 return false;
 
             field = value;
             OnChanged(EventArgs.Empty);
 
             return true;
+        }
+
+        public T GetParentComponent<T>() where T : Component
+        {
+            var c = this;
+            while ((c = c.ParentComponent) != null)
+                if (c is T)
+                    return c as T;
+            return null;
         }
 
         /// <summary>

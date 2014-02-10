@@ -62,7 +62,7 @@ namespace LogiFrame
 
         private void frame_FrameClosed(object sender, EventArgs e)
         {
-            if (InvokeRequired) 
+            if (InvokeRequired)
                 Invoke((MethodInvoker) Close);
             else
                 Close();

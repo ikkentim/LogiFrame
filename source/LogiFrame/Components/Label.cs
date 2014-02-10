@@ -32,7 +32,8 @@ namespace LogiFrame.Components
         private bool _autoSize;
         private Font _font = new Font("Arial", 7);
         private string _text;
-
+        private Alignment _verticalAlignment = Alignment.Top;
+        private Alignment _horizontalAlignment = Alignment.Left;
         #endregion
 
         #region Properties
@@ -48,6 +49,7 @@ namespace LogiFrame.Components
                 if (!SwapProperty(ref _text, value, false)) return;
 
                 if (AutoSize) MeasureText(true);
+                AlignText();
                 OnChanged(EventArgs.Empty);
             }
         }
@@ -63,6 +65,7 @@ namespace LogiFrame.Components
                 if (!SwapProperty(ref _font, value, false)) return;
 
                 if (AutoSize) MeasureText(true);
+                AlignText();
                 OnChanged(EventArgs.Empty);
             }
         }
@@ -79,6 +82,7 @@ namespace LogiFrame.Components
                 if (!SwapProperty(ref _autoSize, value, false)) return;
 
                 if (AutoSize) MeasureText(true);
+                AlignText();
                 OnChanged(EventArgs.Empty);
             }
         }
@@ -93,6 +97,33 @@ namespace LogiFrame.Components
             {
                 if (!AutoSize)
                     base.Size = value;
+                AlignText();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the vertical LogiFrame.Component.Alignment of this LogiFrame.Components.Label.
+        /// </summary>
+        public Alignment VerticalAlignment
+        {
+            get { return _verticalAlignment; }
+            set
+            {
+                if (!SwapProperty(ref _verticalAlignment, value, false)) return;
+                AlignText();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the horizontal LogiFrame.Component.Alignment of this LogiFrame.Components.Label.
+        /// </summary>
+        public Alignment HorizontalAlignment
+        {
+            get { return _horizontalAlignment; }
+            set
+            {
+                if (!SwapProperty(ref _horizontalAlignment, value, false)) return;
+                AlignText();
             }
         }
 
@@ -151,6 +182,39 @@ namespace LogiFrame.Components
                 IsRendering = false;
         }
 
+        private void AlignText()
+        {
+            var x = 0;
+            var y = 0;
+
+            switch (HorizontalAlignment)
+            {
+                case Alignment.Left:
+                    x = 0;
+                    break;
+                case Alignment.Middle:
+                    x = -Size.Width / 2;
+                    break;
+                case Alignment.Right:
+                    x = -Size.Width;
+                    break;
+            }
+
+            switch (VerticalAlignment)
+            {
+                case Alignment.Top:
+                    y = 0;
+                    break;
+                case Alignment.Center:
+                    y = -Size.Height/2;
+                    break;
+                case Alignment.Bottom:
+                    y = -Size.Height;
+                    break;
+            }
+
+            RenderOffset.Set(x, y);
+        }
         #endregion
 
         #region Subclasses

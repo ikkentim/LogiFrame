@@ -16,7 +16,6 @@
 
 using System;
 using System.Drawing;
-using System.Linq;
 using System.Net;
 using Bitcoin.Properties;
 using LogiFrame;
@@ -30,7 +29,12 @@ namespace Bitcoin
         private static readonly Label Label = new Label();
         private static readonly Timer Timer = new Timer();
         private static readonly Frame Frame = new Frame("Bitcoin", true, true);
-        private static readonly string[] Currencies = { "USD", "EUR", "JPY", "CAD", "GBP", "CHF", "RUB", "AUD", "SEK", "DKK", "HKD", "PLN", "CNY", "SGD", "THB", "NZD", "NOK" };
+
+        private static readonly string[] Currencies =
+        {
+            "USD", "EUR", "JPY", "CAD", "GBP", "CHF", "RUB", "AUD", "SEK",
+            "DKK", "HKD", "PLN", "CNY", "SGD", "THB", "NZD", "NOK"
+        };
 
         private static void Main()
         {
@@ -42,19 +46,21 @@ namespace Bitcoin
 
             //Listen to the Tick-event of the Timer and set the interval
             Timer.Tick += delegate { Update(); };
-            Timer.Interval = 60 * 1000;
+            Timer.Interval = 60*1000;
             Timer.Enabled = true;
 
             Frame.Components.Add(Label);
             Frame.Components.Add(Timer);
 
-            Frame.ButtonDown += delegate
+            Frame.ButtonDown += delegate(object sender, ButtonEventArgs e)
             {
-                //Update to the next currency in the array
-                Settings.Default.Currency =
-                    Currencies[(Currencies.ToList().IndexOf(Settings.Default.Currency) + 1)%Currencies.Length];
-                Settings.Default.Save();
-
+                if (e.Button <= 1)
+                {
+                    //Update to the next currency in the array
+                    Settings.Default.Currency =
+                        Currencies[(Array.IndexOf(Currencies, Settings.Default.Currency) + 1)%Currencies.Length];
+                    Settings.Default.Save();
+                }
                 Update();
             };
             Update();
@@ -69,7 +75,9 @@ namespace Bitcoin
             {
                 //Request the exchange rate
                 WebClient client = new WebClient();
-                string json = client.DownloadString("http://data.mtgox.com/api/2/BTC" + Settings.Default.Currency + "/money/ticker_fast");
+                string json =
+                    client.DownloadString("http://data.mtgox.com/api/2/BTC" + Settings.Default.Currency +
+                                          "/money/ticker_fast");
 
                 //Update the label
                 Label.Text = "MT.GOX\n1 BTC : " +

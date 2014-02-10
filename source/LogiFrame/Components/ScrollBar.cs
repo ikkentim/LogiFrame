@@ -1,11 +1,27 @@
-﻿using System;
+﻿// LogiFrame rendering library.
+// Copyright (C) 2014 Tim Potze
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+
+using System;
 
 namespace LogiFrame.Components
 {
     /// <summary>
     /// Represents a drawable scroll bar.
     /// </summary>
-    public class ScrollBarIncomplete : Container//Incomplete component
+    public class ScrollBarIncomplete : Container //Incomplete component
     {
         private readonly Square _square = new Square();
         private bool _horizontal = true;
@@ -62,7 +78,7 @@ namespace LogiFrame.Components
 
         protected override Bytemap Render()
         {
-            float progress = _maximumValue > 0 ? _value / _maximumValue : 0;
+            float progress = _maximumValue > 0 ? _value/_maximumValue : 0;
 
             if (_horizontal)
                 _square.Size.Set((int) ((Size.Width)*progress), Size.Height);

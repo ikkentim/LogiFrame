@@ -41,6 +41,14 @@ namespace LogiFrame.Components.Book
         {
             base.Size = new Size((int) LgLcd.LglcdBmpWidth, (int) LgLcd.LglcdBmpHeight);
             Pages = new PageCollection<Page>();
+            Pages.PageAdded += (sender, args) =>
+            {
+                if (args.Component.ParentComponent != null)
+                    throw new ArgumentException("The Page has already been bound to a Container.");
+                if (args.Component != null) args.Component.ParentComponent = this;
+            };
+            Pages.PageRemoved +=
+                (sender, args) => { if (args.Component != null) args.Component.ParentComponent = null; };
 
             frame.Components.Add(this);
 
@@ -69,11 +77,15 @@ namespace LogiFrame.Components.Book
                 if (_activePage != null)
                 {
                     _activePage.Changed -= page_Changed;
+                    _activePage.OnHide(EventArgs.Empty);
                 }
 
 
                 if (value != null)
+                {
                     value.Changed += page_Changed;
+                    value.OnShow(EventArgs.Empty);
+                }
 
                 _activePage = value;
                 OnChanged(EventArgs.Empty);
@@ -157,7 +169,8 @@ namespace LogiFrame.Components.Book
         /// </summary>
         public void ShowMenu()
         {
-            BookMenu.Pages = Pages;
+            BookMenu.Pages =
+                Pages.Where(p => p.IsBrowsable()).ToList();
             BookMenu.SelectedPage =
                 BookMenu.InitialPage = ActivePage;
 
