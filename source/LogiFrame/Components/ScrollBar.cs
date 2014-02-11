@@ -15,15 +15,17 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
+using System.Diagnostics;
 
 namespace LogiFrame.Components
 {
     /// <summary>
     /// Represents a drawable scroll bar.
     /// </summary>
-    public class ScrollBarIncomplete : Container //Incomplete component
+    public class ScrollBar : Container //Incomplete component
     {
-        private readonly Square _square = new Square();
+        private readonly Square _square;
+        private readonly Square _backgroundSquare;
         private bool _horizontal = true;
         private float _maximumValue = 100;
         private float _value;
@@ -31,10 +33,18 @@ namespace LogiFrame.Components
         /// <summary>
         /// Initializes a new instance of the LogiFrame.Components.ScrollBar class.
         /// </summary>
-        public ScrollBarIncomplete()
+        public ScrollBar()
         {
-            Components.Add(_square);
-            _square.Fill = true;
+            Components.Add(_backgroundSquare = new Square
+            {
+                Fill = true
+            });
+            Components.Add(_square = new Square
+            {
+                Fill=true,
+                Transparent = true,
+                TopEffect = true
+            });
         }
 
         /// <summary>
@@ -58,6 +68,9 @@ namespace LogiFrame.Components
             get { return _maximumValue; }
             set
             {
+                if (value < 0) value = 0;
+                if (_value > value) _value = value;
+
                 if (SwapProperty(ref _maximumValue, value, false))
                     OnChanged(EventArgs.Empty);
             }
@@ -71,6 +84,9 @@ namespace LogiFrame.Components
             get { return _value; }
             set
             {
+                if (value < 0) value = 0;
+                if (value > _maximumValue) value = _maximumValue;
+
                 if (SwapProperty(ref _value, value, false))
                     OnChanged(EventArgs.Empty);
             }
@@ -78,12 +94,25 @@ namespace LogiFrame.Components
 
         protected override Bytemap Render()
         {
-            float progress = _maximumValue > 0 ? _value/_maximumValue : 0;
-
+            var sbsize = (int) Math.Ceiling(((Horizontal ? Size.Width : Size.Height) / _maximumValue));
+            var spos = ((Horizontal ? Size.Width : Size.Height) - sbsize) * (_maximumValue <= 0 ? 0 : _value / _maximumValue);
+            var bwidth = (Horizontal ? Size.Height : Size.Width) / 5;
             if (_horizontal)
-                _square.Size.Set((int) ((Size.Width)*progress), Size.Height);
+            {
+                _backgroundSquare.Location.Set(0, Size.Height / 2 - (bwidth/2));
+                _backgroundSquare.Size.Set(Size.Width, bwidth);
+
+                _square.Location.Set((int)Math.Round(spos), 0);
+                _square.Size.Set(sbsize, Size.Height);
+            }
             else
-                _square.Size.Set(Size.Width, (int) ((Size.Height)*progress));
+            {
+                _backgroundSquare.Location.Set(Size.Width / 2 - (bwidth / 2), 0);
+                _backgroundSquare.Size.Set(bwidth, Size.Height);
+
+                _square.Location.Set(0, (int)Math.Round(spos));
+                _square.Size.Set(Size.Width, sbsize);
+            }
 
             return base.Render();
         }

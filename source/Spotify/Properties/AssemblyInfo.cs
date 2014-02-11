@@ -21,12 +21,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("Spotify")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Spotify LCD Display")]
+[assembly: AssemblyDescription("Shows Spotify status on Logitech LCD")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Spotify")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyProduct("Spotify LCD Display")]
+[assembly: AssemblyCopyright("Copyright © ikkentim 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

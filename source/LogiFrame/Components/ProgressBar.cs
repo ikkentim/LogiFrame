@@ -76,6 +76,9 @@ namespace LogiFrame.Components
             get { return _maximumValue; }
             set
             {
+                if (value < _minimumValue) _minimumValue = value;
+                if (_value > value) _value = value;
+
                 if (SwapProperty(ref _maximumValue, value, false))
                     OnChanged(EventArgs.Empty);
             }
@@ -89,6 +92,9 @@ namespace LogiFrame.Components
             get { return _minimumValue; }
             set
             {
+                if (value > _maximumValue) _maximumValue = value;
+                if (_value < value) _value = value;
+
                 if (SwapProperty(ref _minimumValue, value, false))
                     OnChanged(EventArgs.Empty);
             }
@@ -102,6 +108,9 @@ namespace LogiFrame.Components
             get { return _value; }
             set
             {
+                if (value < _minimumValue) value = _minimumValue;
+                if (value > _maximumValue) value = _maximumValue;
+
                 if (SwapProperty(ref _value, value, false))
                     OnChanged(EventArgs.Empty);
             }

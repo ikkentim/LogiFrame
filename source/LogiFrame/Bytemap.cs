@@ -190,11 +190,10 @@ namespace LogiFrame
         /// <param name="fill">Whether the pixel should be filled.</param>
         public void SetPixel(int x, int y, bool fill)
         {
-            var i = x + y*_width;
-            if (i < 0 || i >= Data.Length)
+            if (x < 0 || y < 0 || x >= _width || y >= _height)
                 throw new ArgumentOutOfRangeException("The given position is not within the boundaries of the Bytemap.");
 
-            Data[i] = fill ? (byte) 0xff : (byte) 0x00;
+            Data[x + y * _width] = fill ? (byte)0xff : (byte)0x00;
         }
 
         /// <summary>
@@ -215,11 +214,10 @@ namespace LogiFrame
         /// <returns>Whether the pixel is filled</returns>
         public bool GetPixel(int x, int y)
         {
-            var i = x + y*_width;
-            if (i < 0 || i >= Data.Length)
+            if (x < 0 || y < 0 || x >= _width || y >= _height)
                 throw new ArgumentOutOfRangeException("The given position is not within the boundaries of the Bytemap.");
 
-            return Data[i] == 0xff;
+            return Data[x + y*_width] == 0xff;
         }
 
         /// <summary>
@@ -250,21 +248,26 @@ namespace LogiFrame
                     if (bytemap.Transparent && bytemap.TopEffect)
                     {
                         if (!bytemap.GetPixel(sx, sy)) continue;
+
                         SetPixel(x, y, true);
 
-                        if (x > 0 && (sx == 0 || !bytemap.GetPixel(sx - 1, sy)))
-                            SetPixel(x - 1, y, false);
-
+                        if (x > 0 && (sx == 0 || !bytemap.GetPixel(sx - 1, sy))) SetPixel(x - 1, y, false);
+                        if (y > 0 && (sy == 0 || !bytemap.GetPixel(sx, sy - 1))) SetPixel(x, y - 1, false);
                         if (x < _width - 1 && (sx == bytemap._width - 1 || !bytemap.GetPixel(sx + 1, sy)))
                             SetPixel(x + 1, y, false);
-
-                        if (y > 0 && (sy == 0 || !bytemap.GetPixel(sx, sy - 1)))
-                            SetPixel(x, y - 1, false);
-
-                        if (y < _width - 1 && (sy == bytemap._height - 1 || !bytemap.GetPixel(sx, sy + 1)))
+                        if (y < _height - 1 && (sy == bytemap._height - 1 || !bytemap.GetPixel(sx, sy + 1)))
                             SetPixel(x, y + 1, false);
                     }
-                    else if (bytemap.Transparent)
+                    else if (!bytemap.Transparent && bytemap.TopEffect)
+                    {
+                        SetPixel(x, y, bytemap.GetPixel(sx, sy));
+
+                        if (sx == 0 && x > 0) SetPixel(x - 1, y, false);
+                        if (sy == 0 && y > 0) SetPixel(x, y - 1, false);
+                        if (sx == bytemap._width - 1 && x < _width - 1) SetPixel(x + 1, y, false);
+                        if (sy == bytemap._height - 1 && y < _height - 1) SetPixel(x, y + 1, false);
+                    }
+                    else if (bytemap.Transparent && !bytemap.TopEffect)
                         SetPixel(x, y, bytemap.GetPixel(sx, sy) || GetPixel(x, y));
                     else
                         SetPixel(x, y, bytemap.GetPixel(sx, sy));

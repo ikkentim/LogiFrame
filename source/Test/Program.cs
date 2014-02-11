@@ -33,19 +33,16 @@ namespace Test
         private static Label _label;
         private static Picture _picture;
         private static Marquee _marquee;
+        private static ScrollBar _scrollBar;
 
         private static void SetupBasicTest(Frame frame)
         {
             frame.ButtonDown += delegate(object sender, ButtonEventArgs e)
             {
                 if (e.Button == 0)
-                    ((Frame) sender).Dispose();
+                    _scrollBar.Value--;
                 if (e.Button == 1)
-                    ((Frame) sender).Refresh(true);
-                if (e.Button == 2)
-                    _animation.Frame++;
-                if (e.Button == 3)
-                    _progressBar.Value = 100 - _progressBar.Value;
+                    _scrollBar.Value++;
             };
             frame.Configure += delegate { };
 
@@ -84,10 +81,11 @@ namespace Test
             {
                 Location = new Location(40, 0),
                 Size = new System.Drawing.Size(60, 15),
-                Value = 30,
+                Value = 5,
+                MaximumValue = 25,
                 ProgressBarStyle = ProgressBarStyle.WhiteSpacedBorder
             };
-            _animation = new Animation
+            /*_animation = new Animation
             {
                 Location = new Location(0, -3),
                 AutoSize = true,
@@ -95,7 +93,7 @@ namespace Test
                 Image = Properties.Resources.banana,
                 Run = true
             };
-
+            
             _marquee = new Marquee
             {
                 Location = new Location(10, 30),
@@ -105,15 +103,25 @@ namespace Test
                 StepSize = 2,
                 Run = true,
                 UseCache = true
+            };*/
+
+            _scrollBar = new ScrollBar
+            {
+                Location = new Location(0, 0),
+                Size = new Size(8, 43),
+                Value = 5,
+                MaximumValue = 25,
+                Horizontal = false
             };
 
             frame.Components.Add(_square);
             frame.Components.Add(_line);
             frame.Components.Add(_label);
             frame.Components.Add(_picture);
-            frame.Components.Add(_animation);
+            //frame.Components.Add(_animation);
             frame.Components.Add(_progressBar);
-            frame.Components.Add(_marquee);
+            //frame.Components.Add(_marquee);
+            frame.Components.Add(_scrollBar);
         }
 
         #endregion
@@ -131,28 +139,15 @@ namespace Test
             book.SwitchTo<CustomPage>();
         }
 
-        #endregion
-
-        private static void Main()
-        {
-            Frame frame = new Frame("LogiFrame test application", false, false, true, false);
-
-            SetupBasicTest(frame);
-
-            frame.WaitForClose();
-        }
-
         private class CustomPage : Page
         {
             public CustomPage()
             {
-                var l = new Label
+                Components.Add(new Label
                 {
                     AutoSize = true,
                     Text = base.ToString()
-                };
-
-                Components.Add(l);
+                });
             }
 
             public override string GetName()
@@ -162,30 +157,35 @@ namespace Test
 
             protected override PageIcon GetPageIcon()
             {
-                var icon = new PageIcon();
-
-                icon.Components.Add(new Label
+                return new PageIcon(new Component[]
                 {
-                    AutoSize = true,
-                    Text = "T",
-                    Font = new Font("Arial", 10f, FontStyle.Bold),
-                    UseCache = true
+                    new Label
+                    {
+                        AutoSize = true,
+                        Text = "T",
+                        Font = new Font("Arial", 10f, FontStyle.Bold),
+                        UseCache = true
+                    }
                 });
-
-                return icon;
             }
         }
-
         private class CustomPage2 : CustomPage
         {
         }
-
         private class CustomPage3 : CustomPage
         {
         }
-
         private class CustomPage4 : CustomPage
         {
         }
+        #endregion
+
+        private static void Main()
+        {
+            var frame = new Frame("LogiFrame test application", false, false, true, true);
+            SetupBasicTest(frame);
+            frame.WaitForClose();
+        }
+
     }
 }
