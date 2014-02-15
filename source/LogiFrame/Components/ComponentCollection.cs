@@ -37,11 +37,6 @@ namespace LogiFrame.Components
 
         private List<Component> _components = new List<Component>(); //Dirty solution for Reset not parsing OldItems.
 
-        public ComponentCollection()
-        {
-            CollectionChanged += ComponentCollection_CollectionChanged;
-        }
-
         /// <summary>
         /// Occurs when a LogiFrame.Components.Component has been added to this collection.
         /// </summary>
@@ -52,42 +47,22 @@ namespace LogiFrame.Components
         /// </summary>
         public event ComponentChangedEventHandler ComponentRemoved;
 
-        /// <summary>
-        /// Listener for ObservableCollection.CollectionChanged.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ComponentCollection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Move)
-                return;
-
-            if (e.Action == NotifyCollectionChangedAction.Reset)
-            {
-                if (ComponentRemoved != null)
-                    foreach (Component obj in _components)
-                        ComponentRemoved(this, new ComponentChangedEventArgs(obj));
-
-                //Reset backup list
-                _components = new List<Component>();
-                return;
-            }
+            if (e.Action == NotifyCollectionChangedAction.Reset && ComponentRemoved != null)
+                foreach (Component obj in _components)
+                    ComponentRemoved(this, new ComponentChangedEventArgs(obj));
 
             if (e.OldItems != null && ComponentRemoved != null)
-            {
                 foreach (object obj in e.OldItems)
                     ComponentRemoved(this, new ComponentChangedEventArgs(obj as Component));
 
-                _components = new List<Component>(this);
-            }
-
             if (e.NewItems != null && ComponentAdded != null)
-            {
                 foreach (object obj in e.NewItems)
                     ComponentAdded(this, new ComponentChangedEventArgs(obj as Component));
 
-                _components = new List<Component>(this);
-            }
+            _components = new List<Component>(this);
+            base.OnCollectionChanged(e);
         }
     }
 }

@@ -188,6 +188,16 @@ namespace LogiFrame.Components.Book
             }
         }
 
+        protected override PageIcon GetPageIcon()
+        {
+            return new PageIcon();
+        }
+
+        public override string GetName()
+        {
+            return base.ToString();
+        }
+
         protected override Bytemap Render()
         {
             if (Pages == null || Pages.Count == 0)

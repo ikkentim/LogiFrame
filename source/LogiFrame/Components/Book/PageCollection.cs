@@ -38,11 +38,6 @@ namespace LogiFrame.Components.Book
 
         private List<Page> _pages = new List<Page>(); //Dirty solution for Reset not parsing OldItems.
 
-        public PageCollection()
-        {
-            CollectionChanged += ComponentCollection_CollectionChanged;
-        }
-
         public void Dispose()
         {
             foreach (var page in this)
@@ -62,42 +57,22 @@ namespace LogiFrame.Components.Book
         /// </summary>
         public event ComponentChangedEventHandler PageRemoved;
 
-        /// <summary>
-        /// Listener for ObservableCollection.CollectionChanged.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ComponentCollection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Move)
-                return;
-
-            if (e.Action == NotifyCollectionChangedAction.Reset)
-            {
-                if (PageRemoved != null)
-                    foreach (Page obj in _pages)
-                        PageRemoved(this, new ComponentChangedEventArgs(obj));
-
-                //Reset backup list
-                _pages = new List<Page>();
-                return;
-            }
+            if (e.Action == NotifyCollectionChangedAction.Reset && PageRemoved != null)
+                foreach (Page obj in _pages)
+                    PageRemoved(this, new ComponentChangedEventArgs(obj));
 
             if (e.OldItems != null && PageRemoved != null)
-            {
                 foreach (object obj in e.OldItems)
                     PageRemoved(this, new ComponentChangedEventArgs(obj as Component));
 
-                _pages = new List<Page>(this);
-            }
-
             if (e.NewItems != null && PageAdded != null)
-            {
                 foreach (object obj in e.NewItems)
                     PageAdded(this, new ComponentChangedEventArgs(obj as Component));
 
-                _pages = new List<Page>(this);
-            }
+            _pages = new List<Page>(this);
+            base.OnCollectionChanged(e);
         }
 
         public static implicit operator PageCollection<T>(List<T> list)

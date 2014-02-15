@@ -21,14 +21,14 @@ namespace LogiFrame.Components.Book
     /// <summary>
     /// Represents a page which can be used with a LogiFrame.Components.Book.Book.
     /// </summary>
-    public class Page : Container
+    public abstract class Page : Container
     {
         private PageIcon _pageIcon;
 
         /// <summary>
         /// Initializes a new instance of the LogiFrame.Components.Book.Page class.
         /// </summary>
-        public Page()
+        protected Page()
         {
             base.Size = new Size((int) LgLcd.LglcdBmpWidth, (int) LgLcd.LglcdBmpHeight);
         }
@@ -97,19 +97,15 @@ namespace LogiFrame.Components.Book
         /// Returns the LogiFrame.Components.Book.PageIcon of this LogiFrame.Components.Book.Page.
         /// </summary>
         /// <returns>LogiFrame.Components.Book.PageIcon of this LogiFrame.Components.Book.Page.</returns>
-        protected virtual PageIcon GetPageIcon()
-        {
-            return new PageIcon();
-        }
+        protected abstract PageIcon GetPageIcon();
+
 
         /// <summary>
         /// Return the name of this LogiFrame.Components.Book.Page.
         /// </summary>
         /// <returns>The name of this LogiFrame.Components.Book.Page.</returns>
-        public virtual string GetName()
-        {
-            return String.Empty;
-        }
+        public abstract string GetName();
+
 
         /// <summary>
         /// Return whether this LogiFrame.Components.Book.Page should be visible in a BookMenu.

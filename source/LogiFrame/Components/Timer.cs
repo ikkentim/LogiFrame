@@ -77,7 +77,24 @@ namespace LogiFrame.Components
                         while (!Disposed && Enabled && Interval > 0)
                         {
                             OnTick(EventArgs.Empty);
-                            Thread.Sleep(Interval);
+
+                            if (Interval < 2000)
+                                Thread.Sleep(Interval);
+                            else
+                            {
+                                var loop = Interval/2000;
+                                var rest = Interval%2000;
+
+                                for (var i = 0; i < loop; i++)
+                                {
+                                    if (Disposed || !Enabled || Interval <= 0)
+                                        break;
+                                    Thread.Sleep(2000);
+                                }
+
+                                if (!Disposed && Enabled && Interval > 0)
+                                    Thread.Sleep(rest);
+                            }
                         }
                         _thread = null;
                     }) {Name = "LogiFrame timer thread"}).Start();

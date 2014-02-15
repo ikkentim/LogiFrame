@@ -36,8 +36,31 @@ namespace LogiFrame.Components
         /// </summary>
         public Container()
         {
-            _components.ComponentAdded += components_ComponentAdded;
-            _components.ComponentRemoved += components_ComponentRemoved;
+            _components.ComponentAdded += (sender, args) =>
+            {
+                if (Disposed)
+                    throw new ObjectDisposedException("Resource was disposed.");
+
+                if (args.Component.ParentComponent != null)
+                    throw new ArgumentException("The Component has already been bound to a Container.");
+
+                args.Component.Changed += Container_Changed;
+                args.Component.LocationChanged += Container_Changed;
+                args.Component.ParentComponent = this;
+
+                OnChanged(EventArgs.Empty);
+            };
+            _components.ComponentRemoved += (sender, args) =>
+            {
+                if (Disposed)
+                    throw new ObjectDisposedException("Resource was disposed.");
+
+                args.Component.Changed -= Container_Changed;
+                args.Component.LocationChanged -= Container_Changed;
+                args.Component.ParentComponent = null;
+
+                OnChanged(EventArgs.Empty);
+            };
         }
 
         #endregion
@@ -95,45 +118,6 @@ namespace LogiFrame.Components
                 c.Dispose();
             }
             Components.Clear();
-        }
-
-        /// <summary>
-        /// Listener for ComponentCollection.ComponentRemoved.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void components_ComponentRemoved(object sender, ComponentChangedEventArgs e)
-        {
-            if (Disposed)
-                throw new ObjectDisposedException("Resource was disposed.");
-
-            e.Component.Changed -= Container_Changed;
-            e.Component.LocationChanged -= Container_Changed;
-            e.Component.ParentComponent = null;
-
-            //Notify
-            OnChanged(EventArgs.Empty);
-        }
-
-        /// <summary>
-        /// Listener for ComponentCollection.ComponentAdded.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void components_ComponentAdded(object sender, ComponentChangedEventArgs e)
-        {
-            if (Disposed)
-                throw new ObjectDisposedException("Resource was disposed.");
-
-            if (e.Component.ParentComponent != null)
-                throw new ArgumentException("The Component has already been bound to a Container.");
-
-            e.Component.Changed += Container_Changed;
-            e.Component.LocationChanged += Container_Changed;
-            e.Component.ParentComponent = this;
-
-            //Notify
-            OnChanged(EventArgs.Empty);
         }
 
         /// <summary>

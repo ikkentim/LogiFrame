@@ -193,7 +193,7 @@ namespace LogiFrame
             if (x < 0 || y < 0 || x >= _width || y >= _height)
                 throw new ArgumentOutOfRangeException("The given position is not within the boundaries of the Bytemap.");
 
-            Data[x + y * _width] = fill ? (byte)0xff : (byte)0x00;
+            Data[x + y*_width] = fill ? (byte) 0xff : (byte) 0x00;
         }
 
         /// <summary>

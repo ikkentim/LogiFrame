@@ -102,7 +102,11 @@ namespace LogiFrame
             //Configuration callback
             AllowConfiguration = allowConfiguration;
             if (AllowConfiguration)
-                _connection.OnConfigure.configCallback = lgLcd_onConfigureCB;
+                _connection.OnConfigure.configCallback = (connection, context) =>
+                {
+                    OnConfigure(EventArgs.Empty);
+                    return 1;
+                };
 
             //Set default updatepriority
             UpdatePriority = UpdatePriority.Normal;
@@ -113,7 +117,15 @@ namespace LogiFrame
 
             //Initialize main container
             Size = new Size((int) LgLcd.LglcdBmpWidth, (int) LgLcd.LglcdBmpHeight);
-            Changed += mainContainer_ComponentChanged;
+            Changed += (sender, args) =>
+            {
+                if (Disposed || sender == null) return;
+                if (Size.Width != LgLcd.LglcdBmpWidth || Size.Height != LgLcd.LglcdBmpHeight)
+                    throw new InvalidOperationException("The size of the LogiFrame.Frame container may not be changed.");
+
+                var component = sender as Component;
+                if (component != null) UpdateScreen(component.Bytemap);
+            };
 
             //Store connection
             LgLcd.lgLcdInit();
@@ -125,7 +137,15 @@ namespace LogiFrame
 
             //Open connection
             _openContext.Connection = _connection.Connection;
-            _openContext.OnSoftbuttonsChanged.SoftbuttonsChangedCallback = lgLcd_onSoftButtonsCB;
+            _openContext.OnSoftbuttonsChanged.SoftbuttonsChangedCallback = (device, buttons, context) =>
+            {
+                for (int i = 0, b = 1; i < 4; i++, b *= 2)
+                    if ((_buttonState & b) == 0 && (buttons & b) == b) OnButtonDown(new ButtonEventArgs(i));
+                    else if ((_buttonState & b) == b && (buttons & b) == 0) OnButtonUp(new ButtonEventArgs(i));
+
+                _buttonState = buttons;
+                return 1;
+            };
             _openContext.Index = 0;
 
             LgLcd.lgLcdOpen(ref _openContext);
@@ -352,54 +372,6 @@ namespace LogiFrame
 
             _bitmap.pixels = bytemap == null ? new byte[LgLcd.LglcdBmpWidth*LgLcd.LglcdBmpHeight] : bytemap.Data;
             LgLcd.lgLcdUpdateBitmap(_openContext.Device, ref _bitmap, (uint) UpdatePriority);
-        }
-
-        /// <summary>
-        /// Listener for LgLcd.
-        /// </summary>
-        /// <param name="device"></param>
-        /// <param name="dwButtons"></param>
-        /// <param name="pContext"></param>
-        /// <returns></returns>
-        private int lgLcd_onSoftButtonsCB(int device, int dwButtons, IntPtr pContext)
-        {
-            for (int i = 0, b = 1; i < 4; i++, b *= 2)
-                if ((_buttonState & b) == 0 && (dwButtons & b) == b)
-                    OnButtonDown(new ButtonEventArgs(i));
-                else if ((_buttonState & b) == b && (dwButtons & b) == 0)
-                    OnButtonUp(new ButtonEventArgs(i));
-
-            _buttonState = dwButtons;
-            return 1;
-        }
-
-        /// <summary>
-        /// Listener for LgLcd.
-        /// </summary>
-        /// <param name="connection"></param>
-        /// <param name="pContext"></param>
-        /// <returns></returns>
-        private int lgLcd_onConfigureCB(int connection, IntPtr pContext)
-        {
-            OnConfigure(EventArgs.Empty);
-            return 1;
-        }
-
-        /// <summary>
-        /// Listener for LgLcd.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void mainContainer_ComponentChanged(object sender, EventArgs e)
-        {
-            if (Disposed || sender == null)
-                return;
-
-            if (Size.Width != LgLcd.LglcdBmpWidth || Size.Height != LgLcd.LglcdBmpHeight)
-                throw new InvalidOperationException("The size of the LogiFrame.Frame container may not be changed.");
-
-            var component = sender as Component;
-            if (component != null) UpdateScreen(component.Bytemap);
         }
 
         #endregion

@@ -52,8 +52,20 @@ namespace LogiFrame.Components.Book
 
             frame.Components.Add(this);
 
-            frame.ButtonDown += frame_ButtonDown;
-            frame.ButtonUp += frame_ButtonUp;
+            frame.ButtonDown += (sender, args) =>
+            {
+                if (args.Button == MenuButton && !(ActivePage is BookMenu))
+                {
+                    ShowMenu();
+                    return;
+                }
+                if (_activePage != null) _activePage.OnButtonPressed(args);
+            };
+            frame.ButtonUp += (sender, args) =>
+            {
+                if (args.Button == MenuButton) return;
+                if (_activePage != null) _activePage.OnButtonReleased(args);
+            };
 
             MenuButton = -1;
             BookMenu = new BookMenu(this);
@@ -190,27 +202,6 @@ namespace LogiFrame.Components.Book
         private void page_Changed(object sender, EventArgs e)
         {
             OnChanged(EventArgs.Empty);
-        }
-
-        private void frame_ButtonUp(object sender, ButtonEventArgs e)
-        {
-            if (e.Button == MenuButton)
-                return;
-
-            if (_activePage != null)
-                _activePage.OnButtonReleased(e);
-        }
-
-        private void frame_ButtonDown(object sender, ButtonEventArgs e)
-        {
-            if (e.Button == MenuButton && !(ActivePage is BookMenu))
-            {
-                ShowMenu();
-                return;
-            }
-
-            if (_activePage != null)
-                _activePage.OnButtonPressed(e);
         }
 
         #endregion

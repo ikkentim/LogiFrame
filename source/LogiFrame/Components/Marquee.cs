@@ -40,7 +40,23 @@ namespace LogiFrame.Components
         public Marquee()
         {
             _timer = new Timer();
-            _timer.Tick += _timer_Tick;
+            _timer.Tick += (sender, args) =>
+            {
+                if (!Vertical)
+                {
+                    var newx = _label.Location.X - StepSize;
+                    if (newx <= -_label.Size.Width)
+                        newx = Size.Width;
+                    _label.Location.Set(newx, 0);
+                }
+                else
+                {
+                    var newy = _label.Location.Y - StepSize;
+                    if (newy <= -_label.Size.Height)
+                        newy = Size.Height;
+                    _label.Location.Set(0, newy);
+                }
+            };
             _label = new Label {AutoSize = true};
 
             Components.Add(_label);
@@ -123,24 +139,6 @@ namespace LogiFrame.Components
         public void ClearCache()
         {
             _label.ClearCache();
-        }
-
-        private void _timer_Tick(object sender, EventArgs e)
-        {
-            if (!Vertical)
-            {
-                var newx = _label.Location.X - StepSize;
-                if (newx <= -_label.Size.Width)
-                    newx = Size.Width;
-                _label.Location.Set(newx, 0);
-            }
-            else
-            {
-                var newy = _label.Location.Y - StepSize;
-                if (newy <= -_label.Size.Height)
-                    newy = Size.Height;
-                _label.Location.Set(0, newy);
-            }
         }
 
         #endregion

@@ -54,12 +54,17 @@
     <Compile Include="Components\Component.cs" />
     <Compile Include="Components\ComponentCollection.cs" />
     <Compile Include="Components\Container.cs" />
+    <Compile Include="Components\Diagram.cs" />
+    <Compile Include="Components\DiagramDataCollection.cs" />
+    <Compile Include="Components\DiagramLine.cs" />
     <Compile Include="Components\Label.cs" />
     <Compile Include="Components\Line.cs" />
     <Compile Include="Components\Marquee.cs" />
     <Compile Include="Components\Picture.cs" />
     <Compile Include="Components\ProgressBar.cs" />
     <Compile Include="Components\ProgressBarStyle.cs" />
+    <Compile Include="Components\Rotation.cs" />
+    <Compile Include="Components\Rotator.cs" />
     <Compile Include="Components\ScrollBar.cs" />
     <Compile Include="Components\Square.cs" />
     <Compile Include="Components\Timer.cs" />

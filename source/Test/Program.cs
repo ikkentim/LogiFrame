@@ -14,7 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
+using System;
 using System.Drawing;
+using System.Linq;
 using LogiFrame;
 using LogiFrame.Components;
 using LogiFrame.Components.Book;
@@ -65,7 +67,7 @@ namespace Test
             {
                 Location = new Location(110, 30),
                 Size = new Size(50, 20),
-                Font = new System.Drawing.Font("Arial", 7),
+                Font = new Font("Arial", 7),
                 Text = "I am a test",
                 AutoSize = true
             };
@@ -130,12 +132,17 @@ namespace Test
 
         private static void SetupBookTest(Frame frame)
         {
-            Book book = new Book(frame) {MenuButton = 3};
-
-            book.Pages.Add(new CustomPage());
-            book.Pages.Add(new CustomPage2());
-            book.Pages.Add(new CustomPage3());
-            book.Pages.Add(new CustomPage4());
+            var book = new Book(frame)
+            {
+                MenuButton = 3,
+                Pages =
+                {
+                    new CustomPage(),
+                    new CustomPage2(),
+                    new CustomPage3(),
+                    new CustomPage4()
+                }
+            };
             book.SwitchTo<CustomPage>();
         }
 
@@ -162,30 +169,71 @@ namespace Test
                     new Label
                     {
                         AutoSize = true,
-                        Text = "T",
+                        Text = base.ToString().Last().ToString(),
                         Font = new Font("Arial", 10f, FontStyle.Bold),
                         UseCache = true
                     }
                 });
             }
         }
+
         private class CustomPage2 : CustomPage
         {
         }
+
         private class CustomPage3 : CustomPage
         {
         }
+
         private class CustomPage4 : CustomPage
         {
         }
+
         #endregion
+
+        private static Diagram<int, float> _diagram;
+
+        private static void SetupGraphTest(Frame frame)
+        {
+            frame.Components.Add(_diagram = new Diagram<int, float>
+            {
+                Size = Component.LCDSize
+            });
+            _diagram.Line.MinYAxis = axisObject => 0;
+            _diagram.Line.MaxYAxis = axisObject => (int) Math.Round(axisObject*1.5f);
+            _diagram.Line.YAxisConverter = axisObject => (int) Math.Round(axisObject*100);
+
+            frame.ButtonDown += (sender, args) => GenDiagram();
+            GenDiagram();
+        }
+
+        private static void GenDiagram()
+        {
+            var vals = new DiagramDataCollection<int, float>();
+
+            var lx = 0;
+            var ly = 10;
+
+            for (var i = 0; i < 5; i++)
+            {
+                var j = (float) i%2;
+                vals.Add(i, j);
+            }
+            /*var random = new Random();
+            for (int i = 0; i < 100; i++)
+            {
+                lx += random.Next(1, 15);
+                ly += random.Next(5, 25) - 10;
+                vals.Add(lx, ly);
+            }*/
+            _diagram.Line.Values = vals;
+        }
 
         private static void Main()
         {
             var frame = new Frame("LogiFrame test application", false, false, true, true);
-            SetupBasicTest(frame);
+            SetupGraphTest(frame);
             frame.WaitForClose();
         }
-
     }
 }

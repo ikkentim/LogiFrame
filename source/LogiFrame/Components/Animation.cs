@@ -39,7 +39,7 @@ namespace LogiFrame.Components
         public Animation()
         {
             _timer = new Timer();
-            _timer.Tick += _timer_Tick;
+            _timer.Tick += (sender, args) => Frame++;
         }
 
         #endregion
@@ -232,11 +232,6 @@ namespace LogiFrame.Components
             {
                 return 200;
             }
-        }
-
-        private void _timer_Tick(object sender, EventArgs e)
-        {
-            Frame++;
         }
 
         #endregion
