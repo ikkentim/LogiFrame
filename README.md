@@ -10,7 +10,9 @@ The following code already show a line of text on the display:
 		Text="Hello World!"
 	});
 	frame.WaitForClose();
-	
+
+The library contains a couple of pre-defined components, including: Animation(GIF image), Circle, Container, Diagram, Label, Line, Marquee, Picture, ProgressBar, RotatedContainer(Rotator), ScrollBar, Square and a Timer.
+
 Supported devices:
 
 	-Logitech G510 keyboard
