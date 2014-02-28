@@ -12,9 +12,9 @@ Source code contains:
 
 	-the LogiFrame Library
 	-a Test application
-	-an application for GTA: San Andreas
+	-an application for GTA: San Andreas (INCOMPLETE!)
 	-an application for Spotify
-	-an application with the MT.GOX Bitcoin exchange rate
+	-an application for Call of Duty 4: Modern Warfare Server Information
 	-an application with the Bitonic Bitcoin exchange rate
 
 License
