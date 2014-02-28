@@ -15,224 +15,57 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
-using System.Drawing;
+using System.Diagnostics;
 using System.Linq;
 using LogiFrame;
 using LogiFrame.Components;
-using LogiFrame.Components.Book;
-using Size = LogiFrame.Size;
 
 namespace Test
 {
     internal static class Program
     {
-        #region Basic Test
-
-        private static Animation _animation;
-        private static ProgressBar _progressBar;
-        private static Line _line;
-        private static Square _square;
-        private static Label _label;
-        private static Picture _picture;
-        private static Marquee _marquee;
-        private static ScrollBar _scrollBar;
-
-        private static void SetupBasicTest(Frame frame)
-        {
-            frame.ButtonDown += delegate(object sender, ButtonEventArgs e)
-            {
-                if (e.Button == 0)
-                    _scrollBar.Value--;
-                if (e.Button == 1)
-                    _scrollBar.Value++;
-            };
-            frame.Configure += delegate { };
-
-            _line = new Line
-            {
-                Start = new Location(130, 30),
-                End = new Location(150, 10),
-                Transparent = true,
-                TopEffect = true
-            };
-
-            _square = new Square
-            {
-                Location = new Location(149, 1),
-                Size = new Size(10, 10),
-                Fill = true
-            };
-
-            _label = new Label
-            {
-                Location = new Location(110, 30),
-                Size = new Size(50, 20),
-                Font = new Font("Arial", 7),
-                Text = "I am a test",
-                AutoSize = true
-            };
-
-            _picture = new Picture
-            {
-                Location = new Location(100, 2),
-                AutoSize = true,
-                Image = Properties.Resources.test
-            };
-
-            _progressBar = new ProgressBar
-            {
-                Location = new Location(40, 0),
-                Size = new System.Drawing.Size(60, 15),
-                Value = 5,
-                MaximumValue = 25,
-                ProgressBarStyle = ProgressBarStyle.WhiteSpacedBorder
-            };
-            /*_animation = new Animation
-            {
-                Location = new Location(0, -3),
-                AutoSize = true,
-                ConversionMethod = ConversionMethod.QuarterByte,
-                Image = Properties.Resources.banana,
-                Run = true
-            };
-            
-            _marquee = new Marquee
-            {
-                Location = new Location(10, 30),
-                Size = new Size(50, 10),
-                Text = "Test 1 2 3 4 5 6 7 8 9 10... Test Completed!",
-                Interval = 200,
-                StepSize = 2,
-                Run = true,
-                UseCache = true
-            };*/
-
-            _scrollBar = new ScrollBar
-            {
-                Location = new Location(0, 0),
-                Size = new Size(8, 43),
-                Value = 5,
-                MaximumValue = 25,
-                Horizontal = false
-            };
-
-            frame.Components.Add(_square);
-            frame.Components.Add(_line);
-            frame.Components.Add(_label);
-            frame.Components.Add(_picture);
-            //frame.Components.Add(_animation);
-            frame.Components.Add(_progressBar);
-            //frame.Components.Add(_marquee);
-            frame.Components.Add(_scrollBar);
-        }
-
-        #endregion
-
-        #region Books Test
-
-        private static void SetupBookTest(Frame frame)
-        {
-            var book = new Book(frame)
-            {
-                MenuButton = 3,
-                Pages =
-                {
-                    new CustomPage(),
-                    new CustomPage2(),
-                    new CustomPage3(),
-                    new CustomPage4()
-                }
-            };
-            book.SwitchTo<CustomPage>();
-        }
-
-        private class CustomPage : Page
-        {
-            public CustomPage()
-            {
-                Components.Add(new Label
-                {
-                    AutoSize = true,
-                    Text = base.ToString()
-                });
-            }
-
-            public override string GetName()
-            {
-                return base.ToString();
-            }
-
-            protected override PageIcon GetPageIcon()
-            {
-                return new PageIcon(new Component[]
-                {
-                    new Label
-                    {
-                        AutoSize = true,
-                        Text = base.ToString().Last().ToString(),
-                        Font = new Font("Arial", 10f, FontStyle.Bold),
-                        UseCache = true
-                    }
-                });
-            }
-        }
-
-        private class CustomPage2 : CustomPage
-        {
-        }
-
-        private class CustomPage3 : CustomPage
-        {
-        }
-
-        private class CustomPage4 : CustomPage
-        {
-        }
-
-        #endregion
-
-        private static Diagram<int, float> _diagram;
-
-        private static void SetupGraphTest(Frame frame)
-        {
-            frame.Components.Add(_diagram = new Diagram<int, float>
-            {
-                Size = Component.LCDSize
-            });
-            _diagram.Line.MinYAxis = axisObject => 0;
-            _diagram.Line.MaxYAxis = axisObject => (int) Math.Round(axisObject*1.5f);
-            _diagram.Line.YAxisConverter = axisObject => (int) Math.Round(axisObject*100);
-
-            frame.ButtonDown += (sender, args) => GenDiagram();
-            GenDiagram();
-        }
-
-        private static void GenDiagram()
-        {
-            var vals = new DiagramDataCollection<int, float>();
-
-            var lx = 0;
-            var ly = 10;
-
-            for (var i = 0; i < 5; i++)
-            {
-                var j = (float) i%2;
-                vals.Add(i, j);
-            }
-            /*var random = new Random();
-            for (int i = 0; i < 100; i++)
-            {
-                lx += random.Next(1, 15);
-                ly += random.Next(5, 25) - 10;
-                vals.Add(lx, ly);
-            }*/
-            _diagram.Line.Values = vals;
-        }
-
         private static void Main()
         {
             var frame = new Frame("LogiFrame test application", false, false, true, true);
-            SetupGraphTest(frame);
+            var start = DateTime.Now;
+            var cpuCounter = new PerformanceCounter
+            {
+                CategoryName = "Processor",
+                CounterName = "% Processor Time",
+                InstanceName = "_Total"
+            };
+            var diagram = new Diagram<DateTime, float>
+            {
+                Size = Frame.LCDSize,
+                XAxisLabel = (min, max) => "",
+                YAxisLabel = (min, max) => max.ToString("#")
+            };
+            diagram.Line.XAxisConverter = axisObject => (int) Math.Round((axisObject - start).TotalSeconds);
+            diagram.Line.YAxisConverter = axisObject => (int) Math.Round(axisObject*100);
+            diagram.Line.MinYAxis = axisObject => 0;
+            diagram.Line.MaxYAxis = axisObject => axisObject < 50 ? (axisObject < 25 ? 25 : 50) : 100;
+            diagram.Line.MinXAxis = axisObject => DateTime.Now.AddSeconds(-160);
+            diagram.Line.MaxXAxis = axisObject => DateTime.Now;
+
+            var timer = new Timer
+            {
+                Enabled = true,
+                Interval = 500
+            };
+            timer.Tick += (sender, args) =>
+            {
+                var values = new DiagramDataCollection<DateTime, float>(diagram.Line.Values)
+                {
+                    {DateTime.Now, cpuCounter.NextValue()}
+                };
+                foreach (var r in values.Where(p => p.Key <= DateTime.Now.AddSeconds(-160)))
+                    values.Remove(r.Key);
+
+                diagram.Line.Values = values;
+            };
+
+            frame.Components.Add(diagram);
+            frame.Components.Add(timer);
             frame.WaitForClose();
         }
     }

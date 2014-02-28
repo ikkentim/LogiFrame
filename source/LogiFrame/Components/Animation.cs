@@ -181,7 +181,7 @@ namespace LogiFrame.Components
         /// </summary>
         private void RenderAnimation()
         {
-            if (Disposed)
+            if (IsDisposed)
                 throw new ObjectDisposedException("Resource was disposed.");
 
             //If no image is set, don't render anything.

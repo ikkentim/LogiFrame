@@ -116,10 +116,8 @@ namespace LogiFrame.Components
             get { return _values; }
             set
             {
-                if (!SwapProperty(ref _values, value, true)) return;
-
                 _values.CollectionChanged -= _values_CollectionChanged;
-                _values = value;
+                SwapProperty(ref _values, value);
                 _values.CollectionChanged += _values_CollectionChanged;
             }
         }

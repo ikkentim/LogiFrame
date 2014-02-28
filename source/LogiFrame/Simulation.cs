@@ -46,18 +46,24 @@ namespace LogiFrame
 
         private void Simulation_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!_frame.Disposed)
+            if (!_frame.IsDisposed)
                 _frame.Dispose();
         }
 
         private void frame_Pushing(object sender, PushingEventArgs e)
         {
-            if (IsHandleCreated)
-                Invoke((MethodInvoker) delegate
-                {
-                    displayGroupBox.Text = "Display (" + _frame.UpdatePriority + ")";
-                    displayPictureBox.Image = e.Frame;
-                });
+            try
+            {
+                if (IsHandleCreated)
+                    Invoke((MethodInvoker) delegate
+                    {
+                        displayGroupBox.Text = "Display (" + _frame.UpdatePriority + ")";
+                        displayPictureBox.Image = e.Frame;
+                    });
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private void frame_FrameClosed(object sender, EventArgs e)

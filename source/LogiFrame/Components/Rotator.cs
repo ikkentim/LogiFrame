@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
-using System;
-
 namespace LogiFrame.Components
 {
     /// <summary>
@@ -31,11 +29,7 @@ namespace LogiFrame.Components
         public Rotation Rotation
         {
             get { return _rotation; }
-            set
-            {
-                if (SwapProperty(ref _rotation, value, false))
-                    OnChanged(EventArgs.Empty);
-            }
+            set { SwapProperty(ref _rotation, value); }
         }
 
         protected override Bytemap Render()

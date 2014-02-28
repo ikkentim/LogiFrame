@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
+using System.IO;
 using System.Threading;
 using LogiFrame.Components;
 
@@ -90,7 +91,7 @@ namespace LogiFrame
             bool simulate)
         {
             //Check for LgLcd.dll file
-            if (!System.IO.File.Exists("LgLcd.dll"))
+            if (!File.Exists("LgLcd.dll"))
                 throw new DllNotFoundException("Could not find LgLcd.dll.");
 
             //Initialize connection and store properties
@@ -119,7 +120,7 @@ namespace LogiFrame
             Size = new Size((int) LgLcd.LglcdBmpWidth, (int) LgLcd.LglcdBmpHeight);
             Changed += (sender, args) =>
             {
-                if (Disposed || sender == null) return;
+                if (IsDisposed || sender == null) return;
                 if (Size.Width != LgLcd.LglcdBmpWidth || Size.Height != LgLcd.LglcdBmpHeight)
                     throw new InvalidOperationException("The size of the LogiFrame.Frame container may not be changed.");
 
@@ -214,6 +215,14 @@ namespace LogiFrame
         #region Properties
 
         /// <summary>
+        /// Gets the LogiFrame.Size of an LCD screen.
+        /// </summary>
+        public static Size LCDSize
+        {
+            get { return new Size((int) LgLcd.LglcdBmpWidth, (int) LgLcd.LglcdBmpHeight); }
+        }
+
+        /// <summary>
         /// Gets a string that contains the 'friendly name' of the application.
         /// This name is presented to the user whenever a list of applications is shown.
         /// </summary>
@@ -254,7 +263,7 @@ namespace LogiFrame
         /// </summary>
         public new void Dispose()
         {
-            if (Disposed) return;
+            if (IsDisposed) return;
 
             base.Dispose();
 
@@ -275,7 +284,7 @@ namespace LogiFrame
         /// </summary>
         public void WaitForClose()
         {
-            while (!Disposed)
+            while (!IsDisposed)
                 Thread.Sleep(2000);
         }
 

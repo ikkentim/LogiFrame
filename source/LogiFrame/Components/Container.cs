@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 using System;
+using System.Linq;
 
 namespace LogiFrame.Components
 {
@@ -38,8 +39,7 @@ namespace LogiFrame.Components
         {
             _components.ComponentAdded += (sender, args) =>
             {
-                if (Disposed)
-                    throw new ObjectDisposedException("Resource was disposed.");
+                if (IsDisposed) return;
 
                 if (args.Component.ParentComponent != null)
                     throw new ArgumentException("The Component has already been bound to a Container.");
@@ -52,8 +52,7 @@ namespace LogiFrame.Components
             };
             _components.ComponentRemoved += (sender, args) =>
             {
-                if (Disposed)
-                    throw new ObjectDisposedException("Resource was disposed.");
+                if (IsDisposed) return;
 
                 args.Component.Changed -= Container_Changed;
                 args.Component.LocationChanged -= Container_Changed;
@@ -82,15 +81,13 @@ namespace LogiFrame.Components
 
         public override void Refresh(bool forceRefresh)
         {
-            if (Disposed)
+            if (IsDisposed)
                 throw new ObjectDisposedException("Resource was disposed.");
 
             IsRendering = true;
             if (forceRefresh)
                 foreach (Component component in Components)
-                {
                     component.OnChanged(EventArgs.Empty);
-                }
             IsRendering = false;
 
             base.Refresh(forceRefresh);
@@ -100,7 +97,7 @@ namespace LogiFrame.Components
         {
             Bytemap result = new Bytemap(Size);
 
-            foreach (Component c in Components)
+            foreach (Component c in Components.ToList())
             {
                 Bytemap bytemap = c.Bytemap;
                 result.Merge(bytemap, c.RenderLocation);

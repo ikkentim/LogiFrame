@@ -69,17 +69,19 @@ namespace LogiFrame
         {
             if (bitmap == null)
                 return null;
+            lock (bitmap)
+            {
+                var result = new Bytemap(bitmap.Size);
 
-            var result = new Bytemap(bitmap.Size);
-
-            for (int y = 0; y < bitmap.Height; y++)
-                for (int x = 0; x < bitmap.Width; x++)
-                {
-                    System.Drawing.Color px = bitmap.GetPixel(x, y);
-                    result.Data[result._width*y + x] =
-                        (byte) (px.R <= maxR && px.G <= maxG && px.B <= maxB && minA <= px.A ? 0xff : 0x00);
-                }
-            return result;
+                for (int y = 0; y < bitmap.Height; y++)
+                    for (int x = 0; x < bitmap.Width; x++)
+                    {
+                        System.Drawing.Color px = bitmap.GetPixel(x, y);
+                        result.Data[result._width*y + x] =
+                            (byte) (px.R <= maxR && px.G <= maxG && px.B <= maxB && minA <= px.A ? 0xff : 0x00);
+                    }
+                return result;
+            }
         }
 
         #endregion

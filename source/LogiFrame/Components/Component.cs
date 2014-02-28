@@ -16,7 +16,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 
 namespace LogiFrame.Components
 {
@@ -72,17 +71,14 @@ namespace LogiFrame.Components
         /// </summary>
         public event EventHandler LocationChanged;
 
+        /// <summary>
+        /// Occurs when this LogiFrame.Components.Component has been disposed.
+        /// </summary>
+        public event EventHandler Disposed;
+
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Gets the LogiFrame.Size of an LCD screen.
-        /// </summary>
-        public static Size LCDSize
-        {
-            get { return new Size((int) LgLcd.LglcdBmpWidth, (int) LgLcd.LglcdBmpHeight); }
-        }
 
         /// <summary>
         /// Gets or sets the LogiFrame.Location this LogiFrame.Components.Component should
@@ -93,12 +89,12 @@ namespace LogiFrame.Components
             get { return _location; }
             set
             {
-                if (Disposed)
+                if (IsDisposed)
                     throw new ObjectDisposedException("Resource was disposed.");
 
                 _location.Changed -= location_Changed;
 
-                if (SwapProperty(ref _location, value, false))
+                if (SwapProperty(ref _location, value))
                     OnLocationChanged(EventArgs.Empty);
 
                 _location.Changed += location_Changed;
@@ -123,12 +119,12 @@ namespace LogiFrame.Components
             get { return _renderOffset; }
             set
             {
-                if (Disposed)
+                if (IsDisposed)
                     throw new ObjectDisposedException("Resource was disposed.");
 
                 _renderOffset.Changed -= location_Changed;
 
-                if (SwapProperty(ref _renderOffset, value, false))
+                if (SwapProperty(ref _renderOffset, value))
                     OnLocationChanged(EventArgs.Empty);
 
                 _renderOffset.Changed += location_Changed;
@@ -143,14 +139,11 @@ namespace LogiFrame.Components
             get { return _size; }
             set
             {
-                if (Disposed)
+                if (IsDisposed)
                     throw new ObjectDisposedException("Resource was disposed.");
 
                 _size.Changed -= size_Changed;
-
-                if (SwapProperty(ref _size, value, false))
-                    OnChanged(EventArgs.Empty);
-
+                SwapProperty(ref _size, value);
                 _size.Changed += size_Changed;
             }
         }
@@ -161,11 +154,7 @@ namespace LogiFrame.Components
         public bool TopEffect
         {
             get { return _topEffect; }
-            set
-            {
-                if (SwapProperty(ref _topEffect, value, false))
-                    OnChanged(EventArgs.Empty);
-            }
+            set { SwapProperty(ref _topEffect, value); }
         }
 
         /// <summary>
@@ -174,11 +163,7 @@ namespace LogiFrame.Components
         public bool Transparent
         {
             get { return _transparent; }
-            set
-            {
-                if (SwapProperty(ref _transparent, value, false))
-                    OnChanged(EventArgs.Empty);
-            }
+            set { SwapProperty(ref _transparent, value); }
         }
 
         /// <summary>
@@ -187,11 +172,7 @@ namespace LogiFrame.Components
         public bool Visible
         {
             get { return _visible; }
-            set
-            {
-                if (SwapProperty(ref _visible, value, false))
-                    OnChanged(EventArgs.Empty);
-            }
+            set { SwapProperty(ref _visible, value); }
         }
 
         /// <summary>
@@ -213,7 +194,7 @@ namespace LogiFrame.Components
         /// <summary>
         /// Gets whether this LogiFrame.Components.Component has been disposed.
         /// </summary>
-        public bool Disposed { get; private set; }
+        public bool IsDisposed { get; private set; }
 
         /// <summary>
         /// Gets the rendered LogiFrame.Bytemap of this LogiFrame.Components.Component.
@@ -245,11 +226,13 @@ namespace LogiFrame.Components
         /// </summary>
         public void Dispose()
         {
-            if (Disposed)
+            if (IsDisposed)
                 return;
 
+            IsDisposed = true;
             DisposeComponent();
-            Disposed = true;
+            if (Disposed != null)
+                Disposed(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -258,7 +241,7 @@ namespace LogiFrame.Components
         /// <param name="forceRefresh">Forces the LogiFrame.Components.Component.Bytemap being rerendered even if it hasn't changed when True.</param>
         public virtual void Refresh(bool forceRefresh)
         {
-            if (Disposed)
+            if (IsDisposed)
                 throw new ObjectDisposedException("Resource was disposed.");
 
             if (!forceRefresh && !HasChanged)
@@ -266,7 +249,7 @@ namespace LogiFrame.Components
 
             IsRendering = true;
 
-            Debug.WriteLine("[LogiFrame] Rendering " + this + " : parent=" + ParentComponent);
+            //Debug.WriteLine("[LogiFrame] Rendering " + this + " : parent=" + ParentComponent);
 
             _bytemap = Size.Width == 0 || Size.Height == 0 ? new Bytemap(1, 1) : (Render() ?? new Bytemap(1, 1));
             _bytemap.Transparent = Transparent;
@@ -288,25 +271,52 @@ namespace LogiFrame.Components
         /// </summary>
         /// <param name="field">The value of the field.</param>
         /// <param name="value">The value to swap it with.</param>
+        /// <returns>Whether the field's value has changed.</returns>
+        protected bool SwapProperty<T>(ref T field, T value)
+        {
+            return SwapProperty(ref field, value, false, true);
+        }
+
+        /// <summary>
+        /// Swaps property with given value.
+        /// </summary>
+        /// <param name="field">The value of the field.</param>
+        /// <param name="value">The value to swap it with.</param>
         /// <param name="allowNull">Whether null values are allowed.</param>
         /// <returns>Whether the field's value has changed.</returns>
         protected bool SwapProperty<T>(ref T field, T value, bool allowNull)
         {
-            var fa = field;
-            var va = value;
+            return SwapProperty(ref field, value, allowNull, true);
+        }
 
-            if (va == null && !allowNull)
+        /// <summary>
+        /// Swaps property with given value.
+        /// </summary>
+        /// <param name="field">The value of the field.</param>
+        /// <param name="value">The value to swap it with.</param>
+        /// <param name="allowNull">Whether null values are allowed.</param>
+        /// <param name="reportChange">Whether OnChanged should be called if the proporty has been swapped with the value.</param>
+        /// <returns>Whether the field's value has changed.</returns>
+        protected bool SwapProperty<T>(ref T field, T value, bool allowNull, bool reportChange)
+        {
+            if (value == null && !allowNull)
                 throw new NullReferenceException("Property cannot be set to null.");
 
-            if (fa != null && fa.Equals(va))
+            if (field != null && field.Equals(value))
                 return false;
 
             field = value;
-            OnChanged(EventArgs.Empty);
+            if (reportChange)
+                OnChanged(EventArgs.Empty);
 
             return true;
         }
 
+        /// <summary>
+        /// Finds the parent LogiFrame.Components.Component of the given type.
+        /// </summary>
+        /// <typeparam name="T">Type to find.</typeparam>
+        /// <returns>The partent LogiFrame.Components.Component of the given type. Returns null if not found.</returns>
         public T GetParentComponent<T>() where T : Component
         {
             var c = this;
@@ -332,12 +342,9 @@ namespace LogiFrame.Components
         /// <param name="e">Contains information about the event.</param>
         public virtual void OnChanged(EventArgs e)
         {
-            if (IsRendering)
-                return;
-
             HasChanged = true;
 
-            if (Changed != null)
+            if (!IsRendering && Changed != null)
                 Changed(this, e);
         }
 
@@ -372,7 +379,7 @@ namespace LogiFrame.Components
         /// <param name="e"></param>
         private void location_Changed(object sender, EventArgs e)
         {
-            if (!Disposed && LocationChanged != null)
+            if (!IsDisposed && LocationChanged != null)
                 LocationChanged(sender, e);
         }
 

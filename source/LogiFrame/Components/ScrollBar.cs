@@ -52,11 +52,7 @@ namespace LogiFrame.Components
         public bool Horizontal
         {
             get { return _horizontal; }
-            set
-            {
-                if (SwapProperty(ref _horizontal, value, false))
-                    OnChanged(EventArgs.Empty);
-            }
+            set { SwapProperty(ref _horizontal, value); }
         }
 
         /// <summary>
@@ -69,9 +65,7 @@ namespace LogiFrame.Components
             {
                 if (value < 0) value = 0;
                 if (_value > value) _value = value;
-
-                if (SwapProperty(ref _maximumValue, value, false))
-                    OnChanged(EventArgs.Empty);
+                SwapProperty(ref _maximumValue, value);
             }
         }
 
@@ -85,9 +79,7 @@ namespace LogiFrame.Components
             {
                 if (value < 0) value = 0;
                 if (value > _maximumValue) value = _maximumValue;
-
-                if (SwapProperty(ref _value, value, false))
-                    OnChanged(EventArgs.Empty);
+                SwapProperty(ref _value, value);
             }
         }
 

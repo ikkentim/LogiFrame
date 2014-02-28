@@ -68,7 +68,7 @@ namespace SanAndreas.Pages
             });
             Components.Add(_radioLabel = new Label
             {
-                Location = new Location(LCDSize.Width/2, 1),
+                Location = new Location(Frame.LCDSize.Width/2, 1),
                 AutoSize = true,
                 Font = new Font("Arial", 12f, FontStyle.Bold),
                 Text = "No Radio",

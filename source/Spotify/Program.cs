@@ -17,63 +17,77 @@
 using System.Drawing;
 using LogiFrame;
 using LogiFrame.Components;
+using Size = LogiFrame.Size;
 
 namespace Spotify
 {
     internal static class Program
     {
-        private static readonly Label ArtistLabel = new Label();
-        private static readonly Label TrackLabel = new Label();
-        private static readonly Timer Timer = new Timer();
-        private static readonly Frame Frame = new Frame("Spotify", true, true);
-        private static readonly SpotifyReader Reader = new SpotifyReader();
-
         private static void Main()
         {
-            //Setup the style of the Labels
-            ArtistLabel.AutoSize = true;
-            ArtistLabel.Font = new Font("Arial", 8f, FontStyle.Bold);
-            ArtistLabel.Location = new Location(0, 5);
-            ArtistLabel.Text = "";
+            var frame = new Frame("Spotify", true, true);
+            var reader = new SpotifyReader();
 
-            TrackLabel.AutoSize = true;
-            TrackLabel.Font = new Font("Arial", 8f);
-            TrackLabel.Location = new Location(0, 20);
-            TrackLabel.Text = "";
+            //Setup the style of the Marquees
+            var trackMarquee = new Marquee
+            {
+                Font = new Font("Arial", 8f),
+                Location = new Location(0, 20),
+                Size = new Size(Frame.LCDSize.Width, 15),
+                UseCache = true,
+                EndSteps = 5,
+                MarqueeStyle = MarqueeStyle.Visibility
+            };
+            var artistMarquee = new Marquee
+            {
+                Font = new Font("Arial", 8f, FontStyle.Bold),
+                Location = new Location(0, 5),
+                Size = new Size(Frame.LCDSize.Width, 15),
+                Interval = 500,
+                StepSize = 4,
+                EndSteps = 12,
+                UseCache = true,
+                MarqueeStyle = MarqueeStyle.Visibility,
+                Run = true,
+                SyncedMarquees = {trackMarquee}
+            };
+            var timer = new Timer
+            {
+                Interval = 500,
+                Enabled = true
+            };
 
             //Listen to the Tick-event of the Timer and set the interval
-            Timer.Interval = 1000;
-            Timer.Enabled = true;
-            Timer.Tick += delegate
+            timer.Tick += delegate
             {
                 //Update our spotify reader
-                Reader.Update();
+                reader.Update();
 
                 //Check if spotify is running
-                if (!Reader.Running)
+                if (!reader.Running)
                 {
                     //If the tracks is empty, spotify isn't running.
-                    Frame.UpdatePriority = UpdatePriority.IdleNoShow; //Hide the application
-                    ArtistLabel.Text = "Spotify is not running.";
-                    TrackLabel.Text = "";
+                    frame.UpdatePriority = UpdatePriority.IdleNoShow; //Hide the application
+                    artistMarquee.Text = "Spotify is not running.";
+                    trackMarquee.Text = "";
                 }
                 else
                 {
                     //Set the artist and track labels.
-                    Frame.UpdatePriority = UpdatePriority.Normal; //Show the application
-                    ArtistLabel.Text = !Reader.Playing ? "Spotify is not playing." : Reader.Artist;
-                    TrackLabel.Text = !Reader.Playing ? "" : Reader.Track;
+                    frame.UpdatePriority = UpdatePriority.Normal; //Show the application
+                    artistMarquee.Text = !reader.Playing ? "Spotify is not playing." : reader.Artist;
+                    trackMarquee.Text = !reader.Playing ? "" : reader.Track;
                 }
             };
 
             //By default, set the priority of the application to NoShow, untill it detects spotify
-            Frame.UpdatePriority = UpdatePriority.IdleNoShow;
-            Frame.Components.Add(ArtistLabel);
-            Frame.Components.Add(TrackLabel);
-            Frame.Components.Add(Timer);
+            frame.UpdatePriority = UpdatePriority.IdleNoShow;
+            frame.Components.Add(artistMarquee);
+            frame.Components.Add(trackMarquee);
+            frame.Components.Add(timer);
 
             //Let the current thread wait untill the Frame is Closed by disposure. (Frame.Dispose, or process ended)
-            Frame.WaitForClose();
+            frame.WaitForClose();
         }
     }
 }

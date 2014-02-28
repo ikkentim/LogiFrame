@@ -21,11 +21,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("Bitcoin LCD Display")]
-[assembly: AssemblyDescription("Show the MT.Gox exchange rate on Logitech LCD")]
+[assembly: AssemblyTitle("Call of Duty 4 LCD Display")]
+[assembly: AssemblyDescription("Show Call of Duty 4 server info on Logitech LCD")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Bitcoin LCD Display")]
+[assembly: AssemblyProduct("Call of Duty 4 LCD Display")]
 [assembly: AssemblyCopyright("Copyright © ikkentim 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -38,7 +38,7 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
-[assembly: Guid("e6e1b2df-e79d-42d9-b9d4-92029a5be3d8")]
+[assembly: Guid("94303dbf-937b-443a-82d2-ab8522e63cd3")]
 
 // Version information for an assembly consists of the following four values:
 //

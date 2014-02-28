@@ -71,10 +71,10 @@ namespace LogiFrame.Components
 
                 _enabled = value;
 
-                if (value && !Disposed && _thread == null)
+                if (value && !IsDisposed && _thread == null)
                     (_thread = new Thread(() =>
                     {
-                        while (!Disposed && Enabled && Interval > 0)
+                        while (!IsDisposed && Enabled && Interval > 0)
                         {
                             OnTick(EventArgs.Empty);
 
@@ -87,12 +87,12 @@ namespace LogiFrame.Components
 
                                 for (var i = 0; i < loop; i++)
                                 {
-                                    if (Disposed || !Enabled || Interval <= 0)
+                                    if (IsDisposed || !Enabled || Interval <= 0)
                                         break;
                                     Thread.Sleep(2000);
                                 }
 
-                                if (!Disposed && Enabled && Interval > 0)
+                                if (!IsDisposed && Enabled && Interval > 0)
                                     Thread.Sleep(rest);
                             }
                         }

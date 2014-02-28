@@ -47,7 +47,7 @@ namespace LogiFrame.Components
             get { return _text; }
             set
             {
-                if (!SwapProperty(ref _text, value, false)) return;
+                if (!SwapProperty(ref _text, value, false, false)) return;
 
                 if (AutoSize) MeasureText(true);
                 AlignText();
@@ -173,14 +173,10 @@ namespace LogiFrame.Components
 
         private void MeasureText(bool silent)
         {
-            if (silent)
-                IsRendering = true;
-
+            if (silent) IsRendering = true;
             SizeF strSize = Graphics.FromImage(new Bitmap(1, 1)).MeasureString(Text, Font);
             base.Size.Set((int) Math.Ceiling(strSize.Width), (int) Math.Ceiling(strSize.Height));
-
-            if (silent)
-                IsRendering = false;
+            if (silent) IsRendering = false;
         }
 
         private void AlignText()

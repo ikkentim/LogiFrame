@@ -31,11 +31,7 @@ namespace LogiFrame.Components
         public bool Fill
         {
             get { return _fill; }
-            set
-            {
-                if (SwapProperty(ref _fill, value, false))
-                    OnChanged(EventArgs.Empty);
-            }
+            set { SwapProperty(ref _fill, value); }
         }
 
         protected override Bytemap Render()

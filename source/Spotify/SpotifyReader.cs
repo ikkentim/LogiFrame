@@ -76,7 +76,7 @@ namespace Spotify
                 Track = null;
 
                 //Find the process process
-                _process = Process.GetProcesses().First(process => process.ProcessName == "spotify");
+                _process = Process.GetProcesses().FirstOrDefault(process => process.ProcessName == "spotify");
 
                 //If the process hasn't been found, stop updating.
                 if (_process == null)

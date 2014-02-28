@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
-using System;
-
 namespace LogiFrame.Components
 {
     /// <summary>
@@ -35,10 +33,8 @@ namespace LogiFrame.Components
             get { return _image; }
             set
             {
-                if (!SwapProperty(ref _image, value, false)) return;
-
-                if (AutoSize) MeasureImage(true);
-                OnChanged(EventArgs.Empty);
+                if (!SwapProperty(ref _image, value)) return;
+                if (AutoSize) MeasureImage();
             }
         }
 
@@ -50,10 +46,8 @@ namespace LogiFrame.Components
             get { return _conversionMethod; }
             set
             {
-                if (!SwapProperty(ref _conversionMethod, value, false)) return;
-
-                if (AutoSize) MeasureImage(true);
-                OnChanged(EventArgs.Empty);
+                if (!SwapProperty(ref _conversionMethod, value)) return;
+                if (AutoSize) MeasureImage();
             }
         }
 
@@ -66,10 +60,8 @@ namespace LogiFrame.Components
             get { return _autoSize; }
             set
             {
-                if (!SwapProperty(ref _autoSize, value, false)) return;
-
-                if (AutoSize) MeasureImage(true);
-                OnChanged(EventArgs.Empty);
+                if (!SwapProperty(ref _autoSize, value)) return;
+                if (AutoSize) MeasureImage();
             }
         }
 
@@ -94,19 +86,12 @@ namespace LogiFrame.Components
             return render;
         }
 
-        /// <summary>
-        /// Measures the size of the Image when rendered.
-        /// </summary>
-        /// <param name="silent">Whether the change of font should make the LogiFrame.Components.Label rerender.</param>
-        private void MeasureImage(bool silent)
+        private void MeasureImage()
         {
-            if (silent)
-                IsRendering = true;
-
-            if (Image != null)
-                base.Size.Set(Image.Width, Image.Height);
-            if (silent)
-                IsRendering = false;
+            if (Image == null) return;
+            IsRendering = true;
+            base.Size.Set(Image.Width, Image.Height);
+            IsRendering = false;
         }
     }
 }

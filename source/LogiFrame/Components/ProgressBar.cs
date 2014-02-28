@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
-using System;
-
 namespace LogiFrame.Components
 {
     /// <summary>
@@ -48,11 +46,7 @@ namespace LogiFrame.Components
         public bool Horizontal
         {
             get { return _horizontal; }
-            set
-            {
-                if (SwapProperty(ref _horizontal, value, false))
-                    OnChanged(EventArgs.Empty);
-            }
+            set { SwapProperty(ref _horizontal, value); }
         }
 
         /// <summary>
@@ -61,11 +55,7 @@ namespace LogiFrame.Components
         public bool Inverted
         {
             get { return _inverted; }
-            set
-            {
-                if (SwapProperty(ref _inverted, value, false))
-                    OnChanged(EventArgs.Empty);
-            }
+            set { SwapProperty(ref _inverted, value); }
         }
 
         /// <summary>
@@ -78,9 +68,7 @@ namespace LogiFrame.Components
             {
                 if (value < _minimumValue) _minimumValue = value;
                 if (_value > value) _value = value;
-
-                if (SwapProperty(ref _maximumValue, value, false))
-                    OnChanged(EventArgs.Empty);
+                SwapProperty(ref _maximumValue, value);
             }
         }
 
@@ -94,9 +82,7 @@ namespace LogiFrame.Components
             {
                 if (value > _maximumValue) _maximumValue = value;
                 if (_value < value) _value = value;
-
-                if (SwapProperty(ref _minimumValue, value, false))
-                    OnChanged(EventArgs.Empty);
+                SwapProperty(ref _minimumValue, value);
             }
         }
 
@@ -110,9 +96,7 @@ namespace LogiFrame.Components
             {
                 if (value < _minimumValue) value = _minimumValue;
                 if (value > _maximumValue) value = _maximumValue;
-
-                if (SwapProperty(ref _value, value, false))
-                    OnChanged(EventArgs.Empty);
+                SwapProperty(ref _value, value);
             }
         }
 
@@ -122,11 +106,7 @@ namespace LogiFrame.Components
         public ProgressBarStyle ProgressBarStyle
         {
             get { return _progressBarStyle; }
-            set
-            {
-                if (SwapProperty(ref _progressBarStyle, value, false))
-                    OnChanged(EventArgs.Empty);
-            }
+            set { SwapProperty(ref _progressBarStyle, value); }
         }
 
         protected override Bytemap Render()

@@ -16,6 +16,7 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 
 namespace LogiFrame.Components
 {
@@ -26,9 +27,13 @@ namespace LogiFrame.Components
     {
         #region Fields
 
-        private readonly Label _label;
-        private readonly Timer _timer;
+        private readonly Label _label = new Label {AutoSize = true};
+        private readonly ComponentCollection<Marquee> _syncedMarquees = new ComponentCollection<Marquee>();
+        private readonly Timer _timer = new Timer();
+        private int _endSteps;
+        private int _step;
         private int _stepSize = 1;
+        private bool _vertical;
 
         #endregion
 
@@ -39,26 +44,8 @@ namespace LogiFrame.Components
         /// </summary>
         public Marquee()
         {
-            _timer = new Timer();
-            _timer.Tick += (sender, args) =>
-            {
-                if (!Vertical)
-                {
-                    var newx = _label.Location.X - StepSize;
-                    if (newx <= -_label.Size.Width)
-                        newx = Size.Width;
-                    _label.Location.Set(newx, 0);
-                }
-                else
-                {
-                    var newy = _label.Location.Y - StepSize;
-                    if (newy <= -_label.Size.Height)
-                        newy = Size.Height;
-                    _label.Location.Set(0, newy);
-                }
-            };
-            _label = new Label {AutoSize = true};
-
+            _syncedMarquees.ComponentAdded += (sender, args) => { args.Component.Disposed += Component_Disposed; };
+            _timer.Tick += (sender, args) => { Step += StepSize; };
             Components.Add(_label);
             Components.Add(_timer);
         }
@@ -104,7 +91,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets whether the text should shift around.
+        /// Gets or sets whether the text should move.
         /// </summary>
         public bool Run
         {
@@ -112,7 +99,14 @@ namespace LogiFrame.Components
             set { _timer.Enabled = value; }
         }
 
-        public bool Vertical { get; set; }
+        /// <summary>
+        /// Gets or sets whether the text should move vertically. If false, the text moves horizontally
+        /// </summary>
+        public bool Vertical
+        {
+            get { return _vertical; }
+            set { SwapProperty(ref _vertical, value); }
+        }
 
         /// <summary>
         /// Gets or sets the number of pixels shifted each interval.
@@ -125,7 +119,108 @@ namespace LogiFrame.Components
                 if (value <= 0)
                     throw new IndexOutOfRangeException("Marquee.StepSize must at least contain a value of 1 or higher.");
 
-                _stepSize = value;
+                SwapProperty(ref _stepSize, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets a list to fill with LogiFrame.Components.Marquee objects whose steps to sync with this LogiFrame.Components.Marquee.
+        /// </summary>
+        public ComponentCollection<Marquee> SyncedMarquees
+        {
+            get { return _syncedMarquees; }
+        }
+
+        /// <summary>
+        /// Gets or sets the LogiFrame.Components.MarqueeStyle to use.
+        /// </summary>
+        public MarqueeStyle MarqueeStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the amount of steps for the marquee to stop at the preset moments.
+        /// </summary>
+        public int EndSteps
+        {
+            get { return _endSteps; }
+            set { SwapProperty(ref _endSteps, value); }
+        }
+
+        /// <summary>
+        /// Gets the amount of steps it takes this LogiFrame.Components.Marquee to rotate.
+        /// </summary>
+        public int Steps
+        {
+            get
+            {
+                switch (MarqueeStyle)
+                {
+                    case MarqueeStyle.Loop:
+                        return EndSteps + Size.Width + _label.Size.Width*2;
+                    case MarqueeStyle.Visibility:
+                        return EndSteps*2 +
+                               (_label.Size.Width - Size.Width > 0 ? _label.Size.Width - Size.Width : 0);
+                    default:
+                        return 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the current step of this LogiFrame.Components.Marquee.
+        /// </summary>
+        public int Step
+        {
+            get { return _step; }
+            set
+            {
+                if (!SwapProperty(ref _step, value, false, false)) return;
+                var ms = _syncedMarquees.Select(m => m.Steps).Concat(new[] {Steps}).Max();
+
+                _step %= ms;
+                while (_step < 0) _step += ms;
+                var step = _step >= Steps ? Steps - 1 : _step;
+
+                foreach (var marquee in _syncedMarquees)
+                    marquee.Step = Math.Min(_step, marquee.Steps - 1);
+
+                switch (MarqueeStyle)
+                {
+                    case MarqueeStyle.Loop:
+                        if (Vertical)
+                        {
+                            var y = Size.Width - step;
+                            if (step > Size.Width) y += Math.Min(step - Size.Width, EndSteps);
+                            _label.Location.Set(0, y);
+                        }
+                        else
+                        {
+                            var x = Size.Width - step;
+                            if (step > Size.Width) x += Math.Min(step - Size.Width, EndSteps);
+                            _label.Location.Set(x, 0);
+                        }
+                        break;
+                    case MarqueeStyle.Visibility:
+                        if (Steps == EndSteps*2)
+                        {
+                            _label.Location.Set(0, 0);
+                            break;
+                        }
+                        if (Vertical)
+                        {
+                            var y = -step + Math.Min(step, EndSteps);
+                            var h = _label.Size.Height - Size.Height > 0 ? _label.Size.Height - Size.Height : 0;
+                            if (step > h + EndSteps) y += Math.Min(step - (h + EndSteps), EndSteps);
+                            _label.Location.Set(0, y);
+                        }
+                        else
+                        {
+                            var x = -step + Math.Min(step, EndSteps);
+                            var w = _label.Size.Width - Size.Width > 0 ? _label.Size.Width - Size.Width : 0;
+                            if (step > w + EndSteps) x += Math.Min(step - (w + EndSteps), EndSteps);
+                            _label.Location.Set(x, 0);
+                        }
+                        break;
+                }
             }
         }
 
@@ -139,6 +234,14 @@ namespace LogiFrame.Components
         public void ClearCache()
         {
             _label.ClearCache();
+        }
+
+
+        private void Component_Disposed(object sender, EventArgs e)
+        {
+            var m = sender as Marquee;
+            m.Disposed -= Component_Disposed;
+            _syncedMarquees.Remove(m);
         }
 
         #endregion
