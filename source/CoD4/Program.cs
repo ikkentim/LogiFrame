@@ -33,8 +33,12 @@ namespace CoD4
         private static Marquee _serverLabel; // Label for server name (Marquee>scrolls duo to long names).
         private static Label _mapLabel; // Label containing map name.
         private static Label _playersLabel; // Label containing 'players online' counter.
-        private static Label _player1Label; // Label containing information about a player.
-        private static Label _player2Label; // Label containing information about a player.
+        private static Label _player1Label; // Label containing a player name
+        private static Label _score1Label; // Label containing a player score
+        private static Label _ping1Label; // Label containing a player ping
+        private static Label _player2Label; // Label containing a player name
+        private static Label _score2Label; // Label containing a player score
+        private static Label _ping2Label; // Label containing a player ping
 
         private static void Main()
         {
@@ -92,9 +96,43 @@ namespace CoD4
                 Font = new Font("Arial", 7),
             });
 
+            frame.Components.Add(_score1Label = new Label
+            {
+                Location = new Location(Frame.LCDSize.Width-60, 21),
+                AutoSize = true,
+                Transparent = true,
+                Font = new Font("Arial", 7),
+            });
+
+            frame.Components.Add(_ping1Label = new Label
+            {
+                Location = new Location(Frame.LCDSize.Width, 21),
+                HorizontalAlignment = Alignment.Right,
+                AutoSize = true,
+                Transparent = true,
+                Font = new Font("Arial", 7),
+            });
+
             frame.Components.Add(_player2Label = new Label
             {
                 Location = new Location(0, 31),
+                AutoSize = true,
+                Transparent = true,
+                Font = new Font("Arial", 7),
+            });
+
+            frame.Components.Add(_score2Label = new Label
+            {
+                Location = new Location(Frame.LCDSize.Width - 60, 31),
+                AutoSize = true,
+                Transparent = true,
+                Font = new Font("Arial", 7),
+            });
+
+            frame.Components.Add(_ping2Label = new Label
+            {
+                Location = new Location(Frame.LCDSize.Width, 31),
+                HorizontalAlignment = Alignment.Right,
                 AutoSize = true,
                 Transparent = true,
                 Font = new Font("Arial", 7),
@@ -173,7 +211,11 @@ namespace CoD4
                 _mapLabel.Text = "Press any button to open Config.";
                 _playersLabel.Text = "";
                 _player1Label.Text = "";
+                _score1Label.Text = "";
+                _ping1Label.Text = "";
                 _player2Label.Text = "";
+                _score2Label.Text = "";
+                _ping2Label.Text = "";
                 return;
             }
 
@@ -187,7 +229,11 @@ namespace CoD4
                 _mapLabel.Text = _currentServer.ToString();
                 _playersLabel.Text = "";
                 _player1Label.Text = "";
+                _score1Label.Text = "";
+                _ping1Label.Text = "";
                 _player2Label.Text = "";
+                _score2Label.Text = "";
+                _ping2Label.Text = "";
                 return;
             }
 
@@ -211,14 +257,38 @@ namespace CoD4
                 _playerIndex = 0;
 
             //Show info for player 1.
-            _player1Label.Text = _currentResponse.Players.Count > _playerIndex
-                ? _playerIndex + ": " + _currentResponse.Players[_playerIndex]
-                : "";
+            if (_currentResponse.Players.Count > _playerIndex)
+            {
+                _player1Label.Text = _playerIndex + ": " + _currentResponse.Players[_playerIndex].Name;
+                _score1Label.Text = _currentResponse.Players[_playerIndex].Score;
+                _ping1Label.Text = _currentResponse.Players[_playerIndex].Ping;
+            }
+            else
+            {
+                _player1Label.Text = "";
+                _score1Label.Text = "";
+                _ping1Label.Text = "";
+            }
+            //_player1Label.Text = _currentResponse.Players.Count > _playerIndex
+            //    ? _playerIndex + ": " + _currentResponse.Players[_playerIndex]
+            //    : "";
 
             //Show info for player 2.
-            _player2Label.Text = _currentResponse.Players.Count > _playerIndex + 1
-                ? (_playerIndex + 1) + ": " + _currentResponse.Players[_playerIndex + 1]
-                : "";
+            if (_currentResponse.Players.Count > _playerIndex + 1)
+            {
+                _player2Label.Text = (_playerIndex + 1) + ": " + _currentResponse.Players[_playerIndex + 1].Name;
+                _score2Label.Text = _currentResponse.Players[_playerIndex + 1].Score;
+                _ping2Label.Text = _currentResponse.Players[_playerIndex + 1].Ping;
+            }
+            else
+            {
+                _player2Label.Text = "";
+                _score2Label.Text = "";
+                _ping2Label.Text = "";
+            }
+            //_player2Label.Text = _currentResponse.Players.Count > _playerIndex + 1
+            //    ? (_playerIndex + 1) + ": " + _currentResponse.Players[_playerIndex + 1]
+            //    : "";
         }
     }
 }
