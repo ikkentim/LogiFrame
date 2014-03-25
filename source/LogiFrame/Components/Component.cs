@@ -35,6 +35,7 @@ namespace LogiFrame.Components
         private bool _topEffect;
         private bool _transparent;
         private bool _visible = true;
+        private bool _hasChanged;
 
         #endregion
 
@@ -176,13 +177,9 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets whether this LogiFrame.Component has been changed since the lastest render.
-        /// </summary>
-        public bool HasChanged { get; private set; }
-
-        /// <summary>
         /// Gets or sets(protected) whether this LogiFrame.Component is in the process of rendering itself.
-        /// When IsRendering is True, the component won't be calling listeners of Changed when HasChanged is set to True.
+        /// When IsRendering is True, the component won't be calling listeners of Changed when properties a refresh is requested.
+        /// 
         /// </summary>
         public bool IsRendering { get; protected set; }
 
@@ -203,11 +200,11 @@ namespace LogiFrame.Components
         {
             get
             {
-                if (!HasChanged)
+                if (!_hasChanged)
                     return Visible ? _bytemap : Bytemap.Empty;
 
                 Refresh(false);
-                HasChanged = false;
+                _hasChanged = false;
                 return Visible ? _bytemap : Bytemap.Empty;
             }
         }
@@ -244,7 +241,7 @@ namespace LogiFrame.Components
             if (IsDisposed)
                 throw new ObjectDisposedException("Resource was disposed.");
 
-            if (!forceRefresh && !HasChanged)
+            if (!forceRefresh && !_hasChanged)
                 return;
 
             IsRendering = true;
@@ -342,7 +339,7 @@ namespace LogiFrame.Components
         /// <param name="e">Contains information about the event.</param>
         public virtual void OnChanged(EventArgs e)
         {
-            HasChanged = true;
+            _hasChanged = true;
 
             if (!IsRendering && Changed != null)
                 Changed(this, e);
