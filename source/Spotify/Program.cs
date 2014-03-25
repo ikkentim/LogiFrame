@@ -35,7 +35,7 @@ namespace Spotify
             var stop = Resources.Stop;
 
             //Setup frame and spotify reader
-            var frame = new Frame("Spotify", true, true, false, true);
+            var frame = new Frame("Spotify", true, true);
             var reader = new SpotifyReader();
 
             //Setup the style of the Marquees
