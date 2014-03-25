@@ -57,10 +57,7 @@ namespace Spotify
         /// <summary>
         /// Gets whether Spotify is playing Tracks.
         /// </summary>
-        public bool Playing
-        {
-            get { return !string.IsNullOrEmpty(Artist) && !string.IsNullOrEmpty(Track); }
-        }
+        public bool Playing { get; private set; }
 
         /// <summary>
         /// Updates the information, Artist and Track.
@@ -96,11 +93,12 @@ namespace Spotify
             //If the '–' hasn't been found, stop updating.
             if (position < 0)
             {
-                Artist = Track = null;
+                Playing = false;
                 return;
             }
 
             //Get a substring from the window title and trim the remaining spaces off.
+            Playing = true;
             Artist = title.Substring(0, position).Trim();
             Track = title.Substring(position + 1).Trim();
         }
