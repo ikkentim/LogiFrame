@@ -92,9 +92,19 @@ namespace Spotify
                 {
                     //Set the artist and track labels.
                     frame.UpdatePriority = UpdatePriority.Normal; //Show the application
-                    artistMarquee.Text = string.IsNullOrEmpty(reader.Artist) ? "Spotify is not playing." : reader.Artist;
-                    trackMarquee.Text = string.IsNullOrEmpty(reader.Track) ? "" : reader.Track;
-                    statePicture.Image = reader.Playing ? play : pause;
+                    if (string.IsNullOrEmpty(reader.Artist) || string.IsNullOrEmpty(reader.Track))
+                    {
+                        artistMarquee.Text = "Spotify is not playing.";
+                        trackMarquee.Text = "";
+                        statePicture.Image = stop;   
+                    }
+                    else
+                    {
+                        artistMarquee.Text = string.IsNullOrEmpty(reader.Artist) ? "Spotify is not playing." : reader.Artist;
+                        trackMarquee.Text = string.IsNullOrEmpty(reader.Track) ? "" : reader.Track;
+                        statePicture.Image = reader.Playing ? play : pause;      
+                    }
+
                 }
             };
 
