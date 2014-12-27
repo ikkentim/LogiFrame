@@ -22,12 +22,3 @@ Supported devices:
 
 During developement the Library has only been tested with a G15 v2 keyboard, 
 but should also work with the other mentioned devices.
-	
-Source code contains:
-
-	-the LogiFrame Library
-	-a Test application
-	-an application for GTA: San Andreas (INCOMPLETE!)
-	-an application for Spotify
-	-an application for Call of Duty 4: Modern Warfare Server Information
-	-an application with the Bitonic Bitcoin exchange rate
