@@ -1,32 +1,29 @@
-﻿// LogiFrame rendering library.
+﻿// LogiFrame
 // Copyright (C) 2014 Tim Potze
 // 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
 // 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// For more information, please refer to <http://unlicense.org>
 
 using System;
 
 namespace LogiFrame.Components
 {
     /// <summary>
-    /// Represents a drawable circle.
+    ///     Represents a drawable circle.
     /// </summary>
     public class Circle : Component
     {
         private bool _fill;
 
         /// <summary>
-        /// Gets or sets whether the LogiFrame.Components.Square should be filled.
+        ///     Gets or sets whether the LogiFrame.Components.Square should be filled.
         /// </summary>
         public bool Fill
         {
@@ -36,7 +33,7 @@ namespace LogiFrame.Components
 
         protected override Bytemap Render()
         {
-            Bytemap result = new Bytemap(Size);
+            var result = new Bytemap(Size);
 
             double hradius = (double) Size.Width/2;
             double vradius = (double) Size.Height/2;
@@ -44,8 +41,8 @@ namespace LogiFrame.Components
             for (double i = 0.0; i < 360.0; i += 0.1)
             {
                 double angle = i*(Math.PI/180);
-                int x = (int) Math.Floor(hradius + (hradius - 1)*Math.Cos(angle));
-                int y = (int) Math.Floor(vradius + (vradius - 1)*Math.Sin(angle));
+                var x = (int) Math.Floor(hradius + (hradius - 1)*Math.Cos(angle));
+                var y = (int) Math.Floor(vradius + (vradius - 1)*Math.Sin(angle));
 
                 result.SetPixel(x, y, true);
             }

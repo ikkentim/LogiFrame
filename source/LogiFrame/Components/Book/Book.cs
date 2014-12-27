@@ -1,18 +1,15 @@
-﻿// LogiFrame rendering library.
+﻿// LogiFrame
 // Copyright (C) 2014 Tim Potze
 // 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
 // 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// For more information, please refer to <http://unlicense.org>
 
 using System;
 using System.Linq;
@@ -20,8 +17,8 @@ using System.Linq;
 namespace LogiFrame.Components.Book
 {
     /// <summary>
-    /// Represents a browsable Component which can contain multiple
-    /// instances of the LogiFrame.Components.Book.Page class.
+    ///     Represents a browsable Component which can contain multiple
+    ///     instances of the LogiFrame.Components.Book.Page class.
     /// </summary>
     public sealed class Book : Component
     {
@@ -34,7 +31,7 @@ namespace LogiFrame.Components.Book
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the LogiFrame.Components.Book.Book class.
+        ///     Initializes a new instance of the LogiFrame.Components.Book.Book class.
         /// </summary>
         /// <param name="frame">The LogiFrame.Frame this LogiFrame.Components.Book.Book should render in.</param>
         public Book(Frame frame)
@@ -76,7 +73,7 @@ namespace LogiFrame.Components.Book
         #region Properties
 
         /// <summary>
-        /// Gets or sets the currently active page of this LogiFrame.Components.Book.Book.
+        ///     Gets or sets the currently active page of this LogiFrame.Components.Book.Book.
         /// </summary>
         public Page ActivePage
         {
@@ -105,13 +102,13 @@ namespace LogiFrame.Components.Book
         }
 
         /// <summary>
-        /// Gets a Collection to add browsable LogiFrame.Components.Book.Page instances to.
+        ///     Gets a Collection to add browsable LogiFrame.Components.Book.Page instances to.
         /// </summary>
         public PageCollection<Page> Pages { get; private set; }
 
         /// <summary>
-        /// Gets the LogiFrame.Location this LogiFrame.Components.Book.Book should
-        /// be rendered at within the parrent LogiFrame.Components.Container.
+        ///     Gets the LogiFrame.Location this LogiFrame.Components.Book.Book should
+        ///     be rendered at within the parrent LogiFrame.Components.Container.
         /// </summary>
         public override Location Location
         {
@@ -121,7 +118,7 @@ namespace LogiFrame.Components.Book
 
 
         /// <summary>
-        /// Gets the LogiFrame.Size of this LogiFrame.Components.Book.Book.
+        ///     Gets the LogiFrame.Size of this LogiFrame.Components.Book.Book.
         /// </summary>
         public override Size Size
         {
@@ -130,13 +127,13 @@ namespace LogiFrame.Components.Book
         }
 
         /// <summary>
-        /// Gets or sets the LogiFrame.Components.Book.BookMenu this LogiFrame.Components.Book.Book should use.
+        ///     Gets or sets the LogiFrame.Components.Book.BookMenu this LogiFrame.Components.Book.Book should use.
         /// </summary>
         public BookMenu BookMenu { get; set; }
 
         /// <summary>
-        /// Gets or sets the menu button which opens the BookMenu of this LogiFrame.Components.Book.Book.
-        /// Set to -1 to disable this functionality.
+        ///     Gets or sets the menu button which opens the BookMenu of this LogiFrame.Components.Book.Book.
+        ///     Set to -1 to disable this functionality.
         /// </summary>
         public int MenuButton { get; set; }
 
@@ -145,7 +142,7 @@ namespace LogiFrame.Components.Book
         #region Methods
 
         /// <summary>
-        /// Switches to the given LogiFrame.Components.Book.Page.
+        ///     Switches to the given LogiFrame.Components.Book.Page.
         /// </summary>
         /// <param name="page">The LogiFrame.Components.Book.Page to switch to.</param>
         public void SwitchTo(Page page)
@@ -154,12 +151,12 @@ namespace LogiFrame.Components.Book
         }
 
         /// <summary>
-        /// Switches to the first instance of the given type in Pages.
+        ///     Switches to the first instance of the given type in Pages.
         /// </summary>
         /// <param name="pageType">The type of the LogiFrame.Components.Book.Page to switch to.</param>
         public void SwitchTo(Type pageType)
         {
-            foreach (var page in Pages.Where(page => page.GetType() == pageType))
+            foreach (Page page in Pages.Where(page => page.GetType() == pageType))
             {
                 SwitchTo(page);
                 OnChanged(EventArgs.Empty);
@@ -168,7 +165,7 @@ namespace LogiFrame.Components.Book
         }
 
         /// <summary>
-        /// Switches to the first instance of the given type in Pages.
+        ///     Switches to the first instance of the given type in Pages.
         /// </summary>
         /// <typeparam name="T">The type of the LogiFrame.Components.Book.Page to switch to.</typeparam>
         public void SwitchTo<T>() where T : Page
@@ -177,7 +174,7 @@ namespace LogiFrame.Components.Book
         }
 
         /// <summary>
-        /// Shows the BookMenu.
+        ///     Shows the BookMenu.
         /// </summary>
         public void ShowMenu()
         {

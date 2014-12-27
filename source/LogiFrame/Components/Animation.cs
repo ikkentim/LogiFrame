@@ -1,18 +1,15 @@
-﻿// LogiFrame rendering library.
+﻿// LogiFrame
 // Copyright (C) 2014 Tim Potze
 // 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
 // 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// For more information, please refer to <http://unlicense.org>
 
 using System;
 using System.Drawing;
@@ -21,7 +18,7 @@ using System.Drawing.Imaging;
 namespace LogiFrame.Components
 {
     /// <summary>
-    /// Represents a drawable animation.
+    ///     Represents a drawable animation.
     /// </summary>
     public class Animation : Picture
     {
@@ -47,7 +44,7 @@ namespace LogiFrame.Components
         #region Properties
 
         /// <summary>
-        /// Gets or sets the time in miliseconds each frame lasts.
+        ///     Gets or sets the time in miliseconds each frame lasts.
         /// </summary>
         public int Interval
         {
@@ -60,8 +57,8 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets whether this LogiFrame.Components.Animation should
-        /// automatically calculate its Interval.
+        ///     Gets or sets whether this LogiFrame.Components.Animation should
+        ///     automatically calculate its Interval.
         /// </summary>
         public bool AutoInterval
         {
@@ -79,7 +76,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the animated System.Drawing.Image to be rendered.
+        ///     Gets or sets the animated System.Drawing.Image to be rendered.
         /// </summary>
         public override Image Image
         {
@@ -99,7 +96,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the LogiFrame.ConversionMethod to be used to render the animation.
+        ///     Gets or sets the LogiFrame.ConversionMethod to be used to render the animation.
         /// </summary>
         public override ConversionMethod ConversionMethod
         {
@@ -119,7 +116,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///    Gets or sets the 0-based frame index to be rendered.
+        ///     Gets or sets the 0-based frame index to be rendered.
         /// </summary>
         public int Frame
         {
@@ -141,7 +138,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets the number of frames available in this animation.
+        ///     Gets the number of frames available in this animation.
         /// </summary>
         public int FrameCount
         {
@@ -149,7 +146,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets whether the animation should automatically cycle trough its frames.
+        ///     Gets or sets whether the animation should automatically cycle trough its frames.
         /// </summary>
         public bool Run
         {
@@ -177,7 +174,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Renders and stores every individual frame of this LogiFrame.Components.Animation.
+        ///     Renders and stores every individual frame of this LogiFrame.Components.Animation.
         /// </summary>
         private void RenderAnimation()
         {
@@ -192,7 +189,7 @@ namespace LogiFrame.Components
             }
 
             //Calculate frame dimensions
-            FrameDimension dimension = new FrameDimension(Image.FrameDimensionsList[0]);
+            var dimension = new FrameDimension(Image.FrameDimensionsList[0]);
 
             // Get numer of frames
             int frames = Image.GetFrameCount(dimension);
@@ -217,7 +214,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets the frame duration of the Image from libgdiplus.
+        ///     Gets the frame duration of the Image from libgdiplus.
         /// </summary>
         /// <returns>The frame duration from libgdiplus</returns>
         private int GetFrameDuration()

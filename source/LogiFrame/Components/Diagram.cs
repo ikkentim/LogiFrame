@@ -1,20 +1,18 @@
-﻿// LogiFrame rendering library.
+﻿// LogiFrame
 // Copyright (C) 2014 Tim Potze
 // 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
 // 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// For more information, please refer to <http://unlicense.org>
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -103,13 +101,15 @@ namespace LogiFrame.Components
         {
             if (_diagramLine.Values.Any())
             {
-                var xOrderedValues = _diagramLine.Values.OrderBy(p => _diagramLine.XAxisConverter(p.Key));
-                var yOrderedValues = _diagramLine.Values.OrderBy(p => _diagramLine.YAxisConverter(p.Value));
+                IOrderedEnumerable<KeyValuePair<TKey, TValue>> xOrderedValues =
+                    _diagramLine.Values.OrderBy(p => _diagramLine.XAxisConverter(p.Key));
+                IOrderedEnumerable<KeyValuePair<TKey, TValue>> yOrderedValues =
+                    _diagramLine.Values.OrderBy(p => _diagramLine.YAxisConverter(p.Value));
 
-                var minx = _diagramLine.MinXAxis(xOrderedValues.FirstOrDefault().Key);
-                var maxx = _diagramLine.MaxXAxis(xOrderedValues.LastOrDefault().Key);
-                var miny = _diagramLine.MinYAxis(yOrderedValues.FirstOrDefault().Value);
-                var maxy = _diagramLine.MaxYAxis(yOrderedValues.LastOrDefault().Value);
+                TKey minx = _diagramLine.MinXAxis(xOrderedValues.FirstOrDefault().Key);
+                TKey maxx = _diagramLine.MaxXAxis(xOrderedValues.LastOrDefault().Key);
+                TValue miny = _diagramLine.MinYAxis(yOrderedValues.FirstOrDefault().Value);
+                TValue maxy = _diagramLine.MaxYAxis(yOrderedValues.LastOrDefault().Value);
 
 
                 if (XAxisLabel != null &&

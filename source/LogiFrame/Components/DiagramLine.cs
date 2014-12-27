@@ -1,21 +1,19 @@
-﻿// LogiFrame rendering library.
+﻿// LogiFrame
 // Copyright (C) 2014 Tim Potze
 // 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
 // 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// For more information, please refer to <http://unlicense.org>
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace LogiFrame.Components
@@ -124,43 +122,45 @@ namespace LogiFrame.Components
 
         protected override Bytemap Render()
         {
-            Bytemap bymap = new Bytemap(Size);
+            var bymap = new Bytemap(Size);
 
             if (_values == null || XAxisConverter == null || YAxisConverter == null || MinXAxis == null ||
                 MaxXAxis == null || MinYAxis == null || MaxYAxis == null || !_values.Any())
                 return bymap;
 
-            var xOrderedValues = _values.OrderBy(p => XAxisConverter(p.Key));
-            var yOrderedValues = _values.OrderBy(p => YAxisConverter(p.Value));
+            IOrderedEnumerable<KeyValuePair<TKey, TValue>> xOrderedValues = _values.OrderBy(p => XAxisConverter(p.Key));
+            IOrderedEnumerable<KeyValuePair<TKey, TValue>> yOrderedValues = _values.OrderBy(p => YAxisConverter(p.Value));
 
-            var minx = XAxisConverter(MinXAxis(xOrderedValues.FirstOrDefault().Key));
-            var maxx = XAxisConverter(MaxXAxis(xOrderedValues.LastOrDefault().Key));
-            var miny = YAxisConverter(MinYAxis(yOrderedValues.FirstOrDefault().Value));
-            var maxy = YAxisConverter(MaxYAxis(yOrderedValues.LastOrDefault().Value));
+            int minx = XAxisConverter(MinXAxis(xOrderedValues.FirstOrDefault().Key));
+            int maxx = XAxisConverter(MaxXAxis(xOrderedValues.LastOrDefault().Key));
+            int miny = YAxisConverter(MinYAxis(yOrderedValues.FirstOrDefault().Value));
+            int maxy = YAxisConverter(MaxYAxis(yOrderedValues.LastOrDefault().Value));
 
-            var xperpixel = ((float) maxx - minx)/Size.Width;
-            var pixelpery = Size.Height/((float) maxy - miny);
-            var prefypix = int.MinValue;
+            float xperpixel = ((float) maxx - minx)/Size.Width;
+            float pixelpery = Size.Height/((float) maxy - miny);
+            int prefypix = int.MinValue;
 
-            for (var pixelx = 0; pixelx < Size.Width; pixelx++)
+            for (int pixelx = 0; pixelx < Size.Width; pixelx++)
             {
-                var currentxkey = minx + xperpixel*pixelx;
+                float currentxkey = minx + xperpixel*pixelx;
 
-                var previous = xOrderedValues.LastOrDefault(p => XAxisConverter(p.Key) < currentxkey);
-                var current = xOrderedValues.FirstOrDefault(p => (float) XAxisConverter(p.Key) == currentxkey);
-                var next = xOrderedValues.FirstOrDefault(p => XAxisConverter(p.Key) > currentxkey);
-                var prevf = false;
-                var nextf = false;
-                var prevx = 0;
-                var prevy = 0;
-                var nextx = 0;
-                var nexty = 0;
+                KeyValuePair<TKey, TValue> previous =
+                    xOrderedValues.LastOrDefault(p => XAxisConverter(p.Key) < currentxkey);
+                KeyValuePair<TKey, TValue> current =
+                    xOrderedValues.FirstOrDefault(p => (float) XAxisConverter(p.Key) == currentxkey);
+                KeyValuePair<TKey, TValue> next = xOrderedValues.FirstOrDefault(p => XAxisConverter(p.Key) > currentxkey);
+                bool prevf = false;
+                bool nextf = false;
+                int prevx = 0;
+                int prevy = 0;
+                int nextx = 0;
+                int nexty = 0;
 
                 if (
                     !EqualityComparer<KeyValuePair<TKey, TValue>>.Default.Equals(current,
                         default(KeyValuePair<TKey, TValue>)))
                 {
-                    var pixely = Size.Height - 1 - (int) Math.Floor((YAxisConverter(current.Value) - miny)*pixelpery);
+                    int pixely = Size.Height - 1 - (int) Math.Floor((YAxisConverter(current.Value) - miny)*pixelpery);
                     if (pixely >= 0 && pixely < Size.Height) bymap.SetPixel(pixelx, pixely, true);
                     prefypix = pixely;
                     continue;
@@ -183,7 +183,7 @@ namespace LogiFrame.Components
                 }
                 if (!prevf || !nextf) continue;
 
-                var pixy = Size.Height - 1 -
+                int pixy = Size.Height - 1 -
                            (int)
                                Math.Floor(((((nextx - prevx) == 0 ? 0 : ((float) nexty - prevy)/(nextx - prevx))*
                                             (currentxkey - prevx) + prevy) - miny)*pixelpery);
@@ -195,13 +195,13 @@ namespace LogiFrame.Components
                 {
                     if (pixy - prefypix > 1)
                     {
-                        for (var py = prefypix + 1; py < pixy; py++)
+                        for (int py = prefypix + 1; py < pixy; py++)
                             if (py >= 0 && py < Size.Height)
                                 bymap.SetPixel(pixelx - 1, py, true);
                     }
                     else if (pixy - prefypix < -1)
                     {
-                        for (var py = pixy + 1; py < prefypix; py++)
+                        for (int py = pixy + 1; py < prefypix; py++)
                             if (py >= 0 && py < Size.Height)
                                 bymap.SetPixel(pixelx - 1, py, true);
                     }
@@ -213,7 +213,7 @@ namespace LogiFrame.Components
         }
 
         private void _values_CollectionChanged(object sender,
-            System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+            NotifyCollectionChangedEventArgs e)
         {
             OnChanged(EventArgs.Empty);
         }

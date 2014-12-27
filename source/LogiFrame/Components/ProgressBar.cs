@@ -1,23 +1,20 @@
-﻿// LogiFrame rendering library.
+﻿// LogiFrame
 // Copyright (C) 2014 Tim Potze
 // 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
 // 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// For more information, please refer to <http://unlicense.org>
 
 namespace LogiFrame.Components
 {
     /// <summary>
-    /// Represents a drawable progress bar.
+    ///     Represents a drawable progress bar.
     /// </summary>
     public class ProgressBar : Container
     {
@@ -31,7 +28,7 @@ namespace LogiFrame.Components
         private float _value;
 
         /// <summary>
-        /// Initializes a new instance of the LogiFrame.Components.ProgressBar class.
+        ///     Initializes a new instance of the LogiFrame.Components.ProgressBar class.
         /// </summary>
         public ProgressBar()
         {
@@ -41,7 +38,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets whether the progress bar is progressing horizontally.
+        ///     Gets or sets whether the progress bar is progressing horizontally.
         /// </summary>
         public bool Horizontal
         {
@@ -50,7 +47,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets whether the progress bar is progressing invertedly.
+        ///     Gets or sets whether the progress bar is progressing invertedly.
         /// </summary>
         public bool Inverted
         {
@@ -59,7 +56,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the maximum Value this LogiFrame.Components.ProgressBar can have.
+        ///     Gets or sets the maximum Value this LogiFrame.Components.ProgressBar can have.
         /// </summary>
         public float MaximumValue
         {
@@ -73,7 +70,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the minimum Value this LogiFrame.Components.ProgressBar can have.
+        ///     Gets or sets the minimum Value this LogiFrame.Components.ProgressBar can have.
         /// </summary>
         public float MinimumValue
         {
@@ -87,7 +84,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the Value of this LogiFrame.Components.ProgressBar.
+        ///     Gets or sets the Value of this LogiFrame.Components.ProgressBar.
         /// </summary>
         public float Value
         {
@@ -101,7 +98,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the LogiFrame.Components.ProgressBarStyle of this LogiFrame.Components.ProgressBar.
+        ///     Gets or sets the LogiFrame.Components.ProgressBarStyle of this LogiFrame.Components.ProgressBar.
         /// </summary>
         public ProgressBarStyle ProgressBarStyle
         {

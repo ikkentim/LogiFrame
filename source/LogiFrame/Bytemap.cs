@@ -1,26 +1,24 @@
-﻿// LogiFrame rendering library.
+﻿// LogiFrame
 // Copyright (C) 2014 Tim Potze
 // 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
 // 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// For more information, please refer to <http://unlicense.org>
 
 using System;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace LogiFrame
 {
     /// <summary>
-    /// Represents a single-color image in a bytearray
+    ///     Represents a single-color image in a bytearray
     /// </summary>
     [TypeConverter(typeof (SimpleExpandableObjectConverter))]
     public class Bytemap
@@ -36,7 +34,7 @@ namespace LogiFrame
         #region Statics
 
         /// <summary>
-        /// Represents an empty Bytemap.
+        ///     Represents an empty Bytemap.
         /// </summary>
         public static readonly Bytemap Empty = null;
 
@@ -45,18 +43,18 @@ namespace LogiFrame
         #region Factory
 
         /// <summary>
-        /// Transform a System.Drawing.Bitmap into a LogiFrame.Bytemap.
+        ///     Transform a System.Drawing.Bitmap into a LogiFrame.Bytemap.
         /// </summary>
         /// <param name="bitmap">The System.Drawing.Bitmap to transform.</param>
         /// <param name="conversionMethod">The LogiFrame.ConversionMethod to use during the transformation.</param>
-        public static Bytemap FromBitmap(System.Drawing.Bitmap bitmap, ConversionMethod conversionMethod)
+        public static Bytemap FromBitmap(Bitmap bitmap, ConversionMethod conversionMethod)
         {
             return FromBitmap(bitmap, conversionMethod.MaxRed, conversionMethod.MaxGreen, conversionMethod.MaxGreen,
                 conversionMethod.MinAlpha);
         }
 
         /// <summary>
-        /// Transform a System.Drawing.Bitmap into a LogiFrame.Bytemap.
+        ///     Transform a System.Drawing.Bitmap into a LogiFrame.Bytemap.
         /// </summary>
         /// <param name="bitmap">The System.Drawing.Bitmap to transform.</param>
         /// <param name="maxR">The maximum red color value for a pixel to be filled.</param>
@@ -64,7 +62,7 @@ namespace LogiFrame
         /// <param name="maxB">The maximum blue color value for a pixel to be filled.</param>
         /// <param name="minA">The minimum alpha value for a pixel to be filled.</param>
         /// <returns>The new LogiFrame.Bytemap that this method creates. </returns>
-        public static Bytemap FromBitmap(System.Drawing.Bitmap bitmap, byte maxR = 0, byte maxG = 0, byte maxB = 0,
+        public static Bytemap FromBitmap(Bitmap bitmap, byte maxR = 0, byte maxG = 0, byte maxB = 0,
             byte minA = 255)
         {
             if (bitmap == null)
@@ -76,7 +74,7 @@ namespace LogiFrame
                 for (int y = 0; y < bitmap.Height; y++)
                     for (int x = 0; x < bitmap.Width; x++)
                     {
-                        System.Drawing.Color px = bitmap.GetPixel(x, y);
+                        Color px = bitmap.GetPixel(x, y);
                         result.Data[result._width*y + x] =
                             (byte) (px.R <= maxR && px.G <= maxG && px.B <= maxB && minA <= px.A ? 0xff : 0x00);
                     }
@@ -89,7 +87,7 @@ namespace LogiFrame
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the LogiFrame.Bytemap class.
+        ///     Initializes a new instance of the LogiFrame.Bytemap class.
         /// </summary>
         /// <param name="width">Initial width of the bytemap.</param>
         /// <param name="height">Initial height of the bytemap.</param>
@@ -99,7 +97,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Initializes a new instance of the LogiFrame.Bytemap class.
+        ///     Initializes a new instance of the LogiFrame.Bytemap class.
         /// </summary>
         /// <param name="size">Initial size of the bytemap.</param>
         public Bytemap(Size size)
@@ -112,25 +110,25 @@ namespace LogiFrame
         #region Properties
 
         /// <summary>
-        /// Gets the byte[] array container all the date of the canvas.
+        ///     Gets the byte[] array container all the date of the canvas.
         /// </summary>
         public byte[] Data { get; private set; }
 
         /// <summary>
-        /// Gets or sets whether the non-filled pixels should draw the lower-located
-        /// pixels when using the LogiFrame.Bytemap.Merge method.
+        ///     Gets or sets whether the non-filled pixels should draw the lower-located
+        ///     pixels when using the LogiFrame.Bytemap.Merge method.
         /// </summary>
         public bool Transparent { get; set; }
 
         /// <summary>
-        /// Gets or sets whether pixels around the filled pixels should always be non-filled
-        /// when using the LogiFrame.Bytemap.Merge method.
+        ///     Gets or sets whether pixels around the filled pixels should always be non-filled
+        ///     when using the LogiFrame.Bytemap.Merge method.
         /// </summary>
         public bool TopEffect { get; set; }
 
 
         /// <summary>
-        /// Gets or sets the LogiFrame.Size of this LogiFrame.Bytemap.
+        ///     Gets or sets the LogiFrame.Size of this LogiFrame.Bytemap.
         /// </summary>
         public Size Size
         {
@@ -163,7 +161,7 @@ namespace LogiFrame
         #region Methods
 
         /// <summary>
-        /// Creates a copy of LogiFrame.Bytemap instance.
+        ///     Creates a copy of LogiFrame.Bytemap instance.
         /// </summary>
         /// <returns>The new LogiFrame.Bytemap that this method creates.</returns>
         public Bytemap Clone()
@@ -175,7 +173,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Sets the content of the specified pixel in this LogiFrame.Bytemap.
+        ///     Sets the content of the specified pixel in this LogiFrame.Bytemap.
         /// </summary>
         /// <param name="location">The location of the pixel to set.</param>
         /// <param name="fill">Whether the pixel should be filled.</param>
@@ -185,7 +183,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Sets the content of the specified pixel in this LogiFrame.Bytemap.
+        ///     Sets the content of the specified pixel in this LogiFrame.Bytemap.
         /// </summary>
         /// <param name="x">The x-coordinate of the pixel to set.</param>
         /// <param name="y">The y-coordinate of the pixel to set.</param>
@@ -199,7 +197,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets the content of the specified pixel in this LogiFrame.Bytemap.
+        ///     Gets the content of the specified pixel in this LogiFrame.Bytemap.
         /// </summary>
         /// <param name="location">The location of the pixel to get.</param>
         /// <returns>Whether the pixel is filled</returns>
@@ -209,7 +207,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets the content of the specified pixel in this LogiFrame.Bytemap.
+        ///     Gets the content of the specified pixel in this LogiFrame.Bytemap.
         /// </summary>
         /// <param name="x">The x-coordinate of the pixel to get.</param>
         /// <param name="y">The y-coordinate of the pixel to get.</param>
@@ -223,7 +221,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Merges the given LogiFrame.Bytemap into this LogiFrame.Bytemap at the specified LogiFrame.Location.
+        ///     Merges the given LogiFrame.Bytemap into this LogiFrame.Bytemap at the specified LogiFrame.Location.
         /// </summary>
         /// <param name="bytemap">The LogiFrame.Bytemap to merge into this LogiFrame.Bytemap.</param>
         /// <param name="location">The LogiFrame.Location to merge the LogiFrame.Bytemap at.</param>
@@ -277,35 +275,35 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Converts the specified LogiFrame.Bytemap instance to a System.Drawing.Bitmap instance.
+        ///     Converts the specified LogiFrame.Bytemap instance to a System.Drawing.Bitmap instance.
         /// </summary>
         /// <param name="bytemap">The LogiFrame.Bytemap to be converted.</param>
         /// <returns>The System.Drawing.Bitmap that results from the conversion.</returns>
-        public static implicit operator System.Drawing.Bitmap(Bytemap bytemap)
+        public static implicit operator Bitmap(Bytemap bytemap)
         {
             if (bytemap == null)
                 return null;
 
-            var result = new System.Drawing.Bitmap(bytemap._width, bytemap._height);
-            System.Drawing.Graphics.FromImage(result).Clear(System.Drawing.Color.White);
-            for (var y = 0; y < bytemap._height; y++)
-                for (var x = 0; x < bytemap._width; x++)
+            var result = new Bitmap(bytemap._width, bytemap._height);
+            Graphics.FromImage(result).Clear(Color.White);
+            for (int y = 0; y < bytemap._height; y++)
+                for (int x = 0; x < bytemap._width; x++)
                     if (bytemap.Data[x + y*bytemap._width] == 255)
-                        result.SetPixel(x, y, System.Drawing.Color.Black);
+                        result.SetPixel(x, y, Color.Black);
 
             return result;
         }
 
         /// <summary>
-        /// Resizes the byte array according to the Size.
+        ///     Resizes the byte array according to the Size.
         /// </summary>
         private void Resize()
         {
             if (_width == Size.Width && _height == Size.Height) return;
             var newData = new byte[Size.Width*Size.Height];
 
-            for (var y = 0; y < Math.Min(Size.Height, _height); y++)
-                for (var x = 0; x < Math.Min(Size.Width, _width); x++)
+            for (int y = 0; y < Math.Min(Size.Height, _height); y++)
+                for (int x = 0; x < Math.Min(Size.Width, _width); x++)
                     newData[x + y*Size.Width] = Data[x + y*_width];
 
             Data = newData;
@@ -315,7 +313,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Listener for Size.Changed.
+        ///     Listener for Size.Changed.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

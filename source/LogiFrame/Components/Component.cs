@@ -1,18 +1,15 @@
-﻿// LogiFrame rendering library.
+﻿// LogiFrame
 // Copyright (C) 2014 Tim Potze
 // 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
 // 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// For more information, please refer to <http://unlicense.org>
 
 using System;
 using System.ComponentModel;
@@ -20,7 +17,7 @@ using System.ComponentModel;
 namespace LogiFrame.Components
 {
     /// <summary>
-    /// An abstract base class that provides functionality for the LogiFrame.Frame class.
+    ///     An abstract base class that provides functionality for the LogiFrame.Frame class.
     /// </summary>
     [TypeConverter(typeof (SimpleExpandableObjectConverter))]
     public abstract class Component : IDisposable
@@ -28,6 +25,7 @@ namespace LogiFrame.Components
         #region Fields
 
         private Bytemap _bytemap;
+        private bool _hasChanged;
         private Location _location = new Location();
         private Location _renderOffset = new Location();
         private Size _size = new Size();
@@ -35,14 +33,13 @@ namespace LogiFrame.Components
         private bool _topEffect;
         private bool _transparent;
         private bool _visible = true;
-        private bool _hasChanged;
 
         #endregion
 
         #region Constructor/Deconstructor
 
         /// <summary>
-        /// Initializes a new instance of the abstract LogiFrame.Components.Component class.
+        ///     Initializes a new instance of the abstract LogiFrame.Components.Component class.
         /// </summary>
         internal Component()
         {
@@ -51,7 +48,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Releases all resources used by LogiFrame.Components.Comonent.
+        ///     Releases all resources used by LogiFrame.Components.Comonent.
         /// </summary>
         ~Component()
         {
@@ -63,17 +60,17 @@ namespace LogiFrame.Components
         #region Events
 
         /// <summary>
-        /// Occurs when a property has changed or the LogiFrame.Components.Component needs to be refreshed.
+        ///     Occurs when a property has changed or the LogiFrame.Components.Component needs to be refreshed.
         /// </summary>
         public event EventHandler Changed;
 
         /// <summary>
-        /// Occurs when the location of the LogiFrame.Components.Component has changed.
+        ///     Occurs when the location of the LogiFrame.Components.Component has changed.
         /// </summary>
         public event EventHandler LocationChanged;
 
         /// <summary>
-        /// Occurs when this LogiFrame.Components.Component has been disposed.
+        ///     Occurs when this LogiFrame.Components.Component has been disposed.
         /// </summary>
         public event EventHandler Disposed;
 
@@ -82,8 +79,8 @@ namespace LogiFrame.Components
         #region Properties
 
         /// <summary>
-        /// Gets or sets the LogiFrame.Location this LogiFrame.Components.Component should
-        /// be rendered at within the parrent LogiFrame.Components.Container.
+        ///     Gets or sets the LogiFrame.Location this LogiFrame.Components.Component should
+        ///     be rendered at within the parrent LogiFrame.Components.Container.
         /// </summary>
         public virtual Location Location
         {
@@ -103,8 +100,8 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets the exact LogiFrame.Location this LogiFrame.Components.Component should
-        /// be rendered at within the parrent LogiFrame.Components.Container.
+        ///     Gets the exact LogiFrame.Location this LogiFrame.Components.Component should
+        ///     be rendered at within the parrent LogiFrame.Components.Container.
         /// </summary>
         public Location RenderLocation
         {
@@ -112,8 +109,8 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the offset from the actual Location this LogiFrame.Components.Component 
-        /// should be rendered at within the parrent LogiFrame.Components.Container.
+        ///     Gets or sets the offset from the actual Location this LogiFrame.Components.Component
+        ///     should be rendered at within the parrent LogiFrame.Components.Container.
         /// </summary>
         protected Location RenderOffset
         {
@@ -133,7 +130,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the LogiFrame.Size of this LogiFrame.Components.Component.
+        ///     Gets or sets the LogiFrame.Size of this LogiFrame.Components.Component.
         /// </summary>
         public virtual Size Size
         {
@@ -150,7 +147,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets whether this LogiFrame.Components.Component should have Bytemap.TopEffect enabled when rendered.
+        ///     Gets or sets whether this LogiFrame.Components.Component should have Bytemap.TopEffect enabled when rendered.
         /// </summary>
         public bool TopEffect
         {
@@ -159,7 +156,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets whether this LogiFrame.Components.Component should have Bytemap.Transparent enabled when rendered.
+        ///     Gets or sets whether this LogiFrame.Components.Component should have Bytemap.Transparent enabled when rendered.
         /// </summary>
         public bool Transparent
         {
@@ -168,7 +165,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets whether this LogiFrame.Components.Component should be visible.
+        ///     Gets or sets whether this LogiFrame.Components.Component should be visible.
         /// </summary>
         public bool Visible
         {
@@ -177,24 +174,24 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets(protected) whether this LogiFrame.Component is in the process of rendering itself.
-        /// When IsRendering is True, the component won't be calling listeners of Changed when properties a refresh is requested.
-        /// 
+        ///     Gets or sets(protected) whether this LogiFrame.Component is in the process of rendering itself.
+        ///     When IsRendering is True, the component won't be calling listeners of Changed when properties a refresh is
+        ///     requested.
         /// </summary>
         public bool IsRendering { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the object that contains data about the Component.
+        ///     Gets or sets the object that contains data about the Component.
         /// </summary>
         public object Tag { get; set; }
 
         /// <summary>
-        /// Gets whether this LogiFrame.Components.Component has been disposed.
+        ///     Gets whether this LogiFrame.Components.Component has been disposed.
         /// </summary>
         public bool IsDisposed { get; private set; }
 
         /// <summary>
-        /// Gets the rendered LogiFrame.Bytemap of this LogiFrame.Components.Component.
+        ///     Gets the rendered LogiFrame.Bytemap of this LogiFrame.Components.Component.
         /// </summary>
         public Bytemap Bytemap
         {
@@ -210,7 +207,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the parent LogiFrame.Components.Component.
+        ///     Gets or sets the parent LogiFrame.Components.Component.
         /// </summary>
         public Component ParentComponent { get; set; }
 
@@ -219,7 +216,7 @@ namespace LogiFrame.Components
         #region Methods
 
         /// <summary>
-        /// Releases all resources used by LogiFrame.Components.Comonent.
+        ///     Releases all resources used by LogiFrame.Components.Comonent.
         /// </summary>
         public void Dispose()
         {
@@ -233,9 +230,12 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Refreshes the LogiFrame.Components.Component.Bytemap and renders it if nececcary.
+        ///     Refreshes the LogiFrame.Components.Component.Bytemap and renders it if nececcary.
         /// </summary>
-        /// <param name="forceRefresh">Forces the LogiFrame.Components.Component.Bytemap being rerendered even if it hasn't changed when True.</param>
+        /// <param name="forceRefresh">
+        ///     Forces the LogiFrame.Components.Component.Bytemap being rerendered even if it hasn't changed
+        ///     when True.
+        /// </param>
         public virtual void Refresh(bool forceRefresh)
         {
             if (IsDisposed)
@@ -256,7 +256,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Refreshes the LogiFrame.Components.Component.Bytemap and renders it if nececcary.
+        ///     Refreshes the LogiFrame.Components.Component.Bytemap and renders it if nececcary.
         /// </summary>
         public void Refresh()
         {
@@ -264,7 +264,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Swaps property with given value.
+        ///     Swaps property with given value.
         /// </summary>
         /// <param name="field">The value of the field.</param>
         /// <param name="value">The value to swap it with.</param>
@@ -275,7 +275,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Swaps property with given value.
+        ///     Swaps property with given value.
         /// </summary>
         /// <param name="field">The value of the field.</param>
         /// <param name="value">The value to swap it with.</param>
@@ -287,7 +287,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Swaps property with given value.
+        ///     Swaps property with given value.
         /// </summary>
         /// <param name="field">The value of the field.</param>
         /// <param name="value">The value to swap it with.</param>
@@ -310,13 +310,13 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Finds the parent LogiFrame.Components.Component of the given type.
+        ///     Finds the parent LogiFrame.Components.Component of the given type.
         /// </summary>
         /// <typeparam name="T">Type to find.</typeparam>
         /// <returns>The partent LogiFrame.Components.Component of the given type. Returns null if not found.</returns>
         public T GetParentComponent<T>() where T : Component
         {
-            var c = this;
+            Component c = this;
             while ((c = c.ParentComponent) != null)
                 if (c is T)
                     return c as T;
@@ -324,7 +324,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Called when the location has changed.
+        ///     Called when the location has changed.
         /// </summary>
         /// <param name="e">Contains information about the event.</param>
         public virtual void OnLocationChanged(EventArgs e)
@@ -334,7 +334,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Called when the component has changed.
+        ///     Called when the component has changed.
         /// </summary>
         /// <param name="e">Contains information about the event.</param>
         public virtual void OnChanged(EventArgs e)
@@ -346,7 +346,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Stub for child components. This overridable method can be used to dispose resources.
+        ///     Stub for child components. This overridable method can be used to dispose resources.
         /// </summary>
         protected virtual void DisposeComponent()
         {
@@ -354,13 +354,13 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Renders all grahpics of this LogiFrame.Components.Component.
+        ///     Renders all grahpics of this LogiFrame.Components.Component.
         /// </summary>
         /// <returns>The rendered LogiFrame.Bytemap.</returns>
         protected abstract Bytemap Render();
 
         /// <summary>
-        /// Listens to Size.Changed.
+        ///     Listens to Size.Changed.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -370,7 +370,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Listens to Location.Changed.
+        ///     Listens to Location.Changed.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

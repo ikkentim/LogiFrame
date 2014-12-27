@@ -1,36 +1,33 @@
-﻿// LogiFrame rendering library.
+﻿// LogiFrame
 // Copyright (C) 2014 Tim Potze
 // 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
 // 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// For more information, please refer to <http://unlicense.org>
 
-using System.Diagnostics;
+using System.Drawing;
 
 namespace LogiFrame.Components
 {
     /// <summary>
-    /// Represents a drawable picture.
+    ///     Represents a drawable picture.
     /// </summary>
     public class Picture : Component
     {
         private bool _autoSize;
         private ConversionMethod _conversionMethod = ConversionMethod.Normal;
-        private System.Drawing.Image _image;
+        private Image _image;
 
         /// <summary>
-        /// Gets or sets the image to be drawn.
+        ///     Gets or sets the image to be drawn.
         /// </summary>
-        public virtual System.Drawing.Image Image
+        public virtual Image Image
         {
             get { return _image; }
             set
@@ -41,7 +38,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the conversion method to use during the rendering.
+        ///     Gets or sets the conversion method to use during the rendering.
         /// </summary>
         public virtual ConversionMethod ConversionMethod
         {
@@ -54,8 +51,8 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets whether this LogiFrame.Components.Picture should automatically
-        /// resize when the image has changed.
+        ///     Gets or sets whether this LogiFrame.Components.Picture should automatically
+        ///     resize when the image has changed.
         /// </summary>
         public bool AutoSize
         {
@@ -68,7 +65,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the LogiFrame.Size of this LogiFrame.Components.Label.
+        ///     Gets or sets the LogiFrame.Size of this LogiFrame.Components.Label.
         /// </summary>
         public override Size Size
         {
@@ -82,8 +79,8 @@ namespace LogiFrame.Components
 
         protected override Bytemap Render()
         {
-            Bytemap render = new Bytemap(Size);
-            render.Merge(Bytemap.FromBitmap(Image as System.Drawing.Bitmap, ConversionMethod), new Location());
+            var render = new Bytemap(Size);
+            render.Merge(Bytemap.FromBitmap(Image as Bitmap, ConversionMethod), new Location());
 
             return render;
         }

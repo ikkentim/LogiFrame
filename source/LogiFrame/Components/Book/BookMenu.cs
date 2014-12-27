@@ -1,18 +1,15 @@
-﻿// LogiFrame rendering library.
+﻿// LogiFrame
 // Copyright (C) 2014 Tim Potze
 // 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
 // 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// For more information, please refer to <http://unlicense.org>
 
 using System;
 using System.Drawing;
@@ -21,7 +18,7 @@ using System.Linq;
 namespace LogiFrame.Components.Book
 {
     /// <summary>
-    /// Represents a drawable Menu for a LogiFrame.Components.Book.Book.
+    ///     Represents a drawable Menu for a LogiFrame.Components.Book.Book.
     /// </summary>
     public class BookMenu : Page
     {
@@ -39,7 +36,7 @@ namespace LogiFrame.Components.Book
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the LogiFrame.Components.Book.BookMenu class.
+        ///     Initializes a new instance of the LogiFrame.Components.Book.BookMenu class.
         /// </summary>
         /// <param name="book">The LogiFrame.Components.Book.Book this menu is working for.</param>
         public BookMenu(Book book)
@@ -82,7 +79,7 @@ namespace LogiFrame.Components.Book
         #region Properites
 
         /// <summary>
-        /// Gets or sets a Colection of LogiFrame.Components.Book.Page instances the user can browse trough.
+        ///     Gets or sets a Colection of LogiFrame.Components.Book.Page instances the user can browse trough.
         /// </summary>
         public PageCollection<Page> Pages
         {
@@ -107,7 +104,7 @@ namespace LogiFrame.Components.Book
         }
 
         /// <summary>
-        /// Gets or sets the currently selected LogiFrame.Components.Book.Page.
+        ///     Gets or sets the currently selected LogiFrame.Components.Book.Page.
         /// </summary>
         public Page SelectedPage
         {
@@ -123,31 +120,31 @@ namespace LogiFrame.Components.Book
         }
 
         /// <summary>
-        /// Gets or sets the LogiFrame.Components.Book.Page to return to when the return button has been pressed.
+        ///     Gets or sets the LogiFrame.Components.Book.Page to return to when the return button has been pressed.
         /// </summary>
         public Page InitialPage { get; set; }
 
         /// <summary>
-        /// Gets or sets the button which will select the previous LogiFrame.Components.Book.Page.
-        /// Set to -1 to disable this functionality.
+        ///     Gets or sets the button which will select the previous LogiFrame.Components.Book.Page.
+        ///     Set to -1 to disable this functionality.
         /// </summary>
         public int ButtonPrevious { get; set; }
 
         /// <summary>
-        /// Gets or sets the button which will select the next LogiFrame.Components.Book.Page.
-        /// Set to -1 to disable this functionality.
+        ///     Gets or sets the button which will select the next LogiFrame.Components.Book.Page.
+        ///     Set to -1 to disable this functionality.
         /// </summary>
         public int ButtonNext { get; set; }
 
         /// <summary>
-        /// Gets or sets the button which will switch to the currently selected LogiFrame.Components.Book.Page.
-        /// Set to -1 to disable this functionality.
+        ///     Gets or sets the button which will switch to the currently selected LogiFrame.Components.Book.Page.
+        ///     Set to -1 to disable this functionality.
         /// </summary>
         public int ButtonSelect { get; set; }
 
         /// <summary>
-        /// Gets or sets the button which will return to the initial LogiFrame.Components.Book.Page.
-        /// Set to -1 to disable this functionality.
+        ///     Gets or sets the button which will return to the initial LogiFrame.Components.Book.Page.
+        ///     Set to -1 to disable this functionality.
         /// </summary>
         public int ButtonReturn { get; set; }
 
@@ -162,7 +159,7 @@ namespace LogiFrame.Components.Book
 
             if (e.Button == ButtonPrevious)
             {
-                var prevIndex = Pages.IndexOf(SelectedPage) - 1;
+                int prevIndex = Pages.IndexOf(SelectedPage) - 1;
 
                 if (prevIndex < 0)
                     prevIndex = Pages.Count - 1;
@@ -171,7 +168,7 @@ namespace LogiFrame.Components.Book
             }
             else if (e.Button == ButtonNext)
             {
-                var nextIndex = Pages.IndexOf(SelectedPage) + 1;
+                int nextIndex = Pages.IndexOf(SelectedPage) + 1;
 
                 if (nextIndex >= Pages.Count)
                     nextIndex = 0;
@@ -203,7 +200,7 @@ namespace LogiFrame.Components.Book
             if (Pages == null || Pages.Count == 0)
                 return null;
 
-            var selectedIndex = Pages.IndexOf(SelectedPage);
+            int selectedIndex = Pages.IndexOf(SelectedPage);
 
             if (selectedIndex == -1)
             {
@@ -213,9 +210,9 @@ namespace LogiFrame.Components.Book
 
             PageTitle.Text = SelectedPage.GetName();
 
-            for (var i = 0; i < Pages.Count(); i++)
+            for (int i = 0; i < Pages.Count(); i++)
             {
-                var icon = Pages[i].PageIcon;
+                PageIcon icon = Pages[i].PageIcon;
                 icon.Location.Set(72 + 20*(i - selectedIndex), 24);
 
                 if (!Components.Contains(icon))

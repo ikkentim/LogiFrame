@@ -1,18 +1,15 @@
-﻿// LogiFrame rendering library.
+﻿// LogiFrame
 // Copyright (C) 2014 Tim Potze
 // 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
 // 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// For more information, please refer to <http://unlicense.org>
 
 using System;
 using System.Linq;
@@ -20,7 +17,7 @@ using System.Linq;
 namespace LogiFrame.Components
 {
     /// <summary>
-    /// Represents a Component that is capable of holding multiple other LogiFrame.Components.Component instances.
+    ///     Represents a Component that is capable of holding multiple other LogiFrame.Components.Component instances.
     /// </summary>
     public class Container : Component
     {
@@ -33,7 +30,7 @@ namespace LogiFrame.Components
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the LogiFrame.Components.Container class.
+        ///     Initializes a new instance of the LogiFrame.Components.Container class.
         /// </summary>
         public Container()
         {
@@ -67,8 +64,8 @@ namespace LogiFrame.Components
         #region Properties
 
         /// <summary>
-        /// Gets a collection of LogiFrame.Components.Component instances that will be rendered
-        /// within this LogiFrame.Components.Container.
+        ///     Gets a collection of LogiFrame.Components.Component instances that will be rendered
+        ///     within this LogiFrame.Components.Container.
         /// </summary>
         public ComponentCollection<Component> Components
         {
@@ -95,7 +92,7 @@ namespace LogiFrame.Components
 
         protected override Bytemap Render()
         {
-            Bytemap result = new Bytemap(Size);
+            var result = new Bytemap(Size);
 
             foreach (Component c in Components.ToList())
             {
@@ -118,7 +115,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Listener for Component.Changed.
+        ///     Listener for Component.Changed.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

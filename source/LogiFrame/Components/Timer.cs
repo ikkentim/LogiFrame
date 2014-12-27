@@ -1,18 +1,15 @@
-﻿// LogiFrame rendering library.
+﻿// LogiFrame
 // Copyright (C) 2014 Tim Potze
 // 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
 // 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// For more information, please refer to <http://unlicense.org>
 
 using System;
 using System.Threading;
@@ -20,7 +17,7 @@ using System.Threading;
 namespace LogiFrame.Components
 {
     /// <summary>
-    /// Represents a ticking timer.
+    ///     Represents a ticking timer.
     /// </summary>
     public class Timer : Component
     {
@@ -35,7 +32,7 @@ namespace LogiFrame.Components
         #region Events
 
         /// <summary>
-        /// Occurs when the Invetval of the current LogiFrame.Components.Timer elapsed whilst running.
+        ///     Occurs when the Invetval of the current LogiFrame.Components.Timer elapsed whilst running.
         /// </summary>
         public event EventHandler Tick;
 
@@ -44,7 +41,7 @@ namespace LogiFrame.Components
         #region Properties
 
         /// <summary>
-        /// Gets or sets the time in miliseconds each frame lasts.
+        ///     Gets or sets the time in miliseconds each frame lasts.
         /// </summary>
         public int Interval
         {
@@ -59,7 +56,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets whether the timer is enabled.
+        ///     Gets or sets whether the timer is enabled.
         /// </summary>
         public bool Enabled
         {
@@ -82,10 +79,10 @@ namespace LogiFrame.Components
                                 Thread.Sleep(Interval);
                             else
                             {
-                                var loop = Interval/2000;
-                                var rest = Interval%2000;
+                                int loop = Interval/2000;
+                                int rest = Interval%2000;
 
-                                for (var i = 0; i < loop; i++)
+                                for (int i = 0; i < loop; i++)
                                 {
                                     if (IsDisposed || !Enabled || Interval <= 0)
                                         break;
@@ -106,7 +103,7 @@ namespace LogiFrame.Components
         #region Methods
 
         /// <summary>
-        /// Called when the timer ticks.
+        ///     Called when the timer ticks.
         /// </summary>
         /// <param name="e">Contains information about the event.</param>
         public virtual void OnTick(EventArgs e)
