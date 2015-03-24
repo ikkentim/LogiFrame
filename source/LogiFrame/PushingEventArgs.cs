@@ -32,7 +32,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Gets or sets whether this frame should be prevented from being
+        ///     Gets or sets whether the frame should be prevented from being
         ///     pushed to the display.
         /// </summary>
         public bool PreventPush { get; set; }

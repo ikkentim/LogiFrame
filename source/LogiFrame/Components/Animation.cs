@@ -167,14 +167,25 @@ namespace LogiFrame.Components
             return _bytemaps[_frame];
         }
 
+        #region Overrides of Component
+
         /// <summary>
-        ///     Stub for child components. This overridable method can be used to dispose resources.
+        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        protected override void DisposeComponent()
+        /// <param name="disposing">Whether managed resources should be disposed.</param>
+        protected override void Dispose(bool disposing)
         {
-            _timer.Dispose();
-            Image.Dispose();
+            if (disposing)
+            {
+                _timer.Dispose();
+
+                if (Image != null)
+                    Image.Dispose();
+            }
+            base.Dispose(disposing);
         }
+
+        #endregion
 
         /// <summary>
         ///     Renders and stores every individual frame.

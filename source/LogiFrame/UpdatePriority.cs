@@ -37,8 +37,7 @@ namespace LogiFrame
         Normal = 128,
 
         /// <summary>
-        ///     Highest priority. To be used only for critical screens, such as 'your CPU
-        ///     temperature is too high'
+        ///     Highest priority. To be used only for critical screens.
         /// </summary>
         Alert = 255
     }

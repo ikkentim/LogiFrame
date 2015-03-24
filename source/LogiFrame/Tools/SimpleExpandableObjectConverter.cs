@@ -17,7 +17,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace LogiFrame
+namespace LogiFrame.Tools
 {
     /// <summary>
     ///     Provides a type converter to convert various objects to and from various other representations.

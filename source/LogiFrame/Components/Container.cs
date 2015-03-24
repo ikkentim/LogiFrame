@@ -98,17 +98,29 @@ namespace LogiFrame.Components
 
             return result;
         }
+        
+        #region Overrides of Component
 
-        protected override void DisposeComponent()
+        /// <summary>
+        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <param name="disposing">Whether managed resources should be disposed.</param>
+        protected override void Dispose(bool disposing)
         {
-            foreach (Component c in Components)
+            if (disposing)
             {
-                c.Changed -= Container_Changed;
-                c.LocationChanged -= Container_Changed;
-                c.Dispose();
+                foreach (Component c in Components)
+                {
+                    c.Changed -= Container_Changed;
+                    c.LocationChanged -= Container_Changed;
+                    c.Dispose();
+                }
+                Components.Clear();
             }
-            Components.Clear();
+            base.Dispose(disposing);
         }
+
+        #endregion
 
         private void Container_Changed(object sender, EventArgs e)
         {

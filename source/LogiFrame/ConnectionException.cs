@@ -14,20 +14,21 @@
 // limitations under the License.
 
 using System;
+//
+using System.ComponentModel;
 
 namespace LogiFrame
 {
     /// <summary>
     ///     Represents errors that occur during a connection with LCDmon.
     /// </summary>
-    public class ConnectionException : Exception
+    public class ConnectionException : Win32Exception
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConnectionException"/> class.
         /// </summary>
-        /// <param name="message">The message that describes the error.</param>
-        public ConnectionException(string message)
-            : base(message)
+        /// <param name="error">The Win32 error code associated with this exception.</param>
+        public ConnectionException(int error) : base(error)
         {
         }
     }

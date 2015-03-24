@@ -15,7 +15,8 @@
 
 using System;
 using System.ComponentModel;
-
+using LogiFrame.Tools;
+//
 namespace LogiFrame
 {
     /// <summary>

@@ -176,11 +176,6 @@ namespace LogiFrame.Components.Book
             ActivePage = BookMenu;
         }
 
-        protected override void DisposeComponent()
-        {
-            //Pages.Dispose(); /* not my responsibility */
-        }
-
         protected override Bytemap Render()
         {
             return _activePage == null ? null : _activePage.Bytemap;

@@ -62,6 +62,8 @@
     <Compile Include="Components\Line.cs" />
     <Compile Include="Components\Marquee.cs" />
     <Compile Include="Components\MarqueeStyle.cs" />
+    <Compile Include="Tools\Disposable.cs" />
+    <Compile Include="UnmanagedLibrariesLoader.cs" />
     <Compile Include="WatchableCollection.cs" />
     <Compile Include="Components\Picture.cs" />
     <Compile Include="Components\ProgressBar.cs" />
@@ -73,7 +75,7 @@
     <Compile Include="ConnectionException.cs" />
     <Compile Include="ConversionMethod.cs" />
     <Compile Include="PushingEventArgs.cs" />
-    <Compile Include="SimpleExpandableObjectConverter.cs" />
+    <Compile Include="Tools\SimpleExpandableObjectConverter.cs" />
     <Compile Include="Simulation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,9 +91,7 @@
     <Compile Include="Win32Error.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="LgLcd.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="libs\LgLcd.dll" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Simulation.resx">

@@ -16,7 +16,8 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
-
+using LogiFrame.Tools;
+//
 namespace LogiFrame
 {
     /// <summary>

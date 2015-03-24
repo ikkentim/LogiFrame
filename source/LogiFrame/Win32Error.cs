@@ -14,7 +14,7 @@
 // limitations under the License.
 
 using System;
-
+//
 namespace LogiFrame
 {
     internal class Win32Error

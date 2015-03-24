@@ -18,12 +18,12 @@ using System;
 namespace LogiFrame
 {
     /// <summary>
-    ///     Provides data for the <see cref="Frame.ButtonDown"/> and <see cref="Frame.ButtonUp"/> events.
+    ///     Provides data for the <see cref="Frame.ButtonDown" /> and <see cref="Frame.ButtonUp" /> events.
     /// </summary>
     public class ButtonEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ButtonEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="ButtonEventArgs" /> class.
         /// </summary>
         /// <param name="button">0-based number of the button being pressed.</param>
         public ButtonEventArgs(int button)

@@ -59,7 +59,6 @@ namespace LogiFrame.Components
                     return;
 
                 _enabled = value;
-
                 if (value && !IsDisposed && _thread == null)
                     (_thread = new Thread(() =>
                     {
@@ -100,6 +99,8 @@ namespace LogiFrame.Components
                 Tick(this, e);
         }
 
+        #region Overrides of Component
+
         public override void OnChanged(EventArgs e)
         {
             //Prevent rendering
@@ -111,9 +112,17 @@ namespace LogiFrame.Components
             return null;
         }
 
-        protected override void DisposeComponent()
+        /// <summary>
+        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <param name="disposing">Whether managed resources should be disposed.</param>
+        protected override void Dispose(bool disposing)
         {
             _enabled = false;
+
+            base.Dispose(disposing);
         }
+
+        #endregion
     }
 }

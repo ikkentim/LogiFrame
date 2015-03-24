@@ -15,6 +15,7 @@
 
 using System;
 using System.ComponentModel;
+using LogiFrame.Tools;
 
 namespace LogiFrame.Components
 {
@@ -22,17 +23,17 @@ namespace LogiFrame.Components
     ///     Provides functionality for a drawable component.
     /// </summary>
     [TypeConverter(typeof (SimpleExpandableObjectConverter))]
-    public abstract class Component : IDisposable
+    public abstract class Component : Disposable
     {
         private Bytemap _bytemap;
         private bool _hasChanged;
-        private Location _location = new Location();
-        private Location _renderOffset = new Location();
-        private Size _size = new Size();
 
         private bool _isTopEffectEnabled;
         private bool _isTransparent;
         private bool _isVisible = true;
+        private Location _location = new Location();
+        private Location _renderOffset = new Location();
+        private Size _size = new Size();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Component" /> class.
@@ -44,16 +45,14 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets the <see cref="Location" /> this <see cref="Component" /> should be rendered at within the parent
-        ///     <see cref="Container" />.
+        ///     Gets or sets the location.
         /// </summary>
         public virtual Location Location
         {
             get { return _location; }
             set
             {
-                if (IsDisposed)
-                    throw new ObjectDisposedException("Resource was disposed.");
+                AssertNotDisposed();
 
                 _location.Changed -= location_Changed;
 
@@ -65,8 +64,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets the exact <see cref="Location" /> this <see cref="Component" /> should be rendered at within the parent
-        ///     <see cref="Container" />.
+        ///     Gets the render location.
         /// </summary>
         public Location RenderLocation
         {
@@ -74,16 +72,14 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets the offset from the actual <see cref="Location" /> this <see cref="Component" /> should be rendered at
-        ///     within the parent <see cref="Container" />.
+        ///     Gets or sets the render offset.
         /// </summary>
         protected Location RenderOffset
         {
             get { return _renderOffset; }
             set
             {
-                if (IsDisposed)
-                    throw new ObjectDisposedException("Resource was disposed.");
+                AssertNotDisposed();
 
                 _renderOffset.Changed -= location_Changed;
 
@@ -95,15 +91,17 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets the <see cref="Size" /> of this <see cref="Component" />.
+        ///     Gets or sets the size.
         /// </summary>
+        /// <value>
+        ///     The size.
+        /// </value>
         public virtual Size Size
         {
             get { return _size; }
             set
             {
-                if (IsDisposed)
-                    throw new ObjectDisposedException("Resource was disposed.");
+                AssertNotDisposed();
 
                 _size.Changed -= size_Changed;
                 SwapProperty(ref _size, value);
@@ -112,8 +110,11 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets whether this <see cref="Component" /> should have Bytemap.IsTopEffectEnabled enabled when rendered.
+        ///     Gets or sets a value indicating whether this instance is top effect enabled.
         /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance is top effect enabled; otherwise, <c>false</c>.
+        /// </value>
         public bool IsTopEffectEnabled
         {
             get { return _isTopEffectEnabled; }
@@ -121,8 +122,11 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets whether this <see cref="Component" /> should have Bytemap.IsTransparent enabled when rendered.
+        ///     Gets or sets a value indicating whether this instance is transparent.
         /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance is transparent; otherwise, <c>false</c>.
+        /// </value>
         public bool IsTransparent
         {
             get { return _isTransparent; }
@@ -130,8 +134,11 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets whether this <see cref="Component" /> should be visible.
+        ///     Gets or sets a value indicating whether this instance is visible.
         /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance is visible; otherwise, <c>false</c>.
+        /// </value>
         public bool IsVisible
         {
             get { return _isVisible; }
@@ -139,21 +146,17 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets(protected) whether this <see cref="Component" /> is in the process of rendering itself.
-        ///     When IsRendering is True, the component won't be calling listeners of Changed when a refresh is
-        ///     requested.
+        ///     Gets or sets a value indicating whether this instance is rendering.
         /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance is rendering; otherwise, <c>false</c>.
+        /// </value>
         public bool IsRendering { get; protected set; }
 
         /// <summary>
         ///     Gets or sets the object that contains data about this <see cref="Component" />.
         /// </summary>
         public object Tag { get; set; }
-
-        /// <summary>
-        ///     Gets whether this <see cref="Component" /> has been disposed.
-        /// </summary>
-        public bool IsDisposed { get; private set; }
 
         /// <summary>
         ///     Gets the rendered <see cref="LogiFrame.Bytemap" /> of this <see cref="Component" />.
@@ -176,53 +179,36 @@ namespace LogiFrame.Components
         /// </summary>
         public Component ParentComponent { get; set; }
 
-        /// <summary>
-        ///     Releases all resources used by <see cref="Component" />.
-        /// </summary>
-        public void Dispose()
-        {
-            if (IsDisposed)
-                return;
+        #region Overrides of Disposable
 
-            IsDisposed = true;
-            DisposeComponent();
-            if (Disposed != null)
-                Disposed(this, EventArgs.Empty);
+        /// <summary>
+        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <param name="disposing">Whether managed resources should be disposed.</param>
+        protected override void Dispose(bool disposing)
+        {
+            //...
         }
 
-        /// <summary>
-        ///     Finalizes an instance of the <see cref="Component" /> class.
-        /// </summary>
-        ~Component()
-        {
-            Dispose();
-        }
+        #endregion
 
         /// <summary>
-        ///     Occurs when a property has changed or the <see cref="Component" /> needs to be refreshed.
+        ///     Occurs when a property of this instance has changed.
         /// </summary>
         public event EventHandler Changed;
 
         /// <summary>
-        ///     Occurs when the location of this <see cref="Component" /> has changed.
+        ///     Occurs when the location of this instance has changed.
         /// </summary>
         public event EventHandler LocationChanged;
 
         /// <summary>
-        ///     Occurs when this <see cref="Component" /> has been disposed.
+        ///     Refreshes this instance.
         /// </summary>
-        public event EventHandler Disposed;
-
-        /// <summary>
-        ///     Refreshes the <see cref="Bytemap" /> and renders it if necessary.
-        /// </summary>
-        /// <param name="forceRefresh">
-        ///     Forces the <see cref="Bytemap" /> being rerendered even if it hasn't changed when True.
-        /// </param>
+        /// <param name="forceRefresh">if set to <c>true</c>, this instance will be refreshed even if it hasn't changed.</param>
         public virtual void Refresh(bool forceRefresh)
         {
-            if (IsDisposed)
-                throw new ObjectDisposedException("Resource was disposed.");
+            AssertNotDisposed();
 
             if (!forceRefresh && !_hasChanged)
                 return;
@@ -239,7 +225,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Refreshes the Bytemap and renders it if nececcary.
+        ///     Refreshes this instance.
         /// </summary>
         public void Refresh()
         {
@@ -333,15 +319,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Stub for child components. This overridable method can be used to dispose resources.
-        /// </summary>
-        protected virtual void DisposeComponent()
-        {
-            //Stub
-        }
-
-        /// <summary>
-        ///     Renders all graphics of this <see cref="Component" />.
+        ///     Renders this instance to a <see cref="Bytemap"/>.
         /// </summary>
         /// <returns>The rendered <see cref="Bytemap" />.</returns>
         protected abstract Bytemap Render();
