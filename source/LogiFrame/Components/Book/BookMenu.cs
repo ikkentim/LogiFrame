@@ -1,15 +1,17 @@
 ﻿// LogiFrame
-// Copyright (C) 2014 Tim Potze
+// Copyright 2015 Tim Potze
 // 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 // 
-// For more information, please refer to <http://unlicense.org>
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 using System;
 using System.Drawing;
@@ -18,27 +20,21 @@ using System.Linq;
 namespace LogiFrame.Components.Book
 {
     /// <summary>
-    ///     Represents a drawable Menu for a LogiFrame.Components.Book.Book.
+    ///     Represents a drawable menu for a <see cref="Book" />.
     /// </summary>
     public class BookMenu : Page
     {
-        #region Fields
-
         protected Book Book;
         protected Line Line;
         protected Label PageTitle;
         protected Square SelectionSquare;
-        private PageCollection<Page> _pages;
+        private WatchableCollection<Page> _pages;
         private Page _selectedPage;
 
-        #endregion
-
-        #region Constructor
-
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Components.Book.BookMenu class.
+        ///     Initializes a new instance of the <see cref="BookMenu" /> class.
         /// </summary>
-        /// <param name="book">The LogiFrame.Components.Book.Book this menu is working for.</param>
+        /// <param name="book">The book the menu is working for.</param>
         public BookMenu(Book book)
         {
             Book = book;
@@ -74,37 +70,33 @@ namespace LogiFrame.Components.Book
             ButtonReturn = 3;
         }
 
-        #endregion
-
-        #region Properites
-
         /// <summary>
-        ///     Gets or sets a Colection of LogiFrame.Components.Book.Page instances the user can browse trough.
+        ///     Gets or sets a collection of <see cref="Page" /> instances the user can browse trough.
         /// </summary>
-        public PageCollection<Page> Pages
+        public WatchableCollection<Page> Pages
         {
             get { return _pages; }
             set
             {
                 if (_pages != null)
                 {
-                    _pages.PageAdded -= pages_PageAdded;
-                    _pages.PageRemoved -= pages_PageRemoved;
+                    _pages.ItemAdded -= pages_PageAdded;
+                    _pages.ItemRemoved -= pages_PageRemoved;
                 }
 
                 _pages = value;
 
                 if (_pages == null) return;
 
-                _pages.PageAdded += pages_PageAdded;
-                _pages.PageRemoved += pages_PageRemoved;
+                _pages.ItemAdded += pages_PageAdded;
+                _pages.ItemRemoved += pages_PageRemoved;
 
                 OnChanged(EventArgs.Empty);
             }
         }
 
         /// <summary>
-        ///     Gets or sets the currently selected LogiFrame.Components.Book.Page.
+        ///     Gets or sets the currently selected <see cref="Page" />.
         /// </summary>
         public Page SelectedPage
         {
@@ -120,37 +112,49 @@ namespace LogiFrame.Components.Book
         }
 
         /// <summary>
-        ///     Gets or sets the LogiFrame.Components.Book.Page to return to when the return button has been pressed.
+        ///     Gets or sets the <see cref="Page" /> to return to when the return button has been pressed.
         /// </summary>
         public Page InitialPage { get; set; }
 
         /// <summary>
-        ///     Gets or sets the button which will select the previous LogiFrame.Components.Book.Page.
+        ///     Gets or sets the button which will select the previous <see cref="Page" />.
         ///     Set to -1 to disable this functionality.
         /// </summary>
         public int ButtonPrevious { get; set; }
 
         /// <summary>
-        ///     Gets or sets the button which will select the next LogiFrame.Components.Book.Page.
+        ///     Gets or sets the button which will select the next <see cref="Page" />.
         ///     Set to -1 to disable this functionality.
         /// </summary>
         public int ButtonNext { get; set; }
 
         /// <summary>
-        ///     Gets or sets the button which will switch to the currently selected LogiFrame.Components.Book.Page.
+        ///     Gets or sets the button which will switch to the currently selected <see cref="Page" />.
         ///     Set to -1 to disable this functionality.
         /// </summary>
         public int ButtonSelect { get; set; }
 
         /// <summary>
-        ///     Gets or sets the button which will return to the initial LogiFrame.Components.Book.Page.
+        ///     Gets or sets the button which will return to the initial <see cref="Page" />.
         ///     Set to -1 to disable this functionality.
         /// </summary>
         public int ButtonReturn { get; set; }
 
-        #endregion
+        /// <summary>
+        ///     Gets the icon.
+        /// </summary>
+        public override PageIcon Icon
+        {
+            get { return null; }
+        }
 
-        #region Methods
+        /// <summary>
+        ///     Gets the name.
+        /// </summary>
+        public override string Name
+        {
+            get { return ToString(); }
+        }
 
         public override void OnButtonPressed(ButtonEventArgs e)
         {
@@ -185,16 +189,12 @@ namespace LogiFrame.Components.Book
             }
         }
 
-        protected override PageIcon GetPageIcon()
-        {
-            return new PageIcon();
-        }
-
-        public override string GetName()
-        {
-            return base.ToString();
-        }
-
+        /// <summary>
+        ///     Renders all graphics of this <see cref="BookMenu" />.
+        /// </summary>
+        /// <returns>
+        ///     The rendered <see cref="Bytemap" />.
+        /// </returns>
         protected override Bytemap Render()
         {
             if (Pages == null || Pages.Count == 0)
@@ -208,11 +208,11 @@ namespace LogiFrame.Components.Book
                 selectedIndex = 0;
             }
 
-            PageTitle.Text = SelectedPage.GetName();
+            PageTitle.Text = SelectedPage.Name;
 
             for (int i = 0; i < Pages.Count(); i++)
             {
-                PageIcon icon = Pages[i].PageIcon;
+                PageIcon icon = Pages[i].Icon;
                 icon.Location.Set(72 + 20*(i - selectedIndex), 24);
 
                 if (!Components.Contains(icon))
@@ -222,16 +222,14 @@ namespace LogiFrame.Components.Book
             return base.Render();
         }
 
-        private void pages_PageRemoved(object sender, ComponentChangedEventArgs e)
+        private void pages_PageRemoved(object sender, ItemEventArgs<Page> e)
         {
             OnChanged(EventArgs.Empty);
         }
 
-        private void pages_PageAdded(object sender, ComponentChangedEventArgs e)
+        private void pages_PageAdded(object sender, ItemEventArgs<Page> e)
         {
             OnChanged(EventArgs.Empty);
         }
-
-        #endregion
     }
 }

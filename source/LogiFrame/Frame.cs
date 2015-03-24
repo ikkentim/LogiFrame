@@ -1,15 +1,17 @@
 ﻿// LogiFrame
-// Copyright (C) 2014 Tim Potze
+// Copyright 2015 Tim Potze
 // 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 // 
-// For more information, please refer to <http://unlicense.org>
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 using System;
 using System.IO;
@@ -23,28 +25,22 @@ namespace LogiFrame
     /// </summary>
     public sealed class Frame : Container
     {
-        #region Fields
-
         private LgLcd.LgLcdBitmap160X43X1 _bitmap;
         private int _buttonState;
         private LgLcd.LgLcdConnectContext _connection;
         private LgLcd.LgLcdOpenContext _openContext;
 
-        #endregion
-
-        #region Constructor/Deconstructor
-
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Frame class.
+        /// Initializes a new instance of the <see cref="Frame"/> class.
         /// </summary>
         /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
         public Frame(string applicationName)
             : this(applicationName, false, false, false, false)
         {
         }
-
+        
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Frame class.
+        /// Initializes a new instance of the <see cref="Frame"/> class.
         /// </summary>
         /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
         /// <param name="isAutostartable"> Whether true application can be started by LCDMon or not.</param>
@@ -52,9 +48,9 @@ namespace LogiFrame
             : this(applicationName, isAutostartable, false, false, false)
         {
         }
-
+        
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Frame class.
+        /// Initializes a new instance of the <see cref="Frame"/> class.
         /// </summary>
         /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
         /// <param name="isAutostartable"> Whether true application can be started by LCDMon or not.</param>
@@ -63,9 +59,9 @@ namespace LogiFrame
             : this(applicationName, isAutostartable, isPersistent, false, false)
         {
         }
-
+        
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Frame class.
+        /// Initializes a new instance of the <see cref="Frame"/> class.
         /// </summary>
         /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
         /// <param name="isAutostartable"> Whether true application can be started by LCDMon or not.</param>
@@ -75,9 +71,9 @@ namespace LogiFrame
             : this(applicationName, isAutostartable, isPersistent, allowConfiguration, false)
         {
         }
-
+        
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Frame class.
+        /// Initializes a new instance of the <see cref="Frame"/> class.
         /// </summary>
         /// <param name="applicationName">A string that contains the 'friendly name' of the application.</param>
         /// <param name="isAutostartable"> Whether true application can be started by LCDMon or not.</param>
@@ -100,7 +96,7 @@ namespace LogiFrame
             //Configuration callback
             AllowConfiguration = allowConfiguration;
             if (AllowConfiguration)
-                _connection.OnConfigure.configCallback = (connection, context) =>
+                _connection.OnConfigure.ConfigCallback = (connection, context) =>
                 {
                     OnConfigure(EventArgs.Empty);
                     return 1;
@@ -114,11 +110,11 @@ namespace LogiFrame
                 new Thread(() => Simulation.Start(this)) {Name = "LogiFrame simulation thread"}.Start();
 
             //Initialize main container
-            Size = new Size((int) LgLcd.LglcdBmpWidth, (int) LgLcd.LglcdBmpHeight);
+            Size = new Size((int) LgLcd.LgLcdBitmapWidth, (int) LgLcd.LgLcdBitmapHeight);
             Changed += (sender, args) =>
             {
                 if (IsDisposed || sender == null) return;
-                if (Size.Width != LgLcd.LglcdBmpWidth || Size.Height != LgLcd.LglcdBmpHeight)
+                if (Size.Width != LgLcd.LgLcdBitmapWidth || Size.Height != LgLcd.LgLcdBitmapHeight)
                     throw new InvalidOperationException("The size of the LogiFrame.Frame container may not be changed.");
 
                 var component = sender as Component;
@@ -135,7 +131,7 @@ namespace LogiFrame
 
             //Open connection
             _openContext.Connection = _connection.Connection;
-            _openContext.OnSoftbuttonsChanged.SoftbuttonsChangedCallback = (device, buttons, context) =>
+            _openContext.OnSoftButtonsChanged.SoftButtonsChangedCallback = (device, buttons, context) =>
             {
                 for (int i = 0, b = 1; i < 4; i++, b *= 2)
                     if ((_buttonState & b) == 0 && (buttons & b) == b) OnButtonDown(new ButtonEventArgs(i));
@@ -149,7 +145,7 @@ namespace LogiFrame
             LgLcd.lgLcdOpen(ref _openContext);
 
             //Store bitmap format
-            _bitmap.hdr = new LgLcd.LgLcdBitmapHeader {Format = LgLcd.LglcdBmpFormat160X43X1};
+            _bitmap.hdr = new LgLcd.LgLcdBitmapHeader {Format = LgLcd.LgLcdBitmapFormat160X43X1};
 
             //Send empty bytemap
             UpdateScreen(null);
@@ -162,10 +158,6 @@ namespace LogiFrame
         {
             Dispose();
         }
-
-        #endregion
-
-        #region Events
 
         /// <summary>
         ///     Represents the method that handles LogiFrame.Frame.ButtonDown
@@ -207,16 +199,12 @@ namespace LogiFrame
         /// </summary>
         public event EventHandler Configure;
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         ///     Gets the LogiFrame.Size of an LCD screen.
         /// </summary>
         public static Size LCDSize
         {
-            get { return new Size((int) LgLcd.LglcdBmpWidth, (int) LgLcd.LglcdBmpHeight); }
+            get { return new Size((int) LgLcd.LgLcdBitmapWidth, (int) LgLcd.LgLcdBitmapHeight); }
         }
 
         /// <summary>
@@ -251,10 +239,6 @@ namespace LogiFrame
         /// </summary>
         public UpdatePriority UpdatePriority { get; set; }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         ///     Releases all resources used by LogiFrame.Frame
         /// </summary>
@@ -277,7 +261,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Waits untill the LogiFrame.Frame was disposed.
+        ///     Waits until the LogiFrame.Frame was disposed.
         /// </summary>
         public void WaitForClose()
         {
@@ -376,10 +360,8 @@ namespace LogiFrame
 
             if (e.PreventPush) return;
 
-            _bitmap.pixels = bytemap == null ? new byte[LgLcd.LglcdBmpWidth*LgLcd.LglcdBmpHeight] : bytemap.Data;
+            _bitmap.pixels = bytemap == null ? new byte[LgLcd.LgLcdBitmapWidth*LgLcd.LgLcdBitmapHeight] : bytemap.Data;
             LgLcd.lgLcdUpdateBitmap(_openContext.Device, ref _bitmap, (uint) UpdatePriority);
         }
-
-        #endregion
     }
 }

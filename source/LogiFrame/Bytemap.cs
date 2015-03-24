@@ -1,15 +1,17 @@
 ﻿// LogiFrame
-// Copyright (C) 2014 Tim Potze
+// Copyright 2015 Tim Potze
 // 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 // 
-// For more information, please refer to <http://unlicense.org>
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 using System;
 using System.ComponentModel;
@@ -18,29 +20,19 @@ using System.Drawing;
 namespace LogiFrame
 {
     /// <summary>
-    ///     Represents a single-color image in a bytearray
+    ///     Represents a single-color image in a byte array.
     /// </summary>
     [TypeConverter(typeof (SimpleExpandableObjectConverter))]
     public class Bytemap
     {
-        #region Fields
-
         private int _height;
         private Size _size;
         private int _width;
-
-        #endregion
-
-        #region Statics
 
         /// <summary>
         ///     Represents an empty Bytemap.
         /// </summary>
         public static readonly Bytemap Empty = null;
-
-        #endregion
-
-        #region Factory
 
         /// <summary>
         ///     Transform a System.Drawing.Bitmap into a LogiFrame.Bytemap.
@@ -82,10 +74,6 @@ namespace LogiFrame
             }
         }
 
-        #endregion
-
-        #region Constructors
-
         /// <summary>
         ///     Initializes a new instance of the LogiFrame.Bytemap class.
         /// </summary>
@@ -104,10 +92,6 @@ namespace LogiFrame
         {
             Size = size;
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         ///     Gets the byte[] array container all the date of the canvas.
@@ -155,10 +139,6 @@ namespace LogiFrame
                 Resize();
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         ///     Creates a copy of LogiFrame.Bytemap instance.
@@ -275,10 +255,10 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Converts the specified LogiFrame.Bytemap instance to a System.Drawing.Bitmap instance.
+        ///     Converts the specified <see cref="Bytemap"/> instance to a System.Drawing.Bitmap instance.
         /// </summary>
-        /// <param name="bytemap">The LogiFrame.Bytemap to be converted.</param>
-        /// <returns>The System.Drawing.Bitmap that results from the conversion.</returns>
+        /// <param name="bytemap">The <see cref="Bytemap"/> to be converted.</param>
+        /// <returns>The <see cref="Bitmap"/> that results from the conversion.</returns>
         public static implicit operator Bitmap(Bytemap bytemap)
         {
             if (bytemap == null)
@@ -294,9 +274,6 @@ namespace LogiFrame
             return result;
         }
 
-        /// <summary>
-        ///     Resizes the byte array according to the Size.
-        /// </summary>
         private void Resize()
         {
             if (_width == Size.Width && _height == Size.Height) return;
@@ -312,16 +289,9 @@ namespace LogiFrame
             _height = Size.Height;
         }
 
-        /// <summary>
-        ///     Listener for Size.Changed.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void size_Changed(object sender, EventArgs e)
         {
             Resize();
         }
-
-        #endregion
     }
 }

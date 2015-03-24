@@ -13,15 +13,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace LogiFrame
 {
-    public enum Alignment
+    /// <summary>
+    ///     Provides data for the <see cref="WatchableCollection{T}.ItemAdded" /> or
+    ///     <see cref="WatchableCollection{T}.ItemRemoved" /> event.
+    /// </summary>
+    public class ItemEventArgs<T> : EventArgs
     {
-        Left = 0,
-        Top = 0,
-        Center = 1,
-        Middle = 1,
-        Right = 2,
-        Bottom = 2
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ItemEventArgs{T}" /> class.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        public ItemEventArgs(T item)
+        {
+            Item = item;
+        }
+
+        /// <summary>
+        ///     Gets the item.
+        /// </summary>
+        public T Item { get; private set; }
     }
 }

@@ -1,15 +1,17 @@
 ﻿// LogiFrame
-// Copyright (C) 2014 Tim Potze
+// Copyright 2015 Tim Potze
 // 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 // 
-// For more information, please refer to <http://unlicense.org>
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -17,12 +19,12 @@ using System.Collections.Generic;
 namespace LogiFrame.Components.Book
 {
     /// <summary>
-    ///     Represents a drawable icon of a LogiFrame.Components.Book.Page.
+    ///     Represents a drawable icon for a <see cref="Page" />.
     /// </summary>
     public class PageIcon : Container
     {
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Components.Book.PageIcon class.
+        ///     Initializes a new instance of the <see cref="PageIcon" /> class.
         /// </summary>
         public PageIcon()
         {
@@ -30,9 +32,9 @@ namespace LogiFrame.Components.Book
         }
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Components.Book.PageIcon class.
+        ///     Initializes a new instance of the <see cref="PageIcon" /> class.
         /// </summary>
-        /// <param name="components">Compoents to be added to this container.</param>
+        /// <param name="components">The components.</param>
         public PageIcon(IEnumerable<Component> components) : this()
         {
             foreach (Component c in components)
@@ -40,9 +42,10 @@ namespace LogiFrame.Components.Book
         }
 
         /// <summary>
-        ///     Gets the LogiFrame.Location this LogiFrame.Components.Book.PageIcon should
-        ///     be rendered at within the parrent LogiFrame.Components.Container.
+        ///     Gets or sets the <see cref="Location" /> this <see cref="Component" /> should be rendered at within the parent
+        ///     <see cref="Container" />.
         /// </summary>
+        /// <exception cref="System.ArgumentException">The Location of a LogiFrame.Components.Book.PageIcon cannot be changed.</exception>
         public override Location Location
         {
             get { return base.Location; }
@@ -52,10 +55,10 @@ namespace LogiFrame.Components.Book
             }
         }
 
-
         /// <summary>
-        ///     Gets the LogiFrame.Size of this LogiFrame.Components.Book.PageIcon.
+        ///     Gets or sets the <see cref="Size" /> of this <see cref="Component" />.
         /// </summary>
+        /// <exception cref="System.ArgumentException">The Size of a LogiFrame.Components.Book.PageIcon cannot be changed.</exception>
         public override Size Size
         {
             get { return base.Size; }

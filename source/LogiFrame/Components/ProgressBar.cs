@@ -1,15 +1,17 @@
 ﻿// LogiFrame
-// Copyright (C) 2014 Tim Potze
+// Copyright 2015 Tim Potze
 // 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 // 
-// For more information, please refer to <http://unlicense.org>
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 namespace LogiFrame.Components
 {
@@ -20,43 +22,43 @@ namespace LogiFrame.Components
     {
         private readonly Square _borderSquare = new Square();
         private readonly Square _innerSquare = new Square();
-        private bool _horizontal = true;
-        private bool _inverted;
+        private bool _isHorizontal = true;
+        private bool _isInverted;
         private float _maximumValue = 100;
         private float _minimumValue;
         private ProgressBarStyle _progressBarStyle = ProgressBarStyle.NoBorder;
         private float _value;
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Components.ProgressBar class.
+        /// Initializes a new instance of the <see cref="ProgressBar"/> class.
         /// </summary>
         public ProgressBar()
         {
             Components.Add(_borderSquare);
             Components.Add(_innerSquare);
-            _innerSquare.Fill = true;
+            _innerSquare.IsFilled = true;
         }
 
         /// <summary>
         ///     Gets or sets whether the progress bar is progressing horizontally.
         /// </summary>
-        public bool Horizontal
+        public bool IsHorizontal
         {
-            get { return _horizontal; }
-            set { SwapProperty(ref _horizontal, value); }
+            get { return _isHorizontal; }
+            set { SwapProperty(ref _isHorizontal, value); }
         }
 
         /// <summary>
-        ///     Gets or sets whether the progress bar is progressing invertedly.
+        ///     Gets or sets whether the progress bar is progressing inverted.
         /// </summary>
-        public bool Inverted
+        public bool IsInverted
         {
-            get { return _inverted; }
-            set { SwapProperty(ref _inverted, value); }
+            get { return _isInverted; }
+            set { SwapProperty(ref _isInverted, value); }
         }
 
         /// <summary>
-        ///     Gets or sets the maximum Value this LogiFrame.Components.ProgressBar can have.
+        /// Gets or sets the maximum value.
         /// </summary>
         public float MaximumValue
         {
@@ -70,7 +72,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets the minimum Value this LogiFrame.Components.ProgressBar can have.
+        /// Gets or sets the minimum value.
         /// </summary>
         public float MinimumValue
         {
@@ -84,7 +86,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets the Value of this LogiFrame.Components.ProgressBar.
+        /// Gets or sets the value.
         /// </summary>
         public float Value
         {
@@ -98,7 +100,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets the LogiFrame.Components.ProgressBarStyle of this LogiFrame.Components.ProgressBar.
+        /// Gets or sets the progress bar style.
         /// </summary>
         public ProgressBarStyle ProgressBarStyle
         {
@@ -120,29 +122,29 @@ namespace LogiFrame.Components
             {
                 case ProgressBarStyle.Border:
                     borderOffset = 1;
-                    _borderSquare.Visible = true;
+                    _borderSquare.IsVisible = true;
                     break;
                 case ProgressBarStyle.NoBorder:
                     borderOffset = 0;
-                    _borderSquare.Visible = false;
+                    _borderSquare.IsVisible = false;
                     break;
                 case ProgressBarStyle.WhiteSpacedBorder:
                     borderOffset = 2;
-                    _borderSquare.Visible = true;
+                    _borderSquare.IsVisible = true;
                     break;
             }
 
-            if (_horizontal)
+            if (_isHorizontal)
             {
                 _innerSquare.Size.Set((int) ((Size.Width - borderOffset*2)*progress), Size.Height - borderOffset*2);
                 _innerSquare.Location.Set(
-                    _inverted ? Size.Width - _innerSquare.Size.Width - borderOffset : borderOffset, borderOffset);
+                    _isInverted ? Size.Width - _innerSquare.Size.Width - borderOffset : borderOffset, borderOffset);
             }
             else
             {
                 _innerSquare.Size.Set(Size.Width - borderOffset*2, (int) ((Size.Height - borderOffset*2)*progress));
                 _innerSquare.Location.Set(borderOffset,
-                    _inverted ? Size.Height - _innerSquare.Size.Height - borderOffset : borderOffset);
+                    _isInverted ? Size.Height - _innerSquare.Size.Height - borderOffset : borderOffset);
             }
 
             return base.Render();

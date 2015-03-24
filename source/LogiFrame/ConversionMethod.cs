@@ -1,21 +1,25 @@
 ﻿// LogiFrame
-// Copyright (C) 2014 Tim Potze
+// Copyright 2015 Tim Potze
 // 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 // 
-// For more information, please refer to <http://unlicense.org>
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System.Drawing;
 
 namespace LogiFrame
 {
     /// <summary>
-    ///     Represents the technique used for transforming a System.Drawing.Bitmap
-    ///     into a LogiFrame.Bytemap.
+    ///     Represents the technique used for converting a <see cref="Bitmap"/>
+    ///     into a <see cref="Bytemap"/>.
     /// </summary>
     public struct ConversionMethod
     {
@@ -35,7 +39,7 @@ namespace LogiFrame
         public static readonly ConversionMethod NonWhite = new ConversionMethod(254, 254, 254, 255);
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.ConversionMethod structure.
+        /// Initializes a new instance of the <see cref="ConversionMethod"/> struct.
         /// </summary>
         /// <param name="maxRed">The maximum red color value for a pixel to be filled.</param>
         /// <param name="maxGreen">The maximum green color value for a pixel to be filled.</param>
@@ -71,12 +75,11 @@ namespace LogiFrame
         public byte MinAlpha { get; set; }
 
         /// <summary>
-        ///     Determines whether the specified System.Object is equal to this LogiFrame.ConversionMethod.
+        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
         /// </summary>
-        /// <param name="obj">The System.Object to compare with this LogiFrame.ConversionMethod.</param>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
         /// <returns>
-        ///     true if the specified System.Object is equal to this LogiFrame.ConversionMethod;
-        ///     otherwise, false.
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals(object obj)
         {
@@ -91,20 +94,38 @@ namespace LogiFrame
                    other.MinAlpha == MinAlpha;
         }
 
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
         public static bool operator ==(ConversionMethod left, ConversionMethod right)
         {
             return left.Equals(right);
         }
 
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
         public static bool operator !=(ConversionMethod left, ConversionMethod right)
         {
             return left.Equals(right) == false;
         }
 
         /// <summary>
-        ///     Returns a hash code for this LogiFrame.ConversionMethod.
+        /// Returns a hash code for this instance.
         /// </summary>
-        /// <returns>An integer value that specifies a hash value for this LogiFrame.ConversionMethod.</returns>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
         public override int GetHashCode()
         {
             unchecked

@@ -1,15 +1,17 @@
 ﻿// LogiFrame
-// Copyright (C) 2014 Tim Potze
+// Copyright 2015 Tim Potze
 // 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 // 
-// For more information, please refer to <http://unlicense.org>
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 using System;
 using System.Drawing;
@@ -18,38 +20,28 @@ using System.Linq;
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a scrolling text.
+    /// Represents a scrolling text.
     /// </summary>
     public class Marquee : Container
     {
-        #region Fields
-
         private readonly Label _label = new Label {AutoSize = true};
-        private readonly ComponentCollection<Marquee> _syncedMarquees = new ComponentCollection<Marquee>();
+        private readonly WatchableCollection<Marquee> _syncedMarquees = new WatchableCollection<Marquee>();
         private readonly Timer _timer = new Timer();
-        private int _endSteps;
-        private int _step;
+        private int _endStepsCount;
+        private int _currentStep;
         private int _stepSize = 1;
         private bool _vertical;
-
-        #endregion
-
-        #region Constructor
 
         /// <summary>
         ///     Initializes a new instance of the LogiFrame.Component.Marquee class.
         /// </summary>
         public Marquee()
         {
-            _syncedMarquees.ComponentAdded += (sender, args) => { args.Component.Disposed += Component_Disposed; };
-            _timer.Tick += (sender, args) => { Step += StepSize; };
+            _syncedMarquees.ItemAdded += (sender, args) => { args.Item.Disposed += Component_Disposed; };
+            _timer.Tick += (sender, args) => { CurrentStep += StepSize; };
             Components.Add(_label);
             Components.Add(_timer);
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         ///     Gets or sets thetext this LogiFrame.Component.Marquee should draw.
@@ -121,30 +113,29 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets a list to fill with LogiFrame.Components.Marquee objects whose steps to sync with this
-        ///     LogiFrame.Components.Marquee.
+        /// Gets a collection of synced marquees.
         /// </summary>
-        public ComponentCollection<Marquee> SyncedMarquees
+        public WatchableCollection<Marquee> SyncedMarquees
         {
             get { return _syncedMarquees; }
         }
 
         /// <summary>
-        ///     Gets or sets the LogiFrame.Components.MarqueeStyle to use.
+        /// Gets or sets the marquee style.
         /// </summary>
         public MarqueeStyle MarqueeStyle { get; set; }
 
         /// <summary>
-        ///     Gets or sets the amount of steps for the marquee to stop at the preset moments.
+        ///     Gets or sets the number of steps for the marquee to stop at the preset moments.
         /// </summary>
-        public int EndSteps
+        public int EndStepsCount
         {
-            get { return _endSteps; }
-            set { SwapProperty(ref _endSteps, value); }
+            get { return _endStepsCount; }
+            set { SwapProperty(ref _endStepsCount, value); }
         }
 
         /// <summary>
-        ///     Gets the amount of steps it takes this LogiFrame.Components.Marquee to rotate.
+        ///     Gets the amount of steps it takes to rotate.
         /// </summary>
         public int Steps
         {
@@ -153,9 +144,9 @@ namespace LogiFrame.Components
                 switch (MarqueeStyle)
                 {
                     case MarqueeStyle.Loop:
-                        return EndSteps + Size.Width + _label.Size.Width*2;
+                        return EndStepsCount + Size.Width + _label.Size.Width*2;
                     case MarqueeStyle.Visibility:
-                        return EndSteps*2 +
+                        return EndStepsCount*2 +
                                (_label.Size.Width - Size.Width > 0 ? _label.Size.Width - Size.Width : 0);
                     default:
                         return 0;
@@ -164,22 +155,22 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets the current step of this LogiFrame.Components.Marquee.
+        /// Gets or sets the current step.
         /// </summary>
-        public int Step
+        public int CurrentStep
         {
-            get { return _step; }
+            get { return _currentStep; }
             set
             {
-                if (!SwapProperty(ref _step, value, false, false)) return;
+                if (!SwapProperty(ref _currentStep, value, false, false)) return;
                 int ms = _syncedMarquees.Select(m => m.Steps).Concat(new[] {Steps}).Max();
 
-                _step %= ms;
-                while (_step < 0) _step += ms;
-                int step = _step >= Steps ? Steps - 1 : _step;
+                _currentStep %= ms;
+                while (_currentStep < 0) _currentStep += ms;
+                int step = _currentStep >= Steps ? Steps - 1 : _currentStep;
 
                 foreach (Marquee marquee in _syncedMarquees)
-                    marquee.Step = Math.Min(_step, marquee.Steps - 1);
+                    marquee.CurrentStep = Math.Min(_currentStep, marquee.Steps - 1);
 
                 switch (MarqueeStyle)
                 {
@@ -187,44 +178,40 @@ namespace LogiFrame.Components
                         if (Vertical)
                         {
                             int y = Size.Width - step;
-                            if (step > Size.Width) y += Math.Min(step - Size.Width, EndSteps);
+                            if (step > Size.Width) y += Math.Min(step - Size.Width, EndStepsCount);
                             _label.Location.Set(0, y);
                         }
                         else
                         {
                             int x = Size.Width - step;
-                            if (step > Size.Width) x += Math.Min(step - Size.Width, EndSteps);
+                            if (step > Size.Width) x += Math.Min(step - Size.Width, EndStepsCount);
                             _label.Location.Set(x, 0);
                         }
                         break;
                     case MarqueeStyle.Visibility:
-                        if (Steps == EndSteps*2)
+                        if (Steps == EndStepsCount*2)
                         {
                             _label.Location.Set(0, 0);
                             break;
                         }
                         if (Vertical)
                         {
-                            int y = -step + Math.Min(step, EndSteps);
+                            int y = -step + Math.Min(step, EndStepsCount);
                             int h = _label.Size.Height - Size.Height > 0 ? _label.Size.Height - Size.Height : 0;
-                            if (step > h + EndSteps) y += Math.Min(step - (h + EndSteps), EndSteps);
+                            if (step > h + EndStepsCount) y += Math.Min(step - (h + EndStepsCount), EndStepsCount);
                             _label.Location.Set(0, y);
                         }
                         else
                         {
-                            int x = -step + Math.Min(step, EndSteps);
+                            int x = -step + Math.Min(step, EndStepsCount);
                             int w = _label.Size.Width - Size.Width > 0 ? _label.Size.Width - Size.Width : 0;
-                            if (step > w + EndSteps) x += Math.Min(step - (w + EndSteps), EndSteps);
+                            if (step > w + EndStepsCount) x += Math.Min(step - (w + EndStepsCount), EndStepsCount);
                             _label.Location.Set(x, 0);
                         }
                         break;
                 }
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         ///     Clears all items from the Label's cache.
@@ -241,7 +228,5 @@ namespace LogiFrame.Components
             m.Disposed -= Component_Disposed;
             _syncedMarquees.Remove(m);
         }
-
-        #endregion
     }
 }

@@ -1,15 +1,17 @@
 ﻿// LogiFrame
-// Copyright (C) 2014 Tim Potze
+// Copyright 2015 Tim Potze
 // 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 // 
-// For more information, please refer to <http://unlicense.org>
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 using System;
 using System.Linq;
@@ -17,65 +19,55 @@ using System.Linq;
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a Component that is capable of holding multiple other LogiFrame.Components.Component instances.
+    ///     Represents a Component that is capable of holding multiple other <see cref="Component" /> instances.
     /// </summary>
     public class Container : Component
     {
-        #region Fields
-
-        private readonly ComponentCollection<Component> _components = new ComponentCollection<Component>();
-
-        #endregion
-
-        #region Constructor
+        private readonly WatchableCollection<Component> _components = new WatchableCollection<Component>();
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Components.Container class.
+        ///     Initializes a new instance of the <see cref="Container" /> class.
         /// </summary>
         public Container()
         {
-            _components.ComponentAdded += (sender, args) =>
+            _components.ItemAdded += (sender, args) =>
             {
                 if (IsDisposed) return;
 
-                if (args.Component.ParentComponent != null)
+                if (args.Item.ParentComponent != null)
                     throw new ArgumentException("The Component has already been bound to a Container.");
 
-                args.Component.Changed += Container_Changed;
-                args.Component.LocationChanged += Container_Changed;
-                args.Component.ParentComponent = this;
+                args.Item.Changed += Container_Changed;
+                args.Item.LocationChanged += Container_Changed;
+                args.Item.ParentComponent = this;
 
                 OnChanged(EventArgs.Empty);
             };
-            _components.ComponentRemoved += (sender, args) =>
+            _components.ItemRemoved += (sender, args) =>
             {
                 if (IsDisposed) return;
 
-                args.Component.Changed -= Container_Changed;
-                args.Component.LocationChanged -= Container_Changed;
-                args.Component.ParentComponent = null;
+                args.Item.Changed -= Container_Changed;
+                args.Item.LocationChanged -= Container_Changed;
+                args.Item.ParentComponent = null;
 
                 OnChanged(EventArgs.Empty);
             };
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        ///     Gets a collection of LogiFrame.Components.Component instances that will be rendered
-        ///     within this LogiFrame.Components.Container.
+        ///     Gets the components.
         /// </summary>
-        public ComponentCollection<Component> Components
+        public WatchableCollection<Component> Components
         {
             get { return _components; }
         }
 
-        #endregion
-
-        #region Methods
-
+        /// <summary>
+        ///     Refreshes the <see cref="Bytemap" /> and renders it if necessary.
+        /// </summary>
+        /// <param name="forceRefresh">Forces the <see cref="Bytemap" /> being rerendered even if it hasn't changed when True.</param>
+        /// <exception cref="System.ObjectDisposedException">Resource was disposed.</exception>
         public override void Refresh(bool forceRefresh)
         {
             if (IsDisposed)
@@ -90,6 +82,10 @@ namespace LogiFrame.Components
             base.Refresh(forceRefresh);
         }
 
+        /// <summary>
+        ///     Renders all graphics of this <see cref="Container" />.
+        /// </summary>
+        /// <returns>The rendered <see cref="Bytemap" />.</returns>
         protected override Bytemap Render()
         {
             var result = new Bytemap(Size);
@@ -114,16 +110,9 @@ namespace LogiFrame.Components
             Components.Clear();
         }
 
-        /// <summary>
-        ///     Listener for Component.Changed.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Container_Changed(object sender, EventArgs e)
         {
             OnChanged(EventArgs.Empty);
         }
-
-        #endregion
     }
 }

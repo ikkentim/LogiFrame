@@ -1,15 +1,17 @@
 ﻿// LogiFrame
-// Copyright (C) 2014 Tim Potze
+// Copyright 2015 Tim Potze
 // 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 // 
-// For more information, please refer to <http://unlicense.org>
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 using System;
 using System.ComponentModel;
@@ -17,7 +19,7 @@ using System.ComponentModel;
 namespace LogiFrame
 {
     /// <summary>
-    ///     Represents the size of a component.
+    ///     Represents the size of a <see cref="Component"/>.
     /// </summary>
     [TypeConverter(typeof (SimpleExpandableObjectConverter))]
     public class Size
@@ -32,20 +34,20 @@ namespace LogiFrame
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Location class.
+        /// Initializes a new instance of the <see cref="Size"/> class.
         /// </summary>
         public Size()
         {
         }
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Location class.
+        /// Initializes a new instance of the <see cref="Size"/> class.
         /// </summary>
-        /// <param name="parent">An instance of LogiFrame.Size to copy the dimentions from.</param>
-        public Size(Size parent)
+        /// <param name="size">An instance of <see cref="Size"/> to copy the dimentions from.</param>
+        public Size(Size size)
         {
-            _width = parent.Width;
-            _height = parent.Height;
+            _width = size.Width;
+            _height = size.Height;
         }
 
         /// <summary>
@@ -66,7 +68,7 @@ namespace LogiFrame
         #region Events
 
         /// <summary>
-        ///     Occurs when the Size has been changed.
+        ///     Occurs when the <see cref="Size"/> has been changed.
         /// </summary>
         public event EventHandler Changed;
 
@@ -75,7 +77,7 @@ namespace LogiFrame
         #region Properties
 
         /// <summary>
-        ///     Gets or sets the width of the LogiFrame.Size.
+        /// Gets or sets the width.
         /// </summary>
         public int Width
         {
@@ -84,8 +86,9 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Gets or sets the height of the LogiFrame.Size.
-        /// </summary>
+        /// Gets or sets the height.
+        /// </summary>t.
+        /// </value>
         public int Height
         {
             get { return _height; }
@@ -97,7 +100,7 @@ namespace LogiFrame
         #region Methods
 
         /// <summary>
-        ///     Adds a certain value to this LogiFrame.Size instance.
+        ///     Adds the specified <paramref name="width"/> and <paramref name="height"/> values to this instance.
         /// </summary>
         /// <param name="width">Value to add to the width.</param>
         /// <param name="height">Value to add to the height</param>
@@ -116,21 +119,21 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Adds a certain value to this LogiFrame.Size instance.
+        ///     Adds a the specified <paramref name="value"/> to this instance.
         /// </summary>
-        /// <param name="other">Value to add to the width and height.</param>
-        public void Add(Size other)
+        /// <param name="value">Value to add to the width and height.</param>
+        public void Add(Size value)
         {
-            bool changed = other.Width != 0 || other.Height != 0;
-            _width += other.Width;
-            _height += other.Height;
+            bool changed = value.Width != 0 || value.Height != 0;
+            _width += value.Width;
+            _height += value.Height;
 
             if (changed && Changed != null)
                 Changed(this, EventArgs.Empty);
         }
 
         /// <summary>
-        ///     Set a certain value to this LogiFrame.Size instance.
+        ///     Sets this instance to the specified <paramref name="width"/> and <paramref name="height"/> value.
         /// </summary>
         /// <param name="width">The new width value.</param>
         /// <param name="height">The new height value.</param>
@@ -148,30 +151,26 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Set a certain value to this LogiFrame.Size instance.
+        ///     Sets this instance to the specified <paramref name="value"/>.
         /// </summary>
-        /// <param name="other">An instance of LogiFrame.Size to copy the dimensions from.</param>
-        public void Set(Size other)
+        /// <param name="value">An instance of Size to copy the dimensions from.</param>
+        public void Set(Size value)
         {
-            bool changed = Width != other.Width || Height != other.Height;
-            _width = other.Width;
-            _height = other.Height;
+            bool changed = Width != value.Width || Height != value.Height;
+            _width = value.Width;
+            _height = value.Height;
 
             if (changed && Changed != null)
                 Changed(this, EventArgs.Empty);
         }
 
         /// <summary>
-        ///     Translates a LogiFrame.Size by a given LogiFrame.Size.
+        /// Implements the operator -.
         /// </summary>
-        /// <param name="size1">The LogiFrame.Size to translate.</param>
-        /// <param name="size2">
-        ///     A LogiFrame.Size that specifies the pair of numbers to add to
-        ///     the coordinates of size1.
-        /// </param>
+        /// <param name="size1">The size1.</param>
+        /// <param name="size2">The size2.</param>
         /// <returns>
-        ///     A LogiFrame.Size instance that is translated by the other
-        ///     given LogiFrame.Size instance.
+        /// The result of the operator.
         /// </returns>
         public static Size operator -(Size size1, Size size2)
         {
@@ -179,16 +178,12 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Translates a LogiFrame.Size by the  of a given LogiFrame.Size.
+        /// Implements the operator +.
         /// </summary>
-        /// <param name="size1">The LogiFrame.Size to translate.</param>
-        /// <param name="size2">
-        ///     A LogiFrame.Size that specifies the pair of numbers to subtract from
-        ///     the coordinates of loc1.
-        /// </param>
+        /// <param name="size1">The size1.</param>
+        /// <param name="size2">The size2.</param>
         /// <returns>
-        ///     A LogiFrame.Size instance that is translated by the negative of the
-        ///     other given LogiFrame.Size instance.
+        /// The result of the operator.
         /// </returns>
         public static Size operator +(Size size1, Size size2)
         {
@@ -196,29 +191,35 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Converts the specified LogiFrame.Size instance to a System.Drawing.Size struct.
+        /// Performs an implicit conversion from <see cref="Size"/> to <see cref="System.Drawing.Size"/>.
         /// </summary>
-        /// <param name="size">The LogiFrame.Size to be converted.</param>
-        /// <returns>The System.Drawing.Size that results from the conversion.</returns>
+        /// <param name="size">The size.</param>
+        /// <returns>
+        /// The result of the conversion.
+        /// </returns>
         public static implicit operator System.Drawing.Size(Size size)
         {
             return new System.Drawing.Size(size.Width, size.Height);
         }
 
         /// <summary>
-        ///     Converts the specified System.Drawing.Size struct to a LogiFrame.Size instance.
+        /// Performs an implicit conversion from <see cref="System.Drawing.Size"/> to <see cref="Size"/>.
         /// </summary>
-        /// <param name="size">The System.Drawing.Size to be converted.</param>
-        /// <returns>The LogiFrame.Size that results from the conversion.</returns>
+        /// <param name="size">The size.</param>
+        /// <returns>
+        /// The result of the conversion.
+        /// </returns>
         public static implicit operator Size(System.Drawing.Size size)
         {
             return new Size(size.Width, size.Height);
         }
 
         /// <summary>
-        ///     Returns a hash code for this LogiFrame.Size.
+        /// Returns a hash code for this instance.
         /// </summary>
-        /// <returns>An integer value that specifies a hash value for this LogiFrame.Size.</returns>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
         public override int GetHashCode()
         {
             unchecked
@@ -233,9 +234,11 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Converts this LogiFrame.Size to a human-readable string.
+        /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        /// <returns>A string that represents this LogiFrame.Size.</returns>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             return "(" + Width + ", " + Height + ")";

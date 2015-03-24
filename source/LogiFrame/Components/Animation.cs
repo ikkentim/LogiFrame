@@ -1,15 +1,17 @@
 ﻿// LogiFrame
-// Copyright (C) 2014 Tim Potze
+// Copyright 2015 Tim Potze
 // 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 // 
-// For more information, please refer to <http://unlicense.org>
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 using System;
 using System.Drawing;
@@ -22,29 +24,24 @@ namespace LogiFrame.Components
     /// </summary>
     public class Animation : Picture
     {
-        #region Fields
-
         private readonly Timer _timer;
         private bool _autoInterval = true;
         private Bytemap[] _bytemaps;
         private int _frame;
 
-        #endregion
-
         #region Constructor
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Animation" /> class.
+        /// </summary>
         public Animation()
         {
             _timer = new Timer();
             _timer.Tick += (sender, args) => Frame++;
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        ///     Gets or sets the time in miliseconds each frame lasts.
+        ///     Gets or sets the time in milliseconds each frame lasts.
         /// </summary>
         public int Interval
         {
@@ -57,8 +54,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets whether this LogiFrame.Components.Animation should
-        ///     automatically calculate its Interval.
+        ///     Gets or sets whether this <see cref="Animation" /> should automatically calculate its Interval.
         /// </summary>
         public bool AutoInterval
         {
@@ -76,7 +72,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets the animated System.Drawing.Image to be rendered.
+        ///     Gets or sets the animated <see cref="System.Drawing.Image" /> to be rendered.
         /// </summary>
         public override Image Image
         {
@@ -96,7 +92,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets the LogiFrame.ConversionMethod to be used to render the animation.
+        ///     Gets or sets the <see cref="LogiFrame.ConversionMethod" /> to be used to render the animation.
         /// </summary>
         public override ConversionMethod ConversionMethod
         {
@@ -158,6 +154,10 @@ namespace LogiFrame.Components
 
         #region Methods
 
+        /// <summary>
+        ///     Renders this instance.
+        /// </summary>
+        /// <returns></returns>
         protected override Bytemap Render()
         {
             //Return current frame
@@ -167,6 +167,9 @@ namespace LogiFrame.Components
             return _bytemaps[_frame];
         }
 
+        /// <summary>
+        ///     Stub for child components. This overridable method can be used to dispose resources.
+        /// </summary>
         protected override void DisposeComponent()
         {
             _timer.Dispose();
@@ -174,7 +177,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Renders and stores every individual frame of this LogiFrame.Components.Animation.
+        ///     Renders and stores every individual frame.
         /// </summary>
         private void RenderAnimation()
         {
@@ -214,9 +217,9 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets the frame duration of the Image from libgdiplus.
+        ///     Gets the frame duration of <see cref="Image" />.
         /// </summary>
-        /// <returns>The frame duration from libgdiplus</returns>
+        /// <returns>The frame duration.</returns>
         private int GetFrameDuration()
         {
             try

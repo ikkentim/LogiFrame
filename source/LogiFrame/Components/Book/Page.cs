@@ -1,49 +1,50 @@
 ﻿// LogiFrame
-// Copyright (C) 2014 Tim Potze
+// Copyright 2015 Tim Potze
 // 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 // 
-// For more information, please refer to <http://unlicense.org>
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 using System;
 
 namespace LogiFrame.Components.Book
 {
     /// <summary>
-    ///     Represents a page which can be used with a LogiFrame.Components.Book.Book.
+    ///     Represents a page which can be used with a <see cref="Book" />.
     /// </summary>
     public abstract class Page : Container
     {
-        private PageIcon _pageIcon;
-
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Components.Book.Page class.
+        ///     Initializes a new instance of the <see cref="Page" /> class.
         /// </summary>
         protected Page()
         {
-            base.Size = new Size((int) LgLcd.LglcdBmpWidth, (int) LgLcd.LglcdBmpHeight);
+            base.Size = new Size((int) LgLcd.LgLcdBitmapWidth, (int) LgLcd.LgLcdBitmapHeight);
         }
 
         /// <summary>
-        ///     Gets the LogiFrame.Location this LogiFrame.Components.Book.Page should
-        ///     be rendered at within the parrent LogiFrame.Components.Container.
+        ///     Gets or sets the <see cref="Location" /> this <see cref="Component" /> should be rendered at within the parent
+        ///     <see cref="Container" />.
         /// </summary>
+        /// <exception cref="System.ArgumentException">The Location of a LogiFrame.Components.Book.Page cannot be changed.</exception>
         public override Location Location
         {
             get { return base.Location; }
             set { throw new ArgumentException("The Location of a LogiFrame.Components.Book.Page cannot be changed."); }
         }
 
-
         /// <summary>
-        ///     Gets the LogiFrame.Size of this LogiFrame.Components.Book.Page.
+        ///     Gets or sets the <see cref="Size" /> of this <see cref="Component" />.
         /// </summary>
+        /// <exception cref="System.ArgumentException">The Size of a LogiFrame.Components.Book.Page cannot be changed.</exception>
         public override Size Size
         {
             get { return base.Size; }
@@ -51,66 +52,81 @@ namespace LogiFrame.Components.Book
         }
 
         /// <summary>
-        ///     Gets the LogiFrame.Components.Book.PageIcon of this LogiFrame.Components.Book.Page.
+        ///     Gets the icon.
         /// </summary>
-        public PageIcon PageIcon
+        public abstract PageIcon Icon { get; }
+
+        /// <summary>
+        ///     Gets the name.
+        /// </summary>
+        public abstract string Name { get; }
+
+        /// <summary>
+        ///     Gets a value indicating whether this instance is browsable.
+        /// </summary>
+        public virtual bool IsBrowsable
         {
-            get { return _pageIcon = _pageIcon ?? GetPageIcon(); }
+            get { return true; }
         }
 
         /// <summary>
-        ///     Is called when a button has been pressed.
+        ///     Occurs when a button has been pressed.
         /// </summary>
-        /// <param name="e">Contains information about the button pressed</param>
+        public event EventHandler<ButtonEventArgs> ButtonPressed;
+
+        /// <summary>
+        ///     Occurs when a button has been released.
+        /// </summary>
+        public event EventHandler<ButtonEventArgs> ButtonReleased;
+
+        /// <summary>
+        ///     Occurs when shown.
+        /// </summary>
+        public event EventHandler Show;
+
+        /// <summary>
+        ///     Occurs when hidden.
+        /// </summary>
+        public event EventHandler Hide;
+
+        /// <summary>
+        ///     Raises the <see cref="ButtonPressed" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="ButtonEventArgs" /> instance containing the event data.</param>
         public virtual void OnButtonPressed(ButtonEventArgs e)
         {
+            if (ButtonPressed != null)
+                ButtonPressed(this, e);
         }
 
         /// <summary>
-        ///     Is called when a button has been released.
+        ///     Raises the <see cref="ButtonReleased" /> event.
         /// </summary>
-        /// <param name="e">Contains information bout the button pressed.</param>
+        /// <param name="e">The <see cref="ButtonEventArgs" /> instance containing the event data.</param>
         public virtual void OnButtonReleased(ButtonEventArgs e)
         {
+            if (ButtonReleased != null)
+                ButtonReleased(this, e);
         }
 
         /// <summary>
-        ///     Is called when the page is being showed.
+        ///     Raises the <see cref="Show" /> event.
         /// </summary>
-        /// <param name="e">Contains information bout the event.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         public virtual void OnShow(EventArgs e)
         {
+            if (Show != null)
+                Show(this, e);
         }
 
         /// <summary>
-        ///     Is called when the page is being hidden.
+        ///     Raises the <see cref="Hide" /> event.
         /// </summary>
-        /// <param name="e">Contains information bout the event.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         public virtual void OnHide(EventArgs e)
         {
-        }
-
-        /// <summary>
-        ///     Returns the LogiFrame.Components.Book.PageIcon of this LogiFrame.Components.Book.Page.
-        /// </summary>
-        /// <returns>LogiFrame.Components.Book.PageIcon of this LogiFrame.Components.Book.Page.</returns>
-        protected abstract PageIcon GetPageIcon();
-
-
-        /// <summary>
-        ///     Return the name of this LogiFrame.Components.Book.Page.
-        /// </summary>
-        /// <returns>The name of this LogiFrame.Components.Book.Page.</returns>
-        public abstract string GetName();
-
-
-        /// <summary>
-        ///     Return whether this LogiFrame.Components.Book.Page should be visible in a BookMenu.
-        /// </summary>
-        /// <returns>The name of this LogiFrame.Components.Book.Page.</returns>
-        public virtual bool IsBrowsable()
-        {
-            return true;
+            if (Hide != null)
+                Hide(this, e);
         }
     }
 }

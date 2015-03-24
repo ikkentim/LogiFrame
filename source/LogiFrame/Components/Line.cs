@@ -1,15 +1,17 @@
 ﻿// LogiFrame
-// Copyright (C) 2014 Tim Potze
+// Copyright 2015 Tim Potze
 // 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 // 
-// For more information, please refer to <http://unlicense.org>
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 using System;
 using System.Drawing;
@@ -21,27 +23,17 @@ namespace LogiFrame.Components
     /// </summary>
     public class Line : Component
     {
-        #region Fields
-
         private readonly Location _end = new Location();
         private readonly Location _start = new Location();
 
-        #endregion
-
-        #region Constructor
-
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.components.Line class.
+        /// Initializes a new instance of the <see cref="Line"/> class.
         /// </summary>
         public Line()
         {
             _start.Changed += start_Changed;
             _end.Changed += end_Changed;
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         ///     Gets or sets the LogiFrame.Location within the parent LogiFrame.Components.Container where the line should start
@@ -74,10 +66,6 @@ namespace LogiFrame.Components
             }
         }
 
-        #endregion
-
-        #region Methods
-
         protected override Bytemap Render()
         {
             //TODO: More efficient rendering
@@ -89,26 +77,14 @@ namespace LogiFrame.Components
             return Bytemap.FromBitmap(bitmap);
         }
 
-        /// <summary>
-        ///     Listener for Location.Changed.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void end_Changed(object sender, EventArgs e)
         {
             End = _end;
         }
 
-        /// <summary>
-        ///     Listener for Location.Changed.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void start_Changed(object sender, EventArgs e)
         {
             Start = _start;
         }
-
-        #endregion
     }
 }

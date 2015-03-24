@@ -1,15 +1,17 @@
 ﻿// LogiFrame
-// Copyright (C) 2014 Tim Potze
+// Copyright 2015 Tim Potze
 // 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 // 
-// For more information, please refer to <http://unlicense.org>
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 using System;
 using System.Threading;
@@ -21,24 +23,14 @@ namespace LogiFrame.Components
     /// </summary>
     public class Timer : Component
     {
-        #region Fields
-
         private bool _enabled;
         private int _interval = 100;
         private Thread _thread;
-
-        #endregion
-
-        #region Events
 
         /// <summary>
         ///     Occurs when the Invetval of the current LogiFrame.Components.Timer elapsed whilst running.
         /// </summary>
         public event EventHandler Tick;
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         ///     Gets or sets the time in miliseconds each frame lasts.
@@ -98,10 +90,6 @@ namespace LogiFrame.Components
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         ///     Called when the timer ticks.
         /// </summary>
@@ -127,7 +115,5 @@ namespace LogiFrame.Components
         {
             _enabled = false;
         }
-
-        #endregion
     }
 }

@@ -1,15 +1,17 @@
 ﻿// LogiFrame
-// Copyright (C) 2014 Tim Potze
+// Copyright 2015 Tim Potze
 // 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 // 
-// For more information, please refer to <http://unlicense.org>
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 using System.Drawing;
 
@@ -20,25 +22,28 @@ namespace LogiFrame.Components
     /// </summary>
     public class Picture : Component
     {
-        private bool _autoSize;
+        private bool _isAutoSize;
         private ConversionMethod _conversionMethod = ConversionMethod.Normal;
         private Image _image;
 
         /// <summary>
-        ///     Gets or sets the image to be drawn.
+        /// Gets or sets the image.
         /// </summary>
+        /// <value>
+        /// The image.
+        /// </value>
         public virtual Image Image
         {
             get { return _image; }
             set
             {
                 if (!SwapProperty(ref _image, value)) return;
-                if (AutoSize) MeasureImage();
+                if (IsAutoSize) MeasureImage();
             }
         }
 
         /// <summary>
-        ///     Gets or sets the conversion method to use during the rendering.
+        /// Gets or sets the conversion method.
         /// </summary>
         public virtual ConversionMethod ConversionMethod
         {
@@ -46,33 +51,35 @@ namespace LogiFrame.Components
             set
             {
                 if (!SwapProperty(ref _conversionMethod, value)) return;
-                if (AutoSize) MeasureImage();
+                if (IsAutoSize) MeasureImage();
             }
         }
 
         /// <summary>
-        ///     Gets or sets whether this LogiFrame.Components.Picture should automatically
-        ///     resize when the image has changed.
+        /// Gets or sets a value indicating whether this instance is automatic size.
         /// </summary>
-        public bool AutoSize
+        /// <value>
+        /// <c>true</c> if this instance is automatic size; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsAutoSize
         {
-            get { return _autoSize; }
+            get { return _isAutoSize; }
             set
             {
-                if (!SwapProperty(ref _autoSize, value)) return;
-                if (AutoSize) MeasureImage();
+                if (!SwapProperty(ref _isAutoSize, value)) return;
+                if (IsAutoSize) MeasureImage();
             }
         }
 
         /// <summary>
-        ///     Gets or sets the LogiFrame.Size of this LogiFrame.Components.Label.
+        /// Gets or sets the <see cref="Size" /> of this <see cref="Component" />.
         /// </summary>
         public override Size Size
         {
             get { return base.Size; }
             set
             {
-                if (!AutoSize)
+                if (!IsAutoSize)
                     base.Size = value;
             }
         }
