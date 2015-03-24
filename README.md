@@ -1,6 +1,6 @@
 LogiFrame
 =========
-LogiFrame is a library to easily make applications for Logitech LCD displays(Mono displays only!)
+LogiFrame is a library to easily make applications for Logitech LCD displays(Monochrome displays only!)
 The following code already show a line of text on the display:
 ```C#
 var frame = new Frame("Test app");
