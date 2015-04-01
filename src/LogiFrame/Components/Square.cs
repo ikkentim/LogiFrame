@@ -23,7 +23,7 @@ namespace LogiFrame.Components
         private bool _fill;
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is filled.
+        ///     Gets or sets a value indicating whether this instance is filled.
         /// </summary>
         public bool IsFilled
         {
@@ -31,9 +31,15 @@ namespace LogiFrame.Components
             set { SwapProperty(ref _fill, value); }
         }
 
-        protected override Bytemap Render()
+        /// <summary>
+        /// Renders this instance to a <see cref="Snapshot" />.
+        /// </summary>
+        /// <returns>
+        /// The rendered <see cref="Snapshot" />.
+        /// </returns>
+        protected override Snapshot Render()
         {
-            var result = new Bytemap(Size);
+            var result = new Snapshot(Size);
 
             if (IsFilled)
             {

@@ -16,14 +16,14 @@
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a <see cref="Container"/> which can be rotated.
+    ///     Represents a <see cref="Container" /> which can be rotated.
     /// </summary>
     public class Rotator : Container
     {
         private Rotation _rotation;
 
         /// <summary>
-        /// Gets or sets the rotation.
+        ///     Gets or sets the rotation.
         /// </summary>
         public Rotation Rotation
         {
@@ -31,7 +31,13 @@ namespace LogiFrame.Components
             set { SwapProperty(ref _rotation, value); }
         }
 
-        protected override Bytemap Render()
+        /// <summary>
+        /// Renders all graphics of this <see cref="Container" />.
+        /// </summary>
+        /// <returns>
+        /// The rendered <see cref="Snapshot" />.
+        /// </returns>
+        protected override Snapshot Render()
         {
             //Sum rotation
             int rotation = 0;
@@ -41,10 +47,10 @@ namespace LogiFrame.Components
             rotation = rotation%360;
 
             //Render original result
-            Bytemap result = base.Render();
+            Snapshot result = base.Render();
 
             //Calculate goal canvas
-            var endresult = new Bytemap(rotation == 90 || rotation == 270 ? Size.Height : Size.Width,
+            var endresult = new Snapshot(rotation == 90 || rotation == 270 ? Size.Height : Size.Width,
                 rotation == 90 || rotation == 270 ? Size.Width : Size.Height);
 
             //Rotation algorithm
@@ -74,8 +80,8 @@ namespace LogiFrame.Components
             //IsHorizontal flip
             if (Rotation.HasFlag(Rotation.FlipHorizontal))
             {
-                Bytemap hflipsrc = endresult;
-                endresult = new Bytemap(endresult.Size);
+                Snapshot hflipsrc = endresult;
+                endresult = new Snapshot(endresult.Size);
                 for (int x = 0; x < endresult.Size.Width; x++)
                     for (int y = 0; y < endresult.Size.Height; y++)
                         endresult.Data[endresult.Size.Width - 1 - x + y*endresult.Size.Width] =
@@ -85,8 +91,8 @@ namespace LogiFrame.Components
             //Vertical flip
             if (Rotation.HasFlag(Rotation.FlipVertical))
             {
-                Bytemap vflipsrc = endresult;
-                endresult = new Bytemap(endresult.Size);
+                Snapshot vflipsrc = endresult;
+                endresult = new Snapshot(endresult.Size);
                 for (int x = 0; x < endresult.Size.Width; x++)
                     for (int y = 0; y < endresult.Size.Height; y++)
                         endresult.Data[x + (endresult.Size.Height - 1 - y)*endresult.Size.Width] =

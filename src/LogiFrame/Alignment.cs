@@ -13,16 +13,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
 namespace LogiFrame
 {
+    /// <summary>
+    ///     Contains all available alignments.
+    /// </summary>
     public enum Alignment
     {
+        /// <summary>
+        ///     The left.
+        /// </summary>
         Left = 0,
+
+        /// <summary>
+        ///     The top.
+        /// </summary>
         Top = 0,
+
+        /// <summary>
+        ///     The center.
+        /// </summary>
         Center = 1,
+
+        /// <summary>
+        ///     The middle.
+        /// </summary>
         Middle = 1,
+
+        /// <summary>
+        ///     The right.
+        /// </summary>
         Right = 2,
+
+        /// <summary>
+        ///     The bottom.
+        /// </summary>
         Bottom = 2
     }
 }

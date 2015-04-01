@@ -25,24 +25,15 @@ namespace LogiFrame.Components
     [TypeConverter(typeof (SimpleExpandableObjectConverter))]
     public abstract class Component : Disposable
     {
-        private Bytemap _bytemap;
         private bool _hasChanged;
 
         private bool _isTopEffectEnabled;
         private bool _isTransparent;
         private bool _isVisible = true;
-        private Location _location = new Location();
-        private Location _renderOffset = new Location();
-        private Size _size = new Size();
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Component" /> class.
-        /// </summary>
-        protected Component()
-        {
-            _location.Changed += location_Changed;
-            _size.Changed += size_Changed;
-        }
+        private Location _location;
+        private Location _renderOffset;
+        private Size _size;
+        private Snapshot _snapshot;
 
         /// <summary>
         ///     Gets or sets the location.
@@ -54,12 +45,8 @@ namespace LogiFrame.Components
             {
                 AssertNotDisposed();
 
-                _location.Changed -= location_Changed;
-
                 if (SwapProperty(ref _location, value))
                     OnLocationChanged(EventArgs.Empty);
-
-                _location.Changed += location_Changed;
             }
         }
 
@@ -81,12 +68,8 @@ namespace LogiFrame.Components
             {
                 AssertNotDisposed();
 
-                _renderOffset.Changed -= location_Changed;
-
                 if (SwapProperty(ref _renderOffset, value))
                     OnLocationChanged(EventArgs.Empty);
-
-                _renderOffset.Changed += location_Changed;
             }
         }
 
@@ -103,9 +86,7 @@ namespace LogiFrame.Components
             {
                 AssertNotDisposed();
 
-                _size.Changed -= size_Changed;
                 SwapProperty(ref _size, value);
-                _size.Changed += size_Changed;
             }
         }
 
@@ -159,18 +140,18 @@ namespace LogiFrame.Components
         public object Tag { get; set; }
 
         /// <summary>
-        ///     Gets the rendered <see cref="LogiFrame.Bytemap" /> of this <see cref="Component" />.
+        ///     Gets the rendered <see cref="Snapshot" /> of this <see cref="Component" />.
         /// </summary>
-        public Bytemap Bytemap
+        public Snapshot Snapshot
         {
             get
             {
                 if (!_hasChanged)
-                    return IsVisible ? _bytemap : Bytemap.Empty;
+                    return IsVisible ? _snapshot : Snapshot.Empty;
 
                 Refresh(false);
                 _hasChanged = false;
-                return IsVisible ? _bytemap : Bytemap.Empty;
+                return IsVisible ? _snapshot : Snapshot.Empty;
             }
         }
 
@@ -217,9 +198,11 @@ namespace LogiFrame.Components
 
             //Debug.WriteLine("[LogiFrame] Rendering " + this + " : parent=" + ParentComponent);
 
-            _bytemap = Size.Width == 0 || Size.Height == 0 ? new Bytemap(1, 1) : (Render() ?? new Bytemap(1, 1));
-            _bytemap.Transparent = IsTransparent;
-            _bytemap.TopEffect = IsTopEffectEnabled;
+            _snapshot = Size.Width == 0 || Size.Height == 0
+                ? Snapshot.Empty
+                : Render();
+            _snapshot.IsTransparent = IsTransparent;
+            _snapshot.IsTopEffect = IsTopEffectEnabled;
 
             IsRendering = false;
         }
@@ -319,20 +302,9 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Renders this instance to a <see cref="Bytemap"/>.
+        ///     Renders this instance to a <see cref="Snapshot" />.
         /// </summary>
-        /// <returns>The rendered <see cref="Bytemap" />.</returns>
-        protected abstract Bytemap Render();
-
-        private void size_Changed(object sender, EventArgs e)
-        {
-            OnChanged(EventArgs.Empty);
-        }
-
-        private void location_Changed(object sender, EventArgs e)
-        {
-            if (!IsDisposed && LocationChanged != null)
-                LocationChanged(sender, e);
-        }
+        /// <returns>The rendered <see cref="Snapshot" />.</returns>
+        protected abstract Snapshot Render();
     }
 }

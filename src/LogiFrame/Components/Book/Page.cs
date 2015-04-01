@@ -27,7 +27,7 @@ namespace LogiFrame.Components.Book
         /// </summary>
         protected Page()
         {
-            base.Size = new Size((int) LgLcd.LgLcdBitmapWidth, (int) LgLcd.LgLcdBitmapHeight);
+            base.Size = new Size((int) LgLcd.BitmapWidth, (int) LgLcd.BitmapHeight);
         }
 
         /// <summary>

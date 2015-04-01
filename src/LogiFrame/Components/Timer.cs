@@ -28,13 +28,9 @@ namespace LogiFrame.Components
         private Thread _thread;
 
         /// <summary>
-        ///     Occurs when the Invetval of the current LogiFrame.Components.Timer elapsed whilst running.
+        /// Gets or sets the interval in milliseconds between ticks.
         /// </summary>
-        public event EventHandler Tick;
-
-        /// <summary>
-        ///     Gets or sets the time in miliseconds each frame lasts.
-        /// </summary>
+        /// <exception cref="IndexOutOfRangeException">Timer.Interval must at least contain a value of 1 or higher.</exception>
         public int Interval
         {
             get { return _interval; }
@@ -48,7 +44,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets whether the timer is enabled.
+        /// Gets or sets a value indicating whether this <see cref="Timer"/> is enabled.
         /// </summary>
         public bool Enabled
         {
@@ -90,6 +86,11 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
+        /// Occurs when Enabled and the set <see cref="Interval"/> has elapsed.
+        /// </summary>
+        public event EventHandler Tick;
+
+        /// <summary>
         ///     Called when the timer ticks.
         /// </summary>
         /// <param name="e">Contains information about the event.</param>
@@ -101,15 +102,25 @@ namespace LogiFrame.Components
 
         #region Overrides of Component
 
+        /// <summary>
+        /// Raises the <see cref="Changed" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         public override void OnChanged(EventArgs e)
         {
-            //Prevent rendering
+            // Prevent rendering
         }
 
-        protected override Bytemap Render()
+        /// <summary>
+        /// Renders this instance to a <see cref="Snapshot" />.
+        /// </summary>
+        /// <returns>
+        /// The rendered <see cref="Snapshot" />.
+        /// </returns>
+        protected override Snapshot Render()
         {
-            //No visible elements
-            return null;
+            // No visible elements
+            return Snapshot.Empty;
         }
 
         /// <summary>
@@ -119,7 +130,6 @@ namespace LogiFrame.Components
         protected override void Dispose(bool disposing)
         {
             _enabled = false;
-
             base.Dispose(disposing);
         }
 

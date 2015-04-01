@@ -16,6 +16,7 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using LogiFrame.Collections;
 
 namespace LogiFrame.Components.Book
 {
@@ -42,10 +43,10 @@ namespace LogiFrame.Components.Book
 
             PageTitle = new Label
             {
-                AutoSize = true,
+                IsAutoSize = true,
                 Font = new Font("Arial", 10f, FontStyle.Bold),
                 Location = new Location(1, 1),
-                UseCache = true
+                IsUseCache = true
             };
 
             SelectionSquare = new Square
@@ -193,12 +194,12 @@ namespace LogiFrame.Components.Book
         ///     Renders all graphics of this <see cref="BookMenu" />.
         /// </summary>
         /// <returns>
-        ///     The rendered <see cref="Bytemap" />.
+        ///     The rendered <see cref="Snapshot" />.
         /// </returns>
-        protected override Bytemap Render()
+        protected override Snapshot Render()
         {
             if (Pages == null || Pages.Count == 0)
-                return null;
+                return Snapshot.Empty;
 
             int selectedIndex = Pages.IndexOf(SelectedPage);
 
@@ -213,7 +214,7 @@ namespace LogiFrame.Components.Book
             for (int i = 0; i < Pages.Count(); i++)
             {
                 PageIcon icon = Pages[i].Icon;
-                icon.Location.Set(72 + 20*(i - selectedIndex), 24);
+                icon.Location = new Location(72 + 20*(i - selectedIndex), 24);
 
                 if (!Components.Contains(icon))
                     Components.Add(icon);

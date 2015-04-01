@@ -18,7 +18,7 @@ using System;
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents modifications which can be set to the Rotation property of <see cref="Rotator"/>.
+    ///     Represents modifications which can be set to the Rotation property of <see cref="Rotator" />.
     /// </summary>
     [Flags]
     public enum Rotation

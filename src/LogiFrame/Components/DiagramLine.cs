@@ -20,14 +20,40 @@ using System.Linq;
 
 namespace LogiFrame.Components
 {
+    /// <summary>
+    /// Represents a line in a <see cref="Diagram`2"/>.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the key.</typeparam>
+    /// <typeparam name="TValue">The type of the value.</typeparam>
     public class DiagramLine<TKey, TValue> : Component
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="axisObject">The axis object.</param>
+        /// <returns></returns>
         public delegate int XAxisConversionDelegate(TKey axisObject);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="axisObject">The axis object.</param>
+        /// <returns></returns>
         public delegate TKey XAxisLimitDelegate(TKey axisObject);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="axisObject">The axis object.</param>
+        /// <returns></returns>
         public delegate int YAxisConversionDelegate(TValue axisObject);
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="axisObject">The axis object.</param>
+        /// <returns></returns>
         public delegate TValue YAxisLimitDelegate(TValue axisObject);
 
         private XAxisLimitDelegate _maxXAxis;
@@ -39,6 +65,9 @@ namespace LogiFrame.Components
         private XAxisConversionDelegate _xAxisConverter;
         private YAxisConversionDelegate _yAxisConverter;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DiagramLine{TKey, TValue}"/> class.
+        /// </summary>
         public DiagramLine()
         {
             _xAxisConverter = axisObject => (int) (object) axisObject;
@@ -51,6 +80,9 @@ namespace LogiFrame.Components
             _values.CollectionChanged += _values_CollectionChanged;
         }
 
+        /// <summary>
+        /// Gets or sets the x axis converter.
+        /// </summary>
         public XAxisConversionDelegate XAxisConverter
         {
             get { return _xAxisConverter; }
@@ -61,6 +93,9 @@ namespace LogiFrame.Components
             }
         }
 
+        /// <summary>
+        /// Gets or sets the y axis converter.
+        /// </summary>
         public YAxisConversionDelegate YAxisConverter
         {
             get { return _yAxisConverter; }
@@ -71,6 +106,9 @@ namespace LogiFrame.Components
             }
         }
 
+        /// <summary>
+        /// Gets or sets the minimum x axis.
+        /// </summary>
         public XAxisLimitDelegate MinXAxis
         {
             get { return _minXAxis; }
@@ -81,6 +119,9 @@ namespace LogiFrame.Components
             }
         }
 
+        /// <summary>
+        /// Gets or sets the minimum y axis.
+        /// </summary>
         public YAxisLimitDelegate MinYAxis
         {
             get { return _minYAxis; }
@@ -91,6 +132,9 @@ namespace LogiFrame.Components
             }
         }
 
+        /// <summary>
+        /// Gets or sets the maximum x axis.
+        /// </summary>
         public XAxisLimitDelegate MaxXAxis
         {
             get { return _maxXAxis; }
@@ -101,6 +145,9 @@ namespace LogiFrame.Components
             }
         }
 
+        /// <summary>
+        /// Gets or sets the maximum y axis.
+        /// </summary>
         public YAxisLimitDelegate MaxYAxis
         {
             get { return _maxYAxis; }
@@ -111,6 +158,9 @@ namespace LogiFrame.Components
             }
         }
 
+        /// <summary>
+        /// Gets or sets the values.
+        /// </summary>
         public DiagramDataCollection<TKey, TValue> Values
         {
             get { return _values; }
@@ -122,9 +172,15 @@ namespace LogiFrame.Components
             }
         }
 
-        protected override Bytemap Render()
+        /// <summary>
+        /// Renders this instance to a <see cref="Snapshot" />.
+        /// </summary>
+        /// <returns>
+        /// The rendered <see cref="Snapshot" />.
+        /// </returns>
+        protected override Snapshot Render()
         {
-            var bymap = new Bytemap(Size);
+            var bymap = new Snapshot(Size);
 
             if (_values == null || XAxisConverter == null || YAxisConverter == null || MinXAxis == null ||
                 MaxXAxis == null || MinYAxis == null || MaxYAxis == null || !_values.Any())

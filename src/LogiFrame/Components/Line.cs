@@ -23,28 +23,18 @@ namespace LogiFrame.Components
     /// </summary>
     public class Line : Component
     {
-        private readonly Location _end = new Location();
-        private readonly Location _start = new Location();
+        private Location _end;
+        private Location _start;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Line"/> class.
-        /// </summary>
-        public Line()
-        {
-            _start.Changed += start_Changed;
-            _end.Changed += end_Changed;
-        }
-
-        /// <summary>
-        ///     Gets or sets the LogiFrame.Location within the parent LogiFrame.Components.Container where the line should start
-        ///     at.
+        /// Gets or sets the start.
         /// </summary>
         public Location Start
         {
             get { return _start; }
             set
             {
-                _start.Set(value);
+                _start = value;
                 base.Location = new Location(Math.Min(Start.X, End.X), Math.Min(Start.Y, End.Y));
                 base.Size = new Size(Math.Abs(value.X - End.X) + 1, Math.Abs(value.Y - End.Y) + 1);
                 OnChanged(EventArgs.Empty);
@@ -52,39 +42,40 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets the LogiFrame.Location within the parent LogiFrame.Components.Container where the line should end at.
+        /// Gets or sets the end.
         /// </summary>
         public Location End
         {
             get { return _end; }
             set
             {
-                _end.Set(value);
+                _end = value;
                 base.Location = new Location(Math.Min(Start.X, End.X), Math.Min(Start.Y, End.Y));
                 base.Size = new Size(Math.Abs(value.X - Start.X) + 1, Math.Abs(value.Y - Start.Y) + 1);
                 OnChanged(EventArgs.Empty);
             }
         }
 
-        protected override Bytemap Render()
+        /// <summary>
+        /// Renders this instance to a <see cref="Snapshot" />.
+        /// </summary>
+        /// <returns>
+        /// The rendered <see cref="Snapshot" />.
+        /// </returns>
+        protected override Snapshot Render()
         {
             //TODO: More efficient rendering
-            var bitmap = new Bitmap(Size.Width, Size.Height);
-            var start = new Location(0, Start.Y <= End.Y ? 0 : Size.Height - 1);
-            var end = new Location(Size.Width - 1, Start.Y > End.Y ? 0 : Size.Height - 1);
-            Graphics.FromImage(bitmap)
-                .DrawLine(new Pen(Brushes.Black), start, end);
-            return Bytemap.FromBitmap(bitmap);
-        }
 
-        private void end_Changed(object sender, EventArgs e)
-        {
-            End = _end;
-        }
-
-        private void start_Changed(object sender, EventArgs e)
-        {
-            Start = _start;
+            using (var bitmap = new Bitmap(Size.Width, Size.Height))
+            {
+                var start = new Location(0, Start.Y <= End.Y ? 0 : Size.Height - 1);
+                var end = new Location(Size.Width - 1, Start.Y > End.Y ? 0 : Size.Height - 1);
+                using (var graphics = Graphics.FromImage(bitmap))
+                {
+                    graphics.DrawLine(new Pen(Brushes.Black), start, end);
+                }
+                return Snapshot.FromBitmap(bitmap);
+            }
         }
     }
 }

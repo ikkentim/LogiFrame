@@ -16,7 +16,9 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+
 //
+
 namespace LogiFrame
 {
     internal partial class Simulation : Form
@@ -35,7 +37,7 @@ namespace LogiFrame
             frame.FrameClosed += frame_FrameClosed;
             FormClosing += Simulation_FormClosing;
 
-            displayPictureBox.Image = _frame.Bytemap;
+            displayPictureBox.Image = _frame.Snapshot;
         }
 
         public static void Start(Frame frame)
@@ -67,10 +69,7 @@ namespace LogiFrame
 
         private void frame_FrameClosed(object sender, EventArgs e)
         {
-            if (InvokeRequired)
-                Invoke((MethodInvoker) Close);
-            else
-                Close();
+            Invoke((MethodInvoker) Close);
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

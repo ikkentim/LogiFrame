@@ -15,7 +15,7 @@
 
 using System;
 
-namespace LogiFrame
+namespace LogiFrame.Collections
 {
     /// <summary>
     ///     Provides data for the <see cref="WatchableCollection{T}.ItemAdded" /> or

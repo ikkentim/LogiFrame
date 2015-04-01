@@ -15,9 +15,18 @@
 
 namespace LogiFrame.Components
 {
+    /// <summary>
+    /// Contains all available styles for a <see cref="Marquee"/>.
+    /// </summary>
     public enum MarqueeStyle
     {
+        /// <summary>
+        /// Loop all the way from the start to end.
+        /// </summary>
         Loop,
+        /// <summary>
+        /// Loop in such a way that most text is visible.
+        /// </summary>
         Visibility
     }
 }

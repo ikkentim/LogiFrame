@@ -26,8 +26,8 @@ namespace LogiFrame.Components
     {
         private readonly Timer _timer;
         private bool _autoInterval = true;
-        private Bytemap[] _bytemaps;
         private int _frame;
+        private Snapshot[] _snapshots;
 
         #region Constructor
 
@@ -138,7 +138,7 @@ namespace LogiFrame.Components
         /// </summary>
         public int FrameCount
         {
-            get { return _bytemaps == null ? 0 : _bytemaps.Length; }
+            get { return _snapshots == null ? 0 : _snapshots.Length; }
         }
 
         /// <summary>
@@ -158,34 +158,14 @@ namespace LogiFrame.Components
         ///     Renders this instance.
         /// </summary>
         /// <returns></returns>
-        protected override Bytemap Render()
+        protected override Snapshot Render()
         {
             //Return current frame
-            if (_frame < 0 || _bytemaps == null || _frame >= _bytemaps.Length)
-                return null;
+            if (_frame < 0 || _snapshots == null || _frame >= _snapshots.Length)
+                return Snapshot.Empty;
 
-            return _bytemaps[_frame];
+            return _snapshots[_frame];
         }
-
-        #region Overrides of Component
-
-        /// <summary>
-        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <param name="disposing">Whether managed resources should be disposed.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _timer.Dispose();
-
-                if (Image != null)
-                    Image.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        #endregion
 
         /// <summary>
         ///     Renders and stores every individual frame.
@@ -198,7 +178,7 @@ namespace LogiFrame.Components
             //If no image is set, don't render anything.
             if (Image == null)
             {
-                _bytemaps = null;
+                _snapshots = null;
                 return;
             }
 
@@ -208,14 +188,14 @@ namespace LogiFrame.Components
             // Get numer of frames
             int frames = Image.GetFrameCount(dimension);
 
-            //Create bytemap for each frame
-            _bytemaps = new Bytemap[frames];
+            //Create Snapshot for each frame
+            _snapshots = new Snapshot[frames];
 
             //Render bytemaps
             for (int i = 0; i < frames; i++)
             {
                 Image.SelectActiveFrame(dimension, i);
-                _bytemaps[i] = Bytemap.FromBitmap((Bitmap) Image, ConversionMethod);
+                _snapshots[i] = Snapshot.FromBitmap((Bitmap) Image, ConversionMethod);
             }
 
             //calculate interval
@@ -244,6 +224,26 @@ namespace LogiFrame.Components
                 return 200;
             }
         }
+
+        #region Overrides of Component
+
+        /// <summary>
+        ///     Performs tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <param name="disposing">Whether managed resources should be disposed.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _timer.Dispose();
+
+                if (Image != null)
+                    Image.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #endregion
 
         #endregion
     }

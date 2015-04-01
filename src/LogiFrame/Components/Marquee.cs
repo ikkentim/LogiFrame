@@ -16,24 +16,25 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using LogiFrame.Collections;
 
 namespace LogiFrame.Components
 {
     /// <summary>
-    /// Represents a scrolling text.
+    ///     Represents a scrolling text.
     /// </summary>
     public class Marquee : Container
     {
-        private readonly Label _label = new Label {AutoSize = true};
+        private readonly Label _label = new Label {IsAutoSize = true};
         private readonly WatchableCollection<Marquee> _syncedMarquees = new WatchableCollection<Marquee>();
         private readonly Timer _timer = new Timer();
-        private int _endStepsCount;
         private int _currentStep;
+        private int _endStepsCount;
         private int _stepSize = 1;
-        private bool _vertical;
+        private bool _isVertical;
 
         /// <summary>
-        ///     Initializes a new instance of the LogiFrame.Component.Marquee class.
+        /// Initializes a new instance of the <see cref="Marquee"/> class.
         /// </summary>
         public Marquee()
         {
@@ -44,7 +45,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets thetext this LogiFrame.Component.Marquee should draw.
+        /// Gets or sets the text.
         /// </summary>
         public string Text
         {
@@ -53,7 +54,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets the System.Drawing.Font this LogiFrame.Component.Marquee should draw with.
+        /// Gets or sets the font.
         /// </summary>
         public Font Font
         {
@@ -62,16 +63,16 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets whether the label should cache all rendered texts.
+        /// Gets or sets a value indicating whether this instance is use cache.
         /// </summary>
-        public bool UseCache
+        public bool IsUseCache
         {
-            get { return _label.UseCache; }
-            set { _label.UseCache = value; }
+            get { return _label.IsUseCache; }
+            set { _label.IsUseCache = value; }
         }
 
         /// <summary>
-        ///     Gets or sets the time in miliseconds each frame lasts.
+        /// Gets or sets the interval.
         /// </summary>
         public int Interval
         {
@@ -80,21 +81,21 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Gets or sets whether the text should move.
+        /// Gets or sets a value indicating whether this instance is running.
         /// </summary>
-        public bool Run
+        public bool IsRunning
         {
             get { return _timer.Enabled; }
             set { _timer.Enabled = value; }
         }
 
         /// <summary>
-        ///     Gets or sets whether the text should move vertically. If false, the text moves horizontally
+        /// Gets or sets a value indicating whether this instance is vertical.
         /// </summary>
-        public bool Vertical
+        public bool IsVertical
         {
-            get { return _vertical; }
-            set { SwapProperty(ref _vertical, value); }
+            get { return _isVertical; }
+            set { SwapProperty(ref _isVertical, value); }
         }
 
         /// <summary>
@@ -113,7 +114,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets a collection of synced marquees.
+        ///     Gets a collection of synced marquees.
         /// </summary>
         public WatchableCollection<Marquee> SyncedMarquees
         {
@@ -121,7 +122,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the marquee style.
+        ///     Gets or sets the marquee style.
         /// </summary>
         public MarqueeStyle MarqueeStyle { get; set; }
 
@@ -155,7 +156,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the current step.
+        ///     Gets or sets the current step.
         /// </summary>
         public int CurrentStep
         {
@@ -175,38 +176,38 @@ namespace LogiFrame.Components
                 switch (MarqueeStyle)
                 {
                     case MarqueeStyle.Loop:
-                        if (Vertical)
+                        if (IsVertical)
                         {
                             int y = Size.Width - step;
                             if (step > Size.Width) y += Math.Min(step - Size.Width, EndStepsCount);
-                            _label.Location.Set(0, y);
+                            _label.Location = new Location(0, y);
                         }
                         else
                         {
                             int x = Size.Width - step;
                             if (step > Size.Width) x += Math.Min(step - Size.Width, EndStepsCount);
-                            _label.Location.Set(x, 0);
+                            _label.Location = new Location(x, 0);
                         }
                         break;
                     case MarqueeStyle.Visibility:
                         if (Steps == EndStepsCount*2)
                         {
-                            _label.Location.Set(0, 0);
+                            _label.Location = new Location(0, 0);
                             break;
                         }
-                        if (Vertical)
+                        if (IsVertical)
                         {
                             int y = -step + Math.Min(step, EndStepsCount);
                             int h = _label.Size.Height - Size.Height > 0 ? _label.Size.Height - Size.Height : 0;
                             if (step > h + EndStepsCount) y += Math.Min(step - (h + EndStepsCount), EndStepsCount);
-                            _label.Location.Set(0, y);
+                            _label.Location = new Location(0, y);
                         }
                         else
                         {
                             int x = -step + Math.Min(step, EndStepsCount);
                             int w = _label.Size.Width - Size.Width > 0 ? _label.Size.Width - Size.Width : 0;
                             if (step > w + EndStepsCount) x += Math.Min(step - (w + EndStepsCount), EndStepsCount);
-                            _label.Location.Set(x, 0);
+                            _label.Location = new Location(x, 0);
                         }
                         break;
                 }

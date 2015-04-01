@@ -17,9 +17,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using LogiFrame.Components;
 
-namespace LogiFrame
+namespace LogiFrame.Collections
 {
     /// <summary>
     ///     Represents a watchable collection of the specified type.
@@ -59,11 +58,11 @@ namespace LogiFrame
 
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="List{T}"/> to <see cref="WatchableCollection{T}"/>.
+        ///     Performs an implicit conversion from <see cref="List{T}" /> to <see cref="WatchableCollection{T}" />.
         /// </summary>
         /// <param name="list">The list.</param>
         /// <returns>
-        /// The result of the conversion.
+        ///     The result of the conversion.
         /// </returns>
         public static implicit operator WatchableCollection<T>(List<T> list)
         {

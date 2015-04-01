@@ -30,7 +30,7 @@ namespace LogiFrame.Components
         private float _value;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProgressBar"/> class.
+        ///     Initializes a new instance of the <see cref="ProgressBar" /> class.
         /// </summary>
         public ProgressBar()
         {
@@ -58,7 +58,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the maximum value.
+        ///     Gets or sets the maximum value.
         /// </summary>
         public float MaximumValue
         {
@@ -72,7 +72,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the minimum value.
+        ///     Gets or sets the minimum value.
         /// </summary>
         public float MinimumValue
         {
@@ -86,7 +86,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the value.
+        ///     Gets or sets the value.
         /// </summary>
         public float Value
         {
@@ -100,7 +100,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the progress bar style.
+        ///     Gets or sets the progress bar style.
         /// </summary>
         public ProgressBarStyle ProgressBarStyle
         {
@@ -108,7 +108,13 @@ namespace LogiFrame.Components
             set { SwapProperty(ref _progressBarStyle, value); }
         }
 
-        protected override Bytemap Render()
+        /// <summary>
+        /// Renders all graphics of this <see cref="Container" />.
+        /// </summary>
+        /// <returns>
+        /// The rendered <see cref="Snapshot" />.
+        /// </returns>
+        protected override Snapshot Render()
         {
             float progress = _maximumValue > _minimumValue
                 ? (_value - _minimumValue)/(_maximumValue - _minimumValue)
@@ -136,14 +142,16 @@ namespace LogiFrame.Components
 
             if (_isHorizontal)
             {
-                _innerSquare.Size.Set((int) ((Size.Width - borderOffset*2)*progress), Size.Height - borderOffset*2);
-                _innerSquare.Location.Set(
+                _innerSquare.Size = new Size((int) ((Size.Width - borderOffset*2)*progress),
+                    Size.Height - borderOffset*2);
+                _innerSquare.Location = new Location(
                     _isInverted ? Size.Width - _innerSquare.Size.Width - borderOffset : borderOffset, borderOffset);
             }
             else
             {
-                _innerSquare.Size.Set(Size.Width - borderOffset*2, (int) ((Size.Height - borderOffset*2)*progress));
-                _innerSquare.Location.Set(borderOffset,
+                _innerSquare.Size = new Size(Size.Width - borderOffset*2,
+                    (int) ((Size.Height - borderOffset*2)*progress));
+                _innerSquare.Location = new Location(borderOffset,
                     _isInverted ? Size.Height - _innerSquare.Size.Height - borderOffset : borderOffset);
             }
 

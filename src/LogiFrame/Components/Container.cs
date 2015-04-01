@@ -15,6 +15,7 @@
 
 using System;
 using System.Linq;
+using LogiFrame.Collections;
 
 namespace LogiFrame.Components
 {
@@ -64,9 +65,9 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        ///     Refreshes the <see cref="Bytemap" /> and renders it if necessary.
+        ///     Refreshes the <see cref="Snapshot" /> and renders it if necessary.
         /// </summary>
-        /// <param name="forceRefresh">Forces the <see cref="Bytemap" /> being rerendered even if it hasn't changed when True.</param>
+        /// <param name="forceRefresh">Forces the <see cref="Snapshot" /> being rerendered even if it hasn't changed when True.</param>
         /// <exception cref="System.ObjectDisposedException">Resource was disposed.</exception>
         public override void Refresh(bool forceRefresh)
         {
@@ -85,20 +86,25 @@ namespace LogiFrame.Components
         /// <summary>
         ///     Renders all graphics of this <see cref="Container" />.
         /// </summary>
-        /// <returns>The rendered <see cref="Bytemap" />.</returns>
-        protected override Bytemap Render()
+        /// <returns>The rendered <see cref="Snapshot" />.</returns>
+        protected override Snapshot Render()
         {
-            var result = new Bytemap(Size);
+            var result = new Snapshot(Size);
 
             foreach (Component c in Components.ToList())
             {
-                Bytemap bytemap = c.Bytemap;
-                result.Merge(bytemap, c.RenderLocation);
+                Snapshot snapshot = c.Snapshot;
+                result.Merge(snapshot, c.RenderLocation);
             }
 
             return result;
         }
-        
+
+        private void Container_Changed(object sender, EventArgs e)
+        {
+            OnChanged(EventArgs.Empty);
+        }
+
         #region Overrides of Component
 
         /// <summary>
@@ -121,10 +127,5 @@ namespace LogiFrame.Components
         }
 
         #endregion
-
-        private void Container_Changed(object sender, EventArgs e)
-        {
-            OnChanged(EventArgs.Empty);
-        }
     }
 }

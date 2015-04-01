@@ -18,15 +18,15 @@ using System;
 namespace LogiFrame
 {
     /// <summary>
-    ///     Provides data for the <see cref="LogiFrame.Frame.Pushing"/> event.
+    ///     Provides data for the <see cref="LogiFrame.Frame.Pushing" /> event.
     /// </summary>
     public class PushingEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PushingEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="PushingEventArgs" /> class.
         /// </summary>
         /// <param name="frame">The frame.</param>
-        public PushingEventArgs(Bytemap frame)
+        public PushingEventArgs(Snapshot frame)
         {
             Frame = frame;
         }
@@ -40,6 +40,6 @@ namespace LogiFrame
         /// <summary>
         ///     Gets the frame that is about to be pushed.
         /// </summary>
-        public Bytemap Frame { get; private set; }
+        public Snapshot Frame { get; private set; }
     }
 }

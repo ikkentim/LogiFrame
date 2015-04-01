@@ -14,12 +14,12 @@
 // limitations under the License.
 
 using System.Drawing;
-//
+
 namespace LogiFrame
 {
     /// <summary>
-    ///     Represents the technique used for converting a <see cref="Bitmap"/>
-    ///     into a <see cref="Bytemap"/>.
+    ///     Represents the technique used for converting a <see cref="Bitmap" />
+    ///     into a <see cref="Snapshot" />.
     /// </summary>
     public struct ConversionMethod
     {
@@ -39,7 +39,7 @@ namespace LogiFrame
         public static readonly ConversionMethod NonWhite = new ConversionMethod(254, 254, 254, 255);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConversionMethod"/> struct.
+        ///     Initializes a new instance of the <see cref="ConversionMethod" /> struct.
         /// </summary>
         /// <param name="maxRed">The maximum red color value for a pixel to be filled.</param>
         /// <param name="maxGreen">The maximum green color value for a pixel to be filled.</param>
@@ -75,11 +75,11 @@ namespace LogiFrame
         public byte MinAlpha { get; set; }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+        ///     Determines whether the specified <see cref="System.Object" />, is equal to this instance.
         /// </summary>
         /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
         /// <returns>
-        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        ///     <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals(object obj)
         {
@@ -95,12 +95,12 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Implements the operator ==.
+        ///     Implements the operator ==.
         /// </summary>
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns>
-        /// The result of the operator.
+        ///     The result of the operator.
         /// </returns>
         public static bool operator ==(ConversionMethod left, ConversionMethod right)
         {
@@ -108,12 +108,12 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Implements the operator !=.
+        ///     Implements the operator !=.
         /// </summary>
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns>
-        /// The result of the operator.
+        ///     The result of the operator.
         /// </returns>
         public static bool operator !=(ConversionMethod left, ConversionMethod right)
         {
@@ -121,10 +121,10 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Returns a hash code for this instance.
+        ///     Returns a hash code for this instance.
         /// </summary>
         /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        ///     A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
         /// </returns>
         public override int GetHashCode()
         {

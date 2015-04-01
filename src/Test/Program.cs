@@ -50,8 +50,9 @@ namespace Test
             var timer = new Timer
             {
                 Enabled = true,
-                Interval = 500
+                Interval = 1000
             };
+
             timer.Tick += (sender, args) =>
             {
                 var values = new DiagramDataCollection<DateTime, float>(diagram.Line.Values)

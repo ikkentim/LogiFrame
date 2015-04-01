@@ -37,13 +37,13 @@ namespace LogiFrame.Components
         ///     Renders all graphics of this <see cref="Component" />.
         /// </summary>
         /// <returns>
-        ///     The rendered <see cref="Bytemap" />.
+        ///     The rendered <see cref="Snapshot" />.
         /// </returns>
-        protected override Bytemap Render()
+        protected override Snapshot Render()
         {
             // TODO: improve algorithm
 
-            var result = new Bytemap(Size);
+            var result = new Snapshot(Size);
 
             double hradius = (double) Size.Width/2;
             double vradius = (double) Size.Height/2;

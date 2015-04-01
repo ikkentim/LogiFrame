@@ -22,15 +22,15 @@ namespace LogiFrame.Components
     /// </summary>
     public class Picture : Component
     {
-        private bool _isAutoSize;
         private ConversionMethod _conversionMethod = ConversionMethod.Normal;
         private Image _image;
+        private bool _isAutoSize;
 
         /// <summary>
-        /// Gets or sets the image.
+        ///     Gets or sets the image.
         /// </summary>
         /// <value>
-        /// The image.
+        ///     The image.
         /// </value>
         public virtual Image Image
         {
@@ -43,7 +43,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the conversion method.
+        ///     Gets or sets the conversion method.
         /// </summary>
         public virtual ConversionMethod ConversionMethod
         {
@@ -56,10 +56,10 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is automatic size.
+        ///     Gets or sets a value indicating whether this instance is automatic size.
         /// </summary>
         /// <value>
-        /// <c>true</c> if this instance is automatic size; otherwise, <c>false</c>.
+        ///     <c>true</c> if this instance is automatic size; otherwise, <c>false</c>.
         /// </value>
         public bool IsAutoSize
         {
@@ -72,7 +72,7 @@ namespace LogiFrame.Components
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="Size" /> of this <see cref="Component" />.
+        ///     Gets or sets the <see cref="Size" /> of this <see cref="Component" />.
         /// </summary>
         public override Size Size
         {
@@ -84,10 +84,16 @@ namespace LogiFrame.Components
             }
         }
 
-        protected override Bytemap Render()
+        /// <summary>
+        /// Renders this instance to a <see cref="Snapshot" />.
+        /// </summary>
+        /// <returns>
+        /// The rendered <see cref="Snapshot" />.
+        /// </returns>
+        protected override Snapshot Render()
         {
-            var render = new Bytemap(Size);
-            render.Merge(Bytemap.FromBitmap(Image as Bitmap, ConversionMethod), new Location());
+            var render = new Snapshot(Size);
+            render.Merge(Snapshot.FromBitmap(Image as Bitmap, ConversionMethod), new Location());
 
             return render;
         }
@@ -96,7 +102,7 @@ namespace LogiFrame.Components
         {
             if (Image == null) return;
             IsRendering = true;
-            base.Size.Set(Image.Width, Image.Height);
+            base.Size = Image.Size;
             IsRendering = false;
         }
     }

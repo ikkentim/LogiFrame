@@ -16,7 +16,7 @@
 namespace LogiFrame.Components
 {
     /// <summary>
-    ///     Represents a style of drawing a <see cref="ProgressBar"/>.
+    ///     Represents a style of drawing a <see cref="ProgressBar" />.
     /// </summary>
     public enum ProgressBarStyle
     {

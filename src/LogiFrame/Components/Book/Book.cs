@@ -15,6 +15,7 @@
 
 using System;
 using System.Linq;
+using LogiFrame.Collections;
 
 namespace LogiFrame.Components.Book
 {
@@ -32,7 +33,7 @@ namespace LogiFrame.Components.Book
         /// <param name="frame">The <see cref="Frame" /> the <see cref="Book" /> should render in.</param>
         public Book(Frame frame)
         {
-            base.Size = new Size((int) LgLcd.LgLcdBitmapWidth, (int) LgLcd.LgLcdBitmapHeight);
+            base.Size = new Size((int) LgLcd.BitmapWidth, (int) LgLcd.BitmapHeight);
             Pages = new WatchableCollection<Page>();
             Pages.ItemAdded += (sender, args) =>
             {
@@ -176,9 +177,9 @@ namespace LogiFrame.Components.Book
             ActivePage = BookMenu;
         }
 
-        protected override Bytemap Render()
+        protected override Snapshot Render()
         {
-            return _activePage == null ? null : _activePage.Bytemap;
+            return _activePage == null ? Snapshot.Empty : _activePage.Snapshot;
         }
 
         private void page_Changed(object sender, EventArgs e)

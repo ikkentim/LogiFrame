@@ -19,7 +19,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace LogiFrame
+namespace LogiFrame.Tools
 {
     internal static class UnmanagedLibrariesLoader
     {

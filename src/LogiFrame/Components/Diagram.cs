@@ -20,10 +20,27 @@ using System.Linq;
 
 namespace LogiFrame.Components
 {
+    /// <summary>
+    /// Represents a drawable diagram
+    /// </summary>
+    /// <typeparam name="TKey">The type of the key.</typeparam>
+    /// <typeparam name="TValue">The type of the value.</typeparam>
     public class Diagram<TKey, TValue> : Container
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lowestValue">The lowest value.</param>
+        /// <param name="highestValue">The highest value.</param>
+        /// <returns></returns>
         public delegate string XAxisLabelDelegate(TKey lowestValue, TKey highestValue);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lowestValue">The lowest value.</param>
+        /// <param name="highestValue">The highest value.</param>
+        /// <returns></returns>
         public delegate string YAxisLabelDelegate(TValue lowestValue, TValue highestValue);
 
         private readonly DiagramLine<TKey, TValue> _diagramLine;
@@ -39,6 +56,9 @@ namespace LogiFrame.Components
         private YAxisLabelDelegate _yAxisLabel =
             (lowestValue, highestValue) => Activator.CreateInstance(lowestValue.GetType()) + "-" + highestValue;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Diagram{TKey, TValue}"/> class.
+        /// </summary>
         public Diagram()
         {
             Components.Add(_hLine = new Line());
@@ -58,14 +78,14 @@ namespace LogiFrame.Components
 
             _rotator.Components.Add(_vLabel = new Label
             {
-                AutoSize = true,
+                IsAutoSize = true,
                 VerticalAlignment = Alignment.Bottom,
                 HorizontalAlignment = Alignment.Center,
                 Font = new Font("Arial", 7f),
             });
             Components.Add(_hLabel = new Label
             {
-                AutoSize = true,
+                IsAutoSize = true,
                 IsTransparent = true,
                 IsTopEffectEnabled = true,
                 VerticalAlignment = Alignment.Bottom,
@@ -74,11 +94,17 @@ namespace LogiFrame.Components
             });
         }
 
+        /// <summary>
+        /// Gets the line.
+        /// </summary>
         public DiagramLine<TKey, TValue> Line
         {
             get { return _diagramLine; }
         }
 
+        /// <summary>
+        /// Gets or sets the x axis label.
+        /// </summary>
         public XAxisLabelDelegate XAxisLabel
         {
             get { return _xAxisLabel; }
@@ -89,6 +115,9 @@ namespace LogiFrame.Components
             }
         }
 
+        /// <summary>
+        /// Gets or sets the y axis label.
+        /// </summary>
         public YAxisLabelDelegate YAxisLabel
         {
             get { return _yAxisLabel; }
@@ -99,7 +128,13 @@ namespace LogiFrame.Components
             }
         }
 
-        protected override Bytemap Render()
+        /// <summary>
+        /// Renders all graphics of this <see cref="Container" />.
+        /// </summary>
+        /// <returns>
+        /// The rendered <see cref="Snapshot" />.
+        /// </returns>
+        protected override Snapshot Render()
         {
             if (_diagramLine.Values.Any())
             {
@@ -136,18 +171,18 @@ namespace LogiFrame.Components
                 _vLabel.Text = String.Empty;
             }
 
-            _rotator.Size.Set(Size.Height - 1, 10);
+            _rotator.Size = new Size(Size.Height - 1, 10);
 
-            _vLabel.Location.Set(_rotator.Size.Width/2, _rotator.Size.Height + 1);
-            _hLabel.Location.Set(Size.Width/2, Size.Height);
+            _vLabel.Location = new Location(_rotator.Size.Width/2, _rotator.Size.Height + 1);
+            _hLabel.Location = new Location(Size.Width/2, Size.Height);
 
-            _hLine.Start.Set(0, Size.Height - 1);
-            _hLine.End.Set(Size.Width - 1, Size.Height - 1);
+            _hLine.Start = new Location(0, Size.Height - 1);
+            _hLine.End = new Location(Size.Width - 1, Size.Height - 1);
 
-            _vLine.Start.Set(0, 0);
-            _vLine.End.Set(0, Size.Height - 1);
+            _vLine.Start = new Location(0, 0);
+            _vLine.End = new Location(0, Size.Height - 1);
 
-            _diagramLine.Size.Set(Size.Width - 1, Size.Height - 1);
+            _diagramLine.Size = new Size(Size.Width - 1, Size.Height - 1);
 
             return base.Render();
         }

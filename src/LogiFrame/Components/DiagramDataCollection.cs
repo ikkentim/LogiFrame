@@ -19,35 +19,70 @@ using System.Linq;
 
 namespace LogiFrame.Components
 {
+    /// <summary>
+    /// Represents a collection of data.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the key.</typeparam>
+    /// <typeparam name="TValue">The type of the value.</typeparam>
     public class DiagramDataCollection<TKey, TValue> : Dictionary<TKey, TValue>, INotifyCollectionChanged
     {
         private readonly object _sync = new object();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DiagramDataCollection{TKey, TValue}"/> class.
+        /// </summary>
         public DiagramDataCollection()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DiagramDataCollection{TKey, TValue}"/> class.
+        /// </summary>
+        /// <param name="capacity">The initial number of elements that the <see cref="T:System.Collections.Generic.Dictionary`2" /> can contain.</param>
         public DiagramDataCollection(int capacity) : base(capacity)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DiagramDataCollection{TKey, TValue}"/> class.
+        /// </summary>
+        /// <param name="comparer">The comparer.</param>
         public DiagramDataCollection(IEqualityComparer<TKey> comparer) : base(comparer)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DiagramDataCollection{TKey, TValue}"/> class.
+        /// </summary>
+        /// <param name="dictionary">The dictionary.</param>
         public DiagramDataCollection(IDictionary<TKey, TValue> dictionary) : base(dictionary)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DiagramDataCollection{TKey, TValue}"/> class.
+        /// </summary>
+        /// <param name="capacity">The capacity.</param>
+        /// <param name="comparer">The comparer.</param>
         public DiagramDataCollection(int capacity, IEqualityComparer<TKey> comparer) : base(capacity, comparer)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DiagramDataCollection{TKey, TValue}"/> class.
+        /// </summary>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="comparer">The comparer.</param>
         public DiagramDataCollection(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer)
             : base(dictionary, comparer)
         {
         }
 
+        /// <summary>
+        /// Gets or sets the value associated with the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
         public new TValue this[TKey key]
         {
             get { return base[key]; }
@@ -69,8 +104,16 @@ namespace LogiFrame.Components
             }
         }
 
+        /// <summary>
+        /// Occurs when the collection changes.
+        /// </summary>
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
+        /// <summary>
+        /// Adds the specified key and value to the dictionary.
+        /// </summary>
+        /// <param name="key">The key of the element to add.</param>
+        /// <param name="value">The value of the element to add. The value can be null for reference types.</param>
         public new void Add(TKey key, TValue value)
         {
             if (ContainsKey(key)) return;
@@ -83,6 +126,13 @@ namespace LogiFrame.Components
                 Keys.ToList().IndexOf(key)));
         }
 
+        /// <summary>
+        /// Removes the value with the specified key from the <see cref="T:System.Collections.Generic.Dictionary`2" />.
+        /// </summary>
+        /// <param name="key">The key of the element to remove.</param>
+        /// <returns>
+        /// true if the element is successfully found and removed; otherwise, false.  This method returns false if <paramref name="key" /> is not found in the <see cref="T:System.Collections.Generic.Dictionary`2" />.
+        /// </returns>
         public new bool Remove(TKey key)
         {
             TValue value;
@@ -98,6 +148,9 @@ namespace LogiFrame.Components
             return result;
         }
 
+        /// <summary>
+        /// Removes all keys and values from the <see cref="T:System.Collections.Generic.Dictionary`2" />.
+        /// </summary>
         public new void Clear()
         {
             lock (_sync)
@@ -107,6 +160,10 @@ namespace LogiFrame.Components
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
+        /// <summary>
+        /// Raises the <see cref="CollectionChanged" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="NotifyCollectionChangedEventArgs"/> instance containing the event data.</param>
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
             if (CollectionChanged != null)
