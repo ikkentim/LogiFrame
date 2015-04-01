@@ -24,10 +24,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("LogiFrame")]
 [assembly: AssemblyDescription("A Framework for Logitech's LCD displays made by Tim Potze.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Tim Potze")]
 [assembly: AssemblyProduct("LogiFrame")]
-[assembly: AssemblyCopyright("Copyright © Tim Potze 2013")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright © Tim Potze 2013-2015")]
+[assembly: AssemblyTrademark("LogiFrame")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -51,6 +51,6 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("0.0.1.0")]
-[assembly: AssemblyFileVersion("0.0.1.0")]
+[assembly: AssemblyVersion("0.2.0.0")]
+[assembly: AssemblyFileVersion("0.2.0.0")]
 [assembly: NeutralResourcesLanguage("en")]
