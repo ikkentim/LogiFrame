@@ -36,7 +36,11 @@ namespace LogiFrame
         public virtual IMergeMethod MergeMethod
         {
             get { return _mergeMethod ?? MergeMethods.Override; }
-            set { _mergeMethod = value; }
+            set
+            {
+                _mergeMethod = value; 
+                Parent?.Invalidate();
+            }
         }
 
         public virtual Point Location

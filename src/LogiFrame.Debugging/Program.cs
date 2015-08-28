@@ -69,7 +69,7 @@ namespace LogiFrame.Debugging
                 Location = new Point(100, 10),
                 Size = Resources.gtech.Size,
                 Image = Resources.gtech,
-                MergeMethod = MergeMethods.Invert
+                MergeMethod = MergeMethods.Overlay
             };
 
             f.Controls.Add(rectangle);
@@ -78,27 +78,27 @@ namespace LogiFrame.Debugging
             f.Controls.Add(ellipse);
             f.Controls.Add(progressBar);
             f.Controls.Add(picture);
-            var font = "small";
-            var fontFn = PixelFonts.Small;
+
             f.ButtonDown += (sender, args) =>
             {
-                if (fontFn.Equals(PixelFonts.Small))
+                if (picture.MergeMethod == MergeMethods.Transparent)
                 {
-                    font = "big";
-                    fontFn = PixelFonts.Capitals;
+                    picture.MergeMethod = MergeMethods.Invert;
                 }
-                else if (fontFn.Equals(PixelFonts.Capitals))
+                else if (picture.MergeMethod == MergeMethods.Invert)
                 {
-                    font = "title";
-                    fontFn = PixelFonts.Title;
+                    picture.MergeMethod = MergeMethods.Override;
                 }
-                else if (fontFn.Equals(PixelFonts.Title))
+                else if (picture.MergeMethod == MergeMethods.Override)
                 {
-                    font = "small";
-                    fontFn = PixelFonts.Small;
+                    picture.MergeMethod = MergeMethods.Overlay;
                 }
-                label.Font = fontFn;
-                label.Text = $"Hello, World! This font is >{font}<";
+                else if (picture.MergeMethod == MergeMethods.Overlay)
+                {
+                    picture.MergeMethod = MergeMethods.Transparent;
+                }
+
+                label.Text = picture.MergeMethod.ToString();
             };
             
             f.PushToForeground(true);

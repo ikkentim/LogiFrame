@@ -48,6 +48,7 @@
     <Compile Include="Drawing\IMergeMethod.cs" />
     <Compile Include="Drawing\InvertMergeMethod.cs" />
     <Compile Include="Drawing\MergeMethods.cs" />
+    <Compile Include="Drawing\OverlayMergeMethod.cs" />
     <Compile Include="Drawing\OverrideMergeMethod.cs" />
     <Compile Include="Drawing\TransparentMergeMethod.cs" />
     <Compile Include="Frame.cs" />
