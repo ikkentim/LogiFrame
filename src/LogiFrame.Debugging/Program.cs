@@ -15,6 +15,7 @@
 
 using System.Drawing;
 using System.Threading;
+using LogiFrame.Debugging.Properties;
 using LogiFrame.Drawing;
 
 namespace LogiFrame.Debugging
@@ -50,23 +51,33 @@ namespace LogiFrame.Debugging
 
             var ellipse = new FrameEllipse
             {
-                Location = new Point(40, 2),
+                Location = new Point(40, 20),
                 Size = new Size(50, 20)
             };
 
-            var pbar = new FrameProgressBar
+            var progressBar = new FrameProgressBar
             {
                 Location = new Point(12, 14),
-                Size = new Size(135, 6),
+                Size = new Size(136, 6),
                 Style = BorderStyle.Border,
                 Direction = ProgressBarDirection.Right,
                 Value = 50
             };
-//            f.Controls.Add(rectangle);
-//            f.Controls.Add(label);
-//            f.Controls.Add(line);
-//            f.Controls.Add(ellipse);
-            f.Controls.Add(pbar);
+
+            var picture = new FramePicture
+            {
+                Location = new Point(100, 10),
+                Size = Resources.gtech.Size,
+                Image = Resources.gtech,
+                MergeMethod = MergeMethods.Invert
+            };
+
+            f.Controls.Add(rectangle);
+            f.Controls.Add(label);
+            f.Controls.Add(line);
+            f.Controls.Add(ellipse);
+            f.Controls.Add(progressBar);
+            f.Controls.Add(picture);
             var font = "small";
             var fontFn = PixelFonts.Small;
             f.ButtonDown += (sender, args) =>

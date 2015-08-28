@@ -6,12 +6,6 @@ using System.Threading.Tasks;
 
 namespace LogiFrame
 {
-    public enum RectangleStyle
-    {
-        Blank,
-        Bordered,
-        Filled
-    }
     public class FrameRectangle : FrameControl
     {
         private RectangleStyle _style;
