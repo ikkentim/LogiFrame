@@ -14,22 +14,7 @@ namespace LogiFrame.Debugging
     {
         public Form1()
         {
-            InitLayout();
-            Controls.Add(null);
-            ResumeLayout();
-            SuspendLayout();
             InitializeComponent();
-            Refresh();
         }
-
-        #region Overrides of Form
-
-        /// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data. </param>
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-        }
-
-        #endregion
     }
 }

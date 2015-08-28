@@ -52,9 +52,11 @@
     <Compile Include="Frame.cs" />
     <Compile Include="FrameControl.cs" />
     <Compile Include="FrameControlCollection.cs" />
+    <Compile Include="FrameEllipse.cs" />
     <Compile Include="FrameLabel.cs" />
     <Compile Include="FrameLine.cs" />
     <Compile Include="FramePaintEventArgs.cs" />
+    <Compile Include="FrameProgressBar.cs" />
     <Compile Include="FrameRectangle.cs" />
     <Compile Include="Internal\UnmanagedLibrariesLoader.cs" />
     <Compile Include="Internal\LgLcd.cs" />

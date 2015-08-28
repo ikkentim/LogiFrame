@@ -48,10 +48,25 @@ namespace LogiFrame.Debugging
                 Style = RectangleStyle.Bordered
             };
 
-            f.Controls.Add(rectangle);
-            f.Controls.Add(label);
-            f.Controls.Add(line);
+            var ellipse = new FrameEllipse
+            {
+                Location = new Point(40, 2),
+                Size = new Size(50, 20)
+            };
 
+            var pbar = new FrameProgressBar
+            {
+                Location = new Point(12, 14),
+                Size = new Size(135, 6),
+                Style = BorderStyle.Border,
+                Direction = ProgressBarDirection.Right,
+                Value = 50
+            };
+//            f.Controls.Add(rectangle);
+//            f.Controls.Add(label);
+//            f.Controls.Add(line);
+//            f.Controls.Add(ellipse);
+            f.Controls.Add(pbar);
             var font = "small";
             var fontFn = PixelFonts.Small;
             f.ButtonDown += (sender, args) =>
@@ -74,11 +89,9 @@ namespace LogiFrame.Debugging
                 label.Font = fontFn;
                 label.Text = $"Hello, World! This font is >{font}<";
             };
-
-            Thread.Sleep(1000);
+            
             f.PushToForeground(true);
-            Thread.Sleep(1000);
-            f.PushToForeground(false);
+
             while (true)
                 Thread.Sleep(1000);
         }

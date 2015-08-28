@@ -19,7 +19,7 @@ using LogiFrame.Drawing;
 
 namespace LogiFrame
 {
-    public abstract class FrameControl
+    public class FrameControl
     {
         private int _height;
         private bool _isInvalidated;
@@ -29,6 +29,7 @@ namespace LogiFrame
         private int _width;
         private int _x;
         private int _y;
+        private bool _isVisible = true;
         public FrameControl Parent { get; private set; }
         public MonochromeBitmap Bitmap { get; private set; }
 
@@ -67,9 +68,19 @@ namespace LogiFrame
             set { SetBounds(_x, _y, _width, value); }
         }
 
+        public bool IsVisible
+        {
+            get { return _isVisible; }
+            set
+            {
+                _isVisible = value;
+                Invalidate();
+            }
+        }
+
         public event EventHandler<FramePaintEventArgs> Paint;
 
-        protected virtual void SetBounds(int x, int y, int width, int height)
+        protected void SetBounds(int x, int y, int width, int height)
         {
             SetBounds(x, y, width, height, false);
         }
@@ -158,7 +169,9 @@ namespace LogiFrame
             if (_isInvalidated && _isLayoutInit && _layoutSuspendCount == 0)
             {
                 Bitmap.Reset();
-                OnPaint(new FramePaintEventArgs(Bitmap));
+
+                if (IsVisible)
+                    OnPaint(new FramePaintEventArgs(Bitmap));
             }
         }
 
