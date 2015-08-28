@@ -65,6 +65,9 @@ namespace LogiFrame.Internal
         [DllImport("LgLcd.dll", EntryPoint = "lgLcdUpdateBitmap")]
         public static extern int UpdateBitmap(int device, ref Bitmap160X43X1 bitmap, uint priority);
 
+        [DllImport("LgLcd.dll", EntryPoint = "lgLcdSetAsLCDForegroundApp")]
+        public static extern int SetAsLCDForegroundApp(int device, int toggle);
+        
         [StructLayout(LayoutKind.Sequential)]
         public struct Bitmap160X43X1
         {

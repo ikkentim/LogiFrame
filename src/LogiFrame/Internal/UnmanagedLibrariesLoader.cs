@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -40,12 +41,17 @@ namespace LogiFrame.Internal
                 .ToArray();
 
             var directoryPath = Path.Combine(Path.GetTempPath(), $"{assemblyName.Name}.{assemblyName.Version}");
-
+            
             Directory.CreateDirectory(directoryPath);
 
             foreach (var libraryName in libraries)
             {
                 var internalLibraryPath = Path.Combine(directoryPath, libraryName.Substring(internalFolderPath.Length));
+
+#if DEBUG
+                if (File.Exists(internalLibraryPath))
+                    File.Delete(internalLibraryPath);
+#endif
 
                 if (!File.Exists(internalLibraryPath))
                 {

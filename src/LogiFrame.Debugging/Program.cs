@@ -75,6 +75,10 @@ namespace LogiFrame.Debugging
                 label.Text = $"Hello, World! This font is >{font}<";
             };
 
+            Thread.Sleep(1000);
+            f.PushToForeground(true);
+            Thread.Sleep(1000);
+            f.PushToForeground(false);
             while (true)
                 Thread.Sleep(1000);
         }

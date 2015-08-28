@@ -84,6 +84,11 @@ namespace LogiFrame
         public event EventHandler<ButtonEventArgs> ButtonDown;
         public event EventHandler<ButtonEventArgs> ButtonUp;
         public event EventHandler<RenderedEventArgs> Rendered;
+
+        public void PushToForeground(bool toggle)
+        {
+            LgLcd.SetAsLCDForegroundApp(_device, toggle ? 1 : 0);
+        }
         #region Overrides of FrameControl
 
         public override void Invalidate()
