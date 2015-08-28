@@ -103,6 +103,16 @@ namespace LogiFrame.Debugging
             
             f.PushToForeground(true);
 
+            var n = 0;
+            var t = new Timer
+            {
+                Enabled = true,
+                Interval = 100
+            };
+            t.Tick += (sender, args) =>
+            {
+                label.Text = $"Tick: {++n}";
+            };
             while (true)
                 Thread.Sleep(1000);
         }
