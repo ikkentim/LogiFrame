@@ -57,6 +57,7 @@
     <Compile Include="FrameEllipse.cs" />
     <Compile Include="FrameLabel.cs" />
     <Compile Include="FrameLine.cs" />
+    <Compile Include="FrameMarquee.cs" />
     <Compile Include="FramePaintEventArgs.cs" />
     <Compile Include="FramePicture.cs" />
     <Compile Include="FrameProgressBar.cs" />

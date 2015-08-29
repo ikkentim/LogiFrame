@@ -114,7 +114,8 @@ namespace LogiFrame
         public virtual void Invalidate()
         {
             _isInvalidated = true;
-            Parent?.Invalidate();
+            if (_layoutSuspendCount == 0)
+                Parent?.Invalidate();
         }
 
         /// <summary>
@@ -156,13 +157,11 @@ namespace LogiFrame
             {
                 _layoutSuspendCount--;
 
-                if (_layoutSuspendCount == 0 && performLayout)
-                {
-                    PerformLayout();
-                }
+                if(_isInvalidated && performLayout)
+                    Invalidate();
             }
         }
-
+        
         public virtual void ResumeLayout()
         {
             ResumeLayout(true);
@@ -172,6 +171,7 @@ namespace LogiFrame
         {
             if (_isInvalidated && _isLayoutInit && _layoutSuspendCount == 0)
             {
+                _isInvalidated = false;
                 Bitmap.Reset();
 
                 if (IsVisible)

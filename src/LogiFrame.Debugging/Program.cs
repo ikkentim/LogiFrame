@@ -33,6 +33,7 @@ namespace LogiFrame.Debugging
             {
                 Font = PixelFonts.Small,
                 Location = new Point(2, 2),
+                AutoSize = true,
                 Size = f.Size,
                 MergeMethod = MergeMethods.Transparent,
                 Text = "Push ze button."
@@ -72,47 +73,24 @@ namespace LogiFrame.Debugging
                 MergeMethod = MergeMethods.Overlay
             };
 
+            var marq = new FrameMarquee
+            {
+                Text = "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum",
+                Size = new Size(Frame.DefaultSize.Width, 10),
+                Location = new Point(0, 30)
+            };
+
             f.Controls.Add(rectangle);
             f.Controls.Add(label);
             f.Controls.Add(line);
             f.Controls.Add(ellipse);
             f.Controls.Add(progressBar);
             f.Controls.Add(picture);
-
-            f.ButtonDown += (sender, args) =>
-            {
-                if (picture.MergeMethod == MergeMethods.Transparent)
-                {
-                    picture.MergeMethod = MergeMethods.Invert;
-                }
-                else if (picture.MergeMethod == MergeMethods.Invert)
-                {
-                    picture.MergeMethod = MergeMethods.Override;
-                }
-                else if (picture.MergeMethod == MergeMethods.Override)
-                {
-                    picture.MergeMethod = MergeMethods.Overlay;
-                }
-                else if (picture.MergeMethod == MergeMethods.Overlay)
-                {
-                    picture.MergeMethod = MergeMethods.Transparent;
-                }
-
-                label.Text = picture.MergeMethod.ToString();
-            };
+            f.Controls.Add(marq);
+            
             
             f.PushToForeground(true);
-
-            var n = 0;
-            var t = new Timer
-            {
-                Enabled = true,
-                Interval = 100
-            };
-            t.Tick += (sender, args) =>
-            {
-                label.Text = $"Tick: {++n}";
-            };
+            
             while (true)
                 Thread.Sleep(1000);
         }
