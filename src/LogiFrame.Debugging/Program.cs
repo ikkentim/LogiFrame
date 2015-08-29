@@ -13,6 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+using System.Data.Common;
 using System.Drawing;
 using System.Threading;
 using LogiFrame.Debugging.Properties;
@@ -80,6 +82,18 @@ namespace LogiFrame.Debugging
                 Location = new Point(0, 30)
             };
 
+            var graph = new FrameSimpleGraph
+            {
+                Location = new Point(70, 30),
+                Size = new Size(40, 10),
+                Style = BorderStyle.Border
+            };
+
+            (new Timer {Interval = 500, Enabled = true}).Tick += (sender, args) =>
+            {
+                graph.PushValue(new Random().Next(0, 100));
+            };
+
             f.Controls.Add(rectangle);
             f.Controls.Add(label);
             f.Controls.Add(line);
@@ -87,7 +101,7 @@ namespace LogiFrame.Debugging
             f.Controls.Add(progressBar);
             f.Controls.Add(picture);
             f.Controls.Add(marq);
-            
+            f.Controls.Add(graph);
             
             f.PushToForeground(true);
             

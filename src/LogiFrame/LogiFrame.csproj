@@ -62,6 +62,7 @@
     <Compile Include="FramePicture.cs" />
     <Compile Include="FrameProgressBar.cs" />
     <Compile Include="FrameRectangle.cs" />
+    <Compile Include="FrameSimpleGraph.cs" />
     <Compile Include="Internal\UnmanagedLibrariesLoader.cs" />
     <Compile Include="Internal\LgLcd.cs" />
     <Compile Include="Drawing\MonochromeBitmap.cs" />
