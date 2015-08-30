@@ -64,6 +64,8 @@ namespace LogiFrame
 
         public void PushValue(int value)
         {
+            ThrowIfDisposed();
+
             _values.Enqueue(value);
             if (_values.Count > MaxEntries)
                 _values.Dequeue();

@@ -15,6 +15,8 @@
 
 using System;
 using System.Drawing;
+using System.Threading;
+using System.Threading.Tasks;
 using LogiFrame.Drawing;
 using LogiFrame.Internal;
 
@@ -24,6 +26,8 @@ namespace LogiFrame
     /// </summary>
     public class Frame : ContainerFrameControl
     {
+        private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+
         private readonly LgLcd.ConnectContext _connection;
         private readonly int _device;
         // Must keep the open context to prevent the button change delegate from being GCed.
@@ -86,6 +90,8 @@ namespace LogiFrame
 
         public void PushToForeground(bool toggle)
         {
+            ThrowIfDisposed();
+
             LgLcd.SetAsLCDForegroundApp(_device, toggle ? 1 : 0);
         }
 
@@ -108,6 +114,43 @@ namespace LogiFrame
         }
 
         #endregion
+
+        #region Overrides of FrameControl
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the <see cref="T:LogiFrame.FrameControl"/> and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
+        protected override void Dispose(bool disposing)
+        {
+            LgLcd.Close(_device);
+            base.Dispose(disposing);
+            _cancellationTokenSource.Cancel();
+        }
+
+        #endregion
+
+        public async Task WaitForCloseAsync()
+        {
+            ThrowIfDisposed();
+
+            while (!IsDisposed)
+            {
+                try
+                {
+                    await Task.Delay(60000, _cancellationTokenSource.Token);
+                }
+                catch (TaskCanceledException)
+                {
+                    return;
+                }
+            }
+        }
+
+        public void WaitForClose()
+        {
+            WaitForCloseAsync().Wait();
+        }
 
         protected virtual void OnConfigure()
         {
@@ -136,6 +179,8 @@ namespace LogiFrame
 
         public virtual bool IsButtonDown(int key)
         {
+            ThrowIfDisposed();
+
             return (_oldButtons & (1 << key)) != 0;
         }
     }

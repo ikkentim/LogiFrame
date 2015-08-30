@@ -14,12 +14,13 @@
 // limitations under the License.
 
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using LogiFrame.Drawing;
 
 namespace LogiFrame
 {
-    public class FrameControl
+    public class FrameControl : IDisposable
     {
         private int _height;
         private bool _isInvalidated;
@@ -97,6 +98,8 @@ namespace LogiFrame
 
         protected virtual void SetBounds(int x, int y, int width, int height, bool preventInvalidation)
         {
+            ThrowIfDisposed();
+
             if (width < 1) width = 1;
             if (height < 1) height = 1;
             if (_x == x && _y == y && _width == width && _height == height) return;
@@ -114,12 +117,16 @@ namespace LogiFrame
 
         public virtual void AssignParent(FrameControl value)
         {
+            ThrowIfDisposed();
+
             Parent = value;
             InitLayout();
         }
 
         public virtual void Invalidate()
         {
+            ThrowIfDisposed();
+
             _isInvalidated = true;
             if (!_isPerformingLayout && _layoutSuspendCount == 0)
                 Parent?.Invalidate();
@@ -130,6 +137,8 @@ namespace LogiFrame
         /// </summary>
         public virtual void SuspendLayout()
         {
+            ThrowIfDisposed();
+
             _layoutSuspendCount++;
         }
 
@@ -139,6 +148,8 @@ namespace LogiFrame
         /// <param name="performLayout">true to execute pending layout requests; otherwise, false.</param>
         public virtual void ResumeLayout(bool performLayout)
         {
+            ThrowIfDisposed();
+
             if (_layoutSuspendCount > 0)
             {
                 _layoutSuspendCount--;
@@ -153,11 +164,15 @@ namespace LogiFrame
         /// </summary>
         public virtual void ResumeLayout()
         {
+            ThrowIfDisposed();
+
             ResumeLayout(true);
         }
 
         public virtual void PerformLayout()
         {
+            ThrowIfDisposed();
+
             if (_isInvalidated && _isLayoutInit && _layoutSuspendCount == 0)
             {
                 _isPerformingLayout = true;
@@ -214,16 +229,22 @@ namespace LogiFrame
 
         public void Show()
         {
+            ThrowIfDisposed();
+
             Visible = true;
         }
 
         public void Hide()
         {
+            ThrowIfDisposed();
+
             Visible = false;
         }
 
         public bool HandleButtonDown(int button)
         {
+            ThrowIfDisposed();
+
             var args = new ButtonEventArgs(button);
             if (!args.PreventPropagation)
                 OnButtonDown(args);
@@ -232,10 +253,80 @@ namespace LogiFrame
 
         public bool HandleButtonUp(int button)
         {
+            ThrowIfDisposed();
+
             var args = new ButtonEventArgs(button);
             if (!args.PreventPropagation)
                 OnButtonUp(args);
             return args.PreventPropagation;
         }
+
+        #region Implementation of IDisposable
+
+        /// <summary>
+        /// Releases all resources used by the <see cref="T:LogiFrame.FrameControl"/>.
+        /// </summary>
+        public void Dispose()
+        {
+            ThrowIfDisposed();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
+
+        ~FrameControl()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the <see cref="T:LogiFrame.FrameControl"/> and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing)
+                return;
+            lock (this)
+            {
+                (Parent as ContainerFrameControl)?.Controls?.Remove(this);
+                Disposing = true;
+                Disposed?.Invoke(this, EventArgs.Empty);
+                Disposing = false;
+                IsDisposed = true;
+            }
+        }
+
+        /// <summary>
+        /// Throws an <see cref="ObjectDisposedException"/> if the control has been disposed.
+        /// </summary>
+        protected void ThrowIfDisposed()
+        {
+            if (IsDisposed)
+                throw new ObjectDisposedException(GetType().Name);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the control has been disposed of.
+        /// </summary>
+        /// 
+        /// <returns>
+        /// true if the control has been disposed of; otherwise, false.
+        /// </returns>
+        public bool IsDisposed { get; private set; }
+        /// <summary>
+        /// Gets a value indicating whether the base <see cref="T:LogiFrame.FrameControl"/> class is in the process of disposing.
+        /// </summary>
+        /// 
+        /// <returns>
+        /// true if the base <see cref="T:LogiFrame.FrameControl"/> class is in the process of disposing; otherwise, false.
+        /// </returns>
+        public bool Disposing { get; private set; }
+
+        /// <summary>
+        /// Occurs when the component is disposed by a call to the <see cref="M:LogiFrame.FrameControl.Dispose"/> method.
+        /// </summary>
+        public event EventHandler Disposed;
     }
 }

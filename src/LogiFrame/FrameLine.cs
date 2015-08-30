@@ -66,13 +66,13 @@ namespace LogiFrame
         public override Point Location
         {
             get { return base.Location; }
-            set { throw new NotImplementedException(); }
+            set { throw new NotImplementedException("use FrameLine.Start and FrameLine.End instead"); }
         }
 
         public override Size Size
         {
             get { return base.Size; }
-            set { throw new NotImplementedException(); }
+            set { throw new NotImplementedException("use FrameLine.Start and FrameLine.End instead"); }
         }
 
         protected override void OnPaint(FramePaintEventArgs e)

@@ -17,6 +17,7 @@ using System;
 using System.Data.Common;
 using System.Drawing;
 using System.Threading;
+using System.Windows.Forms;
 using LogiFrame.Debugging.Properties;
 using LogiFrame.Drawing;
 
@@ -141,13 +142,13 @@ namespace LogiFrame.Debugging
 
             f.ButtonDown += (sender, args) =>
             {
-                if(!args.PreventPropagation && args.Button == 2) tabControl.ShowMenu();
+                if (args.Button == 2) tabControl.ShowMenu();
+                if (args.Button == 3) f.Dispose();
             };
 
             f.PushToForeground(true);
-            
-            while (true)
-                Thread.Sleep(1000);
+
+            f.WaitForClose();
         }
     }
 }

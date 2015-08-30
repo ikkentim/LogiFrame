@@ -126,7 +126,7 @@ namespace LogiFrame
             }
 
             {
-                int x = 0, y = 0, width = 0, height = 0;
+                int x, y, width, height;
                 switch (Direction)
                 {
                     case ProgressBarDirection.Down:

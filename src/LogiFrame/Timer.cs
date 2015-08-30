@@ -31,6 +31,7 @@ namespace LogiFrame
             get { return _enabled; }
             set
             {
+                ThrowIfDisposed();
                 if (_enabled == value) return;
 
                 _enabled = value;
@@ -92,11 +93,13 @@ namespace LogiFrame
 
         public void Start()
         {
+            ThrowIfDisposed();
             Enabled = true;
         }
-
+        
         public void Stop()
         {
+            ThrowIfDisposed();
             Enabled = false;
         }
 
@@ -104,5 +107,75 @@ namespace LogiFrame
         {
             Tick?.Invoke(this, EventArgs.Empty);
         }
+
+
+
+        #region Implementation of IDisposable
+
+        /// <summary>
+        /// Releases all resources used by the <see cref="T:LogiFrame.Timer"/>.
+        /// </summary>
+        public void Dispose()
+        {
+            ThrowIfDisposed();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
+
+        ~Timer()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the <see cref="T:LogiFrame.Timer"/> and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing)
+                return;
+            lock (this)
+            {
+                Disposing = true;
+                Stop();
+                Disposed?.Invoke(this, EventArgs.Empty);
+                Disposing = false;
+                IsDisposed = true;
+            }
+        }
+
+        /// <summary>
+        /// Throws an <see cref="ObjectDisposedException"/> if the control has been disposed.
+        /// </summary>
+        protected void ThrowIfDisposed()
+        {
+            if (IsDisposed)
+                throw new ObjectDisposedException(GetType().Name);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the control has been disposed of.
+        /// </summary>
+        /// 
+        /// <returns>
+        /// true if the control has been disposed of; otherwise, false.
+        /// </returns>
+        public bool IsDisposed { get; private set; }
+        /// <summary>
+        /// Gets a value indicating whether the base <see cref="T:LogiFrame.Timer"/> class is in the process of disposing.
+        /// </summary>
+        /// 
+        /// <returns>
+        /// true if the base <see cref="T:LogiFrame.FrameControl"/> class is in the process of disposing; otherwise, false.
+        /// </returns>
+        public bool Disposing { get; private set; }
+
+        /// <summary>
+        /// Occurs when the component is disposed by a call to the <see cref="M:LogiFrame.Timer.Dispose"/> method.
+        /// </summary>
+        public event EventHandler Disposed;
     }
 }

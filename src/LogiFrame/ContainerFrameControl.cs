@@ -60,6 +60,16 @@ namespace LogiFrame
             }
             base.OnButtonUp(e);
         }
+        
+        /// <summary>
+        /// Releases the unmanaged resources used by the <see cref="T:LogiFrame.FrameControl"/> and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
+        protected override void Dispose(bool disposing)
+        {
+            Controls.Clear();
+            base.Dispose(disposing);
+        }
 
         #endregion
     }

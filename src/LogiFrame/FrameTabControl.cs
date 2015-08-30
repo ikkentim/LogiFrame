@@ -79,11 +79,15 @@ namespace LogiFrame
 
         public void ShowMenu()
         {
+            ThrowIfDisposed();
+
             Menu.Visible = true;
         }
 
         public void HideMenu()
         {
+            ThrowIfDisposed();
+
             Menu.Visible = false;
         }
 

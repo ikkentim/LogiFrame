@@ -84,6 +84,8 @@ namespace LogiFrame
 
         public void PerformStep()
         {
+            ThrowIfDisposed();
+
             if (_maxSteps == 0) return;
 
             if (_breakSteps > 0)
@@ -114,6 +116,8 @@ namespace LogiFrame
 
         public void Reset()
         {
+            ThrowIfDisposed();
+
             _steps = 0;
             Invalidate();
         }
