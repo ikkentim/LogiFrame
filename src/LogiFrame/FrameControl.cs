@@ -99,6 +99,7 @@ namespace LogiFrame
         {
             if (width < 1) width = 1;
             if (height < 1) height = 1;
+            if (_x == x && _y == y && _width == width && _height == height) return;
 
             _x = x;
             _y = y;

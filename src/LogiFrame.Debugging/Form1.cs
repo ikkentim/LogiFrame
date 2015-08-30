@@ -14,6 +14,7 @@ namespace LogiFrame.Debugging
     {
         public Form1()
         {
+            Dispose();
             InitializeComponent();
         }
     }

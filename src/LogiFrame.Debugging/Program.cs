@@ -30,16 +30,23 @@ namespace LogiFrame.Debugging
         private static void Main()
         {
             var f = new Frame("Frame", false, false, false);
-            f.UpdatePriority = UpdatePriority.Alert;
+
             var label = new FrameLabel
             {
                 Font = PixelFonts.Small,
-                Location = new Point(2, 2),
-                AutoSize = true,
                 Size = f.Size,
-                MergeMethod = MergeMethods.Transparent,
-                Text = "Push ze button."
+                Text = "Align me!",
+                TextAlign = ContentAlignment.BottomRight,
             };
+//            var label = new FrameLabel
+//            {
+//                Font = PixelFonts.Small,
+//                Location = new Point(2, 2),
+//                AutoSize = true,
+//                Size = f.Size,
+//                MergeMethod = MergeMethods.Transparent,
+//                Text = "Push ze button."
+//            };
             var line = new FrameLine
             {
                 Start = new Point(0, 0),
@@ -79,7 +86,7 @@ namespace LogiFrame.Debugging
             {
                 Text = "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum",
                 Size = new Size(Frame.DefaultSize.Width, 10),
-                Location = new Point(0, 10)
+                Location = new Point(0, 10),
             };
 
             var graph = new FrameSimpleGraph
@@ -98,10 +105,11 @@ namespace LogiFrame.Debugging
 
             var tabPage = new FrameTabPage
             {
-                Icon = new FrameRectangle
+                Icon = new FrameLabel
                 {
-                    Size = new Size(8, 8),
-                    Style = RectangleStyle.Bordered
+                    AutoSize = true,
+                    Text = "A",
+                    Font = PixelFonts.Title
                 }
             };
 
@@ -110,13 +118,14 @@ namespace LogiFrame.Debugging
                 Icon = new FrameLabel
                 {
                     AutoSize = true,
-                    Text = "B"
+                    Text = "B",
+                    Font = PixelFonts.Title
                 }
             };
 
             tabPage.Controls.Add(label);
-            tabPage.Controls.Add(line);
-            tabPage.Controls.Add(marq);
+//            tabPage.Controls.Add(line);
+//            tabPage.Controls.Add(marq);
 
             tabPage2.Controls.Add(rectangle);
             tabPage2.Controls.Add(ellipse);
@@ -127,8 +136,6 @@ namespace LogiFrame.Debugging
             tabControl.TabPages.Add(tabPage);
             tabControl.TabPages.Add(tabPage2);
             tabControl.SelectedTab = tabPage;
-
-            tabControl.ShowMenu();
             
             f.Controls.Add(tabControl);
 

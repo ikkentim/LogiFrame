@@ -25,6 +25,7 @@ namespace LogiFrame
         private bool _autoSize;
         private Font _font = new Font(PixelFonts.SmallFamily, 6);
         private string _text;
+        private ContentAlignment _textAlign = ContentAlignment.TopLeft;
 
         public virtual Font Font
         {
@@ -49,19 +50,15 @@ namespace LogiFrame
             }
         }
 
-        #region Overrides of FrameControl
-
-        public override Size Size
+        public virtual ContentAlignment TextAlign
         {
-            get { return base.Size; }
+            get { return _textAlign; }
             set
             {
-                if (AutoSize) return;
-                base.Size = value;
+                _textAlign = value; 
+                Invalidate();
             }
         }
-
-        #endregion
 
         public virtual string Text
         {
@@ -76,25 +73,40 @@ namespace LogiFrame
             }
         }
 
+        private Size MeasureText()
+        {
+            if (Font == null || string.IsNullOrEmpty(Text))
+                return new Size(1, 1);
+
+            using (var bitmap = new Bitmap(1, 1))
+            using (var graphics = Graphics.FromImage(bitmap))
+                return Size.Round(graphics.MeasureString(Text, Font));
+        }
+
         private void AdjustSize()
         {
             if (!AutoSize) return;
 
-            using (var bitmap = new Bitmap(1, 1))
-            using (var graphics = Graphics.FromImage(bitmap))
-            {
-                var measure = graphics.MeasureString(Text, Font);
-                var size = new Size((int) Math.Ceiling(measure.Width), (int) Math.Ceiling(measure.Height));
+            var size = MeasureText();
 
-                if (Size.Equals(size))
-                    return;
+            if (Size.Equals(size))
+                return;
 
-                base.Size = size;
-            }
+            base.Size = size;
         }
 
         #region Overrides of FrameControl
 
+        public override Size Size
+        {
+            get { return base.Size; }
+            set
+            {
+                if (AutoSize) return;
+                base.Size = value;
+            }
+        }
+        
         protected override void OnPaint(FramePaintEventArgs e)
         {
             if (Font != null && Text != null)
@@ -102,7 +114,53 @@ namespace LogiFrame
                 using (var graphics = Graphics.FromImage(bitmap))
                 {
                     graphics.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
-                    graphics.DrawString(Text, Font, Brushes.Black, new Point(0, 0));
+
+                    if (AutoSize)
+                        graphics.DrawString(Text, Font, Brushes.Black, new Point(0, 0));
+                    else
+                    {
+                        Size size;
+                        switch (TextAlign)
+                        {
+                            default:
+                            case ContentAlignment.TopLeft:
+                                graphics.DrawString(Text, Font, Brushes.Black, new Point(0, 0));
+                                break;
+                            case ContentAlignment.TopCenter:
+                                size = MeasureText();
+                                graphics.DrawString(Text, Font, Brushes.Black, new Point((Width-size.Width)/2, 0));
+                                break;
+                            case ContentAlignment.TopRight:
+                                size = MeasureText();
+                                graphics.DrawString(Text, Font, Brushes.Black, new Point(Width - size.Width, 0));
+                                break;
+                            case ContentAlignment.MiddleLeft:
+                                size = MeasureText();
+                                graphics.DrawString(Text, Font, Brushes.Black, new Point(0, (Height-size.Height)/2));
+                                break;
+                            case ContentAlignment.MiddleCenter:
+                                size = MeasureText();
+                                graphics.DrawString(Text, Font, Brushes.Black, new Point((Width - size.Width) / 2, (Height - size.Height) / 2));
+                                break;
+                            case ContentAlignment.MiddleRight:
+                                size = MeasureText();
+                                graphics.DrawString(Text, Font, Brushes.Black, new Point(Width - size.Width, (Height - size.Height) / 2));
+                                break;
+                            case ContentAlignment.BottomLeft:
+                                size = MeasureText();
+                                graphics.DrawString(Text, Font, Brushes.Black, new Point(0, Height - size.Height));
+                                break;
+                            case ContentAlignment.BottomCenter:
+                                size = MeasureText();
+                                graphics.DrawString(Text, Font, Brushes.Black, new Point((Width -size.Width)/2, Height - size.Height));
+                                break;
+                            case ContentAlignment.BottomRight:
+                                size = MeasureText();
+                                graphics.DrawString(Text, Font, Brushes.Black, new Point(Width-size.Width, Height - size.Height));
+                                break;
+                        }
+                    }
+
                     e.Bitmap.Merge(new MonochromeBitmap(bitmap), new Point(), MergeMethods.Override);
                 }
         }
