@@ -1,4 +1,4 @@
-﻿// LogiFrame
+// LogiFrame
 // Copyright 2015 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,13 +13,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace LogiFrame.Drawing
+using System;
+
+namespace LogiFrame
 {
-    public static class MergeMethods
+    public class ValueEventArgs<T> : EventArgs
     {
-        public static IMergeMethod Override { get; } = new OverrideMergeMethod();
-        public static IMergeMethod Overlay { get; } = new OverlayMergeMethod();
-        public static IMergeMethod Transparent { get; } = new TransparentMergeMethod();
-        public static IMergeMethod Invert { get; } = new InvertMergeMethod();
+        public ValueEventArgs(T value)
+        {
+            Value = value;
+        }
+
+        public T Value { get; }
     }
 }

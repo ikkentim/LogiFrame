@@ -53,7 +53,7 @@ namespace LogiFrame
                 CalculateSteps();
             }
         }
-        
+
         public int Interval
         {
             get { return _timer.Interval; }

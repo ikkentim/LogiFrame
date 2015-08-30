@@ -13,13 +13,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace LogiFrame.Drawing
+namespace LogiFrame
 {
-    public static class MergeMethods
+    public class FrameTabPage : ContainerFrameControl
     {
-        public static IMergeMethod Override { get; } = new OverrideMergeMethod();
-        public static IMergeMethod Overlay { get; } = new OverlayMergeMethod();
-        public static IMergeMethod Transparent { get; } = new TransparentMergeMethod();
-        public static IMergeMethod Invert { get; } = new InvertMergeMethod();
+        public FrameTabPage()
+        {
+            Size = Frame.DefaultSize;
+        }
+
+        public virtual FrameControl Icon { get; set; }
     }
 }

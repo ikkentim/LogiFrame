@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Linq;
 using LogiFrame.Drawing;
 
 namespace LogiFrame
@@ -38,6 +39,26 @@ namespace LogiFrame
                 e.Bitmap.Merge(control.Bitmap, control.Location, control.MergeMethod ?? MergeMethods.Override);
             }
             base.OnPaint(e);
+        }
+
+        protected override void OnButtonDown(ButtonEventArgs e)
+        {
+            if (Controls.Any(control => control.HandleButtonDown(e.Button)))
+            {
+                e.PreventPropagation = true;
+                return;
+            }
+            base.OnButtonDown(e);
+        }
+
+        protected override void OnButtonUp(ButtonEventArgs e)
+        {
+            if (Controls.Any(control => control.HandleButtonUp(e.Button)))
+            {
+                e.PreventPropagation = true;
+                return;
+            }
+            base.OnButtonUp(e);
         }
 
         #endregion

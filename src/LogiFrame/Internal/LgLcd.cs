@@ -67,12 +67,12 @@ namespace LogiFrame.Internal
 
         [DllImport("LgLcd.dll", EntryPoint = "lgLcdSetAsLCDForegroundApp")]
         public static extern int SetAsLCDForegroundApp(int device, int toggle);
-        
+
         [StructLayout(LayoutKind.Sequential)]
         public struct Bitmap160X43X1
         {
-            public BitmapHeader hdr;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6880)] public byte[] pixels;
+            public BitmapHeader Header;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6880)] public byte[] Pixels;
         }
 
         [StructLayout(LayoutKind.Sequential)]

@@ -80,7 +80,7 @@ namespace LogiFrame.Drawing
 
         public void Merge(MonochromeBitmap bitmap, Point location, IMergeMethod mergeMethod)
         {
-            if (bitmap == null) throw new ArgumentNullException(nameof(bitmap));
+            if (bitmap == null) return;
             if (mergeMethod == null) throw new ArgumentNullException(nameof(mergeMethod));
 
             mergeMethod.Merge(bitmap, this, location);
@@ -88,7 +88,7 @@ namespace LogiFrame.Drawing
 
         public void MergeOverride(MonochromeBitmap bitmap, Point location)
         {
-            Merge(bitmap, location, Drawing.MergeMethods.Override);
+            Merge(bitmap, location, MergeMethods.Override);
         }
 
         public void Reset()

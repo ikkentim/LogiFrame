@@ -1,3 +1,18 @@
+// LogiFrame
+// Copyright 2015 Tim Potze
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +21,7 @@ namespace LogiFrame
 {
     public class FrameSimpleGraph : FrameControl
     {
+        private readonly Queue<int> _values = new Queue<int>();
         private int _maximum = 100;
         private int _minimum;
         private BorderStyle _style;
@@ -31,7 +47,7 @@ namespace LogiFrame
                 Invalidate();
             }
         }
-        
+
         public BorderStyle Style
         {
             get { return _style; }
@@ -42,9 +58,9 @@ namespace LogiFrame
             }
         }
 
-        private readonly Queue<int> _values = new Queue<int>();
-
-        public int MaxEntries => Math.Max(0, Width - (Style == BorderStyle.Border ? 2 : (Style == BorderStyle.BorderWithPadding ? 4 : 0)));
+        public int MaxEntries
+            => Math.Max(0, Width - (Style == BorderStyle.Border ? 2 : (Style == BorderStyle.BorderWithPadding ? 4 : 0)))
+            ;
 
         public void PushValue(int value)
         {
@@ -96,7 +112,7 @@ namespace LogiFrame
                     e.Bitmap[Width - 1, y] = true;
                 }
             }
-            
+
             if (graphWidth <= 0 || graphHeight <= 0 || !_values.Any())
             {
                 base.OnPaint(e);

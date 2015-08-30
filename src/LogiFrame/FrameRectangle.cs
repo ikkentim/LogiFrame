@@ -1,8 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// LogiFrame
+// Copyright 2015 Tim Potze
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 namespace LogiFrame
 {
@@ -38,7 +47,7 @@ namespace LogiFrame
                         e.Bitmap[Width - 1, y] = true;
                     }
                     break;
-                    case RectangleStyle.Filled:
+                case RectangleStyle.Filled:
                     for (var x = 0; x < Width; x++)
                         for (var y = 0; y < Height; y++)
                             e.Bitmap[x, y] = true;

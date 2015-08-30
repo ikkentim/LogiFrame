@@ -63,6 +63,10 @@
     <Compile Include="FrameProgressBar.cs" />
     <Compile Include="FrameRectangle.cs" />
     <Compile Include="FrameSimpleGraph.cs" />
+    <Compile Include="FrameTabControl.cs" />
+    <Compile Include="FrameTabMenuControl.cs" />
+    <Compile Include="FrameTabPage.cs" />
+    <Compile Include="FrameTabPageCollection.cs" />
     <Compile Include="Internal\UnmanagedLibrariesLoader.cs" />
     <Compile Include="Internal\LgLcd.cs" />
     <Compile Include="Drawing\MonochromeBitmap.cs" />
@@ -78,6 +82,7 @@
     <Compile Include="RenderedEventArgs.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="UpdatePriority.cs" />
+    <Compile Include="ValueEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="libs\LgLcd.dll" />

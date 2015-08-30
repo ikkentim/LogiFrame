@@ -14,7 +14,6 @@
 // limitations under the License.
 
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -41,7 +40,7 @@ namespace LogiFrame.Internal
                 .ToArray();
 
             var directoryPath = Path.Combine(Path.GetTempPath(), $"{assemblyName.Name}.{assemblyName.Version}");
-            
+
             Directory.CreateDirectory(directoryPath);
 
             foreach (var libraryName in libraries)

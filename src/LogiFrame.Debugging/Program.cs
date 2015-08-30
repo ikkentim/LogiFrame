@@ -42,8 +42,8 @@ namespace LogiFrame.Debugging
             };
             var line = new FrameLine
             {
-                Start = new Point(100, 2),
-                End = new Point(159, 42)
+                Start = new Point(0, 0),
+                End = new Point(f.Width-1, f.Height-1)
             };
             var rectangle = new FrameRectangle
             {
@@ -79,7 +79,7 @@ namespace LogiFrame.Debugging
             {
                 Text = "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum",
                 Size = new Size(Frame.DefaultSize.Width, 10),
-                Location = new Point(0, 30)
+                Location = new Point(0, 10)
             };
 
             var graph = new FrameSimpleGraph
@@ -94,15 +94,49 @@ namespace LogiFrame.Debugging
                 graph.PushValue(new Random().Next(0, 100));
             };
 
-            f.Controls.Add(rectangle);
-            f.Controls.Add(label);
-            f.Controls.Add(line);
-            f.Controls.Add(ellipse);
-            f.Controls.Add(progressBar);
-            f.Controls.Add(picture);
-            f.Controls.Add(marq);
-            f.Controls.Add(graph);
+            var tabControl = new FrameTabControl();
+
+            var tabPage = new FrameTabPage
+            {
+                Icon = new FrameRectangle
+                {
+                    Size = new Size(8, 8),
+                    Style = RectangleStyle.Bordered
+                }
+            };
+
+            var tabPage2 = new FrameTabPage
+            {
+                Icon = new FrameLabel
+                {
+                    AutoSize = true,
+                    Text = "B"
+                }
+            };
+
+            tabPage.Controls.Add(label);
+            tabPage.Controls.Add(line);
+            tabPage.Controls.Add(marq);
+
+            tabPage2.Controls.Add(rectangle);
+            tabPage2.Controls.Add(ellipse);
+            tabPage2.Controls.Add(progressBar);
+            tabPage2.Controls.Add(picture);
+            tabPage2.Controls.Add(graph);
+
+            tabControl.TabPages.Add(tabPage);
+            tabControl.TabPages.Add(tabPage2);
+            tabControl.SelectedTab = tabPage;
+
+            tabControl.ShowMenu();
             
+            f.Controls.Add(tabControl);
+
+            f.ButtonDown += (sender, args) =>
+            {
+                if(!args.PreventPropagation && args.Button == 2) tabControl.ShowMenu();
+            };
+
             f.PushToForeground(true);
             
             while (true)

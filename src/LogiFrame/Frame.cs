@@ -25,10 +25,11 @@ namespace LogiFrame
     public class Frame : ContainerFrameControl
     {
         private readonly LgLcd.ConnectContext _connection;
-        private int _oldButtons;
         private readonly int _device;
-
-        public static Size DefaultSize { get; } = new Size((int) LgLcd.BitmapWidth, (int) LgLcd.BitmapHeight);
+        // Must keep the open context to prevent the button change delegate from being GCed.
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
+        private readonly LgLcd.OpenContext _openContext;
+        private int _oldButtons;
 
         public Frame(string name, bool canAutoStart, bool isPersistent, bool allowConfiguration)
         {
@@ -49,7 +50,7 @@ namespace LogiFrame
             if (connectionResponse != 0)
                 throw new ConnectionException(connectionResponse);
 
-            var openContext = new LgLcd.OpenContext
+            _openContext = new LgLcd.OpenContext
             {
                 Connection = _connection.Connection,
                 Index = 0,
@@ -60,35 +61,34 @@ namespace LogiFrame
                         for (var button = 0; button < 4; button++)
                         {
                             var buttonIdentifier = 1 << button;
-
                             if ((buttons & buttonIdentifier) > (_oldButtons & buttonIdentifier))
-                                OnButtonDown(new ButtonEventArgs(button));
+                                HandleButtonDown(button);
                             else if ((buttons & buttonIdentifier) < (_oldButtons & buttonIdentifier))
-                                OnButtonUp(new ButtonEventArgs(button));
+                                HandleButtonUp(button);
                         }
                         _oldButtons = buttons;
                         return 1;
                     }
-                },
+                }
             };
-            
-            LgLcd.Open(ref openContext);
-            _device = openContext.Device;
+
+            LgLcd.Open(ref _openContext);
+            _device = _openContext.Device;
 
             SetBounds(0, 0, DefaultSize.Width, DefaultSize.Height);
             InitLayout();
         }
 
+        public static Size DefaultSize { get; } = new Size((int) LgLcd.BitmapWidth, (int) LgLcd.BitmapHeight);
         public UpdatePriority UpdatePriority { get; set; }
         public event EventHandler Configure;
-        public event EventHandler<ButtonEventArgs> ButtonDown;
-        public event EventHandler<ButtonEventArgs> ButtonUp;
         public event EventHandler<RenderedEventArgs> Rendered;
 
         public void PushToForeground(bool toggle)
         {
             LgLcd.SetAsLCDForegroundApp(_device, toggle ? 1 : 0);
         }
+
         #region Overrides of FrameControl
 
         public override void Invalidate()
@@ -114,16 +114,6 @@ namespace LogiFrame
             Configure?.Invoke(this, EventArgs.Empty);
         }
 
-        protected virtual void OnButtonDown(ButtonEventArgs e)
-        {
-            ButtonDown?.Invoke(this, e);
-        }
-
-        protected virtual void OnButtonUp(ButtonEventArgs e)
-        {
-            ButtonUp?.Invoke(this, e);
-        }
-
         private void Push(MonochromeBitmap bitmap)
         {
             if (bitmap == null) throw new ArgumentNullException(nameof(bitmap));
@@ -131,8 +121,8 @@ namespace LogiFrame
             var render = new MonochromeBitmap(bitmap, (int) LgLcd.BitmapWidth, (int) LgLcd.BitmapHeight);
             var lgBitmap = new LgLcd.Bitmap160X43X1
             {
-                hdr = {Format = LgLcd.BitmapFormat160X43X1},
-                pixels = render.Data
+                Header = {Format = LgLcd.BitmapFormat160X43X1},
+                Pixels = render.Data
             };
 
             LgLcd.UpdateBitmap(_device, ref lgBitmap, (uint) UpdatePriority);

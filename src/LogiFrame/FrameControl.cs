@@ -24,12 +24,13 @@ namespace LogiFrame
         private int _height;
         private bool _isInvalidated;
         private bool _isLayoutInit;
+        private bool _isPerformingLayout;
         private int _layoutSuspendCount;
         private IMergeMethod _mergeMethod = MergeMethods.Override;
+        private bool _visible = true;
         private int _width;
         private int _x;
         private int _y;
-        private bool _isVisible = true;
         public FrameControl Parent { get; private set; }
         public MonochromeBitmap Bitmap { get; private set; }
 
@@ -38,7 +39,7 @@ namespace LogiFrame
             get { return _mergeMethod ?? MergeMethods.Override; }
             set
             {
-                _mergeMethod = value; 
+                _mergeMethod = value;
                 Parent?.Invalidate();
             }
         }
@@ -72,17 +73,22 @@ namespace LogiFrame
             set { SetBounds(_x, _y, _width, value); }
         }
 
-        public bool IsVisible
+        public virtual bool Visible
         {
-            get { return _isVisible; }
+            get { return _visible; }
             set
             {
-                _isVisible = value;
+                if (_visible == value) return;
+                _visible = value;
+                OnVisibleChanged();
                 Invalidate();
             }
         }
 
+        public event EventHandler VisibleChanged;
         public event EventHandler<FramePaintEventArgs> Paint;
+        public event EventHandler<ButtonEventArgs> ButtonDown;
+        public event EventHandler<ButtonEventArgs> ButtonUp;
 
         protected void SetBounds(int x, int y, int width, int height)
         {
@@ -105,7 +111,7 @@ namespace LogiFrame
                 Invalidate();
         }
 
-        internal virtual void AssignParent(FrameControl value)
+        public virtual void AssignParent(FrameControl value)
         {
             Parent = value;
             InitLayout();
@@ -114,8 +120,54 @@ namespace LogiFrame
         public virtual void Invalidate()
         {
             _isInvalidated = true;
-            if (_layoutSuspendCount == 0)
+            if (!_isPerformingLayout && _layoutSuspendCount == 0)
                 Parent?.Invalidate();
+        }
+
+        /// <summary>
+        ///     Suspends the usual layout logic.
+        /// </summary>
+        public virtual void SuspendLayout()
+        {
+            _layoutSuspendCount++;
+        }
+
+        /// <summary>
+        ///     Resumes the usual layout logic.
+        /// </summary>
+        /// <param name="performLayout">true to execute pending layout requests; otherwise, false.</param>
+        public virtual void ResumeLayout(bool performLayout)
+        {
+            if (_layoutSuspendCount > 0)
+            {
+                _layoutSuspendCount--;
+
+                if (_isInvalidated && performLayout)
+                    Invalidate();
+            }
+        }
+
+        /// <summary>
+        ///     Resumes the usual layout logic.
+        /// </summary>
+        public virtual void ResumeLayout()
+        {
+            ResumeLayout(true);
+        }
+
+        public virtual void PerformLayout()
+        {
+            if (_isInvalidated && _isLayoutInit && _layoutSuspendCount == 0)
+            {
+                _isPerformingLayout = true;
+                Bitmap.Reset();
+
+                if (Visible)
+                    OnPaint(new FramePaintEventArgs(Bitmap));
+
+                _isInvalidated = false;
+                _isPerformingLayout = false;
+            }
         }
 
         /// <summary>
@@ -139,49 +191,50 @@ namespace LogiFrame
             Invalidate();
         }
 
-        /// <summary>
-        ///     Suspends the usual layout logic.
-        /// </summary>
-        public virtual void SuspendLayout()
-        {
-            _layoutSuspendCount++;
-        }
-
-        /// <summary>
-        ///     Resumes the usual layout logic.
-        /// </summary>
-        /// <param name="performLayout">true to execute pending layout requests; otherwise, false.</param>
-        public virtual void ResumeLayout(bool performLayout)
-        {
-            if (_layoutSuspendCount > 0)
-            {
-                _layoutSuspendCount--;
-
-                if(_isInvalidated && performLayout)
-                    Invalidate();
-            }
-        }
-        
-        public virtual void ResumeLayout()
-        {
-            ResumeLayout(true);
-        }
-
-        public virtual void PerformLayout()
-        {
-            if (_isInvalidated && _isLayoutInit && _layoutSuspendCount == 0)
-            {
-                _isInvalidated = false;
-                Bitmap.Reset();
-
-                if (IsVisible)
-                    OnPaint(new FramePaintEventArgs(Bitmap));
-            }
-        }
-
         protected virtual void OnPaint(FramePaintEventArgs e)
         {
             Paint?.Invoke(this, e);
+        }
+
+        protected virtual void OnButtonDown(ButtonEventArgs e)
+        {
+            ButtonDown?.Invoke(this, e);
+        }
+
+        protected virtual void OnButtonUp(ButtonEventArgs e)
+        {
+            ButtonUp?.Invoke(this, e);
+        }
+
+        protected virtual void OnVisibleChanged()
+        {
+            VisibleChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void Show()
+        {
+            Visible = true;
+        }
+
+        public void Hide()
+        {
+            Visible = false;
+        }
+
+        public bool HandleButtonDown(int button)
+        {
+            var args = new ButtonEventArgs(button);
+            if (!args.PreventPropagation)
+                OnButtonDown(args);
+            return args.PreventPropagation;
+        }
+
+        public bool HandleButtonUp(int button)
+        {
+            var args = new ButtonEventArgs(button);
+            if (!args.PreventPropagation)
+                OnButtonUp(args);
+            return args.PreventPropagation;
         }
     }
 }

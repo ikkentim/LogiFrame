@@ -21,13 +21,13 @@ namespace LogiFrame
 {
     public class FrameLine : FrameControl
     {
+        private Point _end;
+        private Point _start;
+
         public FrameLine()
         {
             MergeMethod = MergeMethods.Transparent;
         }
-
-        private Point _end;
-        private Point _start;
 
         public virtual Point Start
         {
@@ -74,7 +74,7 @@ namespace LogiFrame
             get { return base.Size; }
             set { throw new NotImplementedException(); }
         }
-        
+
         protected override void OnPaint(FramePaintEventArgs e)
         {
             if (Width == 1)
