@@ -64,6 +64,7 @@
     <Compile Include="FrameRectangle.cs" />
     <Compile Include="FrameSimpleGraph.cs" />
     <Compile Include="FrameTabControl.cs" />
+    <Compile Include="FrameTabMenuButtonTask.cs" />
     <Compile Include="FrameTabMenuControl.cs" />
     <Compile Include="FrameTabPage.cs" />
     <Compile Include="FrameTabPageCollection.cs" />

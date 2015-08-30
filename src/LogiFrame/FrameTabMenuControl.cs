@@ -52,6 +52,10 @@ namespace LogiFrame
         public int ButtonRight { get; set; } = 1;
         public int ButtonClose { get; set; } = 2;
 
+        public FrameTabMenuButtonTask Button0Task { get; set; } = FrameTabMenuButtonTask.Previous;
+        public FrameTabMenuButtonTask Button1Task { get; set; } = FrameTabMenuButtonTask.Next;
+        public FrameTabMenuButtonTask Button2Task { get; set; } = FrameTabMenuButtonTask.Close;
+        public FrameTabMenuButtonTask Button3Task { get; set; } = FrameTabMenuButtonTask.None;
         public void SelectPrevious()
         {
             var index = TabControl.SelectedIndex;
@@ -208,23 +212,37 @@ namespace LogiFrame
 
         protected override void OnButtonDown(ButtonEventArgs e)
         {
-            if (e.Button == ButtonClose)
+            var task = FrameTabMenuButtonTask.None;
+            switch (e.Button)
             {
-                Hide();
-                e.PreventPropagation = true;
-                return;
+                case 0:
+                    task = Button0Task;
+                    break;
+                case 1:
+                    task = Button1Task;
+                    break;
+                case 2:
+                    task = Button2Task;
+                    break;
+                case 3:
+                    task = Button3Task;
+                    break;
             }
-            if (e.Button == ButtonLeft)
+
+            switch (task)
             {
-                SelectPrevious();
-                e.PreventPropagation = true;
-                return;
-            }
-            if (e.Button == ButtonRight)
-            {
-                SelectNext();
-                e.PreventPropagation = true;
-                return;
+                case FrameTabMenuButtonTask.Close:
+                    Hide();
+                    e.PreventPropagation = true;
+                    return;
+                case FrameTabMenuButtonTask.Previous:
+                    SelectPrevious();
+                    e.PreventPropagation = true;
+                    return;
+                case FrameTabMenuButtonTask.Next:
+                    SelectNext();
+                    e.PreventPropagation = true;
+                    return;
             }
 
             base.OnButtonDown(e);
