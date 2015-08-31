@@ -15,6 +15,9 @@
 
 namespace LogiFrame
 {
+    /// <summary>
+    /// Represents a tab page.
+    /// </summary>
     public class LCDTabPage : ContainerLCDControl
     {
         public LCDTabPage()
@@ -22,6 +25,9 @@ namespace LogiFrame
             Size = LCDApp.DefaultSize;
         }
 
+        /// <summary>
+        /// Gets or sets the icon of the tab page.
+        /// </summary>
         public virtual LCDControl Icon { get; set; }
     }
 }

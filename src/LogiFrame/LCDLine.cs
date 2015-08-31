@@ -19,16 +19,25 @@ using LogiFrame.Drawing;
 
 namespace LogiFrame
 {
+    /// <summary>
+    /// Represents a line.
+    /// </summary>
     public class LCDLine : LCDControl
     {
         private Point _end;
         private Point _start;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LCDLine"/> class.
+        /// </summary>
         public LCDLine()
         {
             MergeMethod = MergeMethods.Transparent;
         }
 
+        /// <summary>
+        /// Gets or sets the starting point of the lind.
+        /// </summary>
         public virtual Point Start
         {
             get { return _start; }
@@ -45,6 +54,9 @@ namespace LogiFrame
             }
         }
 
+        /// <summary>
+        /// Gets or sets the ending pont of the line.
+        /// </summary>
         public virtual Point End
         {
             get { return _end; }
@@ -63,18 +75,30 @@ namespace LogiFrame
 
         #region Overrides of LCDControl
 
+        /// <summary>
+        ///     Gets or sets the location of the control.
+        /// </summary>
+        /// <exception cref="System.NotImplementedException">use <see cref="Start"/> and <see cref="End"/> instead</exception>
         public override Point Location
         {
             get { return base.Location; }
             set { throw new NotImplementedException("use LCDLine.Start and LCDLine.End instead"); }
         }
 
+        /// <summary>
+        /// Gets or sets the size of the control.
+        /// </summary>
+        /// <exception cref="System.NotImplementedException">use <see cref="Start"/> and <see cref="End"/> instead</exception>
         public override Size Size
         {
             get { return base.Size; }
             set { throw new NotImplementedException("use LCDLine.Start and LCDLine.End instead"); }
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:Paint" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.LCDPaintEventArgs" /> instance containing the event data.</param>
         protected override void OnPaint(LCDPaintEventArgs e)
         {
             if (Width == 1)

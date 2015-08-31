@@ -15,11 +15,26 @@
 
 namespace LogiFrame
 {
+    /// <summary>
+    /// Contains progress bar directions.
+    /// </summary>
     public enum ProgressBarDirection
     {
+        /// <summary>
+        /// Right.
+        /// </summary>
         Right,
+        /// <summary>
+        /// Left.
+        /// </summary>
         Left,
+        /// <summary>
+        /// Up.
+        /// </summary>
         Up,
+        /// <summary>
+        /// Down.
+        /// </summary>
         Down
     }
 }

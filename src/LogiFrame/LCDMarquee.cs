@@ -17,6 +17,9 @@ using System.Drawing;
 
 namespace LogiFrame
 {
+    /// <summary>
+    /// Represents a marquee.
+    /// </summary>
     public class LCDMarquee : LCDControl
     {
         private readonly LCDLabel _label;
@@ -25,15 +28,21 @@ namespace LogiFrame
         private int _maxSteps;
         private int _steps;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LCDMarquee"/> class.
+        /// </summary>
         public LCDMarquee()
         {
-            _label = new LCDLabel {AutoSize = true};
+            _label = new LCDLabel { AutoSize = true };
             _label.AssignParent(this);
 
-            _timer = new Timer {Enabled = true};
+            _timer = new Timer { Enabled = true };
             _timer.Tick += (sender, args) => PerformStep();
         }
 
+        /// <summary>
+        /// Gets or sets the font.
+        /// </summary>
         public Font Font
         {
             get { return _label.Font; }
@@ -44,6 +53,9 @@ namespace LogiFrame
             }
         }
 
+        /// <summary>
+        /// Gets or sets the text.
+        /// </summary>
         public string Text
         {
             get { return _label.Text; }
@@ -54,20 +66,35 @@ namespace LogiFrame
             }
         }
 
+        /// <summary>
+        /// Gets or sets the interval.
+        /// </summary>
         public int Interval
         {
             get { return _timer.Interval; }
             set { _timer.Interval = value; }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="LCDMarquee"/> is enabled.
+        /// </summary>
         public bool Enabled
         {
             get { return _timer.Enabled; }
             set { _timer.Enabled = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the size of the step.
+        /// </summary>
         public int StepSize { get; set; } = 1;
+        /// <summary>
+        /// Gets or sets a value indicating whether to break at the break at end of the text.
+        /// </summary>
         public bool BreakAtEnd { get; set; } = true;
+        /// <summary>
+        /// Gets or sets the break steps.
+        /// </summary>
         public int BreakSteps { get; set; } = 5;
 
         private void CalculateSteps()
@@ -82,6 +109,9 @@ namespace LogiFrame
             _maxSteps = scroll;
         }
 
+        /// <summary>
+        /// Performs a step.
+        /// </summary>
         public void PerformStep()
         {
             ThrowIfDisposed();
@@ -90,7 +120,7 @@ namespace LogiFrame
 
             if (_breakSteps > 0)
             {
-                _breakSteps --;
+                _breakSteps--;
 
                 if (_breakSteps == 0)
                 {
@@ -114,6 +144,9 @@ namespace LogiFrame
             Invalidate();
         }
 
+        /// <summary>
+        /// Resets this instance.
+        /// </summary>
         public void Reset()
         {
             ThrowIfDisposed();
@@ -124,6 +157,9 @@ namespace LogiFrame
 
         #region Overrides of LCDControl
 
+        /// <summary>
+        ///     Gets or sets the size of the control.
+        /// </summary>
         public override Size Size
         {
             get { return base.Size; }
@@ -134,6 +170,10 @@ namespace LogiFrame
             }
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:Paint" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.LCDPaintEventArgs" /> instance containing the event data.</param>
         protected override void OnPaint(LCDPaintEventArgs e)
         {
             _label.PerformLayout();

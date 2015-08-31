@@ -19,7 +19,7 @@ using System.ComponentModel;
 namespace LogiFrame
 {
     /// <summary>
-    ///     Represents errors that occur during a connection with a lcd device.
+    ///     Represents errors that occur during a connection with an LCD device.
     /// </summary>
     public class ConnectionException : Exception
     {

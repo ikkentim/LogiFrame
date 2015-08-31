@@ -15,10 +15,23 @@
 
 namespace LogiFrame
 {
+    /// <summary>
+    /// Represents rectangle styles.
+    /// </summary>
     public enum RectangleStyle
     {
+        /// <summary>
+        /// A blank rectangle.
+        /// </summary>
         Blank,
+        /// <summary>
+        /// A bordered rectangle.
+        /// </summary>
         Bordered,
+
+        /// <summary>
+        /// A filled rectangle.
+        /// </summary>
         Filled
     }
 }

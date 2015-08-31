@@ -18,14 +18,25 @@ using LogiFrame.Drawing;
 
 namespace LogiFrame
 {
+    /// <summary>
+    /// Provides data for the <see cref="E:LogiFrame.LCDControl.Paint"/> event.
+    /// </summary>
     public class LCDPaintEventArgs : EventArgs
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LCDPaintEventArgs"/> class.
+        /// </summary>
+        /// <param name="bitmap">The bitmap.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown if bitmap is null.</exception>
         public LCDPaintEventArgs(MonochromeBitmap bitmap)
         {
             if (bitmap == null) throw new ArgumentNullException(nameof(bitmap));
             Bitmap = bitmap;
         }
 
+        /// <summary>
+        /// Gets the bitmap.
+        /// </summary>
         public MonochromeBitmap Bitmap { get; }
     }
 }

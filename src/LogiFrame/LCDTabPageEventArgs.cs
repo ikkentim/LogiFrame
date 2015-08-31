@@ -17,13 +17,17 @@ using System;
 
 namespace LogiFrame
 {
-    public class ValueEventArgs<T> : EventArgs
+
+    /// <summary>
+    /// Provides data for the <see cref="E:LogiFrame.LCDTabPageCollection.ItemAdded"/> or <see cref="E:LogiFrame.LCDTabPageCollection.ItemRemoved"/> event.
+    /// </summary>
+    public class LCDTabPageEventArgs : EventArgs
     {
-        public ValueEventArgs(T value)
+        public LCDTabPageEventArgs(LCDTabPage tabPage)
         {
-            Value = value;
+            TabPage = tabPage;
         }
 
-        public T Value { get; }
+        public LCDTabPage TabPage { get; }
     }
 }

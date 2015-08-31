@@ -15,11 +15,27 @@
 
 namespace LogiFrame
 {
+    /// <summary>
+    /// Represents tab menu button tasks.
+    /// </summary>
     public enum LCDTabMenuButtonTask
     {
+        /// <summary>
+        /// No task.
+        /// </summary>
         None,
+
+        /// <summary>
+        /// Closes the menu.
+        /// </summary>
         Close,
+        /// <summary>
+        /// Go to the previous tab.
+        /// </summary>
         Previous,
+        /// <summary>
+        /// Go to the next tab.
+        /// </summary>
         Next
     }
 }

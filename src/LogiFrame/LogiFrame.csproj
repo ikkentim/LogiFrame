@@ -83,7 +83,7 @@
     <Compile Include="RenderedEventArgs.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="UpdatePriority.cs" />
-    <Compile Include="ValueEventArgs.cs" />
+    <Compile Include="LCDTabPageEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="libs\LgLcd.dll" />

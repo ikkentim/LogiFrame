@@ -18,11 +18,17 @@ using LogiFrame.Drawing;
 
 namespace LogiFrame
 {
+    /// <summary>
+    /// Represents a picture.
+    /// </summary>
     public class LCDPicture : LCDControl
     {
         private MonochromeBitmap _bitmap;
         private Image _image;
 
+        /// <summary>
+        /// Gets or sets the image.
+        /// </summary>
         public Image Image
         {
             get { return _image; }
@@ -38,6 +44,10 @@ namespace LogiFrame
 
         #region Overrides of LCDControl
 
+        /// <summary>
+        /// Raises the <see cref="E:Paint" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.LCDPaintEventArgs" /> instance containing the event data.</param>
         protected override void OnPaint(LCDPaintEventArgs e)
         {
             if (_bitmap != null)

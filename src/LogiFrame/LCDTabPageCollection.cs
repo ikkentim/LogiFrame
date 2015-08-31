@@ -19,6 +19,9 @@ using System.Collections.Generic;
 
 namespace LogiFrame
 {
+    /// <summary>
+    /// Represents a collection of tab pages.
+    /// </summary>
     public class LCDTabPageCollection : IList<LCDTabPage>, ICloneable
     {
         private readonly List<LCDTabPage> _controls = new List<LCDTabPage>();
@@ -40,15 +43,29 @@ namespace LogiFrame
 
         #endregion
 
-        public event EventHandler<ValueEventArgs<LCDTabPage>> ItemAdded;
-        public event EventHandler<ValueEventArgs<LCDTabPage>> ItemRemoved;
+        /// <summary>
+        /// Occurs when an item was added.
+        /// </summary>
+        public event EventHandler<LCDTabPageEventArgs> ItemAdded;
+        /// <summary>
+        /// Occurs when an item was removed.
+        /// </summary>
+        public event EventHandler<LCDTabPageEventArgs> ItemRemoved;
 
-        protected virtual void OnItemAdded(ValueEventArgs<LCDTabPage> e)
+        /// <summary>
+        /// Raises the <see cref="E:ItemAdded" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.LCDTabPageEventArgs" /> instance containing the event data.</param>
+        protected virtual void OnItemAdded(LCDTabPageEventArgs e)
         {
             ItemAdded?.Invoke(this, e);
         }
 
-        protected virtual void OnItemRemoved(ValueEventArgs<LCDTabPage> e)
+        /// <summary>
+        /// Raises the <see cref="E:ItemRemoved" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.LCDTabPageEventArgs" /> instance containing the event data.</param>
+        protected virtual void OnItemRemoved(LCDTabPageEventArgs e)
         {
             ItemRemoved?.Invoke(this, e);
         }
@@ -93,7 +110,7 @@ namespace LogiFrame
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             _controls.Add(item);
-            OnItemAdded(new ValueEventArgs<LCDTabPage>(item));
+            OnItemAdded(new LCDTabPageEventArgs(item));
         }
 
         /// <summary>
@@ -106,7 +123,7 @@ namespace LogiFrame
         public void Clear()
         {
             foreach (var i in this)
-                OnItemRemoved(new ValueEventArgs<LCDTabPage>(i));
+                OnItemRemoved(new LCDTabPageEventArgs(i));
             _controls.Clear();
         }
 
@@ -175,7 +192,7 @@ namespace LogiFrame
 
             if (_controls.Remove(item))
             {
-                OnItemRemoved(new ValueEventArgs<LCDTabPage>(item));
+                OnItemRemoved(new LCDTabPageEventArgs(item));
                 return true;
             }
 
@@ -228,7 +245,7 @@ namespace LogiFrame
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             _controls.Insert(index, item);
-            OnItemAdded(new ValueEventArgs<LCDTabPage>(item));
+            OnItemAdded(new LCDTabPageEventArgs(item));
         }
 
         /// <summary>
@@ -244,7 +261,7 @@ namespace LogiFrame
         {
             var element = this[index];
             if (element == null) return;
-            OnItemRemoved(new ValueEventArgs<LCDTabPage>(element));
+            OnItemRemoved(new LCDTabPageEventArgs(element));
             _controls.RemoveAt(index);
         }
 
@@ -273,8 +290,8 @@ namespace LogiFrame
                 if (_controls[index] == value)
                     return;
 
-                OnItemRemoved(new ValueEventArgs<LCDTabPage>(_controls[index]));
-                OnItemAdded(new ValueEventArgs<LCDTabPage>(value));
+                OnItemRemoved(new LCDTabPageEventArgs(_controls[index]));
+                OnItemAdded(new LCDTabPageEventArgs(value));
                 _controls[index] = value;
             }
         }

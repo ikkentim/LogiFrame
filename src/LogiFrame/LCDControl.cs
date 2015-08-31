@@ -14,12 +14,14 @@
 // limitations under the License.
 
 using System;
-using System.ComponentModel;
 using System.Drawing;
 using LogiFrame.Drawing;
 
 namespace LogiFrame
 {
+    /// <summary>
+    ///     Defines the base class for LCD controls, which are components with visual representation.
+    /// </summary>
     public class LCDControl : IDisposable
     {
         private int _height;
@@ -30,11 +32,22 @@ namespace LogiFrame
         private IMergeMethod _mergeMethod = MergeMethods.Override;
         private bool _visible = true;
         private int _width;
-        private int _x;
-        private int _y;
+        private int _left;
+        private int _top;
+
+        /// <summary>
+        ///     Gets the parent container of the control.
+        /// </summary>
         public LCDControl Parent { get; private set; }
+
+        /// <summary>
+        ///     Gets the last created bitmap.
+        /// </summary>
         public MonochromeBitmap Bitmap { get; private set; }
 
+        /// <summary>
+        ///     Gets or sets the merge method used on the control.
+        /// </summary>
         public virtual IMergeMethod MergeMethod
         {
             get { return _mergeMethod ?? MergeMethods.Override; }
@@ -45,35 +58,76 @@ namespace LogiFrame
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the location of the control.
+        /// </summary>
         public virtual Point Location
         {
-            get { return new Point(_x, _y); }
+            get { return new Point(_left, _top); }
             set
             {
-                _x = value.X;
-                _y = value.Y;
+                _left = value.X;
+                _top = value.Y;
                 Parent?.Invalidate();
             }
         }
 
+        /// <summary>
+        /// Gets or sets the distance, in pixels, between the left edge of the control and the left edge of its container.
+        /// </summary>
+        public int Left
+        {
+            get { return _left; }
+            set
+            {
+                _left = value;
+                Parent?.Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the distance, in pixels, between the top edge of the control and the top edge of its container.
+        /// </summary>
+        public int Top
+        {
+            get { return _top; }
+            set
+            {
+                _top = value;
+                Parent?.Invalidate();
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the size of the control.
+        /// </summary>
         public virtual Size Size
         {
             get { return new Size(Width, Height); }
-            set { SetBounds(_x, _y, value.Width, value.Height); }
+            set { SetBounds(_left, _top, value.Width, value.Height); }
         }
 
+        /// <summary>
+        ///     Gets or sets the width of the control.
+        /// </summary>
         public virtual int Width
         {
             get { return _width; }
-            set { SetBounds(_x, _y, value, _height); }
+            set { SetBounds(_left, _top, value, _height); }
         }
 
+        /// <summary>
+        ///     Gets or sets the height of the control.
+        /// </summary>
         public virtual int Height
         {
             get { return _height; }
-            set { SetBounds(_x, _y, _width, value); }
+            set { SetBounds(_left, _top, _width, value); }
         }
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether this <see cref="LCDControl" /> is visible.
+        /// </summary>
         public virtual bool Visible
         {
             get { return _visible; }
@@ -86,26 +140,92 @@ namespace LogiFrame
             }
         }
 
+        /// <summary>
+        ///     Gets a value indicating whether the control has been disposed of.
+        /// </summary>
+        /// <returns>
+        ///     true if the control has been disposed of; otherwise, false.
+        /// </returns>
+        public bool IsDisposed { get; private set; }
+
+        /// <summary>
+        ///     Gets a value indicating whether the base <see cref="T:LogiFrame.LCDControl" /> class is in the process of
+        ///     disposing.
+        /// </summary>
+        /// <returns>
+        ///     true if the base <see cref="T:LogiFrame.LCDControl" /> class is in the process of disposing; otherwise, false.
+        /// </returns>
+        public bool Disposing { get; private set; }
+
+        #region Implementation of IDisposable
+
+        /// <summary>
+        ///     Releases all resources used by the <see cref="T:LogiFrame.LCDControl" />.
+        /// </summary>
+        public void Dispose()
+        {
+            ThrowIfDisposed();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
+
+        /// <summary>
+        ///     Occurs when the <see cref="P:LogiFrame.LCDControl.Visible" /> property value changes.
+        /// </summary>
         public event EventHandler VisibleChanged;
+
+        /// <summary>
+        ///     Occurs when the control is redrawn.
+        /// </summary>
         public event EventHandler<LCDPaintEventArgs> Paint;
+
+        /// <summary>
+        ///     Occurs when a button is pressed.
+        /// </summary>
         public event EventHandler<ButtonEventArgs> ButtonDown;
+
+        /// <summary>
+        ///     Occurs when a button is released
+        /// </summary>
         public event EventHandler<ButtonEventArgs> ButtonUp;
 
+        /// <summary>
+        ///     Occurs when the component is disposed by a call to the <see cref="M:LogiFrame.LCDControl.Dispose" /> method.
+        /// </summary>
+        public event EventHandler Disposed;
+
+        /// <summary>
+        ///     Sets the bounds of the control to the specified location and size.
+        /// </summary>
+        /// <param name="x">The new <see cref="P:LogiFrame.LCDControl.Left" /> property value of the control. </param>
+        /// <param name="y">The new <see cref="P:LogiFrame.LCDControl.Top" /> property value of the control. </param>
+        /// <param name="width">The new <see cref="P:LogiFrame.LCDControl.Width" /> property value of the control. </param>
+        /// <param name="height">The new <see cref="P:LogiFrame.LCDControl.Height" /> property value of the control. </param>
         protected void SetBounds(int x, int y, int width, int height)
         {
             SetBounds(x, y, width, height, false);
         }
 
+        /// <summary>
+        /// Sets the bounds of the control to the specified location and size.
+        /// </summary>
+        /// <param name="x">The new <see cref="P:LogiFrame.LCDControl.Left" /> property value of the control.</param>
+        /// <param name="y">The new <see cref="P:LogiFrame.LCDControl.Top" /> property value of the control.</param>
+        /// <param name="width">The new <see cref="P:LogiFrame.LCDControl.Width" /> property value of the control.</param>
+        /// <param name="height">The new <see cref="P:LogiFrame.LCDControl.Height" /> property value of the control.</param>
+        /// <param name="preventInvalidation">if set to <c>true</c> invalidation is prevented.</param>
         protected virtual void SetBounds(int x, int y, int width, int height, bool preventInvalidation)
         {
             ThrowIfDisposed();
 
             if (width < 1) width = 1;
             if (height < 1) height = 1;
-            if (_x == x && _y == y && _width == width && _height == height) return;
+            if (_left == x && _top == y && _width == width && _height == height) return;
 
-            _x = x;
-            _y = y;
+            _left = x;
+            _top = y;
             _width = width;
             _height = height;
 
@@ -115,6 +235,10 @@ namespace LogiFrame
                 Invalidate();
         }
 
+        /// <summary>
+        /// Assigns the <see cref="P:LogiFrame.LCDControl.Parent"/> of the control.
+        /// </summary>
+        /// <param name="value">The parent control.</param>
         public virtual void AssignParent(LCDControl value)
         {
             ThrowIfDisposed();
@@ -123,6 +247,9 @@ namespace LogiFrame
             InitLayout();
         }
 
+        /// <summary>
+        /// Invalidates the entire surface of the control and causes the control to be redrawn.
+        /// </summary>
         public virtual void Invalidate()
         {
             ThrowIfDisposed();
@@ -169,6 +296,9 @@ namespace LogiFrame
             ResumeLayout(true);
         }
 
+        /// <summary>
+        /// Performs the control's layout logic.
+        /// </summary>
         public virtual void PerformLayout()
         {
             ThrowIfDisposed();
@@ -207,26 +337,44 @@ namespace LogiFrame
             Invalidate();
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:Paint" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.LCDPaintEventArgs" /> instance containing the event data.</param>
         protected virtual void OnPaint(LCDPaintEventArgs e)
         {
             Paint?.Invoke(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:ButtonDown" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
         protected virtual void OnButtonDown(ButtonEventArgs e)
         {
             ButtonDown?.Invoke(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:ButtonUp" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
         protected virtual void OnButtonUp(ButtonEventArgs e)
         {
             ButtonUp?.Invoke(this, e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:VisibleChanged"/> event.
+        /// </summary>
         protected virtual void OnVisibleChanged()
         {
             VisibleChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Displays the control to the user.
+        /// </summary>
         public void Show()
         {
             ThrowIfDisposed();
@@ -234,6 +382,9 @@ namespace LogiFrame
             Visible = true;
         }
 
+        /// <summary>
+        /// Hides the control from the user.
+        /// </summary>
         public void Hide()
         {
             ThrowIfDisposed();
@@ -241,6 +392,11 @@ namespace LogiFrame
             Visible = false;
         }
 
+        /// <summary>
+        /// Handles a button press.
+        /// </summary>
+        /// <param name="button">The button.</param>
+        /// <returns>true if the call was handled; otherwise false.</returns>
         public bool HandleButtonDown(int button)
         {
             ThrowIfDisposed();
@@ -250,7 +406,12 @@ namespace LogiFrame
                 OnButtonDown(args);
             return args.PreventPropagation;
         }
-
+        
+        /// <summary>
+        /// Handles a button release.
+        /// </summary>
+        /// <param name="button">The button.</param>
+        /// <returns>true if the call was handled; otherwise false.</returns>
         public bool HandleButtonUp(int button)
         {
             ThrowIfDisposed();
@@ -261,29 +422,22 @@ namespace LogiFrame
             return args.PreventPropagation;
         }
 
-        #region Implementation of IDisposable
-
         /// <summary>
-        /// Releases all resources used by the <see cref="T:LogiFrame.LCDControl"/>.
+        /// Finalizes an instance of the <see cref="LCDControl" /> class.
         /// </summary>
-        public void Dispose()
-        {
-            ThrowIfDisposed();
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        #endregion
-
         ~LCDControl()
         {
             Dispose(false);
         }
 
         /// <summary>
-        /// Releases the unmanaged resources used by the <see cref="T:LogiFrame.LCDControl"/> and optionally releases the managed resources.
+        ///     Releases the unmanaged resources used by the <see cref="T:LogiFrame.LCDControl" /> and optionally releases the
+        ///     managed resources.
         /// </summary>
-        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
+        /// <param name="disposing">
+        ///     true to release both managed and unmanaged resources; false to release only unmanaged
+        ///     resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
             if (!disposing)
@@ -299,34 +453,12 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Throws an <see cref="ObjectDisposedException"/> if the control has been disposed.
+        ///     Throws an <see cref="ObjectDisposedException" /> if the control has been disposed.
         /// </summary>
         protected void ThrowIfDisposed()
         {
             if (IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
         }
-
-        /// <summary>
-        /// Gets a value indicating whether the control has been disposed of.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// true if the control has been disposed of; otherwise, false.
-        /// </returns>
-        public bool IsDisposed { get; private set; }
-        /// <summary>
-        /// Gets a value indicating whether the base <see cref="T:LogiFrame.LCDControl"/> class is in the process of disposing.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// true if the base <see cref="T:LogiFrame.LCDControl"/> class is in the process of disposing; otherwise, false.
-        /// </returns>
-        public bool Disposing { get; private set; }
-
-        /// <summary>
-        /// Occurs when the component is disposed by a call to the <see cref="M:LogiFrame.LCDControl.Dispose"/> method.
-        /// </summary>
-        public event EventHandler Disposed;
     }
 }

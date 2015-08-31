@@ -20,6 +20,9 @@ using LogiFrame.Drawing;
 
 namespace LogiFrame
 {
+    /// <summary>
+    /// Represents a label.
+    /// </summary>
     public class LCDLabel : LCDControl
     {
         private bool _autoSize;
@@ -27,6 +30,9 @@ namespace LogiFrame
         private string _text;
         private ContentAlignment _textAlign = ContentAlignment.TopLeft;
 
+        /// <summary>
+        /// Gets or sets the font.
+        /// </summary>
         public virtual Font Font
         {
             get { return _font; }
@@ -40,6 +46,9 @@ namespace LogiFrame
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to automaticaly change the size of the label based on the <see cref="Font"/> and <see cref="Text"/>.
+        /// </summary>
         public bool AutoSize
         {
             get { return _autoSize; }
@@ -50,6 +59,9 @@ namespace LogiFrame
             }
         }
 
+        /// <summary>
+        /// Gets or sets the text alignment.
+        /// </summary>
         public virtual ContentAlignment TextAlign
         {
             get { return _textAlign; }
@@ -60,6 +72,9 @@ namespace LogiFrame
             }
         }
 
+        /// <summary>
+        /// Gets or sets the text.
+        /// </summary>
         public virtual string Text
         {
             get { return _text; }
@@ -97,6 +112,9 @@ namespace LogiFrame
 
         #region Overrides of LCDControl
 
+        /// <summary>
+        ///     Gets or sets the size of the control.
+        /// </summary>
         public override Size Size
         {
             get { return base.Size; }
@@ -106,7 +124,11 @@ namespace LogiFrame
                 base.Size = value;
             }
         }
-        
+
+        /// <summary>
+        /// Raises the <see cref="E:Paint" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.LCDPaintEventArgs" /> instance containing the event data.</param>
         protected override void OnPaint(LCDPaintEventArgs e)
         {
             if (Font != null && Text != null)

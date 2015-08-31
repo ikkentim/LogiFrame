@@ -19,6 +19,9 @@ using System.Linq;
 
 namespace LogiFrame
 {
+    /// <summary>
+    /// Represents a simple graph.
+    /// </summary>
     public class LCDSimpleGraph : LCDControl
     {
         private readonly Queue<int> _values = new Queue<int>();
@@ -26,6 +29,9 @@ namespace LogiFrame
         private int _minimum;
         private BorderStyle _style;
 
+        /// <summary>
+        /// Gets or sets the minimum value.
+        /// </summary>
         public int Minimum
         {
             get { return _minimum; }
@@ -37,6 +43,9 @@ namespace LogiFrame
             }
         }
 
+        /// <summary>
+        /// Gets or sets the maximum value.
+        /// </summary>
         public int Maximum
         {
             get { return _maximum; }
@@ -48,6 +57,9 @@ namespace LogiFrame
             }
         }
 
+        /// <summary>
+        /// Gets or sets the style of the graph.
+        /// </summary>
         public BorderStyle Style
         {
             get { return _style; }
@@ -58,10 +70,21 @@ namespace LogiFrame
             }
         }
 
+        /// <summary>
+        /// Gets the maximum number of entries in this graph.
+        /// </summary>
         public int MaxEntries
-            => Math.Max(0, Width - (Style == BorderStyle.Border ? 2 : (Style == BorderStyle.BorderWithPadding ? 4 : 0)))
-            ;
+                    => Math.Max(0, Width - (Style == BorderStyle.Border ? 2 : (Style == BorderStyle.BorderWithPadding ? 4 : 0)))
+                    ;
 
+        /// <summary>
+        /// Gets the values in the graph.
+        /// </summary>
+        public IEnumerable<int> Values => _values.ToArray();
+
+        /// <summary>
+        /// Pushes the specified value to the graph.
+        /// </summary>
         public void PushValue(int value)
         {
             ThrowIfDisposed();
@@ -75,6 +98,10 @@ namespace LogiFrame
 
         #region Overrides of LCDControl
 
+        /// <summary>
+        /// Raises the <see cref="E:Paint" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.LCDPaintEventArgs" /> instance containing the event data.</param>
         protected override void OnPaint(LCDPaintEventArgs e)
         {
             int graphX, graphY, graphWidth, graphHeight;

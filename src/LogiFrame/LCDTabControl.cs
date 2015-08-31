@@ -19,11 +19,17 @@ using System.Linq;
 
 namespace LogiFrame
 {
+    /// <summary>
+    /// Represents a tab control.
+    /// </summary>
     public class LCDTabControl : LCDControl
     {
         private LCDTabMenuControl _menu;
         private LCDTabPage _selectedTab;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LCDTabControl"/> class.
+        /// </summary>
         public LCDTabControl()
         {
             TabPages.ItemRemoved += TabPages_ItemRemoved;
@@ -32,8 +38,14 @@ namespace LogiFrame
             Size = LCDApp.DefaultSize;
         }
 
+        /// <summary>
+        /// Gets the collection of tab pages represented by the tab control.
+        /// </summary>
         public LCDTabPageCollection TabPages { get; } = new LCDTabPageCollection();
 
+        /// <summary>
+        /// Gets or sets the menu.
+        /// </summary>
         public LCDTabMenuControl Menu
         {
             get { return _menu; }
@@ -45,6 +57,9 @@ namespace LogiFrame
             }
         }
 
+        /// <summary>
+        /// Gets or sets the index of the selected tab.
+        /// </summary>
         public int SelectedIndex
         {
             get { return TabPages.IndexOf(SelectedTab); }
@@ -57,6 +72,9 @@ namespace LogiFrame
             }
         }
 
+        /// <summary>
+        /// Gets or sets the selected tab.
+        /// </summary>
         public LCDTabPage SelectedTab
         {
             get { return _selectedTab; }
@@ -75,8 +93,14 @@ namespace LogiFrame
             }
         }
 
+        /// <summary>
+        /// Occurs when the <see cref="P:System.Windows.Forms.TabControl.SelectedTab"/> property has changed.
+        /// </summary>
         public event EventHandler SelectedTabChanged;
 
+        /// <summary>
+        /// Shows the menu.
+        /// </summary>
         public void ShowMenu()
         {
             ThrowIfDisposed();
@@ -84,6 +108,9 @@ namespace LogiFrame
             Menu.Visible = true;
         }
 
+        /// <summary>
+        /// Hides the menu.
+        /// </summary>
         public void HideMenu()
         {
             ThrowIfDisposed();
@@ -91,12 +118,15 @@ namespace LogiFrame
             Menu.Visible = false;
         }
 
-        private void TabPages_ItemRemoved(object sender, ValueEventArgs<LCDTabPage> e)
+        private void TabPages_ItemRemoved(object sender, LCDTabPageEventArgs e)
         {
-            if (e.Value == SelectedTab)
+            if (e.TabPage == SelectedTab)
                 SelectedTab = null;
         }
-
+        
+        /// <summary>
+        /// Raises the <see cref="E:SelectedTab"/> event.
+        /// </summary>
         protected virtual void OnSelectedTabChanged()
         {
             SelectedTabChanged?.Invoke(this, EventArgs.Empty);
@@ -104,6 +134,10 @@ namespace LogiFrame
 
         #region Overrides of LCDControl
 
+        /// <summary>
+        /// Raises the <see cref="E:Paint" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.LCDPaintEventArgs" /> instance containing the event data.</param>
         protected override void OnPaint(LCDPaintEventArgs e)
         {
             SelectedTab?.PerformLayout();
@@ -117,6 +151,10 @@ namespace LogiFrame
             base.OnPaint(e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:ButtonDown" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
         protected override void OnButtonDown(ButtonEventArgs e)
         {
             if (Menu.Visible && (e.PreventPropagation = Menu.HandleButtonDown(e.Button)))
@@ -130,6 +168,10 @@ namespace LogiFrame
             base.OnButtonDown(e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:ButtonUp" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
         protected override void OnButtonUp(ButtonEventArgs e)
         {
             if (Menu.Visible && (e.PreventPropagation = Menu.HandleButtonUp(e.Button)))

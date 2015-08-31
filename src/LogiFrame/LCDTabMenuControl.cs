@@ -20,12 +20,20 @@ using LogiFrame.Drawing;
 
 namespace LogiFrame
 {
+    /// <summary>
+    /// Represents a tab control menu.
+    /// </summary>
     public class LCDTabMenuControl : LCDControl
     {
         private const int Margin = 2;
         private readonly ContainerLCDControl _container = new ContainerLCDControl();
         private readonly LCDLine _line;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LCDTabMenuControl"/> class.
+        /// </summary>
+        /// <param name="tabControl">The tab control.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown if tabControl is null.</exception>
         public LCDTabMenuControl(LCDTabControl tabControl)
         {
             if (tabControl == null) throw new ArgumentNullException(nameof(tabControl));
@@ -47,15 +55,31 @@ namespace LogiFrame
             _container.AssignParent(this);
         }
 
+        /// <summary>
+        /// Gets the tab control.
+        /// </summary>
         public LCDTabControl TabControl { get; }
-        public int ButtonLeft { get; set; } = 0;
-        public int ButtonRight { get; set; } = 1;
-        public int ButtonClose { get; set; } = 2;
 
+        /// <summary>
+        /// Gets or sets the task of button 0.
+        /// </summary>
         public LCDTabMenuButtonTask Button0Task { get; set; } = LCDTabMenuButtonTask.Previous;
+        /// <summary>
+        /// Gets or sets the task of button 1.
+        /// </summary>
         public LCDTabMenuButtonTask Button1Task { get; set; } = LCDTabMenuButtonTask.Next;
+        /// <summary>
+        /// Gets or sets the task of button 2.
+        /// </summary>
         public LCDTabMenuButtonTask Button2Task { get; set; } = LCDTabMenuButtonTask.Close;
+        /// <summary>
+        /// Gets or sets the task of button 3.
+        /// </summary>
         public LCDTabMenuButtonTask Button3Task { get; set; } = LCDTabMenuButtonTask.None;
+
+        /// <summary>
+        /// Selects the previous tab.
+        /// </summary>
         public void SelectPrevious()
         {
             var index = TabControl.SelectedIndex;
@@ -78,6 +102,9 @@ namespace LogiFrame
             TabControl.SelectedIndex = index;
         }
 
+        /// <summary>
+        /// Selects the next tab.
+        /// </summary>
         public void SelectNext()
         {
             var index = TabControl.SelectedIndex;
@@ -112,13 +139,13 @@ namespace LogiFrame
             }
         }
 
-        private void TabPages_ItemRemoved(object sender, ValueEventArgs<LCDTabPage> e)
+        private void TabPages_ItemRemoved(object sender, LCDTabPageEventArgs e)
         {
             if (Visible)
                 Invalidate();
         }
 
-        private void TabPages_ItemAdded(object sender, ValueEventArgs<LCDTabPage> e)
+        private void TabPages_ItemAdded(object sender, LCDTabPageEventArgs e)
         {
             if (Visible)
                 Invalidate();
@@ -126,6 +153,9 @@ namespace LogiFrame
 
         #region Overrides of LCDControl
 
+        /// <summary>
+        ///     Gets or sets the size of the control.
+        /// </summary>
         public override Size Size
         {
             get { return base.Size; }
@@ -145,9 +175,9 @@ namespace LogiFrame
             var iconHeight = TabControl.TabPages.Max(t => t.Icon?.Height ?? 0);
             var iconCount = TabControl.TabPages.Count;
             var marginsBetweenIcons = Math.Max(iconCount - 1, 0);
-            var iconBarWidthSum = iconCount*iconWidth + marginsBetweenIcons*Margin;
+            var iconBarWidthSum = iconCount * iconWidth + marginsBetweenIcons * Margin;
 
-            Size = new Size(LCDApp.DefaultSize.Width, 1 + Margin*2 + iconHeight);
+            Size = new Size(LCDApp.DefaultSize.Width, 1 + Margin * 2 + iconHeight);
 
             _line.Start = new Point(0, 0);
             _line.End = new Point(Width - 1, 0);
@@ -156,14 +186,14 @@ namespace LogiFrame
             _container.Controls.Clear();
             _container.Controls.Add(_line);
 
-            var x = Width/2 - iconBarWidthSum/2;
+            var x = Width / 2 - iconBarWidthSum / 2;
             foreach (var tab in TabControl.TabPages)
             {
                 if (tab == TabControl.SelectedTab)
                 {
                     var selectionBox = new LCDRectangle
                     {
-                        Location = new Point(x - 1, (Height - iconHeight - 1)/2),
+                        Location = new Point(x - 1, (Height - iconHeight - 1) / 2),
                         Size = new Size(2 + iconWidth, 2 + iconHeight),
                         Style = RectangleStyle.Filled
                     };
@@ -173,7 +203,7 @@ namespace LogiFrame
                 var icon = tab.Icon;
                 if (icon == null) continue;
 
-                icon.Location = new Point(x, (Height - icon.Height - 1)/2 + 1);
+                icon.Location = new Point(x, (Height - icon.Height - 1) / 2 + 1);
                 icon.MergeMethod = MergeMethods.Invert;
 
                 _container.Controls.Add(icon);
@@ -190,6 +220,9 @@ namespace LogiFrame
             _container.Controls.Clear();
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:VisibleChanged"/> event.
+        /// </summary>
         protected override void OnVisibleChanged()
         {
             if (Visible)
@@ -203,6 +236,10 @@ namespace LogiFrame
             base.OnVisibleChanged();
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:Paint" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.LCDPaintEventArgs" /> instance containing the event data.</param>
         protected override void OnPaint(LCDPaintEventArgs e)
         {
             _container.PerformLayout();
@@ -210,6 +247,10 @@ namespace LogiFrame
             base.OnPaint(e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:ButtonDown" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
         protected override void OnButtonDown(ButtonEventArgs e)
         {
             var task = LCDTabMenuButtonTask.None;
