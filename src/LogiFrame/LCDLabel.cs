@@ -20,7 +20,7 @@ using LogiFrame.Drawing;
 
 namespace LogiFrame
 {
-    public class FrameLabel : FrameControl
+    public class LCDLabel : LCDControl
     {
         private bool _autoSize;
         private Font _font = new Font(PixelFonts.SmallFamily, 6);
@@ -95,7 +95,7 @@ namespace LogiFrame
             base.Size = size;
         }
 
-        #region Overrides of FrameControl
+        #region Overrides of LCDControl
 
         public override Size Size
         {
@@ -107,7 +107,7 @@ namespace LogiFrame
             }
         }
         
-        protected override void OnPaint(FramePaintEventArgs e)
+        protected override void OnPaint(LCDPaintEventArgs e)
         {
             if (Font != null && Text != null)
                 using (var bitmap = new Bitmap(Width, Height))

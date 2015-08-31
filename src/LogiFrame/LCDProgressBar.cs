@@ -15,7 +15,7 @@
 
 namespace LogiFrame
 {
-    public class FrameProgressBar : FrameControl
+    public class LCDProgressBar : LCDControl
     {
         private ProgressBarDirection _direction;
         private int _maximum = 100;
@@ -75,9 +75,9 @@ namespace LogiFrame
             }
         }
 
-        #region Overrides of FrameControl
+        #region Overrides of LCDControl
 
-        protected override void OnPaint(FramePaintEventArgs e)
+        protected override void OnPaint(LCDPaintEventArgs e)
         {
             int barX, barY, barWidth, barHeight;
             switch (Style)

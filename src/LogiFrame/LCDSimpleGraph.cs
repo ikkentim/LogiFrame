@@ -19,7 +19,7 @@ using System.Linq;
 
 namespace LogiFrame
 {
-    public class FrameSimpleGraph : FrameControl
+    public class LCDSimpleGraph : LCDControl
     {
         private readonly Queue<int> _values = new Queue<int>();
         private int _maximum = 100;
@@ -73,9 +73,9 @@ namespace LogiFrame
             Invalidate();
         }
 
-        #region Overrides of FrameControl
+        #region Overrides of LCDControl
 
-        protected override void OnPaint(FramePaintEventArgs e)
+        protected override void OnPaint(LCDPaintEventArgs e)
         {
             int graphX, graphY, graphWidth, graphHeight;
             switch (Style)

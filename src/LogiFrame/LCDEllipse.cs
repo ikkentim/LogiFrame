@@ -15,11 +15,11 @@
 
 namespace LogiFrame
 {
-    public class FrameEllipse : FrameControl
+    public class LCDEllipse : LCDControl
     {
-        #region Overrides of FrameControl
+        #region Overrides of LCDControl
 
-        protected override void OnPaint(FramePaintEventArgs e)
+        protected override void OnPaint(LCDPaintEventArgs e)
         {
             var widthRadius = (Width - 1)/2;
             var heightRadius = (Height - 1)/2;

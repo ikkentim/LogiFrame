@@ -15,7 +15,7 @@
 
 namespace LogiFrame
 {
-    public class FrameRectangle : FrameControl
+    public class LCDRectangle : LCDControl
     {
         private RectangleStyle _style;
 
@@ -29,9 +29,9 @@ namespace LogiFrame
             }
         }
 
-        #region Overrides of FrameControl
+        #region Overrides of LCDControl
 
-        protected override void OnPaint(FramePaintEventArgs e)
+        protected override void OnPaint(LCDPaintEventArgs e)
         {
             switch (Style)
             {

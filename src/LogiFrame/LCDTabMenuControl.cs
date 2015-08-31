@@ -20,13 +20,13 @@ using LogiFrame.Drawing;
 
 namespace LogiFrame
 {
-    public class FrameTabMenuControl : FrameControl
+    public class LCDTabMenuControl : LCDControl
     {
         private const int Margin = 2;
-        private readonly ContainerFrameControl _container = new ContainerFrameControl();
-        private readonly FrameLine _line;
+        private readonly ContainerLCDControl _container = new ContainerLCDControl();
+        private readonly LCDLine _line;
 
-        public FrameTabMenuControl(FrameTabControl tabControl)
+        public LCDTabMenuControl(LCDTabControl tabControl)
         {
             if (tabControl == null) throw new ArgumentNullException(nameof(tabControl));
 
@@ -37,25 +37,25 @@ namespace LogiFrame
 
             Visible = false;
 
-            _line = new FrameLine
+            _line = new LCDLine
             {
                 Start = new Point(0, 0),
                 End = new Point(Width - 1, 0)
             };
 
-            _container.Size = base.Size = new Size(Frame.DefaultSize.Width, 10);
+            _container.Size = base.Size = new Size(LCDApp.DefaultSize.Width, 10);
             _container.AssignParent(this);
         }
 
-        public FrameTabControl TabControl { get; }
+        public LCDTabControl TabControl { get; }
         public int ButtonLeft { get; set; } = 0;
         public int ButtonRight { get; set; } = 1;
         public int ButtonClose { get; set; } = 2;
 
-        public FrameTabMenuButtonTask Button0Task { get; set; } = FrameTabMenuButtonTask.Previous;
-        public FrameTabMenuButtonTask Button1Task { get; set; } = FrameTabMenuButtonTask.Next;
-        public FrameTabMenuButtonTask Button2Task { get; set; } = FrameTabMenuButtonTask.Close;
-        public FrameTabMenuButtonTask Button3Task { get; set; } = FrameTabMenuButtonTask.None;
+        public LCDTabMenuButtonTask Button0Task { get; set; } = LCDTabMenuButtonTask.Previous;
+        public LCDTabMenuButtonTask Button1Task { get; set; } = LCDTabMenuButtonTask.Next;
+        public LCDTabMenuButtonTask Button2Task { get; set; } = LCDTabMenuButtonTask.Close;
+        public LCDTabMenuButtonTask Button3Task { get; set; } = LCDTabMenuButtonTask.None;
         public void SelectPrevious()
         {
             var index = TabControl.SelectedIndex;
@@ -112,19 +112,19 @@ namespace LogiFrame
             }
         }
 
-        private void TabPages_ItemRemoved(object sender, ValueEventArgs<FrameTabPage> e)
+        private void TabPages_ItemRemoved(object sender, ValueEventArgs<LCDTabPage> e)
         {
             if (Visible)
                 Invalidate();
         }
 
-        private void TabPages_ItemAdded(object sender, ValueEventArgs<FrameTabPage> e)
+        private void TabPages_ItemAdded(object sender, ValueEventArgs<LCDTabPage> e)
         {
             if (Visible)
                 Invalidate();
         }
 
-        #region Overrides of FrameControl
+        #region Overrides of LCDControl
 
         public override Size Size
         {
@@ -147,7 +147,7 @@ namespace LogiFrame
             var marginsBetweenIcons = Math.Max(iconCount - 1, 0);
             var iconBarWidthSum = iconCount*iconWidth + marginsBetweenIcons*Margin;
 
-            Size = new Size(Frame.DefaultSize.Width, 1 + Margin*2 + iconHeight);
+            Size = new Size(LCDApp.DefaultSize.Width, 1 + Margin*2 + iconHeight);
 
             _line.Start = new Point(0, 0);
             _line.End = new Point(Width - 1, 0);
@@ -161,7 +161,7 @@ namespace LogiFrame
             {
                 if (tab == TabControl.SelectedTab)
                 {
-                    var selectionBox = new FrameRectangle
+                    var selectionBox = new LCDRectangle
                     {
                         Location = new Point(x - 1, (Height - iconHeight - 1)/2),
                         Size = new Size(2 + iconWidth, 2 + iconHeight),
@@ -203,7 +203,7 @@ namespace LogiFrame
             base.OnVisibleChanged();
         }
 
-        protected override void OnPaint(FramePaintEventArgs e)
+        protected override void OnPaint(LCDPaintEventArgs e)
         {
             _container.PerformLayout();
             e.Bitmap.MergeOverride(_container.Bitmap, new Point(0, 0));
@@ -212,7 +212,7 @@ namespace LogiFrame
 
         protected override void OnButtonDown(ButtonEventArgs e)
         {
-            var task = FrameTabMenuButtonTask.None;
+            var task = LCDTabMenuButtonTask.None;
             switch (e.Button)
             {
                 case 0:
@@ -231,15 +231,15 @@ namespace LogiFrame
 
             switch (task)
             {
-                case FrameTabMenuButtonTask.Close:
+                case LCDTabMenuButtonTask.Close:
                     Hide();
                     e.PreventPropagation = true;
                     return;
-                case FrameTabMenuButtonTask.Previous:
+                case LCDTabMenuButtonTask.Previous:
                     SelectPrevious();
                     e.PreventPropagation = true;
                     return;
-                case FrameTabMenuButtonTask.Next:
+                case LCDTabMenuButtonTask.Next:
                     SelectNext();
                     e.PreventPropagation = true;
                     return;

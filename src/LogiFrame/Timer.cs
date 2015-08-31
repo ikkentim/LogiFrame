@@ -169,7 +169,7 @@ namespace LogiFrame
         /// </summary>
         /// 
         /// <returns>
-        /// true if the base <see cref="T:LogiFrame.FrameControl"/> class is in the process of disposing; otherwise, false.
+        /// true if the base <see cref="T:LogiFrame.Timer"/> class is in the process of disposing; otherwise, false.
         /// </returns>
         public bool Disposing { get; private set; }
 

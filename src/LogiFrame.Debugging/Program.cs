@@ -30,16 +30,16 @@ namespace LogiFrame.Debugging
         /// </summary>
         private static void Main()
         {
-            var f = new Frame("Frame", false, false, false);
+            var f = new LCDApp("LCDApp", false, false, false);
 
-            var label = new FrameLabel
+            var label = new LCDLabel
             {
                 Font = PixelFonts.Small,
                 Size = f.Size,
                 Text = "Align me!",
                 TextAlign = ContentAlignment.BottomRight,
             };
-//            var label = new FrameLabel
+//            var label = new LCDLabel
 //            {
 //                Font = PixelFonts.Small,
 //                Location = new Point(2, 2),
@@ -48,25 +48,25 @@ namespace LogiFrame.Debugging
 //                MergeMethod = MergeMethods.Transparent,
 //                Text = "Push ze button."
 //            };
-            var line = new FrameLine
+            var line = new LCDLine
             {
                 Start = new Point(0, 0),
                 End = new Point(f.Width-1, f.Height-1)
             };
-            var rectangle = new FrameRectangle
+            var rectangle = new LCDRectangle
             {
                 Location = new Point(0, 0),
                 Size = new Size(40, 40),
                 Style = RectangleStyle.Bordered
             };
 
-            var ellipse = new FrameEllipse
+            var ellipse = new LCDEllipse
             {
                 Location = new Point(40, 20),
                 Size = new Size(50, 20)
             };
 
-            var progressBar = new FrameProgressBar
+            var progressBar = new LCDProgressBar
             {
                 Location = new Point(12, 14),
                 Size = new Size(136, 6),
@@ -75,7 +75,7 @@ namespace LogiFrame.Debugging
                 Value = 50
             };
 
-            var picture = new FramePicture
+            var picture = new LCDPicture
             {
                 Location = new Point(100, 10),
                 Size = Resources.gtech.Size,
@@ -83,14 +83,14 @@ namespace LogiFrame.Debugging
                 MergeMethod = MergeMethods.Overlay
             };
 
-            var marq = new FrameMarquee
+            var marq = new LCDMarquee
             {
                 Text = "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum",
-                Size = new Size(Frame.DefaultSize.Width, 10),
+                Size = new Size(LCDApp.DefaultSize.Width, 10),
                 Location = new Point(0, 10),
             };
 
-            var graph = new FrameSimpleGraph
+            var graph = new LCDSimpleGraph
             {
                 Location = new Point(70, 30),
                 Size = new Size(40, 10),
@@ -102,11 +102,11 @@ namespace LogiFrame.Debugging
                 graph.PushValue(new Random().Next(0, 100));
             };
 
-            var tabControl = new FrameTabControl();
+            var tabControl = new LCDTabControl();
 
-            var tabPage = new FrameTabPage
+            var tabPage = new LCDTabPage
             {
-                Icon = new FrameLabel
+                Icon = new LCDLabel
                 {
                     AutoSize = true,
                     Text = "A",
@@ -114,9 +114,9 @@ namespace LogiFrame.Debugging
                 }
             };
 
-            var tabPage2 = new FrameTabPage
+            var tabPage2 = new LCDTabPage
             {
-                Icon = new FrameLabel
+                Icon = new LCDLabel
                 {
                     AutoSize = true,
                     Text = "B",

@@ -1,4 +1,4 @@
-﻿// LogiFrame
+// LogiFrame
 // Copyright 2015 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,15 +13,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+using LogiFrame.Drawing;
+
 namespace LogiFrame
 {
-    public class FrameTabPage : ContainerFrameControl
+    public class LCDPaintEventArgs : EventArgs
     {
-        public FrameTabPage()
+        public LCDPaintEventArgs(MonochromeBitmap bitmap)
         {
-            Size = Frame.DefaultSize;
+            if (bitmap == null) throw new ArgumentNullException(nameof(bitmap));
+            Bitmap = bitmap;
         }
 
-        public virtual FrameControl Icon { get; set; }
+        public MonochromeBitmap Bitmap { get; }
     }
 }

@@ -19,12 +19,12 @@ using LogiFrame.Drawing;
 
 namespace LogiFrame
 {
-    public class FrameLine : FrameControl
+    public class LCDLine : LCDControl
     {
         private Point _end;
         private Point _start;
 
-        public FrameLine()
+        public LCDLine()
         {
             MergeMethod = MergeMethods.Transparent;
         }
@@ -61,21 +61,21 @@ namespace LogiFrame
             }
         }
 
-        #region Overrides of FrameControl
+        #region Overrides of LCDControl
 
         public override Point Location
         {
             get { return base.Location; }
-            set { throw new NotImplementedException("use FrameLine.Start and FrameLine.End instead"); }
+            set { throw new NotImplementedException("use LCDLine.Start and LCDLine.End instead"); }
         }
 
         public override Size Size
         {
             get { return base.Size; }
-            set { throw new NotImplementedException("use FrameLine.Start and FrameLine.End instead"); }
+            set { throw new NotImplementedException("use LCDLine.Start and LCDLine.End instead"); }
         }
 
-        protected override void OnPaint(FramePaintEventArgs e)
+        protected override void OnPaint(LCDPaintEventArgs e)
         {
             if (Width == 1)
             {

@@ -24,7 +24,7 @@ namespace LogiFrame
 {
     /// <summary>
     /// </summary>
-    public class Frame : ContainerFrameControl
+    public class LCDApp : ContainerLCDControl
     {
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
@@ -35,7 +35,7 @@ namespace LogiFrame
         private readonly LgLcd.OpenContext _openContext;
         private int _oldButtons;
 
-        public Frame(string name, bool canAutoStart, bool isPersistent, bool allowConfiguration)
+        public LCDApp(string name, bool canAutoStart, bool isPersistent, bool allowConfiguration)
         {
             UpdatePriority = UpdatePriority.Normal;
 
@@ -95,7 +95,7 @@ namespace LogiFrame
             LgLcd.SetAsLCDForegroundApp(_device, toggle ? 1 : 0);
         }
 
-        #region Overrides of FrameControl
+        #region Overrides of LCDControl
 
         public override void Invalidate()
         {
@@ -105,9 +105,9 @@ namespace LogiFrame
 
         #endregion
 
-        #region Overrides of ContainerFrameControl
+        #region Overrides of ContainerLCDControl
 
-        protected override void OnPaint(FramePaintEventArgs e)
+        protected override void OnPaint(LCDPaintEventArgs e)
         {
             base.OnPaint(e);
             Push(e.Bitmap);
@@ -115,10 +115,10 @@ namespace LogiFrame
 
         #endregion
 
-        #region Overrides of FrameControl
+        #region Overrides of LCDControl
 
         /// <summary>
-        /// Releases the unmanaged resources used by the <see cref="T:LogiFrame.FrameControl"/> and optionally releases the managed resources.
+        /// Releases the unmanaged resources used by the <see cref="T:LogiFrame.LCDControl"/> and optionally releases the managed resources.
         /// </summary>
         /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
         protected override void Dispose(bool disposing)
@@ -165,7 +165,7 @@ namespace LogiFrame
             var lgBitmap = new LgLcd.Bitmap160X43X1
             {
                 Header = {Format = LgLcd.BitmapFormat160X43X1},
-                Pixels = render.Data
+                Pixels = render.Pixels
             };
 
             LgLcd.UpdateBitmap(_device, ref lgBitmap, (uint) UpdatePriority);

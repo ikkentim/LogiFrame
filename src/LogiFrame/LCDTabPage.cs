@@ -1,4 +1,4 @@
-// LogiFrame
+﻿// LogiFrame
 // Copyright 2015 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +15,13 @@
 
 namespace LogiFrame
 {
-    public enum FrameTabMenuButtonTask
+    public class LCDTabPage : ContainerLCDControl
     {
-        None,
-        Close,
-        Previous,
-        Next
+        public LCDTabPage()
+        {
+            Size = LCDApp.DefaultSize;
+        }
+
+        public virtual LCDControl Icon { get; set; }
     }
 }

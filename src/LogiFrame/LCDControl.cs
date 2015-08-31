@@ -20,7 +20,7 @@ using LogiFrame.Drawing;
 
 namespace LogiFrame
 {
-    public class FrameControl : IDisposable
+    public class LCDControl : IDisposable
     {
         private int _height;
         private bool _isInvalidated;
@@ -32,7 +32,7 @@ namespace LogiFrame
         private int _width;
         private int _x;
         private int _y;
-        public FrameControl Parent { get; private set; }
+        public LCDControl Parent { get; private set; }
         public MonochromeBitmap Bitmap { get; private set; }
 
         public virtual IMergeMethod MergeMethod
@@ -87,7 +87,7 @@ namespace LogiFrame
         }
 
         public event EventHandler VisibleChanged;
-        public event EventHandler<FramePaintEventArgs> Paint;
+        public event EventHandler<LCDPaintEventArgs> Paint;
         public event EventHandler<ButtonEventArgs> ButtonDown;
         public event EventHandler<ButtonEventArgs> ButtonUp;
 
@@ -115,7 +115,7 @@ namespace LogiFrame
                 Invalidate();
         }
 
-        public virtual void AssignParent(FrameControl value)
+        public virtual void AssignParent(LCDControl value)
         {
             ThrowIfDisposed();
 
@@ -179,7 +179,7 @@ namespace LogiFrame
                 Bitmap.Reset();
 
                 if (Visible)
-                    OnPaint(new FramePaintEventArgs(Bitmap));
+                    OnPaint(new LCDPaintEventArgs(Bitmap));
 
                 _isInvalidated = false;
                 _isPerformingLayout = false;
@@ -207,7 +207,7 @@ namespace LogiFrame
             Invalidate();
         }
 
-        protected virtual void OnPaint(FramePaintEventArgs e)
+        protected virtual void OnPaint(LCDPaintEventArgs e)
         {
             Paint?.Invoke(this, e);
         }
@@ -264,7 +264,7 @@ namespace LogiFrame
         #region Implementation of IDisposable
 
         /// <summary>
-        /// Releases all resources used by the <see cref="T:LogiFrame.FrameControl"/>.
+        /// Releases all resources used by the <see cref="T:LogiFrame.LCDControl"/>.
         /// </summary>
         public void Dispose()
         {
@@ -275,13 +275,13 @@ namespace LogiFrame
 
         #endregion
 
-        ~FrameControl()
+        ~LCDControl()
         {
             Dispose(false);
         }
 
         /// <summary>
-        /// Releases the unmanaged resources used by the <see cref="T:LogiFrame.FrameControl"/> and optionally releases the managed resources.
+        /// Releases the unmanaged resources used by the <see cref="T:LogiFrame.LCDControl"/> and optionally releases the managed resources.
         /// </summary>
         /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
         protected virtual void Dispose(bool disposing)
@@ -290,7 +290,7 @@ namespace LogiFrame
                 return;
             lock (this)
             {
-                (Parent as ContainerFrameControl)?.Controls?.Remove(this);
+                (Parent as ContainerLCDControl)?.Controls?.Remove(this);
                 Disposing = true;
                 Disposed?.Invoke(this, EventArgs.Empty);
                 Disposing = false;
@@ -316,16 +316,16 @@ namespace LogiFrame
         /// </returns>
         public bool IsDisposed { get; private set; }
         /// <summary>
-        /// Gets a value indicating whether the base <see cref="T:LogiFrame.FrameControl"/> class is in the process of disposing.
+        /// Gets a value indicating whether the base <see cref="T:LogiFrame.LCDControl"/> class is in the process of disposing.
         /// </summary>
         /// 
         /// <returns>
-        /// true if the base <see cref="T:LogiFrame.FrameControl"/> class is in the process of disposing; otherwise, false.
+        /// true if the base <see cref="T:LogiFrame.LCDControl"/> class is in the process of disposing; otherwise, false.
         /// </returns>
         public bool Disposing { get; private set; }
 
         /// <summary>
-        /// Occurs when the component is disposed by a call to the <see cref="M:LogiFrame.FrameControl.Dispose"/> method.
+        /// Occurs when the component is disposed by a call to the <see cref="M:LogiFrame.LCDControl.Dispose"/> method.
         /// </summary>
         public event EventHandler Disposed;
     }

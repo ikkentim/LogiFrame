@@ -18,18 +18,18 @@ using LogiFrame.Drawing;
 
 namespace LogiFrame
 {
-    public class ContainerFrameControl : FrameControl
+    public class ContainerLCDControl : LCDControl
     {
-        public ContainerFrameControl()
+        public ContainerLCDControl()
         {
-            Controls = new FrameControlCollection(this);
+            Controls = new LCDControlCollection(this);
         }
 
-        public FrameControlCollection Controls { get; }
+        public LCDControlCollection Controls { get; }
 
-        #region Overrides of FrameControl
+        #region Overrides of LCDControl
 
-        protected override void OnPaint(FramePaintEventArgs e)
+        protected override void OnPaint(LCDPaintEventArgs e)
         {
             if (Controls == null) return;
 
@@ -62,7 +62,7 @@ namespace LogiFrame
         }
         
         /// <summary>
-        /// Releases the unmanaged resources used by the <see cref="T:LogiFrame.FrameControl"/> and optionally releases the managed resources.
+        /// Releases the unmanaged resources used by the <see cref="T:LogiFrame.LCDControl"/> and optionally releases the managed resources.
         /// </summary>
         /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
         protected override void Dispose(bool disposing)

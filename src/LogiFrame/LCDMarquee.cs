@@ -17,17 +17,17 @@ using System.Drawing;
 
 namespace LogiFrame
 {
-    public class FrameMarquee : FrameControl
+    public class LCDMarquee : LCDControl
     {
-        private readonly FrameLabel _label;
+        private readonly LCDLabel _label;
         private readonly Timer _timer;
         private int _breakSteps;
         private int _maxSteps;
         private int _steps;
 
-        public FrameMarquee()
+        public LCDMarquee()
         {
-            _label = new FrameLabel {AutoSize = true};
+            _label = new LCDLabel {AutoSize = true};
             _label.AssignParent(this);
 
             _timer = new Timer {Enabled = true};
@@ -122,7 +122,7 @@ namespace LogiFrame
             Invalidate();
         }
 
-        #region Overrides of FrameControl
+        #region Overrides of LCDControl
 
         public override Size Size
         {
@@ -134,7 +134,7 @@ namespace LogiFrame
             }
         }
 
-        protected override void OnPaint(FramePaintEventArgs e)
+        protected override void OnPaint(LCDPaintEventArgs e)
         {
             _label.PerformLayout();
             e.Bitmap.MergeOverride(_label.Bitmap, new Point(-_steps, 0));

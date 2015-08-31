@@ -13,19 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using LogiFrame.Drawing;
-
 namespace LogiFrame
 {
-    public class FramePaintEventArgs : EventArgs
+    public enum LCDTabMenuButtonTask
     {
-        public FramePaintEventArgs(MonochromeBitmap bitmap)
-        {
-            if (bitmap == null) throw new ArgumentNullException(nameof(bitmap));
-            Bitmap = bitmap;
-        }
-
-        public MonochromeBitmap Bitmap { get; }
+        None,
+        Close,
+        Previous,
+        Next
     }
 }

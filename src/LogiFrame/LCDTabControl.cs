@@ -19,22 +19,22 @@ using System.Linq;
 
 namespace LogiFrame
 {
-    public class FrameTabControl : FrameControl
+    public class LCDTabControl : LCDControl
     {
-        private FrameTabMenuControl _menu;
-        private FrameTabPage _selectedTab;
+        private LCDTabMenuControl _menu;
+        private LCDTabPage _selectedTab;
 
-        public FrameTabControl()
+        public LCDTabControl()
         {
             TabPages.ItemRemoved += TabPages_ItemRemoved;
 
-            Menu = new FrameTabMenuControl(this);
-            Size = Frame.DefaultSize;
+            Menu = new LCDTabMenuControl(this);
+            Size = LCDApp.DefaultSize;
         }
 
-        public FrameTabPageCollection TabPages { get; } = new FrameTabPageCollection();
+        public LCDTabPageCollection TabPages { get; } = new LCDTabPageCollection();
 
-        public FrameTabMenuControl Menu
+        public LCDTabMenuControl Menu
         {
             get { return _menu; }
             set
@@ -57,7 +57,7 @@ namespace LogiFrame
             }
         }
 
-        public FrameTabPage SelectedTab
+        public LCDTabPage SelectedTab
         {
             get { return _selectedTab; }
             set
@@ -91,7 +91,7 @@ namespace LogiFrame
             Menu.Visible = false;
         }
 
-        private void TabPages_ItemRemoved(object sender, ValueEventArgs<FrameTabPage> e)
+        private void TabPages_ItemRemoved(object sender, ValueEventArgs<LCDTabPage> e)
         {
             if (e.Value == SelectedTab)
                 SelectedTab = null;
@@ -102,9 +102,9 @@ namespace LogiFrame
             SelectedTabChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        #region Overrides of FrameControl
+        #region Overrides of LCDControl
 
-        protected override void OnPaint(FramePaintEventArgs e)
+        protected override void OnPaint(LCDPaintEventArgs e)
         {
             SelectedTab?.PerformLayout();
             e.Bitmap.MergeOverride(SelectedTab?.Bitmap, new Point(0, 0));

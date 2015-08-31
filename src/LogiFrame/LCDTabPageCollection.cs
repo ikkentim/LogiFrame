@@ -1,4 +1,4 @@
-﻿// LogiFrame
+// LogiFrame
 // Copyright 2015 Tim Potze
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,17 +19,9 @@ using System.Collections.Generic;
 
 namespace LogiFrame
 {
-    public class FrameControlCollection : IList<FrameControl>, ICloneable
+    public class LCDTabPageCollection : IList<LCDTabPage>, ICloneable
     {
-        private readonly List<FrameControl> _controls = new List<FrameControl>();
-
-        public FrameControlCollection(FrameControl owner)
-        {
-            if (owner == null) throw new ArgumentNullException(nameof(owner));
-            Owner = owner;
-        }
-
-        public FrameControl Owner { get; }
+        private readonly List<LCDTabPage> _controls = new List<LCDTabPage>();
 
         #region Implementation of ICloneable
 
@@ -41,12 +33,25 @@ namespace LogiFrame
         /// </returns>
         public object Clone()
         {
-            var o = new FrameControlCollection(Owner);
+            var o = new LCDTabPageCollection();
             foreach (var e in this) o.Add(e);
             return o;
         }
 
         #endregion
+
+        public event EventHandler<ValueEventArgs<LCDTabPage>> ItemAdded;
+        public event EventHandler<ValueEventArgs<LCDTabPage>> ItemRemoved;
+
+        protected virtual void OnItemAdded(ValueEventArgs<LCDTabPage> e)
+        {
+            ItemAdded?.Invoke(this, e);
+        }
+
+        protected virtual void OnItemRemoved(ValueEventArgs<LCDTabPage> e)
+        {
+            ItemRemoved?.Invoke(this, e);
+        }
 
         #region Implementation of IEnumerable
 
@@ -56,7 +61,7 @@ namespace LogiFrame
         /// <returns>
         ///     A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
         /// </returns>
-        public IEnumerator<FrameControl> GetEnumerator()
+        public IEnumerator<LCDTabPage> GetEnumerator()
         {
             return _controls.GetEnumerator();
         }
@@ -74,7 +79,7 @@ namespace LogiFrame
 
         #endregion
 
-        #region Implementation of ICollection<FrameControl>
+        #region Implementation of ICollection<LCDControl>
 
         /// <summary>
         ///     Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.
@@ -84,11 +89,11 @@ namespace LogiFrame
         ///     The <see cref="T:System.Collections.Generic.ICollection`1" /> is
         ///     read-only.
         /// </exception>
-        public void Add(FrameControl item)
+        public void Add(LCDTabPage item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             _controls.Add(item);
-            item.AssignParent(Owner);
+            OnItemAdded(new ValueEventArgs<LCDTabPage>(item));
         }
 
         /// <summary>
@@ -100,9 +105,9 @@ namespace LogiFrame
         /// </exception>
         public void Clear()
         {
-            foreach (var i in this) i.AssignParent(null);
+            foreach (var i in this)
+                OnItemRemoved(new ValueEventArgs<LCDTabPage>(i));
             _controls.Clear();
-            Owner.Invalidate();
         }
 
         /// <summary>
@@ -113,7 +118,7 @@ namespace LogiFrame
         ///     otherwise, false.
         /// </returns>
         /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
-        public bool Contains(FrameControl item)
+        public bool Contains(LCDTabPage item)
         {
             return _controls.Contains(item);
         }
@@ -135,7 +140,7 @@ namespace LogiFrame
         ///     <see cref="T:System.Collections.Generic.ICollection`1" /> is greater than the available space from
         ///     <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.
         /// </exception>
-        public void CopyTo(FrameControl[] array, int arrayIndex)
+        public void CopyTo(LCDTabPage[] array, int arrayIndex)
         {
             if (array == null) throw new ArgumentNullException(nameof(array));
             if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex));
@@ -163,15 +168,14 @@ namespace LogiFrame
         ///     The <see cref="T:System.Collections.Generic.ICollection`1" /> is
         ///     read-only.
         /// </exception>
-        public bool Remove(FrameControl item)
+        public bool Remove(LCDTabPage item)
         {
             if (item == null)
                 return false;
 
             if (_controls.Remove(item))
             {
-                item.AssignParent(null);
-                Owner.Invalidate();
+                OnItemRemoved(new ValueEventArgs<LCDTabPage>(item));
                 return true;
             }
 
@@ -196,7 +200,7 @@ namespace LogiFrame
 
         #endregion
 
-        #region Implementation of IList<FrameControl>
+        #region Implementation of IList<LCDControl>
 
         /// <summary>
         ///     Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList`1" />.
@@ -205,7 +209,7 @@ namespace LogiFrame
         ///     The index of <paramref name="item" /> if found in the list; otherwise, -1.
         /// </returns>
         /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.IList`1" />.</param>
-        public int IndexOf(FrameControl item)
+        public int IndexOf(LCDTabPage item)
         {
             return _controls.IndexOf(item);
         }
@@ -220,11 +224,11 @@ namespace LogiFrame
         ///     <see cref="T:System.Collections.Generic.IList`1" />.
         /// </exception>
         /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1" /> is read-only.</exception>
-        public void Insert(int index, FrameControl item)
+        public void Insert(int index, LCDTabPage item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             _controls.Insert(index, item);
-            item.AssignParent(Owner);
+            OnItemAdded(new ValueEventArgs<LCDTabPage>(item));
         }
 
         /// <summary>
@@ -240,9 +244,8 @@ namespace LogiFrame
         {
             var element = this[index];
             if (element == null) return;
-            element.AssignParent(null);
+            OnItemRemoved(new ValueEventArgs<LCDTabPage>(element));
             _controls.RemoveAt(index);
-            Owner.Invalidate();
         }
 
         /// <summary>
@@ -260,7 +263,7 @@ namespace LogiFrame
         ///     The property is set and the
         ///     <see cref="T:System.Collections.Generic.IList`1" /> is read-only.
         /// </exception>
-        public FrameControl this[int index]
+        public LCDTabPage this[int index]
         {
             get { return _controls[index]; }
             set
@@ -269,9 +272,10 @@ namespace LogiFrame
 
                 if (_controls[index] == value)
                     return;
-                _controls[index].AssignParent(null);
+
+                OnItemRemoved(new ValueEventArgs<LCDTabPage>(_controls[index]));
+                OnItemAdded(new ValueEventArgs<LCDTabPage>(value));
                 _controls[index] = value;
-                value.AssignParent(Owner);
             }
         }
 

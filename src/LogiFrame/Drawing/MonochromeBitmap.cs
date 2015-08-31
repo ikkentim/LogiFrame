@@ -24,7 +24,7 @@ namespace LogiFrame.Drawing
         {
             Width = width;
             Height = height;
-            Data = new byte[width*height];
+            Pixels = new byte[width*height];
         }
 
         public MonochromeBitmap(MonochromeBitmap bitmap, int width, int height) : this(width, height)
@@ -33,7 +33,7 @@ namespace LogiFrame.Drawing
 
             for (var x = Math.Min(Width, bitmap.Width) - 1; x >= 0; x--)
                 for (var y = Math.Min(Height, bitmap.Height) - 1; y >= 0; y--)
-                    this[x, y] = bitmap[x, y];
+                    SetPixel(x, y, bitmap.GetPixel(x, y));
         }
 
         public MonochromeBitmap(Bitmap bitmap, int width, int height) : this(width, height)
@@ -42,7 +42,7 @@ namespace LogiFrame.Drawing
 
             for (var x = Math.Min(Width, bitmap.Width) - 1; x >= 0; x--)
                 for (var y = Math.Min(Height, bitmap.Height) - 1; y >= 0; y--)
-                    this[x, y] = IsColorFilled(bitmap.GetPixel(x, y));
+                    SetPixel(x, y, IsColorFilled(bitmap.GetPixel(x, y)));
         }
 
         public MonochromeBitmap(Bitmap bitmap)
@@ -51,31 +51,33 @@ namespace LogiFrame.Drawing
 
             Width = bitmap.Width;
             Height = bitmap.Height;
-            Data = new byte[Width*Height];
+            Pixels = new byte[Width*Height];
 
             for (var x = Math.Min(Width, bitmap.Width) - 1; x >= 0; x--)
                 for (var y = Math.Min(Height, bitmap.Height) - 1; y >= 0; y--)
-                    this[x, y] = IsColorFilled(bitmap.GetPixel(x, y));
+                    SetPixel(x, y, IsColorFilled(bitmap.GetPixel(x, y)));
         }
 
         public int Width { get; }
         public int Height { get; }
-        public byte[] Data { get; }
+        public byte[] Pixels { get; }
+        public Size Size => new Size(Width, Height);
 
         public bool this[int x, int y]
         {
-            get { return x >= 0 && x < Width && y >= 0 && y < Height && Data[x + y*Width] == 0xff; }
-            set
-            {
-                if (x < 0 || x >= Width || y < 0 || y >= Height) return;
-                Data[x + y*Width] = (byte) (value ? 0xff : 0x00);
-            }
+            get { return GetPixel(x,y); }
+            set { SetPixel(x, y, value); }
         }
 
-        public bool this[Point location]
+        public void SetPixel(int x, int y, bool value)
         {
-            get { return this[location.X, location.Y]; }
-            set { this[location.X, location.Y] = value; }
+            if (x < 0 || x >= Width || y < 0 || y >= Height) return;
+            Pixels[x + y * Width] = (byte)(value ? 0xff : 0x00);
+        }
+
+        public bool GetPixel(int x, int y)
+        {
+            return x >= 0 && x < Width && y >= 0 && y < Height && Pixels[x + y * Width] == 0xff;
         }
 
         public void Merge(MonochromeBitmap bitmap, Point location, IMergeMethod mergeMethod)
@@ -93,7 +95,23 @@ namespace LogiFrame.Drawing
 
         public void Reset()
         {
-            for (var i = 0; i < Data.Length; i++) Data[i] = 0x00;
+            for (var i = 0; i < Pixels.Length; i++) Pixels[i] = 0x00;
+        }
+
+        public Bitmap ToBitmap(Color setColor, Color unsetColor)
+        {
+            var bmp = new Bitmap(Width, Height);
+           
+                for(var x=0;x<Width;x++)
+                    for(var y=0;y<Height;y++)
+                        bmp.SetPixel(x, y, this[x, y] ? setColor : unsetColor);
+
+            return bmp;
+        }
+
+        public Bitmap ToBitmap()
+        {
+            return ToBitmap(Color.FromArgb(100, 100, 100), Color.White);
         }
 
         private static bool IsColorFilled(Color color)

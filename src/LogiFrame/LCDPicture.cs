@@ -18,7 +18,7 @@ using LogiFrame.Drawing;
 
 namespace LogiFrame
 {
-    public class FramePicture : FrameControl
+    public class LCDPicture : LCDControl
     {
         private MonochromeBitmap _bitmap;
         private Image _image;
@@ -36,9 +36,9 @@ namespace LogiFrame
             }
         }
 
-        #region Overrides of FrameControl
+        #region Overrides of LCDControl
 
-        protected override void OnPaint(FramePaintEventArgs e)
+        protected override void OnPaint(LCDPaintEventArgs e)
         {
             if (_bitmap != null)
                 e.Bitmap.Merge(_bitmap, new Point(0, 0), MergeMethods.Override);
