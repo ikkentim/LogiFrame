@@ -33,7 +33,7 @@ namespace LogiFrame
         {
             if (Controls == null) return;
 
-            foreach (var control in Controls)
+            foreach (var control in Controls.ToArray())
             {
                 control.PerformLayout();
                 e.Bitmap.Merge(control.Bitmap, control.Location, control.MergeMethod ?? MergeMethods.Override);
@@ -43,7 +43,7 @@ namespace LogiFrame
 
         protected override void OnButtonDown(ButtonEventArgs e)
         {
-            if (Controls.Any(control => control.HandleButtonDown(e.Button)))
+            if (Controls.ToArray().Any(control => control.HandleButtonDown(e.Button)))
             {
                 e.PreventPropagation = true;
                 return;
@@ -53,7 +53,7 @@ namespace LogiFrame
 
         protected override void OnButtonUp(ButtonEventArgs e)
         {
-            if (Controls.Any(control => control.HandleButtonUp(e.Button)))
+            if (Controls.ToArray().Any(control => control.HandleButtonUp(e.Button)))
             {
                 e.PreventPropagation = true;
                 return;

@@ -190,7 +190,7 @@ namespace LogiFrame
             _container.Controls.Add(_line);
 
             var x = Width/2 - iconBarWidthSum/2;
-            foreach (var tab in TabControl.TabPages)
+            foreach (var tab in TabControl.TabPages.ToArray())
             {
                 if (tab == TabControl.SelectedTab)
                 {
