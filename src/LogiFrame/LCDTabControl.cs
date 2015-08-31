@@ -20,7 +20,7 @@ using System.Linq;
 namespace LogiFrame
 {
     /// <summary>
-    /// Represents a tab control.
+    ///     Represents a tab control.
     /// </summary>
     public class LCDTabControl : LCDControl
     {
@@ -28,7 +28,7 @@ namespace LogiFrame
         private LCDTabPage _selectedTab;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LCDTabControl"/> class.
+        ///     Initializes a new instance of the <see cref="LCDTabControl" /> class.
         /// </summary>
         public LCDTabControl()
         {
@@ -39,12 +39,12 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets the collection of tab pages represented by the tab control.
+        ///     Gets the collection of tab pages represented by the tab control.
         /// </summary>
         public LCDTabPageCollection TabPages { get; } = new LCDTabPageCollection();
 
         /// <summary>
-        /// Gets or sets the menu.
+        ///     Gets or sets the menu.
         /// </summary>
         public LCDTabMenuControl Menu
         {
@@ -58,7 +58,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets or sets the index of the selected tab.
+        ///     Gets or sets the index of the selected tab.
         /// </summary>
         public int SelectedIndex
         {
@@ -73,7 +73,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets or sets the selected tab.
+        ///     Gets or sets the selected tab.
         /// </summary>
         public LCDTabPage SelectedTab
         {
@@ -94,12 +94,12 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Occurs when the <see cref="P:System.Windows.Forms.TabControl.SelectedTab"/> property has changed.
+        ///     Occurs when the <see cref="P:System.Windows.Forms.TabControl.SelectedTab" /> property has changed.
         /// </summary>
         public event EventHandler SelectedTabChanged;
 
         /// <summary>
-        /// Shows the menu.
+        ///     Shows the menu.
         /// </summary>
         public void ShowMenu()
         {
@@ -109,7 +109,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Hides the menu.
+        ///     Hides the menu.
         /// </summary>
         public void HideMenu()
         {
@@ -123,9 +123,9 @@ namespace LogiFrame
             if (e.TabPage == SelectedTab)
                 SelectedTab = null;
         }
-        
+
         /// <summary>
-        /// Raises the <see cref="E:SelectedTab"/> event.
+        ///     Raises the <see cref="E:SelectedTab" /> event.
         /// </summary>
         protected virtual void OnSelectedTabChanged()
         {
@@ -135,7 +135,7 @@ namespace LogiFrame
         #region Overrides of LCDControl
 
         /// <summary>
-        /// Raises the <see cref="E:Paint" /> event.
+        ///     Raises the <see cref="E:Paint" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.LCDPaintEventArgs" /> instance containing the event data.</param>
         protected override void OnPaint(LCDPaintEventArgs e)
@@ -152,7 +152,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Raises the <see cref="E:ButtonDown" /> event.
+        ///     Raises the <see cref="E:ButtonDown" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
         protected override void OnButtonDown(ButtonEventArgs e)
@@ -169,7 +169,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Raises the <see cref="E:ButtonUp" /> event.
+        ///     Raises the <see cref="E:ButtonUp" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
         protected override void OnButtonUp(ButtonEventArgs e)

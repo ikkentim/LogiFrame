@@ -16,14 +16,14 @@
 namespace LogiFrame
 {
     /// <summary>
-    /// Represents an ellipse.
+    ///     Represents an ellipse.
     /// </summary>
     public class LCDEllipse : LCDControl
     {
         #region Overrides of LCDControl
 
         /// <summary>
-        /// Raises the <see cref="E:Paint" /> event.
+        ///     Raises the <see cref="E:Paint" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.LCDPaintEventArgs" /> instance containing the event data.</param>
         protected override void OnPaint(LCDPaintEventArgs e)

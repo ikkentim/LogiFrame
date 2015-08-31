@@ -13,7 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Drawing;
 using System.Drawing.Text;
 using LogiFrame.Drawing;
@@ -21,7 +20,7 @@ using LogiFrame.Drawing;
 namespace LogiFrame
 {
     /// <summary>
-    /// Represents a label.
+    ///     Represents a label.
     /// </summary>
     public class LCDLabel : LCDControl
     {
@@ -31,7 +30,7 @@ namespace LogiFrame
         private ContentAlignment _textAlign = ContentAlignment.TopLeft;
 
         /// <summary>
-        /// Gets or sets the font.
+        ///     Gets or sets the font.
         /// </summary>
         public virtual Font Font
         {
@@ -47,7 +46,8 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to automaticaly change the size of the label based on the <see cref="Font"/> and <see cref="Text"/>.
+        ///     Gets or sets a value indicating whether to automaticaly change the size of the label based on the
+        ///     <see cref="Font" /> and <see cref="Text" />.
         /// </summary>
         public bool AutoSize
         {
@@ -60,20 +60,20 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets or sets the text alignment.
+        ///     Gets or sets the text alignment.
         /// </summary>
         public virtual ContentAlignment TextAlign
         {
             get { return _textAlign; }
             set
             {
-                _textAlign = value; 
+                _textAlign = value;
                 Invalidate();
             }
         }
 
         /// <summary>
-        /// Gets or sets the text.
+        ///     Gets or sets the text.
         /// </summary>
         public virtual string Text
         {
@@ -126,7 +126,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Raises the <see cref="E:Paint" /> event.
+        ///     Raises the <see cref="E:Paint" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.LCDPaintEventArgs" /> instance containing the event data.</param>
         protected override void OnPaint(LCDPaintEventArgs e)
@@ -150,7 +150,7 @@ namespace LogiFrame
                                 break;
                             case ContentAlignment.TopCenter:
                                 size = MeasureText();
-                                graphics.DrawString(Text, Font, Brushes.Black, new Point((Width-size.Width)/2, 0));
+                                graphics.DrawString(Text, Font, Brushes.Black, new Point((Width - size.Width)/2, 0));
                                 break;
                             case ContentAlignment.TopRight:
                                 size = MeasureText();
@@ -158,15 +158,17 @@ namespace LogiFrame
                                 break;
                             case ContentAlignment.MiddleLeft:
                                 size = MeasureText();
-                                graphics.DrawString(Text, Font, Brushes.Black, new Point(0, (Height-size.Height)/2));
+                                graphics.DrawString(Text, Font, Brushes.Black, new Point(0, (Height - size.Height)/2));
                                 break;
                             case ContentAlignment.MiddleCenter:
                                 size = MeasureText();
-                                graphics.DrawString(Text, Font, Brushes.Black, new Point((Width - size.Width) / 2, (Height - size.Height) / 2));
+                                graphics.DrawString(Text, Font, Brushes.Black,
+                                    new Point((Width - size.Width)/2, (Height - size.Height)/2));
                                 break;
                             case ContentAlignment.MiddleRight:
                                 size = MeasureText();
-                                graphics.DrawString(Text, Font, Brushes.Black, new Point(Width - size.Width, (Height - size.Height) / 2));
+                                graphics.DrawString(Text, Font, Brushes.Black,
+                                    new Point(Width - size.Width, (Height - size.Height)/2));
                                 break;
                             case ContentAlignment.BottomLeft:
                                 size = MeasureText();
@@ -174,11 +176,13 @@ namespace LogiFrame
                                 break;
                             case ContentAlignment.BottomCenter:
                                 size = MeasureText();
-                                graphics.DrawString(Text, Font, Brushes.Black, new Point((Width -size.Width)/2, Height - size.Height));
+                                graphics.DrawString(Text, Font, Brushes.Black,
+                                    new Point((Width - size.Width)/2, Height - size.Height));
                                 break;
                             case ContentAlignment.BottomRight:
                                 size = MeasureText();
-                                graphics.DrawString(Text, Font, Brushes.Black, new Point(Width-size.Width, Height - size.Height));
+                                graphics.DrawString(Text, Font, Brushes.Black,
+                                    new Point(Width - size.Width, Height - size.Height));
                                 break;
                         }
                     }

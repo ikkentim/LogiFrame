@@ -29,11 +29,11 @@ namespace LogiFrame
         private bool _isLayoutInit;
         private bool _isPerformingLayout;
         private int _layoutSuspendCount;
+        private int _left;
         private IMergeMethod _mergeMethod = MergeMethods.Override;
+        private int _top;
         private bool _visible = true;
         private int _width;
-        private int _left;
-        private int _top;
 
         /// <summary>
         ///     Gets the parent container of the control.
@@ -73,7 +73,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets or sets the distance, in pixels, between the left edge of the control and the left edge of its container.
+        ///     Gets or sets the distance, in pixels, between the left edge of the control and the left edge of its container.
         /// </summary>
         public int Left
         {
@@ -86,7 +86,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets or sets the distance, in pixels, between the top edge of the control and the top edge of its container.
+        ///     Gets or sets the distance, in pixels, between the top edge of the control and the top edge of its container.
         /// </summary>
         public int Top
         {
@@ -209,7 +209,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Sets the bounds of the control to the specified location and size.
+        ///     Sets the bounds of the control to the specified location and size.
         /// </summary>
         /// <param name="x">The new <see cref="P:LogiFrame.LCDControl.Left" /> property value of the control.</param>
         /// <param name="y">The new <see cref="P:LogiFrame.LCDControl.Top" /> property value of the control.</param>
@@ -236,7 +236,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Assigns the <see cref="P:LogiFrame.LCDControl.Parent"/> of the control.
+        ///     Assigns the <see cref="P:LogiFrame.LCDControl.Parent" /> of the control.
         /// </summary>
         /// <param name="value">The parent control.</param>
         public virtual void AssignParent(LCDControl value)
@@ -248,7 +248,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Invalidates the entire surface of the control and causes the control to be redrawn.
+        ///     Invalidates the entire surface of the control and causes the control to be redrawn.
         /// </summary>
         public virtual void Invalidate()
         {
@@ -297,7 +297,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Performs the control's layout logic.
+        ///     Performs the control's layout logic.
         /// </summary>
         public virtual void PerformLayout()
         {
@@ -338,7 +338,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Raises the <see cref="E:Paint" /> event.
+        ///     Raises the <see cref="E:Paint" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.LCDPaintEventArgs" /> instance containing the event data.</param>
         protected virtual void OnPaint(LCDPaintEventArgs e)
@@ -347,7 +347,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Raises the <see cref="E:ButtonDown" /> event.
+        ///     Raises the <see cref="E:ButtonDown" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
         protected virtual void OnButtonDown(ButtonEventArgs e)
@@ -356,7 +356,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Raises the <see cref="E:ButtonUp" /> event.
+        ///     Raises the <see cref="E:ButtonUp" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
         protected virtual void OnButtonUp(ButtonEventArgs e)
@@ -365,7 +365,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Raises the <see cref="E:VisibleChanged"/> event.
+        ///     Raises the <see cref="E:VisibleChanged" /> event.
         /// </summary>
         protected virtual void OnVisibleChanged()
         {
@@ -373,7 +373,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Displays the control to the user.
+        ///     Displays the control to the user.
         /// </summary>
         public void Show()
         {
@@ -383,7 +383,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Hides the control from the user.
+        ///     Hides the control from the user.
         /// </summary>
         public void Hide()
         {
@@ -393,7 +393,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Handles a button press.
+        ///     Handles a button press.
         /// </summary>
         /// <param name="button">The button.</param>
         /// <returns>true if the call was handled; otherwise false.</returns>
@@ -406,9 +406,9 @@ namespace LogiFrame
                 OnButtonDown(args);
             return args.PreventPropagation;
         }
-        
+
         /// <summary>
-        /// Handles a button release.
+        ///     Handles a button release.
         /// </summary>
         /// <param name="button">The button.</param>
         /// <returns>true if the call was handled; otherwise false.</returns>
@@ -423,7 +423,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="LCDControl" /> class.
+        ///     Finalizes an instance of the <see cref="LCDControl" /> class.
         /// </summary>
         ~LCDControl()
         {

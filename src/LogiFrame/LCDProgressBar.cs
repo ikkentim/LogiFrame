@@ -16,7 +16,7 @@
 namespace LogiFrame
 {
     /// <summary>
-    /// Represents a progress bar.
+    ///     Represents a progress bar.
     /// </summary>
     public class LCDProgressBar : LCDControl
     {
@@ -27,7 +27,7 @@ namespace LogiFrame
         private int _value;
 
         /// <summary>
-        /// Gets or sets the minimum value.
+        ///     Gets or sets the minimum value.
         /// </summary>
         public int Minimum
         {
@@ -41,7 +41,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets or sets the maximum value.
+        ///     Gets or sets the maximum value.
         /// </summary>
         public int Maximum
         {
@@ -55,7 +55,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets or sets the value.
+        ///     Gets or sets the value.
         /// </summary>
         public int Value
         {
@@ -68,7 +68,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets or sets the style of the progress bar.
+        ///     Gets or sets the style of the progress bar.
         /// </summary>
         public BorderStyle Style
         {
@@ -81,7 +81,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets or sets the direction of the progress bar.
+        ///     Gets or sets the direction of the progress bar.
         /// </summary>
         public ProgressBarDirection Direction
         {
@@ -96,7 +96,7 @@ namespace LogiFrame
         #region Overrides of LCDControl
 
         /// <summary>
-        /// Raises the <see cref="E:Paint" /> event.
+        ///     Raises the <see cref="E:Paint" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.LCDPaintEventArgs" /> instance containing the event data.</param>
         protected override void OnPaint(LCDPaintEventArgs e)

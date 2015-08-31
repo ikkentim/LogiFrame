@@ -18,12 +18,13 @@ using System;
 namespace LogiFrame
 {
     /// <summary>
-    /// Provides data for the <see cref="E:LogiFrame.LCDControl.ButtonDown"/> or <see cref="E:LogiFrame.LCDControl.ButtonUp"/> or <see cref="E:LogiFrame.LCDControl.ButtonPressed"/> event.
+    ///     Provides data for the <see cref="E:LogiFrame.LCDControl.ButtonDown" /> or
+    ///     <see cref="E:LogiFrame.LCDControl.ButtonUp" /> or <see cref="E:LogiFrame.LCDControl.ButtonPressed" /> event.
     /// </summary>
     public class ButtonEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ButtonEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="ButtonEventArgs" /> class.
         /// </summary>
         /// <param name="button">The button.</param>
         public ButtonEventArgs(int button)
@@ -32,12 +33,12 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets the button.
+        ///     Gets the button.
         /// </summary>
         public int Button { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to prevent propagation.
+        ///     Gets or sets a value indicating whether to prevent propagation.
         /// </summary>
         public bool PreventPropagation { get; set; }
     }

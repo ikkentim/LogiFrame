@@ -65,19 +65,19 @@ namespace LogiFrame.Drawing
 
         public bool this[int x, int y]
         {
-            get { return GetPixel(x,y); }
+            get { return GetPixel(x, y); }
             set { SetPixel(x, y, value); }
         }
 
         public void SetPixel(int x, int y, bool value)
         {
             if (x < 0 || x >= Width || y < 0 || y >= Height) return;
-            Pixels[x + y * Width] = (byte)(value ? 0xff : 0x00);
+            Pixels[x + y*Width] = (byte) (value ? 0xff : 0x00);
         }
 
         public bool GetPixel(int x, int y)
         {
-            return x >= 0 && x < Width && y >= 0 && y < Height && Pixels[x + y * Width] == 0xff;
+            return x >= 0 && x < Width && y >= 0 && y < Height && Pixels[x + y*Width] == 0xff;
         }
 
         public void Merge(MonochromeBitmap bitmap, Point location, IMergeMethod mergeMethod)
@@ -101,10 +101,10 @@ namespace LogiFrame.Drawing
         public Bitmap ToBitmap(Color setColor, Color unsetColor)
         {
             var bmp = new Bitmap(Width, Height);
-           
-                for(var x=0;x<Width;x++)
-                    for(var y=0;y<Height;y++)
-                        bmp.SetPixel(x, y, this[x, y] ? setColor : unsetColor);
+
+            for (var x = 0; x < Width; x++)
+                for (var y = 0; y < Height; y++)
+                    bmp.SetPixel(x, y, this[x, y] ? setColor : unsetColor);
 
             return bmp;
         }

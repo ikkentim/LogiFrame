@@ -21,7 +21,7 @@ using LogiFrame.Drawing;
 namespace LogiFrame
 {
     /// <summary>
-    /// Represents a tab control menu.
+    ///     Represents a tab control menu.
     /// </summary>
     public class LCDTabMenuControl : LCDControl
     {
@@ -30,7 +30,7 @@ namespace LogiFrame
         private readonly LCDLine _line;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LCDTabMenuControl"/> class.
+        ///     Initializes a new instance of the <see cref="LCDTabMenuControl" /> class.
         /// </summary>
         /// <param name="tabControl">The tab control.</param>
         /// <exception cref="System.ArgumentNullException">Thrown if tabControl is null.</exception>
@@ -56,29 +56,32 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets the tab control.
+        ///     Gets the tab control.
         /// </summary>
         public LCDTabControl TabControl { get; }
 
         /// <summary>
-        /// Gets or sets the task of button 0.
+        ///     Gets or sets the task of button 0.
         /// </summary>
         public LCDTabMenuButtonTask Button0Task { get; set; } = LCDTabMenuButtonTask.Previous;
+
         /// <summary>
-        /// Gets or sets the task of button 1.
+        ///     Gets or sets the task of button 1.
         /// </summary>
         public LCDTabMenuButtonTask Button1Task { get; set; } = LCDTabMenuButtonTask.Next;
+
         /// <summary>
-        /// Gets or sets the task of button 2.
+        ///     Gets or sets the task of button 2.
         /// </summary>
         public LCDTabMenuButtonTask Button2Task { get; set; } = LCDTabMenuButtonTask.Close;
+
         /// <summary>
-        /// Gets or sets the task of button 3.
+        ///     Gets or sets the task of button 3.
         /// </summary>
         public LCDTabMenuButtonTask Button3Task { get; set; } = LCDTabMenuButtonTask.None;
 
         /// <summary>
-        /// Selects the previous tab.
+        ///     Selects the previous tab.
         /// </summary>
         public void SelectPrevious()
         {
@@ -103,7 +106,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Selects the next tab.
+        ///     Selects the next tab.
         /// </summary>
         public void SelectNext()
         {
@@ -175,9 +178,9 @@ namespace LogiFrame
             var iconHeight = TabControl.TabPages.Max(t => t.Icon?.Height ?? 0);
             var iconCount = TabControl.TabPages.Count;
             var marginsBetweenIcons = Math.Max(iconCount - 1, 0);
-            var iconBarWidthSum = iconCount * iconWidth + marginsBetweenIcons * Margin;
+            var iconBarWidthSum = iconCount*iconWidth + marginsBetweenIcons*Margin;
 
-            Size = new Size(LCDApp.DefaultSize.Width, 1 + Margin * 2 + iconHeight);
+            Size = new Size(LCDApp.DefaultSize.Width, 1 + Margin*2 + iconHeight);
 
             _line.Start = new Point(0, 0);
             _line.End = new Point(Width - 1, 0);
@@ -186,14 +189,14 @@ namespace LogiFrame
             _container.Controls.Clear();
             _container.Controls.Add(_line);
 
-            var x = Width / 2 - iconBarWidthSum / 2;
+            var x = Width/2 - iconBarWidthSum/2;
             foreach (var tab in TabControl.TabPages)
             {
                 if (tab == TabControl.SelectedTab)
                 {
                     var selectionBox = new LCDRectangle
                     {
-                        Location = new Point(x - 1, (Height - iconHeight - 1) / 2),
+                        Location = new Point(x - 1, (Height - iconHeight - 1)/2),
                         Size = new Size(2 + iconWidth, 2 + iconHeight),
                         Style = RectangleStyle.Filled
                     };
@@ -203,7 +206,7 @@ namespace LogiFrame
                 var icon = tab.Icon;
                 if (icon == null) continue;
 
-                icon.Location = new Point(x, (Height - icon.Height - 1) / 2 + 1);
+                icon.Location = new Point(x, (Height - icon.Height - 1)/2 + 1);
                 icon.MergeMethod = MergeMethods.Invert;
 
                 _container.Controls.Add(icon);
@@ -221,7 +224,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Raises the <see cref="E:VisibleChanged"/> event.
+        ///     Raises the <see cref="E:VisibleChanged" /> event.
         /// </summary>
         protected override void OnVisibleChanged()
         {
@@ -237,7 +240,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Raises the <see cref="E:Paint" /> event.
+        ///     Raises the <see cref="E:Paint" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.LCDPaintEventArgs" /> instance containing the event data.</param>
         protected override void OnPaint(LCDPaintEventArgs e)
@@ -248,7 +251,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Raises the <see cref="E:ButtonDown" /> event.
+        ///     Raises the <see cref="E:ButtonDown" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
         protected override void OnButtonDown(ButtonEventArgs e)

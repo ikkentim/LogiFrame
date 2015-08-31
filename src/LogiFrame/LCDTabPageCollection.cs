@@ -20,7 +20,7 @@ using System.Collections.Generic;
 namespace LogiFrame
 {
     /// <summary>
-    /// Represents a collection of tab pages.
+    ///     Represents a collection of tab pages.
     /// </summary>
     public class LCDTabPageCollection : IList<LCDTabPage>, ICloneable
     {
@@ -44,16 +44,17 @@ namespace LogiFrame
         #endregion
 
         /// <summary>
-        /// Occurs when an item was added.
+        ///     Occurs when an item was added.
         /// </summary>
         public event EventHandler<LCDTabPageEventArgs> ItemAdded;
+
         /// <summary>
-        /// Occurs when an item was removed.
+        ///     Occurs when an item was removed.
         /// </summary>
         public event EventHandler<LCDTabPageEventArgs> ItemRemoved;
 
         /// <summary>
-        /// Raises the <see cref="E:ItemAdded" /> event.
+        ///     Raises the <see cref="E:ItemAdded" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.LCDTabPageEventArgs" /> instance containing the event data.</param>
         protected virtual void OnItemAdded(LCDTabPageEventArgs e)
@@ -62,7 +63,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Raises the <see cref="E:ItemRemoved" /> event.
+        ///     Raises the <see cref="E:ItemRemoved" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.LCDTabPageEventArgs" /> instance containing the event data.</param>
         protected virtual void OnItemRemoved(LCDTabPageEventArgs e)

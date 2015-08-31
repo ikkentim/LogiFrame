@@ -19,12 +19,12 @@ using LogiFrame.Drawing;
 namespace LogiFrame
 {
     /// <summary>
-    /// Provides data for the <see cref="E:LogiFrame.LCDApp.Rendered"/> event.
+    ///     Provides data for the <see cref="E:LogiFrame.LCDApp.Rendered" /> event.
     /// </summary>
     public class RenderedEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RenderedEventArgs"/> class.
+        ///     Initializes a new instance of the <see cref="RenderedEventArgs" /> class.
         /// </summary>
         /// <param name="bitmap">The bitmap.</param>
         public RenderedEventArgs(MonochromeBitmap bitmap)
@@ -33,7 +33,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets the rendered bitmap.
+        ///     Gets the rendered bitmap.
         /// </summary>
         public MonochromeBitmap Bitmap { get; }
     }

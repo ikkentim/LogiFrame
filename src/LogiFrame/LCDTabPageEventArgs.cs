@@ -17,9 +17,9 @@ using System;
 
 namespace LogiFrame
 {
-
     /// <summary>
-    /// Provides data for the <see cref="E:LogiFrame.LCDTabPageCollection.ItemAdded"/> or <see cref="E:LogiFrame.LCDTabPageCollection.ItemRemoved"/> event.
+    ///     Provides data for the <see cref="E:LogiFrame.LCDTabPageCollection.ItemAdded" /> or
+    ///     <see cref="E:LogiFrame.LCDTabPageCollection.ItemRemoved" /> event.
     /// </summary>
     public class LCDTabPageEventArgs : EventArgs
     {

@@ -19,7 +19,7 @@ using LogiFrame.Drawing;
 namespace LogiFrame
 {
     /// <summary>
-    /// Represents a picture.
+    ///     Represents a picture.
     /// </summary>
     public class LCDPicture : LCDControl
     {
@@ -27,7 +27,7 @@ namespace LogiFrame
         private Image _image;
 
         /// <summary>
-        /// Gets or sets the image.
+        ///     Gets or sets the image.
         /// </summary>
         public Image Image
         {
@@ -45,7 +45,7 @@ namespace LogiFrame
         #region Overrides of LCDControl
 
         /// <summary>
-        /// Raises the <see cref="E:Paint" /> event.
+        ///     Raises the <see cref="E:Paint" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.LCDPaintEventArgs" /> instance containing the event data.</param>
         protected override void OnPaint(LCDPaintEventArgs e)

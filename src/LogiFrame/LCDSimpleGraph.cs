@@ -20,7 +20,7 @@ using System.Linq;
 namespace LogiFrame
 {
     /// <summary>
-    /// Represents a simple graph.
+    ///     Represents a simple graph.
     /// </summary>
     public class LCDSimpleGraph : LCDControl
     {
@@ -30,7 +30,7 @@ namespace LogiFrame
         private BorderStyle _style;
 
         /// <summary>
-        /// Gets or sets the minimum value.
+        ///     Gets or sets the minimum value.
         /// </summary>
         public int Minimum
         {
@@ -44,7 +44,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets or sets the maximum value.
+        ///     Gets or sets the maximum value.
         /// </summary>
         public int Maximum
         {
@@ -58,7 +58,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets or sets the style of the graph.
+        ///     Gets or sets the style of the graph.
         /// </summary>
         public BorderStyle Style
         {
@@ -71,19 +71,19 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets the maximum number of entries in this graph.
+        ///     Gets the maximum number of entries in this graph.
         /// </summary>
         public int MaxEntries
-                    => Math.Max(0, Width - (Style == BorderStyle.Border ? 2 : (Style == BorderStyle.BorderWithPadding ? 4 : 0)))
-                    ;
+            => Math.Max(0, Width - (Style == BorderStyle.Border ? 2 : (Style == BorderStyle.BorderWithPadding ? 4 : 0)))
+            ;
 
         /// <summary>
-        /// Gets the values in the graph.
+        ///     Gets the values in the graph.
         /// </summary>
         public IEnumerable<int> Values => _values.ToArray();
 
         /// <summary>
-        /// Pushes the specified value to the graph.
+        ///     Pushes the specified value to the graph.
         /// </summary>
         public void PushValue(int value)
         {
@@ -99,7 +99,7 @@ namespace LogiFrame
         #region Overrides of LCDControl
 
         /// <summary>
-        /// Raises the <see cref="E:Paint" /> event.
+        ///     Raises the <see cref="E:Paint" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.LCDPaintEventArgs" /> instance containing the event data.</param>
         protected override void OnPaint(LCDPaintEventArgs e)

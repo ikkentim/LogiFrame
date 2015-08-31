@@ -16,20 +16,22 @@
 namespace LogiFrame
 {
     /// <summary>
-    /// Contains border styles.
+    ///     Contains border styles.
     /// </summary>
     public enum BorderStyle
     {
         /// <summary>
-        /// No border.
+        ///     No border.
         /// </summary>
         None,
+
         /// <summary>
-        /// The single line or border.
+        ///     The single line or border.
         /// </summary>
         Border,
+
         /// <summary>
-        /// The single line of border with a single line of padding.
+        ///     The single line of border with a single line of padding.
         /// </summary>
         BorderWithPadding
     }

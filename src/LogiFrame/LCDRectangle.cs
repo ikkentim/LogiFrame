@@ -16,14 +16,14 @@
 namespace LogiFrame
 {
     /// <summary>
-    /// Represents a rectangle.
+    ///     Represents a rectangle.
     /// </summary>
     public class LCDRectangle : LCDControl
     {
         private RectangleStyle _style;
 
         /// <summary>
-        /// Gets or sets the style of the rectangle.
+        ///     Gets or sets the style of the rectangle.
         /// </summary>
         public RectangleStyle Style
         {
@@ -38,7 +38,7 @@ namespace LogiFrame
         #region Overrides of LCDControl
 
         /// <summary>
-        /// Raises the <see cref="E:Paint" /> event.
+        ///     Raises the <see cref="E:Paint" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.LCDPaintEventArgs" /> instance containing the event data.</param>
         protected override void OnPaint(LCDPaintEventArgs e)

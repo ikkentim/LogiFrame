@@ -20,7 +20,7 @@ using System.Collections.Generic;
 namespace LogiFrame
 {
     /// <summary>
-    /// Represents a collection of <see cref="LCDControl"/> instances.
+    ///     Represents a collection of <see cref="LCDControl" /> instances.
     /// </summary>
     public class LCDControlCollection : IList<LCDControl>, ICloneable
     {

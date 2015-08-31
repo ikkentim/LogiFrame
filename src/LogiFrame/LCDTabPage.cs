@@ -16,7 +16,7 @@
 namespace LogiFrame
 {
     /// <summary>
-    /// Represents a tab page.
+    ///     Represents a tab page.
     /// </summary>
     public class LCDTabPage : ContainerLCDControl
     {
@@ -26,7 +26,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets or sets the icon of the tab page.
+        ///     Gets or sets the icon of the tab page.
         /// </summary>
         public virtual LCDControl Icon { get; set; }
     }

@@ -20,7 +20,7 @@ using LogiFrame.Drawing;
 namespace LogiFrame
 {
     /// <summary>
-    /// Represents a line.
+    ///     Represents a line.
     /// </summary>
     public class LCDLine : LCDControl
     {
@@ -28,7 +28,7 @@ namespace LogiFrame
         private Point _start;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LCDLine"/> class.
+        ///     Initializes a new instance of the <see cref="LCDLine" /> class.
         /// </summary>
         public LCDLine()
         {
@@ -36,7 +36,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets or sets the starting point of the lind.
+        ///     Gets or sets the starting point of the lind.
         /// </summary>
         public virtual Point Start
         {
@@ -55,7 +55,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets or sets the ending pont of the line.
+        ///     Gets or sets the ending pont of the line.
         /// </summary>
         public virtual Point End
         {
@@ -78,7 +78,7 @@ namespace LogiFrame
         /// <summary>
         ///     Gets or sets the location of the control.
         /// </summary>
-        /// <exception cref="System.NotImplementedException">use <see cref="Start"/> and <see cref="End"/> instead</exception>
+        /// <exception cref="System.NotImplementedException">use <see cref="Start" /> and <see cref="End" /> instead</exception>
         public override Point Location
         {
             get { return base.Location; }
@@ -86,9 +86,9 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Gets or sets the size of the control.
+        ///     Gets or sets the size of the control.
         /// </summary>
-        /// <exception cref="System.NotImplementedException">use <see cref="Start"/> and <see cref="End"/> instead</exception>
+        /// <exception cref="System.NotImplementedException">use <see cref="Start" /> and <see cref="End" /> instead</exception>
         public override Size Size
         {
             get { return base.Size; }
@@ -96,7 +96,7 @@ namespace LogiFrame
         }
 
         /// <summary>
-        /// Raises the <see cref="E:Paint" /> event.
+        ///     Raises the <see cref="E:Paint" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.LCDPaintEventArgs" /> instance containing the event data.</param>
         protected override void OnPaint(LCDPaintEventArgs e)

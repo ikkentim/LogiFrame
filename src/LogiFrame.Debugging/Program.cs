@@ -146,7 +146,7 @@ namespace LogiFrame.Debugging
                 if (args.Button == 3) f.Dispose();
             };
 
-            f.PushToForeground(true);
+            f.PushToForeground();
 
             f.WaitForClose();
         }
