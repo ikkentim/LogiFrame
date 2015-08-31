@@ -22,12 +22,12 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("LogiFrame")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A framework for creating apps for monochrome GamePanel apps (Logitech G13/G15/G510)")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Tim Potze")]
 [assembly: AssemblyProduct("LogiFrame")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright © Tim Potze 2015")]
+[assembly: AssemblyTrademark("Tim Potze")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
