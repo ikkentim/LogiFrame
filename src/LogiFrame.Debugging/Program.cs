@@ -85,7 +85,7 @@ namespace LogiFrame.Debugging
 
             var marq = new LCDMarquee
             {
-                Text = "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum",
+                Text = "Lorem",
                 Size = new Size(LCDApp.DefaultSize.Width, 10),
                 Location = new Point(0, 10),
             };
@@ -125,8 +125,8 @@ namespace LogiFrame.Debugging
             };
 
             tabPage.Controls.Add(label);
-//            tabPage.Controls.Add(line);
-//            tabPage.Controls.Add(marq);
+            tabPage.Controls.Add(line);
+            tabPage.Controls.Add(marq);
 
             tabPage2.Controls.Add(rectangle);
             tabPage2.Controls.Add(ellipse);

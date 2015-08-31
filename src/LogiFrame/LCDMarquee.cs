@@ -106,6 +106,7 @@ namespace LogiFrame
             {
                 _maxSteps = 0;
                 Reset();
+                return;
             }
 
             _maxSteps = scroll;
