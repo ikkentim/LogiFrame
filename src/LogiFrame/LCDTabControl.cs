@@ -84,9 +84,17 @@ namespace LogiFrame
                     throw new ArgumentException("value not a member of TabPages", nameof(value));
 
                 SuspendLayout();
-                _selectedTab?.AssignParent(null);
-                value?.AssignParent(this);
+                if (_selectedTab != null)
+                {
+                    _selectedTab.AssignParent(null);
+                    _selectedTab.Visible = false;
+                }
                 _selectedTab = value;
+                if (value != null)
+                {
+                    value.AssignParent(this);
+                    value.Visible = true;
+                }
                 OnSelectedTabChanged();
                 Invalidate();
                 ResumeLayout();

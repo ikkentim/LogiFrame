@@ -23,6 +23,7 @@ namespace LogiFrame
         public LCDTabPage()
         {
             Size = LCDApp.DefaultSize;
+            Visible = false;
         }
 
         /// <summary>
