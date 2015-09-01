@@ -165,10 +165,16 @@ namespace LogiFrame
         /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
         protected override void OnButtonDown(ButtonEventArgs e)
         {
-            if (Menu.Visible && (e.PreventPropagation = Menu.HandleButtonDown(e.Button)))
+            if (e.PreventPropagation)
                 return;
 
-            if (TabPages.Any(tab => (tab.HandleButtonDown(e.Button))))
+            if (Menu.Visible &&  Menu.HandleButtonDown(e.Button))
+            {
+                e.PreventPropagation = true;
+                return;
+            }
+
+            if (SelectedTab.HandleButtonDown(e.Button))
             {
                 e.PreventPropagation = true;
                 return;
@@ -182,10 +188,16 @@ namespace LogiFrame
         /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
         protected override void OnButtonUp(ButtonEventArgs e)
         {
-            if (Menu.Visible && (e.PreventPropagation = Menu.HandleButtonUp(e.Button)))
+            if (e.PreventPropagation)
                 return;
 
-            if (TabPages.Any(tab => (tab.HandleButtonUp(e.Button))))
+            if (Menu.Visible && Menu.HandleButtonUp(e.Button))
+            {
+                e.PreventPropagation = true;
+                return;
+            }
+
+            if (SelectedTab.HandleButtonUp(e.Button))
             {
                 e.PreventPropagation = true;
                 return;

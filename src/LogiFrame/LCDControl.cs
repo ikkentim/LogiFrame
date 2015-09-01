@@ -260,6 +260,16 @@ namespace LogiFrame
         }
 
         /// <summary>
+        ///     Determines whether the specified button is pressed.
+        /// </summary>
+        /// <param name="button">The button.</param>
+        /// <returns>true if pressed; otherwise false.</returns>
+        public virtual bool IsButtonDown(int button)
+        {
+            return Parent?.IsButtonDown(button) ?? false;
+        }
+
+        /// <summary>
         ///     Suspends the usual layout logic.
         /// </summary>
         public virtual void SuspendLayout()
@@ -444,7 +454,7 @@ namespace LogiFrame
                 return;
             lock (this)
             {
-                (Parent as ContainerLCDControl)?.Controls?.Remove(this);
+                (Parent as LCDContainerControl)?.Controls?.Remove(this);
                 Disposing = true;
                 Disposed?.Invoke(this, EventArgs.Empty);
                 Disposing = false;

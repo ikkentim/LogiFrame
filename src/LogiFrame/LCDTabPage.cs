@@ -18,7 +18,7 @@ namespace LogiFrame
     /// <summary>
     ///     Represents a tab page.
     /// </summary>
-    public class LCDTabPage : ContainerLCDControl
+    public class LCDTabPage : LCDContainerControl
     {
         public LCDTabPage()
         {

@@ -25,7 +25,7 @@ namespace LogiFrame
     /// <summary>
     ///     Represents a GamePanel app.
     /// </summary>
-    public class LCDApp : ContainerLCDControl
+    public class LCDApp : LCDContainerControl
     {
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly LgLcd.ConnectContext _connection;
@@ -151,7 +151,7 @@ namespace LogiFrame
 
         #endregion
 
-        #region Overrides of ContainerLCDControl
+        #region Overrides of LCDContainerControl
 
         /// <summary>
         ///     Raises the <see cref="E:Paint" /> event.
@@ -254,7 +254,7 @@ namespace LogiFrame
         /// </summary>
         /// <param name="button">The button.</param>
         /// <returns>true if pressed; otherwise false.</returns>
-        public virtual bool IsButtonDown(int button)
+        public override bool IsButtonDown(int button)
         {
             ThrowIfDisposed();
 

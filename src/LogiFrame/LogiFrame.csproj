@@ -44,7 +44,7 @@
     <Compile Include="BorderStyle.cs" />
     <Compile Include="ButtonEventArgs.cs" />
     <Compile Include="ConnectionException.cs" />
-    <Compile Include="ContainerLCDControl.cs" />
+    <Compile Include="LCDContainerControl.cs" />
     <Compile Include="Drawing\IMergeMethod.cs" />
     <Compile Include="Drawing\InvertMergeMethod.cs" />
     <Compile Include="Drawing\MergeMethods.cs" />

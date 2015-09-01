@@ -26,7 +26,7 @@ namespace LogiFrame
     public class LCDTabMenuControl : LCDControl
     {
         private const int Margin = 2;
-        private readonly ContainerLCDControl _container = new ContainerLCDControl();
+        private readonly LCDContainerControl _container = new LCDContainerControl();
         private readonly LCDLine _line;
 
         /// <summary>
