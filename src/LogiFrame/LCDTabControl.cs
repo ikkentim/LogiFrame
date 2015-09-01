@@ -205,6 +205,29 @@ namespace LogiFrame
             base.OnButtonUp(e);
         }
 
+        /// <summary>
+        ///     Raises the <see cref="E:ButtonPress" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
+        protected override void OnButtonPress(ButtonEventArgs e)
+        {
+            if (e.PreventPropagation)
+                return;
+
+            if (Menu.Visible && Menu.HandleButtonPress(e.Button))
+            {
+                e.PreventPropagation = true;
+                return;
+            }
+
+            if (SelectedTab.HandleButtonPress(e.Button))
+            {
+                e.PreventPropagation = true;
+                return;
+            }
+            base.OnButtonPress(e);
+        }
+
         #endregion
     }
 }

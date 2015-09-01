@@ -187,9 +187,14 @@ namespace LogiFrame
         public event EventHandler<ButtonEventArgs> ButtonDown;
 
         /// <summary>
-        ///     Occurs when a button is released
+        ///     Occurs when a button is released.
         /// </summary>
         public event EventHandler<ButtonEventArgs> ButtonUp;
+
+        /// <summary>
+        ///     Occurs while a button is pressed.
+        /// </summary>
+        public event EventHandler<ButtonEventArgs> ButtonPress;
 
         /// <summary>
         ///     Occurs when the component is disposed by a call to the <see cref="M:LogiFrame.LCDControl.Dispose" /> method.
@@ -412,8 +417,7 @@ namespace LogiFrame
             ThrowIfDisposed();
 
             var args = new ButtonEventArgs(button);
-            if (!args.PreventPropagation)
-                OnButtonDown(args);
+            OnButtonDown(args);
             return args.PreventPropagation;
         }
 
@@ -427,8 +431,21 @@ namespace LogiFrame
             ThrowIfDisposed();
 
             var args = new ButtonEventArgs(button);
-            if (!args.PreventPropagation)
-                OnButtonUp(args);
+            OnButtonUp(args);
+            return args.PreventPropagation;
+        }
+
+        /// <summary>
+        ///     Handles a repeated button press.
+        /// </summary>
+        /// <param name="button">The button.</param>
+        /// <returns>true if the call was handled; otherwise false.</returns>
+        public bool HandleButtonPress(int button)
+        {
+            ThrowIfDisposed();
+
+            var args = new ButtonEventArgs(button);
+            OnButtonPress(args);
             return args.PreventPropagation;
         }
 
@@ -469,6 +486,15 @@ namespace LogiFrame
         {
             if (IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="E:ButtonPress" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
+        protected virtual void OnButtonPress(ButtonEventArgs e)
+        {
+            ButtonPress?.Invoke(this, e);
         }
     }
 }

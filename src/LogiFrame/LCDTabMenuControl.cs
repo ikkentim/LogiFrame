@@ -251,10 +251,10 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Raises the <see cref="E:ButtonDown" /> event.
+        ///     Raises the <see cref="E:ButtonPress" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
-        protected override void OnButtonDown(ButtonEventArgs e)
+        protected override void OnButtonPress(ButtonEventArgs e)
         {
             var task = LCDTabMenuButtonTask.None;
             switch (e.Button)

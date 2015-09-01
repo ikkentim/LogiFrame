@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,13 +28,15 @@ namespace LogiFrame
     /// </summary>
     public class LCDApp : LCDContainerControl
     {
-        private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        private readonly CancellationTokenSource _closeCancellationTokenSource = new CancellationTokenSource();
+        private CancellationTokenSource _buttonPressCancellationTokenSource;
         private readonly LgLcd.ConnectContext _connection;
         private readonly int _device;
         // Must keep the open context to prevent the button change delegate from being GCed.
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly LgLcd.OpenContext _openContext;
         private int _oldButtons;
+        private int _pressingButton;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="LCDApp" /> class.
@@ -77,15 +80,16 @@ namespace LogiFrame
                 {
                     Callback = (device, buttons, context) =>
                     {
+                        var oldOldButtons = _oldButtons;
+                        _oldButtons = buttons;
                         for (var button = 0; button < 4; button++)
                         {
                             var buttonIdentifier = 1 << button;
-                            if ((buttons & buttonIdentifier) > (_oldButtons & buttonIdentifier))
+                            if ((buttons & buttonIdentifier) > (oldOldButtons & buttonIdentifier))
                                 HandleButtonDown(button);
-                            else if ((buttons & buttonIdentifier) < (_oldButtons & buttonIdentifier))
+                            else if ((buttons & buttonIdentifier) < (oldOldButtons & buttonIdentifier))
                                 HandleButtonUp(button);
                         }
-                        _oldButtons = buttons;
                         return 1;
                     }
                 }
@@ -179,9 +183,71 @@ namespace LogiFrame
         {
             LgLcd.Close(_device);
             base.Dispose(disposing);
-            _cancellationTokenSource.Cancel();
+            _closeCancellationTokenSource.Cancel();
+            _buttonPressCancellationTokenSource?.Cancel();
         }
 
+        private async void ButtonPressLoop(int button, CancellationToken token)
+        {
+            try
+            {
+                HandleButtonPress(button);
+                await Task.Delay(250, token);
+                while (!Disposing && !IsDisposed && IsButtonDown(button))
+                {
+                    await Task.Delay(150, token);
+                    if (!Disposing && !IsDisposed)
+                        HandleButtonPress(button);
+                }
+            }
+            catch (TaskCanceledException)
+            {
+            }
+        }
+
+        #region Overrides of LCDContainerControl
+
+        /// <summary>
+        /// Raises the <see cref="E:ButtonPress" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
+        protected override void OnButtonPress(ButtonEventArgs e)
+        {
+            Debug.WriteLine("Button press" + e.Button);
+            base.OnButtonPress(e);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Raises the <see cref="E:ButtonDown" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
+        protected override void OnButtonDown(ButtonEventArgs e)
+        {
+            _buttonPressCancellationTokenSource?.Cancel();
+            _buttonPressCancellationTokenSource = new CancellationTokenSource();
+            _pressingButton = e.Button;
+            ButtonPressLoop(e.Button, _buttonPressCancellationTokenSource.Token);
+
+            base.OnButtonDown(e);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:ButtonUp" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
+        protected override void OnButtonUp(ButtonEventArgs e)
+        {
+            if (_pressingButton == e.Button)
+            {
+                _buttonPressCancellationTokenSource?.Cancel();
+                _buttonPressCancellationTokenSource = null;
+            }
+
+            base.OnButtonUp(e);
+        }
+        
         #endregion
 
         /// <summary>
@@ -192,11 +258,13 @@ namespace LogiFrame
         {
             ThrowIfDisposed();
 
+            var token = _closeCancellationTokenSource.Token;
+
             while (!IsDisposed)
             {
                 try
                 {
-                    await Task.Delay(60000, _cancellationTokenSource.Token);
+                    await Task.Delay(60000, token);
                 }
                 catch (TaskCanceledException)
                 {
@@ -214,13 +282,16 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Raises the <see cref="E:Configure" /> event.
+        ///     Determines whether the specified button is pressed.
         /// </summary>
-        protected virtual void OnConfigure()
+        /// <param name="button">The button.</param>
+        /// <returns>true if pressed; otherwise false.</returns>
+        public override bool IsButtonDown(int button)
         {
-            Configure?.Invoke(this, EventArgs.Empty);
-        }
+            ThrowIfDisposed();
 
+            return (_oldButtons & (1 << button)) != 0;
+        }
         /// <summary>
         ///     Pushes the specified bitmap to the LCD.
         /// </summary>
@@ -250,15 +321,12 @@ namespace LogiFrame
         }
 
         /// <summary>
-        ///     Determines whether the specified button is pressed.
+        ///     Raises the <see cref="E:Configure" /> event.
         /// </summary>
-        /// <param name="button">The button.</param>
-        /// <returns>true if pressed; otherwise false.</returns>
-        public override bool IsButtonDown(int button)
+        protected virtual void OnConfigure()
         {
-            ThrowIfDisposed();
-
-            return (_oldButtons & (1 << button)) != 0;
+            Configure?.Invoke(this, EventArgs.Empty);
         }
+
     }
 }

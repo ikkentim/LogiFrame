@@ -136,6 +136,22 @@ namespace LogiFrame.Debugging
 
             tabControl.TabPages.Add(tabPage);
             tabControl.TabPages.Add(tabPage2);
+            tabControl.TabPages.Add(new LCDTabPage
+            {
+                Icon = new LCDLabel { AutoSize = true, Font = PixelFonts.Title, Text = "1" }
+            });
+            tabControl.TabPages.Add(new LCDTabPage
+            {
+                Icon = new LCDLabel { AutoSize = true, Font = PixelFonts.Title, Text = "2" }
+            });
+            tabControl.TabPages.Add(new LCDTabPage
+            {
+                Icon = new LCDLabel { AutoSize = true, Font = PixelFonts.Title, Text = "3" }
+            });
+            tabControl.TabPages.Add(new LCDTabPage
+            {
+                Icon = new LCDLabel { AutoSize = true, Font = PixelFonts.Title, Text = "4" }
+            });
             tabControl.SelectedTab = tabPage;
             
             f.Controls.Add(tabControl);
@@ -147,7 +163,6 @@ namespace LogiFrame.Debugging
             };
 
             f.PushToForeground();
-
             f.WaitForClose();
         }
     }

@@ -80,6 +80,23 @@ namespace LogiFrame
         }
 
         /// <summary>
+        /// Raises the <see cref="E:ButtonPress" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
+        protected override void OnButtonPress(ButtonEventArgs e)
+        {
+            if (e.PreventPropagation)
+                return;
+
+            if (Controls.ToArray().Any(control => control.HandleButtonPress(e.Button)))
+            {
+                e.PreventPropagation = true;
+                return;
+            }
+            base.OnButtonPress(e);
+        }
+
+        /// <summary>
         ///     Releases the unmanaged resources used by the <see cref="T:LogiFrame.LCDControl" /> and optionally releases the
         ///     managed resources.
         /// </summary>
