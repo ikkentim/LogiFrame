@@ -204,33 +204,20 @@ namespace LogiFrame
             {
             }
         }
-
-        #region Overrides of LCDContainerControl
-
-        /// <summary>
-        /// Raises the <see cref="E:ButtonPress" /> event.
-        /// </summary>
-        /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
-        protected override void OnButtonPress(ButtonEventArgs e)
-        {
-            Debug.WriteLine("Button press" + e.Button);
-            base.OnButtonPress(e);
-        }
-
-        #endregion
-
+        
         /// <summary>
         /// Raises the <see cref="E:ButtonDown" /> event.
         /// </summary>
         /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
         protected override void OnButtonDown(ButtonEventArgs e)
         {
+            base.OnButtonDown(e);
+            if (e.PreventPropagation) return;
+
             _buttonPressCancellationTokenSource?.Cancel();
             _buttonPressCancellationTokenSource = new CancellationTokenSource();
             _pressingButton = e.Button;
             ButtonPressLoop(e.Button, _buttonPressCancellationTokenSource.Token);
-
-            base.OnButtonDown(e);
         }
 
         /// <summary>

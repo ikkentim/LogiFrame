@@ -54,11 +54,15 @@ namespace LogiFrame
             if (e.PreventPropagation)
                 return;
 
-            if (Controls.ToArray().Any(control => control.HandleButtonDown(e.Button)))
+            foreach (var control in Controls.ToArray())
             {
-                e.PreventPropagation = true;
-                return;
+                if (control.HandleButtonDown(e.Button))
+                {
+                    e.PreventPropagation = true;
+                    return;
+                }
             }
+
             base.OnButtonDown(e);
         }
 
@@ -71,11 +75,15 @@ namespace LogiFrame
             if (e.PreventPropagation)
                 return;
 
-            if (Controls.ToArray().Any(control => control.HandleButtonUp(e.Button)))
+            foreach (var control in Controls.ToArray())
             {
-                e.PreventPropagation = true;
-                return;
+                if (control.HandleButtonUp(e.Button))
+                {
+                    e.PreventPropagation = true;
+                    return;
+                }
             }
+
             base.OnButtonUp(e);
         }
 
@@ -88,11 +96,15 @@ namespace LogiFrame
             if (e.PreventPropagation)
                 return;
 
-            if (Controls.ToArray().Any(control => control.HandleButtonPress(e.Button)))
+            foreach (var control in Controls.ToArray())
             {
-                e.PreventPropagation = true;
-                return;
+                if (control.HandleButtonPress(e.Button))
+                {
+                    e.PreventPropagation = true;
+                    return;
+                }
             }
+
             base.OnButtonPress(e);
         }
 

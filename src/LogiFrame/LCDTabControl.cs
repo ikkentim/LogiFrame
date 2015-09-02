@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 
@@ -174,7 +175,7 @@ namespace LogiFrame
                 return;
             }
 
-            if (SelectedTab.HandleButtonDown(e.Button))
+            if (!Menu.Visible && SelectedTab.HandleButtonDown(e.Button))
             {
                 e.PreventPropagation = true;
                 return;
@@ -197,7 +198,7 @@ namespace LogiFrame
                 return;
             }
 
-            if (SelectedTab.HandleButtonUp(e.Button))
+            if (!Menu.Visible && SelectedTab.HandleButtonUp(e.Button))
             {
                 e.PreventPropagation = true;
                 return;
@@ -220,7 +221,7 @@ namespace LogiFrame
                 return;
             }
 
-            if (SelectedTab.HandleButtonPress(e.Button))
+            if (!Menu.Visible && SelectedTab.HandleButtonPress(e.Button))
             {
                 e.PreventPropagation = true;
                 return;

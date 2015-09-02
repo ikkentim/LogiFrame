@@ -275,10 +275,6 @@ namespace LogiFrame
 
             switch (task)
             {
-                case LCDTabMenuButtonTask.Close:
-                    Hide();
-                    e.PreventPropagation = true;
-                    return;
                 case LCDTabMenuButtonTask.Previous:
                     SelectPrevious();
                     e.PreventPropagation = true;
@@ -289,7 +285,40 @@ namespace LogiFrame
                     return;
             }
 
-            base.OnButtonDown(e);
+            base.OnButtonPress(e);
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="E:ButtonDown" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="LogiFrame.ButtonEventArgs" /> instance containing the event data.</param>
+        protected override void OnButtonDown(ButtonEventArgs e)
+        {
+            var task = LCDTabMenuButtonTask.None;
+            switch (e.Button)
+            {
+                case 0:
+                    task = Button0Task;
+                    break;
+                case 1:
+                    task = Button1Task;
+                    break;
+                case 2:
+                    task = Button2Task;
+                    break;
+                case 3:
+                    task = Button3Task;
+                    break;
+            }
+
+            if (task == LCDTabMenuButtonTask.Close)
+            {
+                Hide();
+                e.PreventPropagation = true;
+                return;
+            }
+
+            base.OnButtonPress(e);
         }
 
         #endregion

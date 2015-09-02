@@ -14,6 +14,7 @@
 // limitations under the License.
 
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using LogiFrame.Drawing;
 
@@ -392,6 +393,7 @@ namespace LogiFrame
         /// </summary>
         public void Show()
         {
+            Debug.WriteLine("Show");
             ThrowIfDisposed();
 
             Visible = true;
@@ -402,6 +404,7 @@ namespace LogiFrame
         /// </summary>
         public void Hide()
         {
+            Debug.WriteLine("Hide");
             ThrowIfDisposed();
 
             Visible = false;
