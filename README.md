@@ -5,7 +5,9 @@ LogiFrame is a framework for efficiently creating apps for G13/G15/G510 devices.
 Example
 -------
 
-This example shows "Hello, World in the top-left corner.
+This example shows "Hello, World" in the top-left corner.
+
+![](http://timpotze.nl/share/lcd/helloworld.png)
 ``` c#
 // Create a control.
 var label = new LCDLabel
